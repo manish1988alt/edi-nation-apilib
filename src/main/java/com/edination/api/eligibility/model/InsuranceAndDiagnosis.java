@@ -20,14 +20,14 @@ public class InsuranceAndDiagnosis {
     private String insuredState;
     private int insuredzipcode;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Insurance_policyNumber")
-    private InsuranceDetail insuranceDetail;
+    /*@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mrnNumber")
+    private Demographics demographics;*/
 
 public InsuranceAndDiagnosis(){}
 
 
-    public InsuranceAndDiagnosis(String ssn,String insuredfirstName, String insuredlastName, String insuredmiddleName, String insuredsex, Date insureddob, String mop,String patientReltoInsured,  String insuredAddress, String insuredCity, String insuredState, int insuredzipcode, InsuranceDetail insuranceDetail) {
+    public InsuranceAndDiagnosis(String ssn,String insuredfirstName, String insuredlastName, String insuredmiddleName, String insuredsex, Date insureddob, String mop,String patientReltoInsured,  String insuredAddress, String insuredCity, String insuredState, int insuredzipcode) {
         this.ssn=ssn;
         this.insuredfirstName = insuredfirstName;
         this.insuredlastName = insuredlastName;
@@ -40,7 +40,7 @@ public InsuranceAndDiagnosis(){}
         this.insuredCity = insuredCity;
         this.insuredState = insuredState;
         this.insuredzipcode = insuredzipcode;
-        this.insuranceDetail = insuranceDetail;
+
     }
 
 
@@ -142,13 +142,13 @@ public InsuranceAndDiagnosis(){}
         this.insuredzipcode = insuredzipcode;
     }
 
-    public InsuranceDetail getInsuranceDetail() {
-        return insuranceDetail;
+   /* public Demographics getDemographics() {
+        return demographics;
     }
 
-    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
-        this.insuranceDetail = insuranceDetail;
-    }
+    public void setDemographics(Demographics demographics) {
+        this.demographics = demographics;
+    }*/
 
     @Override
     public String toString() {
@@ -165,7 +165,6 @@ public InsuranceAndDiagnosis(){}
                 ", insuredCity='" + insuredCity + '\'' +
                 ", insuredState='" + insuredState + '\'' +
                 ", insuredzipcode=" + insuredzipcode +
-                ", insuranceDetail=" + insuranceDetail +
                 '}';
     }
 }

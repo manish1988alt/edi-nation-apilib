@@ -14,7 +14,11 @@ public class InsuranceDetail {
     private String City;
     private String State;
     private int zipcode;
-public InsuranceDetail(){}
+    /*@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mrnNumber")
+    private Demographics demographics;*/
+
+    public InsuranceDetail(){}
 
     public InsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, String city, String state, int zipcode) {
         this.policyNumber = policyNumber;
@@ -93,11 +97,18 @@ public InsuranceDetail(){}
         this.zipcode = zipcode;
     }
 
+   /* public Demographics getDemographics() {
+        return demographics;
+    }
+
+    public void setDemographics(Demographics demographics) {
+        this.demographics = demographics;
+    }*/
 
     @Override
     public String toString() {
         return "InsuranceDetail{" +
-                "policyNumber=" + policyNumber +
+                "policyNumber='" + policyNumber + '\'' +
                 ", group_name='" + group_name + '\'' +
                 ", insurancePlanName='" + insurancePlanName + '\'' +
                 ", insurancePlanType='" + insurancePlanType + '\'' +
@@ -105,6 +116,7 @@ public InsuranceDetail(){}
                 ", City='" + City + '\'' +
                 ", State='" + State + '\'' +
                 ", zipcode=" + zipcode +
+
                 '}';
     }
 }

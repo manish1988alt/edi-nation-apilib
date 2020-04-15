@@ -9,7 +9,6 @@ public class Demographics {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long mrnNumber;
-
     private String firstName;
     private String lastName;
     private String middleName;
@@ -19,10 +18,15 @@ public class Demographics {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ssn_number")
+    @JoinColumn(name = "ssn")
     private InsuranceAndDiagnosis insuranceAndDiagnosis;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "policyNumber")
+    private InsuranceDetail insuranceDetail;
+
     public Demographics(){}
+
     public Demographics(String firstName, String lastName, String middleName, String suffix, String gender, Date dob) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,7 +34,6 @@ public class Demographics {
         this.suffix = suffix;
         this.gender = gender;
         this.dob = dob;
-
     }
 
     public String getFirstName() {
@@ -97,6 +100,14 @@ public class Demographics {
         this.insuranceAndDiagnosis = insuranceAndDiagnosis;
     }
 
+    public InsuranceDetail getInsuranceDetail() {
+        return insuranceDetail;
+    }
+
+    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
+        this.insuranceDetail = insuranceDetail;
+    }
+
     @Override
     public String toString() {
         return "Demographics{" +
@@ -107,6 +118,7 @@ public class Demographics {
                 ", gender='" + gender + '\'' +
                 ", dob=" + dob +
                 ", insuranceAndDiagnosis=" + insuranceAndDiagnosis +
+                ", insuranceDetail=" + insuranceDetail +
                 '}';
     }
 }
