@@ -73,9 +73,9 @@ public class RestApp {
             System.out.println(out.toString());   //Prints the string content read from input stream
             reader.close();
             outputStream.close();
-          // long id=demographics.getMrnNumber();
 
-            demographics1= service.get(1);
+
+            demographics1= service.get("P102");
         }
         if(ackn.equals("1")) {
             return generateSuccessObject(demographics1, "True",
