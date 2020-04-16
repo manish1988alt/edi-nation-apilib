@@ -21,11 +21,11 @@ public class DemographicsService {
         repository.save(expense);
     }
 
-    public Demographics get(long id) {
+    public Demographics get(String id) {
         return repository.findById(id).get();
     }
 
-    public void delete(long id) {
+    public void delete(String id) {
         repository.deleteById(id);
     }
 }

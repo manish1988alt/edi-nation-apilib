@@ -7,8 +7,8 @@ import java.util.Date;
 @Table(name = "Demographics")
 public class Demographics {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long mrnNumber;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String mrnNumber;
     private String firstName;
     private String lastName;
     private String middleName;
@@ -27,13 +27,14 @@ public class Demographics {
 
     public Demographics(){}
 
-    public Demographics(String firstName, String lastName, String middleName, String suffix, String gender, Date dob) {
+    public Demographics(String mrnNumber,String firstName, String lastName, String middleName, String suffix, String gender, Date dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
         this.gender = gender;
         this.dob = dob;
+        this.mrnNumber=mrnNumber;
     }
 
     public String getFirstName() {
@@ -84,11 +85,11 @@ public class Demographics {
         this.dob = dob;
     }
 
-    public long getMrnNumber() {
+    public String getMrnNumber() {
         return mrnNumber;
     }
 
-    public void setMrnNumber(long mrnNumber) {
+    public void setMrnNumber(String mrnNumber) {
         this.mrnNumber = mrnNumber;
     }
 
@@ -111,7 +112,8 @@ public class Demographics {
     @Override
     public String toString() {
         return "Demographics{" +
-                "firstName='" + firstName + '\'' +
+                "mrnNumber='" + mrnNumber + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", suffix='" + suffix + '\'' +
