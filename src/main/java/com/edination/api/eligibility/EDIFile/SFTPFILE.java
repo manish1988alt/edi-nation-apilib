@@ -118,4 +118,44 @@ public class SFTPFILE {
             }
         }
     }
+    public void downloadFile(File f,String filename)
+    {
+        FTPClient ftpClient = new FTPClient();
+        try {
+
+            ftpClient.connect(SFTPHOST, SFTPPORT);
+            ftpClient.login(SFTPUSER, SFTPPASS);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.CARRIAGE_CONTROL_TEXT_FORMAT);
+
+            String remoteFile2 = "/outgoing/";
+            OutputStream outputStream2 = new BufferedOutputStream(new FileOutputStream(f));
+            InputStream inputStream = ftpClient.retrieveFileStream(remoteFile2+filename);
+            byte[] bytesArray = new byte[4096];
+            int bytesRead = -1;
+            while ((bytesRead = inputStream.read(bytesArray)) != -1) {
+                outputStream2.write(bytesArray, 0, bytesRead);
+            }
+
+            boolean   success = ftpClient.completePendingCommand();
+            if (success) {
+                System.out.println("File #2 has been downloaded successfully.");
+            }
+            outputStream2.close();
+            inputStream.close();
+
+        } catch (IOException ex) {
+            System.out.println("Error: " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

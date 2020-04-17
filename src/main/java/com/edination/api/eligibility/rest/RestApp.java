@@ -17,19 +17,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.core.Response;
 import java.io.*;
 import java.util.*;
-/*@CrossOrigin(origins = "http://localhost:4200")*/
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("checkEligibility")
 public class RestApp {
     @Autowired
     DemographicsService service;
     X12Controller x12=new X12Controller();
-    File f=new File("C:\\Users\\manish\\Downloads\\Hipaa-5010-271-GenericResponse.txt");
+
+
     List<X12Interchange> list =new ArrayList<X12Interchange>();
 
     @GetMapping("/read")
     public List<Demographics> checkEligibility()  throws Throwable{
-        list= x12.read(f, false, false, " ", " ");
+    /*    list= x12.read(f, false, false, " ", " ");
         String ackn="";
         for(X12Interchange l:list)
         {
@@ -38,7 +39,7 @@ public class RestApp {
                 System.out.println(xx.getGETrailers()+" "+xx.getGS()+" "+xx.getTransactions());
             }
       ackn=l.getISA().getAcknowledgementRequested14();
-        }
+        }*/
 
         return service.listAll();
     }
@@ -61,12 +62,13 @@ public class RestApp {
         File file = new File("Hipaa-5010-270-GenericRequest.txt");
         generateFile(demographics1,file);
         new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
-
+        File f1=new File("Hipaa-5010-271-GenericResponse.txt");
+        new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
 
 
         FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
         DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));
-        List<X12Interchange>   list1= x12.read(f, false, false, " ", " ");
+        List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
         String ackn="";
         for(X12Interchange l:list1) {
             InputStream in = x12.write(preserveWhitespace, charSet, postfix, contentType, l);
@@ -101,7 +103,6 @@ public class RestApp {
     public void generateFile(Demographics demographics1,File file)
     {
        String data=new EDIFileGeneration().generateFile(demographics1);
-       // File file = new File("C:\\Users\\manish\\Documents\\Careonline\\files\\Hipaa-5010-271-GenericRequest.txt");
         FileWriter fr = null;
         try {
             fr = new FileWriter(file);
