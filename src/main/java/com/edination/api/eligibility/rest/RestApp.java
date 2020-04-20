@@ -137,8 +137,8 @@ public void saveOperation( Demographics demographics)
 
         try{
             Map<String, Object> responseObj = new HashMap<String, Object>();
-            responseObj.put("Ackn",key);
-            responseObj.put("Beneficiery detail", responseVal);
+            responseObj.put("ackn",key);
+            responseObj.put("beneficieryDetail", responseVal);
             responseEntity= new ResponseEntity<>(responseObj,HttpStatus.ACCEPTED);
         }catch (Exception e) {
             Map<String, Object> responseObj1 = new HashMap<String, Object>();
