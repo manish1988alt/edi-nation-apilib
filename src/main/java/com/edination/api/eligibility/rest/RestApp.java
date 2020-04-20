@@ -67,34 +67,35 @@ public class RestApp {
         new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
 
 
-        FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
-        DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));
+     /*   FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
+        DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));*/
         List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
         String ackn="";
         for(X12Interchange l:list1) {
-            InputStream in = x12.write(preserveWhitespace, charSet, postfix, contentType, l);
+            /*InputStream in = x12.write(preserveWhitespace, charSet, postfix, contentType, l);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = reader.readLine()) != null) {
                 out.append(line);
-            }
+            }*/
 
             ackn=l.getISA().getAcknowledgementRequested14();
-            byte[] strToBytes = out.toString().getBytes();
+
+      /*      byte[] strToBytes = out.toString().getBytes();
             outputStream.write(strToBytes);
-            System.out.println(out.toString());   //Prints the string content read from input stream
-            reader.close();
-            outputStream.close();
+            //System.out.println(out.toString());   //Prints the string content read from input stream
+           // reader.close();
+            outputStream.close();*/
 
 
         }
         if(ackn.equals("1")) {
-            return generateSuccessObject(demographics1, "True",
+            return generateSuccessObject(demographics1, "true",
                     " ");
         }
         else
         {
-            return generateSuccessObject(demographics1, "False",
+            return generateSuccessObject(demographics1, "false",
                     "Not Eligible ");
         }
 
@@ -130,16 +131,23 @@ public void saveOperation( Demographics demographics)
     }
 }
 
-    protected ResponseEntity<?> generateSuccessObject(Object responseVal, String key, String errorBuilder){
+    protected ResponseEntity<?> generateSuccessObject(Demographics demographics1, String key, String errorBuilder){
         Response.ResponseBuilder builder = null;
-
 
         ResponseEntity responseEntity;
 
         try{
             Map<String, Object> responseObj = new HashMap<String, Object>();
             responseObj.put("ackn",key);
-            responseObj.put("beneficieryDetail", responseVal);
+            responseObj.put("statusVerifiedDate", demographics1.getInsuranceDetail().getStatusVerifiedDate().toString());
+            responseObj.put("lastName", demographics1.getLastName());
+            responseObj.put("firstName", demographics1.getFirstName());
+            responseObj.put("insurancePlanType", demographics1.getInsuranceDetail().getInsurancePlanType());
+            responseObj.put("insurancePlanName", demographics1.getInsuranceDetail().getInsurancePlanName());
+            responseObj.put("startDate", (demographics1.getInsuranceDetail().getStartDate()).toString());
+            responseObj.put("endDate", (demographics1.getInsuranceDetail().getEndDate().toString()));
+            responseObj.put("eligibility", demographics1.getInsuranceDetail().getEligibility());
+
             responseEntity= new ResponseEntity<>(responseObj,HttpStatus.ACCEPTED);
         }catch (Exception e) {
             Map<String, Object> responseObj1 = new HashMap<String, Object>();

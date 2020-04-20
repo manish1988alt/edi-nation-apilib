@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="edi-nation-apilib" target="1.7" />
+      <module name="edi-nation-apilib" target="8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
