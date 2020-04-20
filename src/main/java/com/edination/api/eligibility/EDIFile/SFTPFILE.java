@@ -1,8 +1,10 @@
 package com.edination.api.eligibility.EDIFile;
 
 import com.jcraft.jsch.*;
+import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +32,32 @@ public class SFTPFILE {
 
     private static final Logger LOG = LoggerFactory.getLogger(SFTPFILE.class);
 
-
-    public void uploadFile(File fw, String fileName) {
-        jsch = new JSch();
-        String path = fw.getAbsolutePath();
+    public void propertValue()
+    {
         InputStream inputStream = this.getClass().getResourceAsStream("/sftp.properties");
         Properties prop = new Properties();
+        try {
+            prop.load(inputStream);
+
+            SFTPUSER = prop.getProperty("sftp.host.user");
+            SFTPHOST = prop.getProperty("sftp.host.ip");
+            SFTPPORT = Integer.valueOf(prop.getProperty("sftp.host.port"));
+            SFTPPASS = prop.getProperty("sftp.host.password");
+            CCDAFILEPATH = prop.getProperty("sftp.ccda.file.path");
+            LOG.info("SFTPHOST=" + SFTPHOST + ", SFTPPORT=" + SFTPPORT + ", CCDAFILEPATH=" + CCDAFILEPATH);
+        }
+        catch (Exception e)
+        {
+         e.printStackTrace();
+        }
+    }
+
+    public void uploadFile(File fw, String fileName) {
+        //jsch = new JSch();
+        //String path = fw.getAbsolutePath();
+        InputStream inputStream = this.getClass().getResourceAsStream("/sftp.properties");
+        Properties prop = new Properties();
+
         /*try {
             // load a properties file
             prop.load(inputStream);
@@ -77,19 +99,12 @@ public class SFTPFILE {
 */
         FTPClient ftpClient = new FTPClient();
         try {
-            prop.load(inputStream);
-
-            SFTPUSER = prop.getProperty("sftp.host.user");
-            SFTPHOST = prop.getProperty("sftp.host.ip");
-            SFTPPORT = Integer.valueOf(prop.getProperty("sftp.host.port"));
-            SFTPPASS = prop.getProperty("sftp.host.password");
-            CCDAFILEPATH = prop.getProperty("sftp.ccda.file.path");
-            LOG.info("SFTPHOST=" + SFTPHOST + ", SFTPPORT=" + SFTPPORT + ", CCDAFILEPATH=" + CCDAFILEPATH);
+            this.propertValue();
 
             ftpClient.connect(SFTPHOST, SFTPPORT);
             ftpClient.login(SFTPUSER, SFTPPASS);
             ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.CARRIAGE_CONTROL_TEXT_FORMAT);
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
 
             FileInputStream inputStream1 = new FileInputStream(fw);
@@ -122,7 +137,7 @@ public class SFTPFILE {
     {
         FTPClient ftpClient = new FTPClient();
         try {
-
+            this.propertValue();
             ftpClient.connect(SFTPHOST, SFTPPORT);
             ftpClient.login(SFTPUSER, SFTPPASS);
             ftpClient.enterLocalPassiveMode();
@@ -158,4 +173,24 @@ public class SFTPFILE {
             }
         }
     }
+    public void fileUpload(File fw, String fileName) throws Exception
+    {
+        this.propertValue();
+        FTPClient ftp=new FTPClient();
+        ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+        int reply;
+        ftp.connect(SFTPHOST);
+        reply = ftp.getReplyCode();
+        if (!FTPReply.isPositiveCompletion(reply)) {
+            ftp.disconnect();
+            throw new Exception("Exception in connecting to FTP Server");
+        }
+        ftp.login(SFTPUSER, SFTPPASS);
+        ftp.setFileType(FTP.BINARY_FILE_TYPE);
+        ftp.enterLocalPassiveMode();
+        try(InputStream input = new FileInputStream(fw)){
+            ftp.storeFile(CCDAFILEPATH + fileName, input);
+        }
+    }
+
 }

@@ -61,7 +61,8 @@ public class RestApp {
         demographics1= service.get(demographics.getMrnNumber());
         File file = new File("Hipaa-5010-270-GenericRequest.txt");
         generateFile(demographics1,file);
-        new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
+        //new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
+        new SFTPFILE().fileUpload(file, demographics.getMrnNumber()+"_"+file.getName());
         File f1=new File("Hipaa-5010-271-GenericResponse.txt");
         new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
 
