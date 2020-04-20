@@ -141,7 +141,7 @@ public class SFTPFILE {
             ftpClient.connect(SFTPHOST, SFTPPORT);
             ftpClient.login(SFTPUSER, SFTPPASS);
             ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.CARRIAGE_CONTROL_TEXT_FORMAT);
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
             String remoteFile2 = "/outgoing/";
             OutputStream outputStream2 = new BufferedOutputStream(new FileOutputStream(f));
