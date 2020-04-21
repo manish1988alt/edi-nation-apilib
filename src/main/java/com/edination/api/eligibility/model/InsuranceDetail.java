@@ -15,17 +15,14 @@ public class InsuranceDetail {
     private String City;
     private String State;
     private int zipcode;
-    private Date startDate;
-    private Date  endDate;
-    private Date statusVerifiedDate;
-    private String eligibility;
+
     /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mrnNumber")
     private Demographics demographics;*/
 
     public InsuranceDetail(){}
 
-    public InsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, String city, String state, int zipcode, Date startDate, Date endDate, String eligibility,Date statusVerifiedDate) {
+    public InsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancelanType, String insuranceAddress, String city, String state, int zipcode) {
         this.policyNumber = policyNumber;
         this.group_name = group_name;
         this.insurancePlanName = insurancePlanName;
@@ -34,10 +31,7 @@ public class InsuranceDetail {
         City = city;
         State = state;
         this.zipcode = zipcode;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.eligibility = eligibility;
-        this.statusVerifiedDate=statusVerifiedDate;
+
     }
 
     public String getPolicyNumber() {
@@ -48,29 +42,6 @@ public class InsuranceDetail {
         this.policyNumber = policyNumber;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getEligibility() {
-        return eligibility;
-    }
-
-    public void setEligibility(String eligibility) {
-        this.eligibility = eligibility;
-    }
 
     public String getInsurancePlanName() {
         return insurancePlanName;
@@ -128,14 +99,6 @@ public class InsuranceDetail {
         this.zipcode = zipcode;
     }
 
-    public Date getStatusVerifiedDate() {
-        return statusVerifiedDate;
-    }
-
-    public void setStatusVerifiedDate(Date statusVerifiedDate) {
-        this.statusVerifiedDate = statusVerifiedDate;
-    }
-
     @Override
     public String toString() {
         return "InsuranceDetail{" +
@@ -147,10 +110,6 @@ public class InsuranceDetail {
                 ", City='" + City + '\'' +
                 ", State='" + State + '\'' +
                 ", zipcode=" + zipcode +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", statusVerifiedDate=" + statusVerifiedDate +
-                ", eligibility='" + eligibility + '\'' +
                 '}';
     }
 }
