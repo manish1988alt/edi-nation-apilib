@@ -16,9 +16,9 @@ public class InsuranceDetail {
     private String State;
     private int zipcode;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mrnNumber")
-    private Demographics demographics;
+    private Demographics demographics;*/
 
 
 
@@ -101,13 +101,13 @@ public class InsuranceDetail {
         this.zipcode = zipcode;
     }
 
-    public Demographics getDemographics() {
+   /* public Demographics getDemographics() {
         return demographics;
     }
 
     public void setDemographics(Demographics demographics) {
         this.demographics = demographics;
-    }
+    }*/
 
     @Override
     public String toString() {

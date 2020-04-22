@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/*@CrossOrigin(origins = "http://localhost:4200")*/
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("checkEligibility")
 public class RestApp {
@@ -162,7 +162,7 @@ public void saveOperation( Demographics demographics)
        return  responseEntity;
     }
     @PostMapping("/eligibilityDetail")
-    public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    public List<Object> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
     {
         /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = formatter.parse("2020-03-18");
@@ -176,10 +176,10 @@ public void saveOperation( Demographics demographics)
        */
         List<Object> list1=new ArrayList<>();
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-      /*  List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+       List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
         list1.addAll(list);
-        list1.addAll(demographicsval);*/
-          return list;
+        list1.addAll(demographicsval);
+          return list1;
     }
 
 }
