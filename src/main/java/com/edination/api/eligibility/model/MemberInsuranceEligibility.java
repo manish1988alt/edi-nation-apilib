@@ -1,20 +1,28 @@
 package com.edination.api.eligibility.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="MemberInsuranceEligibility")
 public class MemberInsuranceEligibility{
-    @Id
-    private String policyNumber;
+          @Id
+          private String policyNumber;
+    /*    @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "mrnNumber")
+        private Demographics demographics;*/
+
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "policyNumber")
+        private InsuranceDetail insuranceDetail;
+
+        private String  mrnNumber;
         private Date startDate;
         private Date  endDate;
         private Date statusVerifiedDate;
         private String eligibility;
-public MemberInsuranceEligibility(){}
+
+        public MemberInsuranceEligibility(){}
 
         public MemberInsuranceEligibility(String policyNumber, Date startDate, Date endDate, Date statusVerifiedDate, String eligibility) {
             this.policyNumber = policyNumber;
@@ -65,15 +73,39 @@ public MemberInsuranceEligibility(){}
             this.eligibility = eligibility;
         }
 
+    /*public Demographics getDemographics() {
+        return demographics;
+    }
 
-        @Override
-        public String toString() {
-            return "MemberInsuranceEligibility{" +
-                    "policyNumber='" + policyNumber + '\'' +
-                    ", startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", statusVerifiedDate=" + statusVerifiedDate +
-                    ", eligibility='" + eligibility + '\'' +
-                    '}';
-        }
+    public void setDemographics(Demographics demographics) {
+        this.demographics = demographics;
+    }
+*/
+
+    public InsuranceDetail getInsuranceDetail() {
+        return insuranceDetail;
+    }
+
+    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
+        this.insuranceDetail = insuranceDetail;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberInsuranceEligibility{" +
+                "policyNumber='" + policyNumber + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", statusVerifiedDate=" + statusVerifiedDate +
+                ", eligibility='" + eligibility + '\'' +
+                '}';
+    }
 }

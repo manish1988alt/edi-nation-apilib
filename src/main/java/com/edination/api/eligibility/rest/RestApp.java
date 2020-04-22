@@ -1,5 +1,6 @@
 package com.edination.api.eligibility.rest;
 
+import com.edination.api.Dao.DemographicRepository;
 import com.edination.api.Dao.DemographicsService;
 import com.edination.api.Dao.MemberInsuranceRepository;
 import com.edination.api.Dao.MemberInsuranceService;
@@ -23,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@CrossOrigin(origins = "http://localhost:4200")
+/*@CrossOrigin(origins = "http://localhost:4200")*/
 @RestController
 @RequestMapping("checkEligibility")
 public class RestApp {
@@ -33,6 +34,9 @@ public class RestApp {
     MemberInsuranceService memberInsuranceService;
     @Autowired
     MemberInsuranceRepository memberInsuranceRepository;
+    @Autowired
+    DemographicRepository demographicRepository;
+
     X12Controller x12=new X12Controller();
 
 
@@ -75,14 +79,8 @@ public class RestApp {
         new SFTPFILE().fileUpload(file, demographics.getMrnNumber()+"_"+file.getName());
         File f1=new File("Hipaa-5010-271-GenericResponse.txt");
         new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
-    /*    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = formatter.parse("2020-03-16");
-        Date endDate = formatter.parse("2021-03-15");
-        Date statusverifiedate = formatter.parse("2020-04-21");
-        //MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
-        //MemberInsuranceEligibility memberinsurance=new MemberInsuranceEligibility(demographics1.getInsuranceDetail().getPolicyNumber(),startDate,endDate,statusverifiedate,"eligible");
-       // memberInsuranceRepository.save(memberinsurance);*/
-        MemberInsuranceEligibility memberinsurance1= memberInsuranceService.get(demographics1.getInsuranceDetail().getPolicyNumber());
+
+
      /*   FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
         DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));*/
         List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
@@ -106,12 +104,12 @@ public class RestApp {
 
         }
         if(ackn.equals("1")) {
-            return generateSuccessObject(demographics1, memberinsurance1,"true",
+            return generateSuccessObject(demographics1,"true",
                     " ");
         }
         else
         {
-            return generateSuccessObject(demographics1,memberinsurance1, "false",
+            return generateSuccessObject(demographics1, "false",
                     "Not Eligible ");
         }
 
@@ -147,7 +145,7 @@ public void saveOperation( Demographics demographics)
     }
 }
 
-    protected ResponseEntity<?> generateSuccessObject(Demographics demographics1,MemberInsuranceEligibility memberinsurance1, String key, String errorBuilder){
+    protected ResponseEntity<?> generateSuccessObject(Demographics demographics1, String key, String errorBuilder){
         Response.ResponseBuilder builder = null;
 
         ResponseEntity responseEntity;
@@ -155,15 +153,6 @@ public void saveOperation( Demographics demographics)
         try{
             Map<String, Object> responseObj = new HashMap<String, Object>();
             responseObj.put("ackn",key);
-            responseObj.put("statusVerifiedDate", memberinsurance1.getStatusVerifiedDate().toString());
-            responseObj.put("lastName", demographics1.getLastName());
-            responseObj.put("firstName", demographics1.getFirstName());
-            responseObj.put("insurancePlanType", demographics1.getInsuranceDetail().getInsurancePlanType());
-            responseObj.put("insurancePlanName", demographics1.getInsuranceDetail().getInsurancePlanName());
-            responseObj.put("startDate", (memberinsurance1.getStartDate()).toString());
-            responseObj.put("endDate", (memberinsurance1.getEndDate()).toString());
-            responseObj.put("eligibility", memberinsurance1.getEligibility());
-
             responseEntity= new ResponseEntity<>(responseObj,HttpStatus.ACCEPTED);
         }catch (Exception e) {
             Map<String, Object> responseObj1 = new HashMap<String, Object>();
@@ -172,4 +161,25 @@ public void saveOperation( Demographics demographics)
         }
        return  responseEntity;
     }
+    @PostMapping("/eligibilityDetail")
+    public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    {
+        /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = formatter.parse("2020-03-18");
+        Date endDate = formatter.parse("2021-03-17");
+        Date statusverifiedate = formatter.parse("2020-04-21");
+        Date dobdate=formatter.parse("2021-04-13");
+        MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
+        MemberInsuranceEligibility memberinsurance=new MemberInsuranceEligibility("23417",startDate,endDate,statusverifiedate,"eligible");
+        memberinsurance.setDemographics(demographics1);
+        memberInsuranceRepository.save(memberinsurance);
+       */
+        List<Object> list1=new ArrayList<>();
+        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+      /*  List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+        list1.addAll(list);
+        list1.addAll(demographicsval);*/
+          return list;
+    }
+
 }
