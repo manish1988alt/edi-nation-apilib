@@ -172,8 +172,9 @@ public class SFTPFILE {
                 ex.printStackTrace();
             }
         }
+
     }
-    public void fileUpload(File fw, String fileName) throws Exception
+    public String fileUpload(File fw, String fileName) throws Exception
     {
         this.propertValue();
         FTPClient ftp=new FTPClient();
@@ -185,12 +186,23 @@ public class SFTPFILE {
             ftp.disconnect();
             throw new Exception("Exception in connecting to FTP Server");
         }
+
         ftp.login(SFTPUSER, SFTPPASS);
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
         ftp.enterLocalPassiveMode();
+        String ackn="";
         try(InputStream input = new FileInputStream(fw)){
-            ftp.storeFile(CCDAFILEPATH + fileName, input);
+            boolean   success =  ftp.storeFile(CCDAFILEPATH + fileName, input);
+                        if(success) {
+                              ackn="true";
+                              System.out.println("File #2 has been Uploaded successfully.");
+                             }
+                            else{
+                                ackn="false";
+                               }
+            //ftp.appendFile(CCDAFILEPATH + fileName, input);
         }
+        return ackn;
     }
 
 }

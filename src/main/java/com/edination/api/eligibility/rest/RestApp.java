@@ -8,6 +8,7 @@ import com.edination.api.controllers.X12Controller;
 import com.edination.api.eligibility.EDIFile.EDIFileGeneration;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
 import com.edination.api.eligibility.model.Demographics;
+import com.edination.api.eligibility.model.InsuranceDetail;
 import com.edination.api.eligibility.model.MemberInsuranceEligibility;
 import com.edination.api.models.GS;
 import com.edination.api.models.X12Group;
@@ -76,34 +77,35 @@ public class RestApp {
         File file = new File("Hipaa-5010-270-GenericRequest.txt");
         generateFile(demographics1,file);
         //new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
-        new SFTPFILE().fileUpload(file, demographics.getMrnNumber()+"_"+file.getName());
+        String ackn=new SFTPFILE().fileUpload(file, demographics.getMrnNumber()+"_"+file.getName());
+
         File f1=new File("Hipaa-5010-271-GenericResponse.txt");
         new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
 
 
      /*   FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
         DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));*/
-        List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
+       /* List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
         String ackn="";
         for(X12Interchange l:list1) {
-            /*InputStream in = x12.write(preserveWhitespace, charSet, postfix, contentType, l);
+            *//*InputStream in = x12.write(preserveWhitespace, charSet, postfix, contentType, l);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = reader.readLine()) != null) {
                 out.append(line);
-            }*/
+            }*//*
 
-            ackn=l.getISA().getAcknowledgementRequested14();
+        //    ackn=l.getISA().getAcknowledgementRequested14();
 
-      /*      byte[] strToBytes = out.toString().getBytes();
+      *//*      byte[] strToBytes = out.toString().getBytes();
             outputStream.write(strToBytes);
             //System.out.println(out.toString());   //Prints the string content read from input stream
            // reader.close();
-            outputStream.close();*/
+            outputStream.close();*//*
 
 
-        }
-        if(ackn.equals("1")) {
+        }*/
+        if(ackn.equals("true")) {
             return generateSuccessObject(demographics1,"true",
                     " ");
         }
@@ -162,24 +164,25 @@ public void saveOperation( Demographics demographics)
        return  responseEntity;
     }
     @PostMapping("/eligibilityDetail")
-    public List<Object> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
     {
-        /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = formatter.parse("2020-03-18");
-        Date endDate = formatter.parse("2021-03-17");
-        Date statusverifiedate = formatter.parse("2020-04-21");
+     /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = formatter.parse("2020-04-22");
+        Date endDate = formatter.parse("2021-04-21");
+        Date statusverifiedate = formatter.parse("2020-04-22");
         Date dobdate=formatter.parse("2021-04-13");
         MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
-        MemberInsuranceEligibility memberinsurance=new MemberInsuranceEligibility("23417",startDate,endDate,statusverifiedate,"eligible");
-        memberinsurance.setDemographics(demographics1);
-        memberInsuranceRepository.save(memberinsurance);
-       */
+        MemberInsuranceEligibility memberinsurance=new MemberInsuranceEligibility("23418",startDate,endDate,statusverifiedate,"eligible",memberInsuranceEligibility.getMrnNumber());
+        InsuranceDetail insurancedetail=new InsuranceDetail("23418","34341","Medicare","Tertiary","#10 - Park street","New York","New York",56010-1234);
+        memberinsurance.setInsuranceDetail(insurancedetail);
+        memberInsuranceRepository.save(memberinsurance);*/
+
         List<Object> list1=new ArrayList<>();
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-       List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-        list1.addAll(list);
-        list1.addAll(demographicsval);
-          return list1;
+      // List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+        //list1.addAll(list);
+        //list1.addAll(demographicsval);
+          return list;
     }
 
 }

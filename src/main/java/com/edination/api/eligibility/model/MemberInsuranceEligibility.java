@@ -24,12 +24,13 @@ public class MemberInsuranceEligibility{
 
         public MemberInsuranceEligibility(){}
 
-        public MemberInsuranceEligibility(String policyNumber, Date startDate, Date endDate, Date statusVerifiedDate, String eligibility) {
+        public MemberInsuranceEligibility(String policyNumber, Date startDate, Date endDate, Date statusVerifiedDate, String eligibility,String mrnNumber) {
             this.policyNumber = policyNumber;
             this.startDate = startDate;
             this.endDate = endDate;
             this.statusVerifiedDate = statusVerifiedDate;
             this.eligibility = eligibility;
+            this.mrnNumber=mrnNumber;
         }
 
 
