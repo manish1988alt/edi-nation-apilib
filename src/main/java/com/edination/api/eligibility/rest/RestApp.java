@@ -26,11 +26,10 @@ import javax.ws.rs.core.Response;
 import java.io.*;
 import java.util.*;
 
-import static com.itextpdf.text.pdf.PdfName.QUOTE;
 import static org.apache.logging.log4j.util.Strings.EMPTY;
 
 
-/*@CrossOrigin(origins = "http://localhost:4200")*/
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("checkEligibility")
 public class RestApp implements Serializable {
@@ -184,7 +183,7 @@ public void saveOperation( Demographics demographics)
 
         List<Object> list1=new ArrayList<>();
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-      // List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+      List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
         //list1.addAll(list);
         //list1.addAll(demographicsval);
           return list;

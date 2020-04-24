@@ -191,11 +191,6 @@
       <artifactId>jaxrs-ri</artifactId>
       <version>2.29</version>
     </dependency>
-    <dependency>
-      <groupId>com.itextpdf</groupId>
-      <artifactId>itextpdf</artifactId>
-      <version>5.0.6</version>
-    </dependency>
       <dependency>
           <groupId>com.itextpdf</groupId>
           <artifactId>itext7-core</artifactId>
