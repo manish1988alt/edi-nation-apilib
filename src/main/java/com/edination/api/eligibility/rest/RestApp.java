@@ -8,27 +8,32 @@ import com.edination.api.controllers.X12Controller;
 import com.edination.api.eligibility.EDIFile.EDIFileGeneration;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
 import com.edination.api.eligibility.model.Demographics;
-import com.edination.api.eligibility.model.InsuranceDetail;
 import com.edination.api.eligibility.model.MemberInsuranceEligibility;
-import com.edination.api.models.GS;
-import com.edination.api.models.X12Group;
 import com.edination.api.models.X12Interchange;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-@CrossOrigin(origins = "http://localhost:4200")
+import static com.itextpdf.text.pdf.PdfName.QUOTE;
+import static org.apache.logging.log4j.util.Strings.EMPTY;
+
+
+/*@CrossOrigin(origins = "http://localhost:4200")*/
 @RestController
 @RequestMapping("checkEligibility")
-public class RestApp {
+public class RestApp implements Serializable {
     @Autowired
     DemographicsService service;
     @Autowired
@@ -184,5 +189,58 @@ public void saveOperation( Demographics demographics)
         //list1.addAll(demographicsval);
           return list;
     }
+   private static final String HEADER1 = "Content-Disposition";
+    private static final String HEADER_VAL_ATTACHMENT = "attachment; filename=";
+    private static final String HEADER2 = "Content-Type";
+    private static final String HEADER4 = "Content-length";
+    private static final String HEADER3 = "Set-Cookie";
+    private static final String HEADER3_FIXED_VAL = "fileDownload=true; path=/";
+    private static final String SEMICOLON = ";";
+    private static final String HEADER_VAL_INLINE = "inline";
+    private static final String PDF = "application/pdf";
+    private static final String XML = "application/xml";
+    private static final String TEXT = "text/";
+    private static final String IMAGE = "image/";
 
+
+
+    @GetMapping("/viewDetail")
+    public Response getPdf(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception
+    {
+        File file1 = new File("PatientDischargeCode.pdf");
+        FileInputStream fileInputStream1 = new FileInputStream(file1);
+
+        File file = new File("PatientEligiblityDetail.pdf");
+
+        String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
+        String mimeType = EMPTY;
+        String fileName = EMPTY;
+        OutputStream out = null;
+        StringBuilder attachement = new StringBuilder(EMPTY);
+
+
+        mimeType = "application/pdf";
+        fileName = file.getName();
+
+        contentDisposition = attachement.append("inline; filename=").append(fileName).append(SEMICOLON).toString();
+        response.reset();
+        response.addHeader(HEADER1, contentDisposition);
+        response.addHeader(HEADER2, mimeType);
+        response.addHeader(HEADER3, HEADER3_FIXED_VAL);
+
+        try{
+            out = response.getOutputStream();
+
+            byte[] b = new byte[1024];
+            int numBytes = 0;
+            while ((numBytes = fileInputStream1.read(b)) > 0) {
+                out.write(b, 0, numBytes);
+            }
+
+        } finally{
+            out.flush();
+            out.close();
+        }
+        return Response.ok().build();
+    }
 }
