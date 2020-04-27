@@ -12,16 +12,13 @@ import com.edination.api.eligibility.model.MemberInsuranceEligibility;
 import com.edination.api.models.X12Interchange;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.*;
 import java.util.*;
@@ -29,7 +26,7 @@ import java.util.*;
 import static org.apache.logging.log4j.util.Strings.EMPTY;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+/*@CrossOrigin(origins = "http://localhost:4200")*/
 @RestController
 @RequestMapping("checkEligibility")
 public class RestApp implements Serializable {
@@ -183,10 +180,13 @@ public void saveOperation( Demographics demographics)
 
         List<Object> list1=new ArrayList<>();
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-      List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-        //list1.addAll(list);
-        //list1.addAll(demographicsval);
+     /* List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+        list1.addAll(demographicsval);
+        list1.addAll(list);
+*/
           return list;
+
+
     }
    private static final String HEADER1 = "Content-Disposition";
     private static final String HEADER_VAL_ATTACHMENT = "attachment; filename=";
@@ -200,46 +200,30 @@ public void saveOperation( Demographics demographics)
     private static final String XML = "application/xml";
     private static final String TEXT = "text/";
     private static final String IMAGE = "image/";
+    protected static final String QUOTE = "\"";
 
 
 
-    @GetMapping("/viewDetail")
-    public Response getPdf(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception
-    {
-        File file1 = new File("PatientDischargeCode.pdf");
-        FileInputStream fileInputStream1 = new FileInputStream(file1);
-
-        File file = new File("PatientEligiblityDetail.pdf");
-
-        String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
-        String mimeType = EMPTY;
-        String fileName = EMPTY;
-        OutputStream out = null;
+    @PostMapping("/generate")
+    public ResponseEntity<InputStreamResource> getPdf2(MemberInsuranceEligibility memberInsuranceEligibility)
+    {     String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
         StringBuilder attachement = new StringBuilder(EMPTY);
+        String fileName = EMPTY;
+        contentDisposition = attachement.append("inline; filename=").append(QUOTE).append(fileName).append(QUOTE).append(SEMICOLON).toString();
 
-
-        mimeType = "application/pdf";
-        fileName = file.getName();
-
-        contentDisposition = attachement.append("inline; filename=").append(fileName).append(SEMICOLON).toString();
-        response.reset();
-        response.addHeader(HEADER1, contentDisposition);
-        response.addHeader(HEADER2, mimeType);
-        response.addHeader(HEADER3, HEADER3_FIXED_VAL);
-
+        Resource resource=new ClassPathResource("/PatientDischargeCode.pdf");
+        fileName = resource.getFilename();
+        long r=0;
+        InputStream is=null;
         try{
-            out = response.getOutputStream();
-
-            byte[] b = new byte[1024];
-            int numBytes = 0;
-            while ((numBytes = fileInputStream1.read(b)) > 0) {
-                out.write(b, 0, numBytes);
-            }
-
-        } finally{
-            out.flush();
-            out.close();
+            is=resource.getInputStream();
+            r=resource.contentLength();
         }
-        return Response.ok().build();
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        // return ResponseEntity.ok().contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
+        return   ResponseEntity.ok().header(contentDisposition,HEADER3_FIXED_VAL).contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
     }
 }
