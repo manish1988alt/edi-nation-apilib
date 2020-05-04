@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface DemographicRepository extends JpaRepository<Demographics,String> {
     //@Query(value="select first_name, last_name from demographics u where mrnNumber=:mrnNumber", nativeQuery=true)
-    @Query("SELECT d.firstName,d.lastName FROM Demographics d WHERE mrn_number = ?1")
+  /*  @Query("SELECT d.firstName,d.lastName FROM Demographics d WHERE mrn_number = ?1")*/
+    @Query("FROM Demographics WHERE mrn_number = ?1")
     List<Demographics> findByMrnNumber(String mrnNumber);
 }

@@ -18,6 +18,7 @@ public class X12Interchange
     private String segmentDelimiter;
     private String dataElementDelimiter;
     private ISA iSA;
+
     private TA1 tA1;
     private List<X12Group> groups;
     private List<IEA> iEATrailers;

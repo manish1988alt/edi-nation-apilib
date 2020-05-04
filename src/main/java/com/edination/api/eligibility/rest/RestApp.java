@@ -1,16 +1,22 @@
 package com.edination.api.eligibility.rest;
 
-import com.edination.api.Dao.DemographicRepository;
-import com.edination.api.Dao.DemographicsService;
-import com.edination.api.Dao.MemberInsuranceRepository;
-import com.edination.api.Dao.MemberInsuranceService;
+import com.edination.api.Dao.*;
 import com.edination.api.controllers.X12Controller;
 import com.edination.api.eligibility.EDIFile.EDIFileGeneration;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
 import com.edination.api.eligibility.model.Demographics;
+import com.edination.api.eligibility.model.EdiDataElement271;
+import com.edination.api.eligibility.model.InsuranceDetail;
 import com.edination.api.eligibility.model.MemberInsuranceEligibility;
-import com.edination.api.models.X12Interchange;
-
+import com.edination.api.models.*;
+/*import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;;
+import com.sun.javafx.font.FontFactory;
+import javafx.scene.text.Font;*/
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -21,7 +27,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.core.Response;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 import static org.apache.logging.log4j.util.Strings.EMPTY;
 
@@ -38,10 +46,14 @@ public class RestApp implements Serializable {
     MemberInsuranceRepository memberInsuranceRepository;
     @Autowired
     DemographicRepository demographicRepository;
+    @Autowired
+    EDI271Repository edi271Repository;
+    @Autowired
+    EDI271Service edi271Service;
 
     X12Controller x12=new X12Controller();
-
-
+    EdiDataElement271 ediDataElement271=new EdiDataElement271();
+    EdiDataElement271 ediDataElement272=new EdiDataElement271();
     List<X12Interchange> list =new ArrayList<X12Interchange>();
 
     @GetMapping("/read")
@@ -82,6 +94,37 @@ public class RestApp implements Serializable {
 
         File f1=new File("Hipaa-5010-271-GenericResponse.txt");
         new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
+        List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
+        System.out.println("Insertion method called");
+        String eligibility="";
+        ediDataElement272=  new exampleParseX12FileOne().insertOpertion271(f1,ediDataElement271,demographics1.getMrnNumber());
+        edi271Service.save(ediDataElement272);
+        List<EdiDataElement271> list2 =edi271Repository.findByMrnNumber(demographics.getMrnNumber());
+
+        for(EdiDataElement271 edi271:list2) {
+            eligibility=edi271.getEligibilityorBenefitInformation();
+        }
+
+        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
+        MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
+        InsuranceDetail insurancedetail=null;
+        for(MemberInsuranceEligibility mm:list) {
+            memberinsurance2= new MemberInsuranceEligibility(mm.getStartDate(), mm.getEndDate(),mm.getStatusVerifiedDate(), eligibility, mm.getMrnNumber());
+            insurancedetail=new InsuranceDetail("23421",mm.getInsuranceDetail().getGroup_name(),mm.getInsuranceDetail().getInsurancePlanName(),mm.getInsuranceDetail().getInsurancePlanType(),mm.getInsuranceDetail().getInsuranceAddress(),mm.getInsuranceDetail().getCity(),mm.getInsuranceDetail().getState(),mm.getInsuranceDetail().getZipcode());
+
+        }
+             memberinsurance2.setInsuranceDetail(insurancedetail);
+              memberInsuranceRepository.save(memberinsurance2);
+
+        for(X12Interchange l:list1) {
+
+            for(X12Group s: l.getGroups())
+            {
+                List<Object> ss=s.getTransactions();
+
+            }
+
+        }
 
 
      /*   FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
@@ -96,7 +139,7 @@ public class RestApp implements Serializable {
                 out.append(line);
             }*//*
 
-        //    ackn=l.getISA().getAcknowledgementRequested14();
+          ackn=l.getISA().getAcknowledgementRequested14();
 
       *//*      byte[] strToBytes = out.toString().getBytes();
             outputStream.write(strToBytes);
@@ -164,8 +207,8 @@ public void saveOperation( Demographics demographics)
         }
        return  responseEntity;
     }
-    @PostMapping("/eligibilityDetail")
-    public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    @PostMapping("/eligibilityDetailHistory")
+    public List<MemberInsuranceEligibility> eligibilityDetailHistory(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
     {
      /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = formatter.parse("2020-04-22");
@@ -180,13 +223,17 @@ public void saveOperation( Demographics demographics)
 
         List<Object> list1=new ArrayList<>();
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-     /* List<Demographics> demographicsval=demographicRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
-        list1.addAll(demographicsval);
-        list1.addAll(list);
-*/
+
           return list;
 
 
+    }
+    @PostMapping("/eligibilityDetail")
+    public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    {
+
+        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByID(memberInsuranceEligibility.getMrnNumber());
+        return list;
     }
    private static final String HEADER1 = "Content-Disposition";
     private static final String HEADER_VAL_ATTACHMENT = "attachment; filename=";
@@ -205,14 +252,22 @@ public void saveOperation( Demographics demographics)
 
 
     @PostMapping("/generate")
-    public ResponseEntity<InputStreamResource> getPdf2(MemberInsuranceEligibility memberInsuranceEligibility)
-    {     String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
+    public ResponseEntity<InputStreamResource> getPdf2(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    {
+         //this.pdfGenerator(memberInsuranceEligibility.getMrnNumber());
+        String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
         StringBuilder attachement = new StringBuilder(EMPTY);
         String fileName = EMPTY;
+        String charSet = "utf-8";
         contentDisposition = attachement.append("inline; filename=").append(QUOTE).append(fileName).append(QUOTE).append(SEMICOLON).toString();
 
+   /*     System.out.println("PolicyType: "+memberInsuranceEligibility.getInsuranceDetail().getInsurancePlanType());
+        System.out.println(" MRN: "+memberInsuranceEligibility.getMrnNumber());
+        System.out.println(" Policy Number:"+memberInsuranceEligibility.getPolicyNumber());*/
         Resource resource=new ClassPathResource("/PatientDischargeCode.pdf");
+
         fileName = resource.getFilename();
+
         long r=0;
         InputStream is=null;
         try{
@@ -225,5 +280,63 @@ public void saveOperation( Demographics demographics)
         }
         // return ResponseEntity.ok().contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
         return   ResponseEntity.ok().header(contentDisposition,HEADER3_FIXED_VAL).contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
+    }
+    public void pdfGenerator(String mrnNumber)
+    {
+        Font blueFont = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, new CMYKColor(255, 0, 0, 0));
+        Font redFont = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(0, 255, 0, 0));
+        Font yellowFont = FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, new CMYKColor(0, 0, 255, 0));
+        Document document = new Document();
+        List<EdiDataElement271> list2 =edi271Repository.findByMrnNumber(mrnNumber);
+        try
+        {
+         File f=new File("PatientDischargeCode.pdf");
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(f));
+            document.open();
+            //document.add(new Paragraph("Styling Example"));
+
+            //Paragraph with color and font styles
+            Paragraph paragraphOne = new Paragraph("Eligibility Detail", redFont);
+            document.add(paragraphOne);
+
+            //Create chapter and sections
+            Paragraph chapterTitle = new Paragraph("Eligibility Detail PDF", yellowFont);
+            Chapter chapter1 = new Chapter(chapterTitle, 1);
+            chapter1.setNumberDepth(0);
+
+            Paragraph sectionTitle = new Paragraph("Demograhic detail", redFont);
+            Section section1 = chapter1.addSection(sectionTitle);
+            for(EdiDataElement271 edi271:list2) {
+                Paragraph sectionContent1 = new Paragraph(edi271.getSubscriberPrimaryIdentifier(), blueFont);
+                section1.add(sectionContent1);
+                Paragraph sectionContent2 = new Paragraph(edi271.getSubscriberSupplementalIdentifier(), blueFont);
+                section1.add(sectionContent2);
+                Paragraph sectionConten3 = new Paragraph(edi271.getSubscriberLastName(), blueFont);
+                section1.add(sectionConten3);
+                Paragraph sectionContent4 = new Paragraph(edi271.getSubscriberFirstName(), blueFont);
+                section1.add(sectionContent4);
+                Paragraph sectionContent5 = new Paragraph(edi271.getSubscriberNameSuffix(), blueFont);
+                section1.add(sectionContent5);
+                Paragraph sectionContent6 = new Paragraph(edi271.getSubscriberAddressLine(), blueFont);
+                section1.add(sectionContent6);
+                Paragraph sectionContent7 = new Paragraph(edi271.getSubscriberCityName(), blueFont);
+                section1.add(sectionContent7);
+                Paragraph sectionContent8 = new Paragraph(edi271.getSubscriberStateCode(), blueFont);
+                section1.add(sectionContent8);
+                Paragraph sectionContent9 = new Paragraph(edi271.getSubscriberStateCode(), blueFont);
+                section1.add(sectionContent9);
+                Paragraph sectionContent10 = new Paragraph(edi271.getSubscriberZipCode(), blueFont);
+                section1.add(sectionContent10);
+            }
+
+
+            document.add(chapter1);
+
+            document.close();
+            writer.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

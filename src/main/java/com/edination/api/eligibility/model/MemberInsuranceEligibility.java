@@ -6,8 +6,11 @@ import java.util.Date;
 @Entity
 @Table(name="MemberInsuranceEligibility")
 public class MemberInsuranceEligibility{
-          @Id
-          private String policyNumber;
+         @Id
+         @GeneratedValue(strategy = GenerationType.AUTO)
+         private int id;
+
+         //private String policyNumber;
     /*    @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "mrnNumber")
         private Demographics demographics;*/
@@ -24,8 +27,8 @@ public class MemberInsuranceEligibility{
 
         public MemberInsuranceEligibility(){}
 
-        public MemberInsuranceEligibility(String policyNumber, Date startDate, Date endDate, Date statusVerifiedDate, String eligibility,String mrnNumber) {
-            this.policyNumber = policyNumber;
+        public MemberInsuranceEligibility(Date startDate, Date endDate, Date statusVerifiedDate, String eligibility,String mrnNumber) {
+            //this.policyNumber = policyNumber;
             this.startDate = startDate;
             this.endDate = endDate;
             this.statusVerifiedDate = statusVerifiedDate;
@@ -34,13 +37,13 @@ public class MemberInsuranceEligibility{
         }
 
 
-        public String getPolicyNumber() {
+    /*    public String getPolicyNumber() {
             return policyNumber;
         }
 
         public void setPolicyNumber(String policyNumber) {
             this.policyNumber = policyNumber;
-        }
+        }*/
 
         public Date getStartDate() {
             return startDate;
@@ -83,7 +86,7 @@ public class MemberInsuranceEligibility{
     }
 */
 
-    public InsuranceDetail getInsuranceDetail() {
+   public InsuranceDetail getInsuranceDetail() {
         return insuranceDetail;
     }
 
@@ -102,7 +105,8 @@ public class MemberInsuranceEligibility{
     @Override
     public String toString() {
         return "MemberInsuranceEligibility{" +
-                "policyNumber='" + policyNumber + '\'' +
+                "id=" + id +
+              ", mrnNumber='" + mrnNumber + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", statusVerifiedDate=" + statusVerifiedDate +

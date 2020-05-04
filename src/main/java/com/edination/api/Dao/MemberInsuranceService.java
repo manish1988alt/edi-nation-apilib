@@ -2,6 +2,7 @@ package com.edination.api.Dao;
 
 import com.edination.api.eligibility.model.MemberInsuranceEligibility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,4 +29,5 @@ public class MemberInsuranceService {
     public void delete(String id) {
         memberInsuranceRepository.deleteById(id);
     }
+
 }

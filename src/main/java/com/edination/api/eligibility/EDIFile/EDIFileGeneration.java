@@ -95,7 +95,7 @@ public class EDIFileGeneration {
         s.addElement(demographics1.getFirstName());
         s.addElement(demographics1.getLastName());
         s.addElement("MI");
-        s.addElement(demographics1.getInsuranceDetail().getPolicyNumber());
+       // s.addElement(demographics1.getInsuranceDetail().getPolicyNumber());
         //END
 
         s = x12.addSegment();
@@ -129,7 +129,7 @@ public class EDIFileGeneration {
         s.addElement("000000101");
 
         String x12String = x12.toString();
-        System.out.print(x12String);
+       // System.out.print(x12String);
 
         return x12String;
 

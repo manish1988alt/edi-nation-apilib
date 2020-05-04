@@ -64,7 +64,7 @@ public class Segment implements Iterable<String> {
 	 * @return boolean
 	 */
 	public boolean addElements(String s) {
-		String[] elements = s.split("//" + context.getElementSeparator());
+		String[] elements = s.split("\\" + context.getElementSeparator());
 		return this.addElements(elements);
 	}
 
