@@ -1,52 +1,48 @@
 package com.edination.api.eligibility.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name="InsuranceDetail")
-public class InsuranceDetail {
+@Table(name="SecondaryInsuranceDetail")
+public class SecondaryInsuranceDetail {
+
     @Id
-    private String policyNumber;
+    private String secondaryPolicyNumber;
     private String group_name;
     private String insurancePlanName;
     private String insurancePlanType;
     private String insuranceAddress;
+    private Date startDate;
+    private Date  endDate;
+    private String mrnNumber;
     private String City;
     private String State;
     private int zipcode;
+public SecondaryInsuranceDetail(){}
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mrnNumber")
-    private Demographics demographics;*/
-
-
-
-    public InsuranceDetail(){}
-
-    public InsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancelanType, String insuranceAddress, String city, String state, int zipcode) {
-        this.policyNumber = policyNumber;
+    public SecondaryInsuranceDetail(String secondaryPolicyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, Date startDate, Date endDate, String mrnNumber, String city, String state, int zipcode) {
+        this.secondaryPolicyNumber = secondaryPolicyNumber;
         this.group_name = group_name;
         this.insurancePlanName = insurancePlanName;
         this.insurancePlanType = insurancePlanType;
         this.insuranceAddress = insuranceAddress;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.mrnNumber = mrnNumber;
         City = city;
         State = state;
         this.zipcode = zipcode;
-
     }
 
     public String getPolicyNumber() {
-        return policyNumber;
+        return secondaryPolicyNumber;
     }
 
     public void setPolicyNumber(String policyNumber) {
-        this.policyNumber = policyNumber;
-    }
-
-
-    public String getInsurancePlanName() {
-        return insurancePlanName;
+        this.secondaryPolicyNumber = policyNumber;
     }
 
     public String getGroup_name() {
@@ -55,6 +51,10 @@ public class InsuranceDetail {
 
     public void setGroup_name(String group_name) {
         this.group_name = group_name;
+    }
+
+    public String getInsurancePlanName() {
+        return insurancePlanName;
     }
 
     public void setInsurancePlanName(String insurancePlanName) {
@@ -75,6 +75,38 @@ public class InsuranceDetail {
 
     public void setInsuranceAddress(String insuranceAddress) {
         this.insuranceAddress = insuranceAddress;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
+    public String getSecondaryPolicyNumber() {
+        return secondaryPolicyNumber;
+    }
+
+    public void setSecondaryPolicyNumber(String secondaryPolicyNumber) {
+        this.secondaryPolicyNumber = secondaryPolicyNumber;
     }
 
     public String getCity() {
@@ -101,22 +133,17 @@ public class InsuranceDetail {
         this.zipcode = zipcode;
     }
 
-   /* public Demographics getDemographics() {
-        return demographics;
-    }
-
-    public void setDemographics(Demographics demographics) {
-        this.demographics = demographics;
-    }*/
-
     @Override
     public String toString() {
-        return "InsuranceDetail{" +
-                "policyNumber='" + policyNumber + '\'' +
+        return "SecondaryInsuranceDetail{" +
+                "secondaryPolicyNumber='" + secondaryPolicyNumber + '\'' +
                 ", group_name='" + group_name + '\'' +
                 ", insurancePlanName='" + insurancePlanName + '\'' +
                 ", insurancePlanType='" + insurancePlanType + '\'' +
                 ", insuranceAddress='" + insuranceAddress + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", City='" + City + '\'' +
                 ", State='" + State + '\'' +
                 ", zipcode=" + zipcode +

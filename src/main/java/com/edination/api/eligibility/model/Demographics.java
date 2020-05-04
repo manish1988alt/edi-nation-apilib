@@ -7,7 +7,6 @@ import java.util.Date;
 @Table(name = "Demographics")
 public class Demographics {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String mrnNumber;
     private String firstName;
     private String lastName;
@@ -20,10 +19,21 @@ public class Demographics {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssn")
     private InsuranceAndDiagnosis insuranceAndDiagnosis;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "policyNumber")
-    private InsuranceDetail insuranceDetail;
+    private PrimaryInsuranceDetail primaryInsuranceDetail;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "secondaryPolicyNumber")
+    private SecondaryInsuranceDetail secondaryInsuranceDetail;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tertiaryPolicyNumber")
+    private TertiaryInsuranceDetail tertiaryInsuranceDetail;
+
+    /*@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "policyNumber")
+    private InsuranceDetail insuranceDetail;*/
 
     public Demographics(){}
 
@@ -101,12 +111,28 @@ public class Demographics {
         this.insuranceAndDiagnosis = insuranceAndDiagnosis;
     }
 
-    public InsuranceDetail getInsuranceDetail() {
-        return insuranceDetail;
+    public PrimaryInsuranceDetail getPrimaryInsuranceDetail() {
+        return primaryInsuranceDetail;
     }
 
-    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
-        this.insuranceDetail = insuranceDetail;
+    public void setPrimaryInsuranceDetail(PrimaryInsuranceDetail primaryInsuranceDetail) {
+        this.primaryInsuranceDetail = primaryInsuranceDetail;
+    }
+
+    public SecondaryInsuranceDetail getSecondaryInsuranceDetail() {
+        return secondaryInsuranceDetail;
+    }
+
+    public void setSecondaryInsuranceDetail(SecondaryInsuranceDetail secondaryInsuranceDetail) {
+        this.secondaryInsuranceDetail = secondaryInsuranceDetail;
+    }
+
+    public TertiaryInsuranceDetail getTertiaryInsuranceDetail() {
+        return tertiaryInsuranceDetail;
+    }
+
+    public void setTertiaryInsuranceDetail(TertiaryInsuranceDetail tertiaryInsuranceDetail) {
+        this.tertiaryInsuranceDetail = tertiaryInsuranceDetail;
     }
 
     @Override
@@ -120,7 +146,9 @@ public class Demographics {
                 ", gender='" + gender + '\'' +
                 ", dob=" + dob +
                 ", insuranceAndDiagnosis=" + insuranceAndDiagnosis +
-                ", insuranceDetail=" + insuranceDetail +
+                ", insuranceDetail=" + primaryInsuranceDetail +
+                ", secondaryInsuranceDetail=" + secondaryInsuranceDetail +
+                ", tertiaryInsuranceDetail=" + tertiaryInsuranceDetail +
                 '}';
     }
 }

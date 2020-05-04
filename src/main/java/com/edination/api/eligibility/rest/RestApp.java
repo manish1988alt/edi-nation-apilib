@@ -4,10 +4,7 @@ import com.edination.api.Dao.*;
 import com.edination.api.controllers.X12Controller;
 import com.edination.api.eligibility.EDIFile.EDIFileGeneration;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
-import com.edination.api.eligibility.model.Demographics;
-import com.edination.api.eligibility.model.EdiDataElement271;
-import com.edination.api.eligibility.model.InsuranceDetail;
-import com.edination.api.eligibility.model.MemberInsuranceEligibility;
+import com.edination.api.eligibility.model.*;
 import com.edination.api.models.*;
 /*import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -27,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.core.Response;
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -107,13 +103,18 @@ public class RestApp implements Serializable {
 
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
         MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
-        InsuranceDetail insurancedetail=null;
+        PrimaryInsuranceDetail insurancedetail=null;
+        SecondaryInsuranceDetail secondaryInsuranceDetail=null;
+        TertiaryInsuranceDetail  tertiaryInsuranceDetail=null;
         for(MemberInsuranceEligibility mm:list) {
             memberinsurance2= new MemberInsuranceEligibility(mm.getStartDate(), mm.getEndDate(),mm.getStatusVerifiedDate(), eligibility, mm.getMrnNumber());
-            insurancedetail=new InsuranceDetail("23421",mm.getInsuranceDetail().getGroup_name(),mm.getInsuranceDetail().getInsurancePlanName(),mm.getInsuranceDetail().getInsurancePlanType(),mm.getInsuranceDetail().getInsuranceAddress(),mm.getInsuranceDetail().getCity(),mm.getInsuranceDetail().getState(),mm.getInsuranceDetail().getZipcode());
-
+            insurancedetail=new PrimaryInsuranceDetail(mm.getPrimaryInsuranceDetail().getPolicyNumber(),mm.getPrimaryInsuranceDetail().getGroup_name(),mm.getPrimaryInsuranceDetail().getInsurancePlanName(),mm.getPrimaryInsuranceDetail().getInsurancePlanType(),mm.getPrimaryInsuranceDetail().getInsuranceAddress(),mm.getPrimaryInsuranceDetail().getStartDate(),mm.getPrimaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getPrimaryInsuranceDetail().getCity(),mm.getPrimaryInsuranceDetail().getState(),mm.getPrimaryInsuranceDetail().getZipcode());
+            secondaryInsuranceDetail=new SecondaryInsuranceDetail(mm.getSecondaryInsuranceDetail().getPolicyNumber(),mm.getSecondaryInsuranceDetail().getGroup_name(),mm.getSecondaryInsuranceDetail().getInsurancePlanName(),mm.getSecondaryInsuranceDetail().getInsurancePlanType(),mm.getSecondaryInsuranceDetail().getInsuranceAddress(),mm.getSecondaryInsuranceDetail().getStartDate(),mm.getSecondaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getSecondaryInsuranceDetail().getCity(),mm.getSecondaryInsuranceDetail().getState(),mm.getSecondaryInsuranceDetail().getZipcode());
+            tertiaryInsuranceDetail=new TertiaryInsuranceDetail(mm.getTertiaryInsuranceDetail().getPolicyNumber(),mm.getTertiaryInsuranceDetail().getGroup_name(),mm.getTertiaryInsuranceDetail().getInsurancePlanName(),mm.getTertiaryInsuranceDetail().getInsurancePlanType(),mm.getTertiaryInsuranceDetail().getInsuranceAddress(),mm.getTertiaryInsuranceDetail().getStartDate(),mm.getTertiaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getTertiaryInsuranceDetail().getCity(),mm.getTertiaryInsuranceDetail().getState(),mm.getTertiaryInsuranceDetail().getZipcode());
         }
-             memberinsurance2.setInsuranceDetail(insurancedetail);
+             memberinsurance2.setPrimaryInsuranceDetail(insurancedetail);
+             memberinsurance2.setSecondaryInsuranceDetail(secondaryInsuranceDetail);
+             memberinsurance2.setTertiaryInsuranceDetail(tertiaryInsuranceDetail);
               memberInsuranceRepository.save(memberinsurance2);
 
         for(X12Interchange l:list1) {

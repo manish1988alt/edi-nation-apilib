@@ -17,7 +17,15 @@ public class MemberInsuranceEligibility{
 
         @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "policyNumber")
-        private InsuranceDetail insuranceDetail;
+        private PrimaryInsuranceDetail primaryInsuranceDetail;
+
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "secondaryPolicyNumber")
+        private SecondaryInsuranceDetail secondaryInsuranceDetail;
+
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "tertiaryPolicyNumber")
+        private TertiaryInsuranceDetail tertiaryInsuranceDetail;
 
         private String  mrnNumber;
         private Date startDate;
@@ -86,12 +94,12 @@ public class MemberInsuranceEligibility{
     }
 */
 
-   public InsuranceDetail getInsuranceDetail() {
-        return insuranceDetail;
+   public PrimaryInsuranceDetail getPrimaryInsuranceDetail() {
+        return primaryInsuranceDetail;
     }
 
-    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
-        this.insuranceDetail = insuranceDetail;
+    public void setPrimaryInsuranceDetail(PrimaryInsuranceDetail primaryInsuranceDetail) {
+        this.primaryInsuranceDetail = primaryInsuranceDetail;
     }
 
     public String getMrnNumber() {
@@ -102,11 +110,38 @@ public class MemberInsuranceEligibility{
         this.mrnNumber = mrnNumber;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public SecondaryInsuranceDetail getSecondaryInsuranceDetail() {
+        return secondaryInsuranceDetail;
+    }
+
+    public void setSecondaryInsuranceDetail(SecondaryInsuranceDetail secondaryInsuranceDetail) {
+        this.secondaryInsuranceDetail = secondaryInsuranceDetail;
+    }
+
+    public TertiaryInsuranceDetail getTertiaryInsuranceDetail() {
+        return tertiaryInsuranceDetail;
+    }
+
+    public void setTertiaryInsuranceDetail(TertiaryInsuranceDetail tertiaryInsuranceDetail) {
+        this.tertiaryInsuranceDetail = tertiaryInsuranceDetail;
+    }
+
     @Override
     public String toString() {
         return "MemberInsuranceEligibility{" +
                 "id=" + id +
-              ", mrnNumber='" + mrnNumber + '\'' +
+                ", primaryInsuranceDetail=" + primaryInsuranceDetail +
+                ", secondaryInsuranceDetail=" + secondaryInsuranceDetail +
+                ", tertiaryInsuranceDetail=" + tertiaryInsuranceDetail +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", statusVerifiedDate=" + statusVerifiedDate +

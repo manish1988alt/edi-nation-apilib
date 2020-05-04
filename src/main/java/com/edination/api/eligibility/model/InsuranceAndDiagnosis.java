@@ -20,9 +20,7 @@ public class InsuranceAndDiagnosis {
     private String insuredState;
     private int insuredzipcode;
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mrnNumber")
-    private Demographics demographics;*/
+
 
 public InsuranceAndDiagnosis(){}
 
@@ -43,7 +41,13 @@ public InsuranceAndDiagnosis(){}
 
     }
 
+   /* public InsuranceDetail getInsuranceDetail() {
+        return insuranceDetail;
+    }
 
+    public void setInsuranceDetail(InsuranceDetail insuranceDetail) {
+        this.insuranceDetail = insuranceDetail;
+    }*/
 
     public String getInsuredlastName() {
         return insuredlastName;
@@ -142,12 +146,20 @@ public InsuranceAndDiagnosis(){}
         this.insuredzipcode = insuredzipcode;
     }
 
-   /* public Demographics getDemographics() {
-        return demographics;
+   /* public SecondaryInsuranceDetail getSecondaryInsuranceDetail() {
+        return secondaryInsuranceDetail;
     }
 
-    public void setDemographics(Demographics demographics) {
-        this.demographics = demographics;
+    public void setSecondaryInsuranceDetail(SecondaryInsuranceDetail secondaryInsuranceDetail) {
+        this.secondaryInsuranceDetail = secondaryInsuranceDetail;
+    }
+
+    public TertiaryInsuranceDetail getTertiaryInsuranceDetail() {
+        return tertiaryInsuranceDetail;
+    }
+
+    public void setTertiaryInsuranceDetail(TertiaryInsuranceDetail tertiaryInsuranceDetail) {
+        this.tertiaryInsuranceDetail = tertiaryInsuranceDetail;
     }*/
 
     @Override
