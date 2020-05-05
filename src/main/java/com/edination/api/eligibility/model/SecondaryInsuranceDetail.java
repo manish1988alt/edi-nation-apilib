@@ -9,7 +9,7 @@ public class SecondaryInsuranceDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int sId;
+    private int id;
 
     private String policyNumber;
     private String group_name;
@@ -54,12 +54,12 @@ public SecondaryInsuranceDetail(){}
         this.eligibilityCheckSelected = eligibilityCheckSelected;
     }
 
-    public int getsId() {
-        return sId;
+    public int getId() {
+        return id;
     }
 
-    public void setsId(int sId) {
-        this.sId = sId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPolicyNumber() {
@@ -217,7 +217,7 @@ public SecondaryInsuranceDetail(){}
     @Override
     public String toString() {
         return "SecondaryInsuranceDetail{" +
-                "sId=" + sId +
+                "id=" + id +
                 ", policyNumber='" + policyNumber + '\'' +
                 ", group_name='" + group_name + '\'' +
                 ", insurancePlanName='" + insurancePlanName + '\'' +

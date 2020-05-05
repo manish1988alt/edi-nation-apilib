@@ -8,7 +8,7 @@ import java.util.Date;
 public class PrimaryInsuranceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int pId;
+    private int id;
 
     private String policyNumber;
     private String group_name;
@@ -58,12 +58,12 @@ public class PrimaryInsuranceDetail {
         this.eligibilityCheckSelected = eligibilityCheckSelected;
     }
 
-    public int getpId() {
-        return pId;
+    public int getId() {
+        return id;
     }
 
-    public void setpId(int pId) {
-        this.pId = pId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPolicyNumber() {
@@ -223,7 +223,7 @@ public class PrimaryInsuranceDetail {
     @Override
     public String toString() {
         return "PrimaryInsuranceDetail{" +
-                "pId=" + pId +
+                "id=" + id +
                 ", policyNumber='" + policyNumber + '\'' +
                 ", group_name='" + group_name + '\'' +
                 ", insurancePlanName='" + insurancePlanName + '\'' +
