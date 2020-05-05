@@ -31,9 +31,12 @@ public class TertiaryInsuranceDetail {
     private Date statusVerifiedDate;
     private String eligibility;
     private Boolean eligibilityCheckSelected;
+    private String ssn;
+    private String mop;
+    private String patientRelationInsured;
 public TertiaryInsuranceDetail(){}
 
-    public TertiaryInsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, Date startDate, Date endDate, String mrnNumber, String city, String state, int zipcode, String insuredlastName, String insuredfirstName, String insuredmiddleName, Date insureddob, String insuredsex, Date statusVerifiedDate, String eligibility, Boolean eligibilityCheckSelected) {
+    public TertiaryInsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, Date startDate, Date endDate, String mrnNumber, String city, String state, int zipcode, String insuredlastName, String insuredfirstName, String insuredmiddleName, Date insureddob, String insuredsex, Date statusVerifiedDate, String eligibility, Boolean eligibilityCheckSelected, String ssn, String mop, String patientRelationInsured) {
         this.policyNumber = policyNumber;
         this.group_name = group_name;
         this.insurancePlanName = insurancePlanName;
@@ -53,6 +56,9 @@ public TertiaryInsuranceDetail(){}
         this.statusVerifiedDate = statusVerifiedDate;
         this.eligibility = eligibility;
         this.eligibilityCheckSelected = eligibilityCheckSelected;
+        this.ssn = ssn;
+        this.mop = mop;
+        this.patientRelationInsured = patientRelationInsured;
     }
 
     public int getId() {
@@ -61,6 +67,30 @@ public TertiaryInsuranceDetail(){}
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public String getMop() {
+        return mop;
+    }
+
+    public void setMop(String mop) {
+        this.mop = mop;
+    }
+
+    public String getPatientRelationInsured() {
+        return patientRelationInsured;
+    }
+
+    public void setPatientRelationInsured(String patientRelationInsured) {
+        this.patientRelationInsured = patientRelationInsured;
     }
 
     public String getPolicyNumber() {
@@ -237,6 +267,9 @@ public TertiaryInsuranceDetail(){}
                 ", statusVerifiedDate=" + statusVerifiedDate +
                 ", eligibility='" + eligibility + '\'' +
                 ", eligibilityCheckSelected=" + eligibilityCheckSelected +
+                ", ssn='" + ssn + '\'' +
+                ", mop='" + mop + '\'' +
+                ", patientRelationInsured='" + patientRelationInsured + '\'' +
                 '}';
     }
 }
