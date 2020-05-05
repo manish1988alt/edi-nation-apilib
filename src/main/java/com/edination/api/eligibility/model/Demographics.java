@@ -15,8 +15,11 @@ public class Demographics {
     private String gender;
     private Date dob;
 
-
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "policyId")
+    private InsuranceDetailByPolicy insuranceDetailByPolicy;
+
+/*    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssn")
     private InsuranceAndDiagnosis insuranceAndDiagnosis;
     @OneToOne(cascade = CascadeType.ALL)
@@ -29,7 +32,7 @@ public class Demographics {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tertiaryPolicyNumber")
-    private TertiaryInsuranceDetail tertiaryInsuranceDetail;
+    private TertiaryInsuranceDetail tertiaryInsuranceDetail;*/
 
     /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "policyNumber")
@@ -103,37 +106,46 @@ public class Demographics {
         this.mrnNumber = mrnNumber;
     }
 
-    public InsuranceAndDiagnosis getInsuranceAndDiagnosis() {
-        return insuranceAndDiagnosis;
+    public InsuranceDetailByPolicy getInsuranceDetailByPolicy() {
+        return insuranceDetailByPolicy;
     }
 
-    public void setInsuranceAndDiagnosis(InsuranceAndDiagnosis insuranceAndDiagnosis) {
-        this.insuranceAndDiagnosis = insuranceAndDiagnosis;
+    public void setInsuranceDetailByPolicy(InsuranceDetailByPolicy insuranceDetailByPolicy) {
+        this.insuranceDetailByPolicy = insuranceDetailByPolicy;
     }
 
-    public PrimaryInsuranceDetail getPrimaryInsuranceDetail() {
-        return primaryInsuranceDetail;
-    }
+    /*  public InsuranceAndDiagnosis getInsuranceAndDiagnosis() {
+            return insuranceAndDiagnosis;
+        }
 
-    public void setPrimaryInsuranceDetail(PrimaryInsuranceDetail primaryInsuranceDetail) {
-        this.primaryInsuranceDetail = primaryInsuranceDetail;
-    }
+        public void setInsuranceAndDiagnosis(InsuranceAndDiagnosis insuranceAndDiagnosis) {
+            this.insuranceAndDiagnosis = insuranceAndDiagnosis;
+        }
 
-    public SecondaryInsuranceDetail getSecondaryInsuranceDetail() {
-        return secondaryInsuranceDetail;
-    }
+        public PrimaryInsuranceDetail getPrimaryInsuranceDetail() {
+            return primaryInsuranceDetail;
+        }
 
-    public void setSecondaryInsuranceDetail(SecondaryInsuranceDetail secondaryInsuranceDetail) {
-        this.secondaryInsuranceDetail = secondaryInsuranceDetail;
-    }
+        public void setPrimaryInsuranceDetail(PrimaryInsuranceDetail primaryInsuranceDetail) {
+            this.primaryInsuranceDetail = primaryInsuranceDetail;
+        }
 
-    public TertiaryInsuranceDetail getTertiaryInsuranceDetail() {
-        return tertiaryInsuranceDetail;
-    }
+        public SecondaryInsuranceDetail getSecondaryInsuranceDetail() {
+            return secondaryInsuranceDetail;
+        }
 
-    public void setTertiaryInsuranceDetail(TertiaryInsuranceDetail tertiaryInsuranceDetail) {
-        this.tertiaryInsuranceDetail = tertiaryInsuranceDetail;
-    }
+        public void setSecondaryInsuranceDetail(SecondaryInsuranceDetail secondaryInsuranceDetail) {
+            this.secondaryInsuranceDetail = secondaryInsuranceDetail;
+        }
+
+        public TertiaryInsuranceDetail getTertiaryInsuranceDetail() {
+            return tertiaryInsuranceDetail;
+        }
+
+        public void setTertiaryInsuranceDetail(TertiaryInsuranceDetail tertiaryInsuranceDetail) {
+            this.tertiaryInsuranceDetail = tertiaryInsuranceDetail;
+        }
+    */
 
     @Override
     public String toString() {
@@ -145,10 +157,7 @@ public class Demographics {
                 ", suffix='" + suffix + '\'' +
                 ", gender='" + gender + '\'' +
                 ", dob=" + dob +
-                ", insuranceAndDiagnosis=" + insuranceAndDiagnosis +
-                ", insuranceDetail=" + primaryInsuranceDetail +
-                ", secondaryInsuranceDetail=" + secondaryInsuranceDetail +
-                ", tertiaryInsuranceDetail=" + tertiaryInsuranceDetail +
+                ", insuranceDetailByPolicy=" + insuranceDetailByPolicy +
                 '}';
     }
 }

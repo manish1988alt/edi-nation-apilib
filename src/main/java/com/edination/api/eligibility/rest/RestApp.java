@@ -101,21 +101,21 @@ public class RestApp implements Serializable {
             eligibility=edi271.getEligibilityorBenefitInformation();
         }
 
-        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
+        /*List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
         MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
         PrimaryInsuranceDetail insurancedetail=null;
         SecondaryInsuranceDetail secondaryInsuranceDetail=null;
         TertiaryInsuranceDetail  tertiaryInsuranceDetail=null;
         for(MemberInsuranceEligibility mm:list) {
             memberinsurance2= new MemberInsuranceEligibility(mm.getStartDate(), mm.getEndDate(),mm.getStatusVerifiedDate(), eligibility, mm.getMrnNumber());
-            insurancedetail=new PrimaryInsuranceDetail(mm.getPrimaryInsuranceDetail().getPolicyNumber(),mm.getPrimaryInsuranceDetail().getGroup_name(),mm.getPrimaryInsuranceDetail().getInsurancePlanName(),mm.getPrimaryInsuranceDetail().getInsurancePlanType(),mm.getPrimaryInsuranceDetail().getInsuranceAddress(),mm.getPrimaryInsuranceDetail().getStartDate(),mm.getPrimaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getPrimaryInsuranceDetail().getCity(),mm.getPrimaryInsuranceDetail().getState(),mm.getPrimaryInsuranceDetail().getZipcode());
-            secondaryInsuranceDetail=new SecondaryInsuranceDetail(mm.getSecondaryInsuranceDetail().getPolicyNumber(),mm.getSecondaryInsuranceDetail().getGroup_name(),mm.getSecondaryInsuranceDetail().getInsurancePlanName(),mm.getSecondaryInsuranceDetail().getInsurancePlanType(),mm.getSecondaryInsuranceDetail().getInsuranceAddress(),mm.getSecondaryInsuranceDetail().getStartDate(),mm.getSecondaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getSecondaryInsuranceDetail().getCity(),mm.getSecondaryInsuranceDetail().getState(),mm.getSecondaryInsuranceDetail().getZipcode());
-            tertiaryInsuranceDetail=new TertiaryInsuranceDetail(mm.getTertiaryInsuranceDetail().getPolicyNumber(),mm.getTertiaryInsuranceDetail().getGroup_name(),mm.getTertiaryInsuranceDetail().getInsurancePlanName(),mm.getTertiaryInsuranceDetail().getInsurancePlanType(),mm.getTertiaryInsuranceDetail().getInsuranceAddress(),mm.getTertiaryInsuranceDetail().getStartDate(),mm.getTertiaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getTertiaryInsuranceDetail().getCity(),mm.getTertiaryInsuranceDetail().getState(),mm.getTertiaryInsuranceDetail().getZipcode());
+            //insurancedetail=new PrimaryInsuranceDetail(mm.getPrimaryInsuranceDetail().getPolicyNumber(),mm.getPrimaryInsuranceDetail().getGroup_name(),mm.getPrimaryInsuranceDetail().getInsurancePlanName(),mm.getPrimaryInsuranceDetail().getInsurancePlanType(),mm.getPrimaryInsuranceDetail().getInsuranceAddress(),mm.getPrimaryInsuranceDetail().getStartDate(),mm.getPrimaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getPrimaryInsuranceDetail().getCity(),mm.getPrimaryInsuranceDetail().getState(),mm.getPrimaryInsuranceDetail().getZipcode());
+            ////secondaryInsuranceDetail=new SecondaryInsuranceDetail(mm.getSecondaryInsuranceDetail().getPolicyNumber(),mm.getSecondaryInsuranceDetail().getGroup_name(),mm.getSecondaryInsuranceDetail().getInsurancePlanName(),mm.getSecondaryInsuranceDetail().getInsurancePlanType(),mm.getSecondaryInsuranceDetail().getInsuranceAddress(),mm.getSecondaryInsuranceDetail().getStartDate(),mm.getSecondaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getSecondaryInsuranceDetail().getCity(),mm.getSecondaryInsuranceDetail().getState(),mm.getSecondaryInsuranceDetail().getZipcode());
+            //tertiaryInsuranceDetail=new TertiaryInsuranceDetail(mm.getTertiaryInsuranceDetail().getPolicyNumber(),mm.getTertiaryInsuranceDetail().getGroup_name(),mm.getTertiaryInsuranceDetail().getInsurancePlanName(),mm.getTertiaryInsuranceDetail().getInsurancePlanType(),mm.getTertiaryInsuranceDetail().getInsuranceAddress(),mm.getTertiaryInsuranceDetail().getStartDate(),mm.getTertiaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getTertiaryInsuranceDetail().getCity(),mm.getTertiaryInsuranceDetail().getState(),mm.getTertiaryInsuranceDetail().getZipcode());
         }
-             memberinsurance2.setPrimaryInsuranceDetail(insurancedetail);
-             memberinsurance2.setSecondaryInsuranceDetail(secondaryInsuranceDetail);
-             memberinsurance2.setTertiaryInsuranceDetail(tertiaryInsuranceDetail);
-              memberInsuranceRepository.save(memberinsurance2);
+            // memberinsurance2.setPrimaryInsuranceDetail(insurancedetail);
+            // memberinsurance2.setSecondaryInsuranceDetail(secondaryInsuranceDetail);
+            // memberinsurance2.setTertiaryInsuranceDetail(tertiaryInsuranceDetail);
+              memberInsuranceRepository.save(memberinsurance2);*/
 
         for(X12Interchange l:list1) {
 

@@ -6,10 +6,10 @@ import java.util.Date;
 @Entity
 @Table(name="InsuranceDetail")
 public class PrimaryInsuranceDetail {
-   /* @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;*/
-   @Id
+    private int pId;
+
     private String policyNumber;
     private String group_name;
     private String insurancePlanName;
@@ -17,21 +17,26 @@ public class PrimaryInsuranceDetail {
     private String insuranceAddress;
     private Date startDate;
     private Date  endDate;
-
     private String mrnNumber;
     private String City;
     private String State;
     private int zipcode;
+    private String  insuredlastName;
+    private String  insuredfirstName;
+    private String  insuredmiddleName;
+    private Date  insureddob;
+    private String  insuredsex;
+    private Date statusVerifiedDate;
+    private String eligibility;
+    private Boolean eligibilityCheckSelected;
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mrnNumber")
-    private Demographics demographics;*/
+
 
 
 
     public PrimaryInsuranceDetail(){}
 
-    public PrimaryInsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, Date startDate, Date endDate, String mrnNumber, String city, String state, int zipcode) {
+    public PrimaryInsuranceDetail(String policyNumber, String group_name, String insurancePlanName, String insurancePlanType, String insuranceAddress, Date startDate, Date endDate, String mrnNumber, String city, String state, int zipcode, String insuredlastName, String insuredfirstName, String insuredmiddleName, Date insureddob, String insuredsex, Date statusVerifiedDate, String eligibility, Boolean eligibilityCheckSelected) {
         this.policyNumber = policyNumber;
         this.group_name = group_name;
         this.insurancePlanName = insurancePlanName;
@@ -43,15 +48,23 @@ public class PrimaryInsuranceDetail {
         City = city;
         State = state;
         this.zipcode = zipcode;
+        this.insuredlastName = insuredlastName;
+        this.insuredfirstName = insuredfirstName;
+        this.insuredmiddleName = insuredmiddleName;
+        this.insureddob = insureddob;
+        this.insuredsex = insuredsex;
+        this.statusVerifiedDate = statusVerifiedDate;
+        this.eligibility = eligibility;
+        this.eligibilityCheckSelected = eligibilityCheckSelected;
     }
 
-/* public int getId() {
-        return id;
+    public int getpId() {
+        return pId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }*/
+    public void setpId(int pId) {
+        this.pId = pId;
+    }
 
     public String getPolicyNumber() {
         return policyNumber;
@@ -125,13 +138,7 @@ public class PrimaryInsuranceDetail {
         this.zipcode = zipcode;
     }
 
-   /* public Demographics getDemographics() {
-        return demographics;
-    }
 
-    public void setDemographics(Demographics demographics) {
-        this.demographics = demographics;
-    }*/
 
     public Date getStartDate() {
         return startDate;
@@ -149,10 +156,75 @@ public class PrimaryInsuranceDetail {
         this.endDate = endDate;
     }
 
+    public String getInsuredlastName() {
+        return insuredlastName;
+    }
+
+    public void setInsuredlastName(String insuredlastName) {
+        this.insuredlastName = insuredlastName;
+    }
+
+    public String getInsuredfirstName() {
+        return insuredfirstName;
+    }
+
+    public void setInsuredfirstName(String insuredfirstName) {
+        this.insuredfirstName = insuredfirstName;
+    }
+
+    public String getInsuredmiddleName() {
+        return insuredmiddleName;
+    }
+
+    public void setInsuredmiddleName(String insuredmiddleName) {
+        this.insuredmiddleName = insuredmiddleName;
+    }
+
+    public Date getInsureddob() {
+        return insureddob;
+    }
+
+    public void setInsureddob(Date insureddob) {
+        this.insureddob = insureddob;
+    }
+
+    public String getInsuredsex() {
+        return insuredsex;
+    }
+
+    public void setInsuredsex(String insuredsex) {
+        this.insuredsex = insuredsex;
+    }
+
+    public Date getStatusVerifiedDate() {
+        return statusVerifiedDate;
+    }
+
+    public void setStatusVerifiedDate(Date statusVerifiedDate) {
+        this.statusVerifiedDate = statusVerifiedDate;
+    }
+
+    public String getEligibility() {
+        return eligibility;
+    }
+
+    public void setEligibility(String eligibility) {
+        this.eligibility = eligibility;
+    }
+
+    public Boolean getEligibilityCheckSelected() {
+        return eligibilityCheckSelected;
+    }
+
+    public void setEligibilityCheckSelected(Boolean eligibilityCheckSelected) {
+        this.eligibilityCheckSelected = eligibilityCheckSelected;
+    }
+
     @Override
     public String toString() {
         return "PrimaryInsuranceDetail{" +
-                "policyNumber='" + policyNumber + '\'' +
+                "pId=" + pId +
+                ", policyNumber='" + policyNumber + '\'' +
                 ", group_name='" + group_name + '\'' +
                 ", insurancePlanName='" + insurancePlanName + '\'' +
                 ", insurancePlanType='" + insurancePlanType + '\'' +
@@ -163,6 +235,14 @@ public class PrimaryInsuranceDetail {
                 ", City='" + City + '\'' +
                 ", State='" + State + '\'' +
                 ", zipcode=" + zipcode +
+                ", insuredlastName='" + insuredlastName + '\'' +
+                ", insuredfirstName='" + insuredfirstName + '\'' +
+                ", insuredmiddleName='" + insuredmiddleName + '\'' +
+                ", insureddob=" + insureddob +
+                ", insuredsex='" + insuredsex + '\'' +
+                ", statusVerifiedDate=" + statusVerifiedDate +
+                ", eligibility='" + eligibility + '\'' +
+                ", eligibilityCheckSelected=" + eligibilityCheckSelected +
                 '}';
     }
 }

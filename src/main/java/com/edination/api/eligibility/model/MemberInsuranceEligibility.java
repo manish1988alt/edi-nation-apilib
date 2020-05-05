@@ -16,15 +16,15 @@ public class MemberInsuranceEligibility{
         private Demographics demographics;*/
 
         @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name = "policyNumber")
+        @JoinColumn(name = "pId")
         private PrimaryInsuranceDetail primaryInsuranceDetail;
 
         @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name = "secondaryPolicyNumber")
+        @JoinColumn(name = "sId")
         private SecondaryInsuranceDetail secondaryInsuranceDetail;
 
         @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name = "tertiaryPolicyNumber")
+        @JoinColumn(name = "tId")
         private TertiaryInsuranceDetail tertiaryInsuranceDetail;
 
         private String  mrnNumber;
