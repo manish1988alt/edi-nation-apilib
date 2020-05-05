@@ -258,7 +258,8 @@ public void saveOperation( Demographics demographics)
     @PostMapping("/generate")
     public ResponseEntity<InputStreamResource> getPdf2(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
     {
-         //this.pdfGenerator(memberInsuranceEligibility.getMrnNumber());
+        File f=new File("PatientDischargeCode.pdf");
+         this.pdfGenerator(memberInsuranceEligibility.getMrnNumber(),f);
         String contentDisposition = HEADER_VAL_ATTACHMENT; // By default
         StringBuilder attachement = new StringBuilder(EMPTY);
         String fileName = EMPTY;
@@ -268,24 +269,28 @@ public void saveOperation( Demographics demographics)
    /*     System.out.println("PolicyType: "+memberInsuranceEligibility.getInsuranceDetail().getInsurancePlanType());
         System.out.println(" MRN: "+memberInsuranceEligibility.getMrnNumber());
         System.out.println(" Policy Number:"+memberInsuranceEligibility.getPolicyNumber());*/
-        Resource resource=new ClassPathResource("/PatientDischargeCode.pdf");
 
-        fileName = resource.getFilename();
-
+       // Resource resource=new ClassPathResource("/PatientDischargeCode.pdf");
+        FileInputStream fileInputStream=new FileInputStream(f);
+        //fileName = resource.getFilename();
+        fileName=f.getName();
         long r=0;
         InputStream is=null;
         try{
-            is=resource.getInputStream();
-            r=resource.contentLength();
+           // is=resource.getInputStream();
+           // r=resource.contentLength();
+            is=fileInputStream;
+            r=f.length();
+
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }
         // return ResponseEntity.ok().contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
         return   ResponseEntity.ok().header(contentDisposition,HEADER3_FIXED_VAL).contentLength(r).contentType(MediaType.parseMediaType("application/pdf")).body(new InputStreamResource(is));
     }
-    public void pdfGenerator(String mrnNumber)
+    public void pdfGenerator(String mrnNumber,File f)
     {
         Font blueFont = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, new CMYKColor(255, 0, 0, 0));
         Font redFont = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(0, 255, 0, 0));
@@ -294,7 +299,7 @@ public void saveOperation( Demographics demographics)
         List<EdiDataElement271> list2 =edi271Repository.findByMrnNumber(mrnNumber);
         try
         {
-         File f=new File("PatientDischargeCode.pdf");
+         //File f=new File("PatientDischargeCode.pdf");
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(f));
             document.open();
             //document.add(new Paragraph("Styling Example"));
@@ -308,8 +313,15 @@ public void saveOperation( Demographics demographics)
             Chapter chapter1 = new Chapter(chapterTitle, 1);
             chapter1.setNumberDepth(0);
 
-            Paragraph sectionTitle = new Paragraph("Demograhic detail", redFont);
-            Section section1 = chapter1.addSection(sectionTitle);
+            Paragraph sectionTitle1 = new Paragraph("Demograhic detail", redFont);
+            Section section1 = chapter1.addSection(sectionTitle1);
+
+            Paragraph sectionTitle2 = new Paragraph("Insured detail", redFont);
+            Section section2 = chapter1.addSection(sectionTitle2);
+
+            Paragraph sectionTitle3 = new Paragraph("Benefit Detail", redFont);
+            Section section3 = chapter1.addSection(sectionTitle3);
+
             for(EdiDataElement271 edi271:list2) {
                 Paragraph sectionContent1 = new Paragraph(edi271.getSubscriberPrimaryIdentifier(), blueFont);
                 section1.add(sectionContent1);
@@ -331,6 +343,62 @@ public void saveOperation( Demographics demographics)
                 section1.add(sectionContent9);
                 Paragraph sectionContent10 = new Paragraph(edi271.getSubscriberZipCode(), blueFont);
                 section1.add(sectionContent10);
+
+                Paragraph sectionContent11 = new Paragraph(edi271.getCompositeMedicalProcedureIdentifier(), blueFont);
+                section2.add(sectionContent11);
+                Paragraph sectionContent12 = new Paragraph(edi271.getDateTimeQualifier(), blueFont);
+                section2.add(sectionContent12);
+                Paragraph sectionContent13 = new Paragraph(edi271.getDateTimeQualifier(), blueFont);
+                section2.add(sectionContent13);
+                Paragraph sectionContent14 = new Paragraph(edi271.getFreeFormMessageText(), blueFont);
+                section2.add(sectionContent14);
+                Paragraph sectionContent15 = new Paragraph(edi271.getEntityIdentifierCode(), blueFont);
+                section2.add(sectionContent15);
+                Paragraph sectionContent16 = new Paragraph(edi271.getEntityTypeQualifier(), blueFont);
+                section2.add(sectionContent16);
+                Paragraph sectionContent17 = new Paragraph(edi271.getInsuranceTypeCode(), blueFont);
+                section2.add(sectionContent17);
+                Paragraph sectionContent18 = new Paragraph(edi271.getProcedureCode(), blueFont);
+                section2.add(sectionContent18);
+                Paragraph sectionContent19 = new Paragraph(edi271.getProcedureModifier(), blueFont);
+                section2.add(sectionContent19);
+                Paragraph sectionContent20 = new Paragraph(edi271.getQuantity(), blueFont);
+                section2.add(sectionContent20);
+                Paragraph sectionContent21 = new Paragraph(edi271.getQuantityQualifier(), blueFont);
+                section2.add(sectionContent21);
+                Paragraph sectionContent22 = new Paragraph(edi271.getReferenceIdentificationQualifier(), blueFont);
+                section2.add(sectionContent22);
+                Paragraph sectionContent23 = new Paragraph(edi271.getServiceIDQualifier(), blueFont);
+                section2.add(sectionContent23);
+                Paragraph sectionContent24 = new Paragraph(edi271.getServiceTypeCode(), blueFont);
+                section2.add(sectionContent24);
+                Paragraph sectionContent25 = new Paragraph(edi271.getTimePeriodQualifier(), blueFont);
+                section2.add(sectionContent25);
+                Paragraph sectionContent26 = new Paragraph(edi271.getTraceTypeCode(), blueFont);
+                section2.add(sectionContent26);
+
+                Paragraph sectionContent27 = new Paragraph(edi271.getEligibilityorBenefitInformation(), blueFont);
+                section3.add(sectionContent27);
+                Paragraph sectionContent28 = new Paragraph(edi271.getBenefitAmount(), blueFont);
+                section3.add(sectionContent28);
+                Paragraph sectionContent29 = new Paragraph(edi271.getBenefitDateTimePeriod(), blueFont);
+                section3.add(sectionContent29);
+                Paragraph sectionContent30 = new Paragraph(edi271.getBenefitRelatedEntityAddressLine(), blueFont);
+                section3.add(sectionContent30);
+                Paragraph sectionContent31 = new Paragraph(edi271.getBenefitRelatedEntityCityName(), blueFont);
+                section3.add(sectionContent31);
+                Paragraph sectionContent32 = new Paragraph(edi271.getBenefitRelatedEntityIdentifier(), blueFont);
+                section3.add(sectionContent32);
+                Paragraph sectionContent33 = new Paragraph(edi271.getBenefitRelatedEntityLast(), blueFont);
+                section3.add(sectionContent33);
+                Paragraph sectionContent34 = new Paragraph(edi271.getBenefitRelatedEntityStateCode(), blueFont);
+                section3.add(sectionContent34);
+                Paragraph sectionContent35 = new Paragraph(edi271.getBenefitRelatedEntityZipCode(), blueFont);
+                section3.add(sectionContent35);
+                Paragraph sectionContent36 = new Paragraph(edi271.getIdentificationCodeQualifier(), blueFont);
+                section3.add(sectionContent36);
+
+
             }
 
 
