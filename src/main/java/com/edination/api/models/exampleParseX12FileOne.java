@@ -307,7 +307,7 @@ System.out.println("NMS1:"+NMS1+" NMS2:"+NMS2+" NMS3:"+NMS3+" NMS4: "+NMS4+" NMS
 				{
 					EBS3=EB.get(4);
 				}
-				EBS4=EB.get(32);
+				EBS4=EB.get(19);
 				EBS5=EB.get(3);
 				EBS6=EB.get(18);
 				//EBS7=EB.get(22);
