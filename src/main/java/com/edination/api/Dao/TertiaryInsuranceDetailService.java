@@ -23,11 +23,11 @@ public class TertiaryInsuranceDetailService {
         tertiaryInsuranceDetailRepository.save(expense);
     }
 
-    public TertiaryInsuranceDetail get(String id) {
+    public TertiaryInsuranceDetail get(int id) {
         return tertiaryInsuranceDetailRepository.findById(id).get();
     }
 
-    public void delete(String id) {
+    public void delete(int id) {
         tertiaryInsuranceDetailRepository.deleteById(id);
     }
 }

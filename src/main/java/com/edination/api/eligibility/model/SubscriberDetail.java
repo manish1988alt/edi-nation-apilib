@@ -16,8 +16,10 @@ public class SubscriberDetail {
     private String   dateTimeQualifier;
     private String   serviceTypeCode;
     private String   compositeMedicalProcedureIdentifier;
+    private String mrnNumber;
 
-    public SubscriberDetail(String subscriberPrimaryIdentifier, String subscriberLastName, String subscriberFirstName, String subscriberNameSuffix, Date subscriberBirthDate, String dateTimeQualifier, String serviceTypeCode, String compositeMedicalProcedureIdentifier) {
+    public SubscriberDetail(){}
+    public SubscriberDetail(String subscriberPrimaryIdentifier, String subscriberLastName, String subscriberFirstName, String subscriberNameSuffix, Date subscriberBirthDate, String dateTimeQualifier, String serviceTypeCode, String compositeMedicalProcedureIdentifier,String mrnNumber) {
         this.subscriberPrimaryIdentifier = subscriberPrimaryIdentifier;
         this.subscriberLastName = subscriberLastName;
         this.subscriberFirstName = subscriberFirstName;
@@ -26,6 +28,15 @@ public class SubscriberDetail {
         this.dateTimeQualifier = dateTimeQualifier;
         this.serviceTypeCode = serviceTypeCode;
         this.compositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
+        this.mrnNumber=mrnNumber;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public String getSubscriberPrimaryIdentifier() {
@@ -84,14 +95,6 @@ public class SubscriberDetail {
         this.serviceTypeCode = serviceTypeCode;
     }
 
-    public String getCompositeMedicalProcedureIdentifier() {
-        return compositeMedicalProcedureIdentifier;
-    }
-
-    public void setCompositeMedicalProcedureIdentifier(String compositeMedicalProcedureIdentifier) {
-        this.compositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
-    }
-
     @Override
     public String toString() {
         return "SubscriberDetail{" +
@@ -103,6 +106,17 @@ public class SubscriberDetail {
                 ", dateTimeQualifier='" + dateTimeQualifier + '\'' +
                 ", serviceTypeCode='" + serviceTypeCode + '\'' +
                 ", compositeMedicalProcedureIdentifier='" + compositeMedicalProcedureIdentifier + '\'' +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 '}';
     }
+
+    public String getCompositeMedicalProcedureIdentifier() {
+        return compositeMedicalProcedureIdentifier;
+    }
+
+    public void setCompositeMedicalProcedureIdentifier(String compositeMedicalProcedureIdentifier) {
+        this.compositeMedicalProcedureIdentifier = compositeMedicalProcedureIdentifier;
+    }
+
+
 }

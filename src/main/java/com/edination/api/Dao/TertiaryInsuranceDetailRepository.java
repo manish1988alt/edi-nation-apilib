@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TertiaryInsuranceDetailRepository extends JpaRepository<TertiaryInsuranceDetail,String> {
+public interface TertiaryInsuranceDetailRepository extends JpaRepository<TertiaryInsuranceDetail,Integer> {
 
 
     @Query("FROM TertiaryInsuranceDetail c WHERE mrn_number = ?1 ORDER BY c.id DESC")
