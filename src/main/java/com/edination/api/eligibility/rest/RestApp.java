@@ -323,7 +323,7 @@ public void saveOperation( Demographics demographics)
 
 
     @PostMapping("/generate")
-    public ResponseEntity<InputStreamResource> getPdf2(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    public ResponseEntity<InputStreamResource> getPdf2(@RequestBody Demographics memberInsuranceEligibility) throws Throwable
     {
         File f=new File("PatientDischargeCode.pdf");
          this.pdfGenerator(memberInsuranceEligibility.getMrnNumber(),f);
@@ -390,79 +390,79 @@ public void saveOperation( Demographics demographics)
             Section section3 = chapter1.addSection(sectionTitle3);
 
             for(EdiDataElement271 edi271:list2) {
-                Paragraph sectionContent1 = new Paragraph(edi271.getSubscriberPrimaryIdentifier(), blueFont);
+                Paragraph sectionContent1 = new Paragraph("SubscriberPrimaryIdentifier: "+edi271.getSubscriberPrimaryIdentifier(), blueFont);
                 section1.add(sectionContent1);
-                Paragraph sectionContent2 = new Paragraph(edi271.getSubscriberSupplementalIdentifier(), blueFont);
+                Paragraph sectionContent2 = new Paragraph("SubscriberSupplementalIdentifier: "+edi271.getSubscriberSupplementalIdentifier(), blueFont);
                 section1.add(sectionContent2);
-                Paragraph sectionConten3 = new Paragraph(edi271.getSubscriberLastName(), blueFont);
+                Paragraph sectionConten3 = new Paragraph("SubscriberLastName: "+edi271.getSubscriberLastName(), blueFont);
                 section1.add(sectionConten3);
-                Paragraph sectionContent4 = new Paragraph(edi271.getSubscriberFirstName(), blueFont);
+                Paragraph sectionContent4 = new Paragraph("SubscriberFirstName:"+ edi271.getSubscriberFirstName(), blueFont);
                 section1.add(sectionContent4);
-                Paragraph sectionContent5 = new Paragraph(edi271.getSubscriberNameSuffix(), blueFont);
+                Paragraph sectionContent5 = new Paragraph("SubscriberNameSuffix: "+edi271.getSubscriberNameSuffix(), blueFont);
                 section1.add(sectionContent5);
-                Paragraph sectionContent6 = new Paragraph(edi271.getSubscriberAddressLine(), blueFont);
+                Paragraph sectionContent6 = new Paragraph("SubscriberAddressLine: "+edi271.getSubscriberAddressLine(), blueFont);
                 section1.add(sectionContent6);
-                Paragraph sectionContent7 = new Paragraph(edi271.getSubscriberCityName(), blueFont);
+                Paragraph sectionContent7 = new Paragraph("SubscriberCityName: "+edi271.getSubscriberCityName(), blueFont);
                 section1.add(sectionContent7);
                 Paragraph sectionContent8 = new Paragraph(edi271.getSubscriberStateCode(), blueFont);
                 section1.add(sectionContent8);
-                Paragraph sectionContent9 = new Paragraph(edi271.getSubscriberStateCode(), blueFont);
+                Paragraph sectionContent9 = new Paragraph("SubscriberStateCode: "+edi271.getSubscriberStateCode(), blueFont);
                 section1.add(sectionContent9);
-                Paragraph sectionContent10 = new Paragraph(edi271.getSubscriberZipCode(), blueFont);
+                Paragraph sectionContent10 = new Paragraph("SubscriberZipCode: "+edi271.getSubscriberZipCode(), blueFont);
                 section1.add(sectionContent10);
 
-                Paragraph sectionContent11 = new Paragraph(edi271.getCompositeMedicalProcedureIdentifier(), blueFont);
+                Paragraph sectionContent11 = new Paragraph("CompositeMedicalProcedureIdentifier: "+edi271.getCompositeMedicalProcedureIdentifier(), blueFont);
                 section2.add(sectionContent11);
-                Paragraph sectionContent12 = new Paragraph(edi271.getDateTimeQualifier(), blueFont);
+                Paragraph sectionContent12 = new Paragraph("DateTimeQualifier: "+edi271.getDateTimeQualifier(), blueFont);
                 section2.add(sectionContent12);
-                Paragraph sectionContent13 = new Paragraph(edi271.getDateTimeQualifier(), blueFont);
+                Paragraph sectionContent13 = new Paragraph("DateTimeQualifier: "+edi271.getDateTimeQualifier(), blueFont);
                 section2.add(sectionContent13);
-                Paragraph sectionContent14 = new Paragraph(edi271.getFreeFormMessageText(), blueFont);
+                Paragraph sectionContent14 = new Paragraph("FreeFormMessageText: "+edi271.getFreeFormMessageText(), blueFont);
                 section2.add(sectionContent14);
-                Paragraph sectionContent15 = new Paragraph(edi271.getEntityIdentifierCode(), blueFont);
+                Paragraph sectionContent15 = new Paragraph("EntityIdentifierCode: "+edi271.getEntityIdentifierCode(), blueFont);
                 section2.add(sectionContent15);
-                Paragraph sectionContent16 = new Paragraph(edi271.getEntityTypeQualifier(), blueFont);
+                Paragraph sectionContent16 = new Paragraph("EntityTypeQualifier: "+edi271.getEntityTypeQualifier(), blueFont);
                 section2.add(sectionContent16);
-                Paragraph sectionContent17 = new Paragraph(edi271.getInsuranceTypeCode(), blueFont);
+                Paragraph sectionContent17 = new Paragraph("InsuranceTypeCode: "+edi271.getInsuranceTypeCode(), blueFont);
                 section2.add(sectionContent17);
-                Paragraph sectionContent18 = new Paragraph(edi271.getProcedureCode(), blueFont);
+                Paragraph sectionContent18 = new Paragraph("ProcedureCode: "+edi271.getProcedureCode(), blueFont);
                 section2.add(sectionContent18);
-                Paragraph sectionContent19 = new Paragraph(edi271.getProcedureModifier(), blueFont);
+                Paragraph sectionContent19 = new Paragraph("ProcedureModifier: "+edi271.getProcedureModifier(), blueFont);
                 section2.add(sectionContent19);
-                Paragraph sectionContent20 = new Paragraph(edi271.getQuantity(), blueFont);
+                Paragraph sectionContent20 = new Paragraph("Quantity: "+edi271.getQuantity(), blueFont);
                 section2.add(sectionContent20);
-                Paragraph sectionContent21 = new Paragraph(edi271.getQuantityQualifier(), blueFont);
+                Paragraph sectionContent21 = new Paragraph("QuantityQualifier: "+edi271.getQuantityQualifier(), blueFont);
                 section2.add(sectionContent21);
-                Paragraph sectionContent22 = new Paragraph(edi271.getReferenceIdentificationQualifier(), blueFont);
+                Paragraph sectionContent22 = new Paragraph("ReferenceIdentificationQualifier: "+edi271.getReferenceIdentificationQualifier(), blueFont);
                 section2.add(sectionContent22);
-                Paragraph sectionContent23 = new Paragraph(edi271.getServiceIDQualifier(), blueFont);
+                Paragraph sectionContent23 = new Paragraph("ServiceIDQualifier: "+edi271.getServiceIDQualifier(), blueFont);
                 section2.add(sectionContent23);
-                Paragraph sectionContent24 = new Paragraph(edi271.getServiceTypeCode(), blueFont);
+                Paragraph sectionContent24 = new Paragraph("ServiceTypeCode: "+edi271.getServiceTypeCode(), blueFont);
                 section2.add(sectionContent24);
-                Paragraph sectionContent25 = new Paragraph(edi271.getTimePeriodQualifier(), blueFont);
+                Paragraph sectionContent25 = new Paragraph("TimePeriodQualifier: "+edi271.getTimePeriodQualifier(), blueFont);
                 section2.add(sectionContent25);
-                Paragraph sectionContent26 = new Paragraph(edi271.getTraceTypeCode(), blueFont);
+                Paragraph sectionContent26 = new Paragraph("TraceTypeCode: "+edi271.getTraceTypeCode(), blueFont);
                 section2.add(sectionContent26);
 
-                Paragraph sectionContent27 = new Paragraph(edi271.getEligibilityorBenefitInformation(), blueFont);
+                Paragraph sectionContent27 = new Paragraph("EligibilityorBenefitInformation: "+edi271.getEligibilityorBenefitInformation(), blueFont);
                 section3.add(sectionContent27);
-                Paragraph sectionContent28 = new Paragraph(edi271.getBenefitAmount(), blueFont);
+                Paragraph sectionContent28 = new Paragraph("BenefitAmount: "+edi271.getBenefitAmount(), blueFont);
                 section3.add(sectionContent28);
-                Paragraph sectionContent29 = new Paragraph(edi271.getBenefitDateTimePeriod(), blueFont);
+                Paragraph sectionContent29 = new Paragraph("BenefitDateTimePeriod: "+edi271.getBenefitDateTimePeriod(), blueFont);
                 section3.add(sectionContent29);
-                Paragraph sectionContent30 = new Paragraph(edi271.getBenefitRelatedEntityAddressLine(), blueFont);
+                Paragraph sectionContent30 = new Paragraph("BenefitRelatedEntityAddressLine: "+ edi271.getBenefitRelatedEntityAddressLine(), blueFont);
                 section3.add(sectionContent30);
-                Paragraph sectionContent31 = new Paragraph(edi271.getBenefitRelatedEntityCityName(), blueFont);
+                Paragraph sectionContent31 = new Paragraph("BenefitRelatedEntityCityName: "+edi271.getBenefitRelatedEntityCityName(), blueFont);
                 section3.add(sectionContent31);
-                Paragraph sectionContent32 = new Paragraph(edi271.getBenefitRelatedEntityIdentifier(), blueFont);
+                Paragraph sectionContent32 = new Paragraph("BenefitRelatedEntityIdentifier: "+edi271.getBenefitRelatedEntityIdentifier(), blueFont);
                 section3.add(sectionContent32);
-                Paragraph sectionContent33 = new Paragraph(edi271.getBenefitRelatedEntityLast(), blueFont);
+                Paragraph sectionContent33 = new Paragraph("BenefitRelatedEntityLast: "+edi271.getBenefitRelatedEntityLast(), blueFont);
                 section3.add(sectionContent33);
-                Paragraph sectionContent34 = new Paragraph(edi271.getBenefitRelatedEntityStateCode(), blueFont);
+                Paragraph sectionContent34 = new Paragraph("BenefitRelatedEntityStateCode: "+edi271.getBenefitRelatedEntityStateCode(), blueFont);
                 section3.add(sectionContent34);
-                Paragraph sectionContent35 = new Paragraph(edi271.getBenefitRelatedEntityZipCode(), blueFont);
+                Paragraph sectionContent35 = new Paragraph("BenefitRelatedEntityZipCode: "+edi271.getBenefitRelatedEntityZipCode(), blueFont);
                 section3.add(sectionContent35);
-                Paragraph sectionContent36 = new Paragraph(edi271.getIdentificationCodeQualifier(), blueFont);
+                Paragraph sectionContent36 = new Paragraph("IdentificationCodeQualifier: "+edi271.getIdentificationCodeQualifier(), blueFont);
                 section3.add(sectionContent36);
 
 
