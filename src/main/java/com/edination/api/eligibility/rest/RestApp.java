@@ -46,7 +46,12 @@ public class RestApp implements Serializable {
     EDI271Repository edi271Repository;
     @Autowired
     EDI271Service edi271Service;
-
+    @Autowired
+    PrimaryInsuranceDetailRepository primaryInsuranceDetailRepository;
+    @Autowired
+    SecondaryInsuranceDetailRepository secondaryInsuranceDetailRepository;
+    @Autowired
+    TertiaryInsuranceDetailRepository tertiaryInsuranceDetailRepository;
     X12Controller x12=new X12Controller();
     EdiDataElement271 ediDataElement271=new EdiDataElement271();
     EdiDataElement271 ediDataElement272=new EdiDataElement271();
@@ -101,12 +106,12 @@ public class RestApp implements Serializable {
             eligibility=edi271.getEligibilityorBenefitInformation();
         }
 
-        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
-        MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
+        //List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
+        //MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
         PrimaryInsuranceDetail Priinsurancedetail=null;
         SecondaryInsuranceDetail secondaryInsuranceDetail=null;
         TertiaryInsuranceDetail  tertiaryInsuranceDetail=null;
-        for(MemberInsuranceEligibility mm:list) {
+       /* for(MemberInsuranceEligibility mm:list) {
             memberinsurance2= new MemberInsuranceEligibility(mm.getStartDate(), mm.getEndDate(),mm.getStatusVerifiedDate(), eligibility, mm.getMrnNumber());
            // insurancedetail=new PrimaryInsuranceDetail(mm.getPrimaryInsuranceDetail().getPolicyNumber(),mm.getPrimaryInsuranceDetail().getGroup_name(),mm.getPrimaryInsuranceDetail().getInsurancePlanName(),mm.getPrimaryInsuranceDetail().getInsurancePlanType(),mm.getPrimaryInsuranceDetail().getInsuranceAddress(),mm.getPrimaryInsuranceDetail().getStartDate(),mm.getPrimaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getPrimaryInsuranceDetail().getCity(),mm.getPrimaryInsuranceDetail().getState(),mm.getPrimaryInsuranceDetail().getZipcode());
             //secondaryInsuranceDetail=new SecondaryInsuranceDetail(mm.getSecondaryInsuranceDetail().getPolicyNumber(),mm.getSecondaryInsuranceDetail().getGroup_name(),mm.getSecondaryInsuranceDetail().getInsurancePlanName(),mm.getSecondaryInsuranceDetail().getInsurancePlanType(),mm.getSecondaryInsuranceDetail().getInsuranceAddress(),mm.getSecondaryInsuranceDetail().getStartDate(),mm.getSecondaryInsuranceDetail().getEndDate(),mm.getMrnNumber(),mm.getSecondaryInsuranceDetail().getCity(),mm.getSecondaryInsuranceDetail().getState(),mm.getSecondaryInsuranceDetail().getZipcode());
@@ -118,7 +123,36 @@ public class RestApp implements Serializable {
             memberinsurance2.setPrimaryInsuranceDetail(Priinsurancedetail);
             memberinsurance2.setSecondaryInsuranceDetail(secondaryInsuranceDetail);
             memberinsurance2.setTertiaryInsuranceDetail(tertiaryInsuranceDetail);
-              memberInsuranceRepository.save(memberinsurance2);
+              memberInsuranceRepository.save(memberinsurance2);*/
+
+        if(demographics1.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail().getEligibilityCheckSelected()) {
+            List<PrimaryInsuranceDetail> plist = primaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+            for (PrimaryInsuranceDetail pl : plist) {
+                Priinsurancedetail = new PrimaryInsuranceDetail(pl.getPolicyNumber(),pl.getGroup_name(),pl.getInsurancePlanName(),pl.getInsurancePlanType(),pl.getInsuranceAddress(),pl.getStartDate(),pl.getEndDate(),pl.getMrnNumber(),pl.getCity(), pl.getState(),pl.getZipcode(),pl.getInsuredlastName(), pl.getInsuredfirstName(), pl.getInsuredmiddleName(),pl.getInsureddob(),pl.getInsuredsex(),pl.getStatusVerifiedDate(), eligibility,pl.getEligibilityCheckSelected(),pl.getSsn(),pl.getMop(),pl.getPatientRelationInsured());
+                primaryInsuranceDetailRepository.save(Priinsurancedetail);
+            }
+        }
+
+        if(demographics1.getInsuranceDetailByPolicy().getSecondaryInsuranceDetail().getEligibilityCheckSelected())
+        {
+            List<SecondaryInsuranceDetail> slist =secondaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+            for(SecondaryInsuranceDetail sl:slist)
+            {
+                secondaryInsuranceDetail = new SecondaryInsuranceDetail(sl.getPolicyNumber(),sl.getGroup_name(),sl.getInsurancePlanName(),sl.getInsurancePlanType(),sl.getInsuranceAddress(),sl.getStartDate(),sl.getEndDate(),sl.getMrnNumber(),sl.getCity(),sl.getState(),sl.getZipcode(),sl.getInsuredlastName(), sl.getInsuredfirstName(),sl.getInsuredmiddleName(),sl.getInsureddob(),sl.getInsuredsex(),sl.getStatusVerifiedDate(), eligibility,sl.getEligibilityCheckSelected(),sl.getSsn(),sl.getMop(),sl.getPatientRelationInsured());
+                secondaryInsuranceDetailRepository.save(secondaryInsuranceDetail);
+            }
+        }
+        if(demographics1.getInsuranceDetailByPolicy().getTertiaryInsuranceDetail().getEligibilityCheckSelected())
+        {
+            List<TertiaryInsuranceDetail> tlist =tertiaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+            for(TertiaryInsuranceDetail tl:tlist)
+            {
+                tertiaryInsuranceDetail = new TertiaryInsuranceDetail(tl.getPolicyNumber(),tl.getGroup_name(),tl.getInsurancePlanName(),tl.getInsurancePlanType(),tl.getInsuranceAddress(), tl.getStartDate(),tl.getEndDate(),tl.getMrnNumber(), tl.getCity(),tl.getState(),tl.getZipcode(),tl.getInsuredlastName(),tl.getInsuredfirstName(), tl.getInsuredmiddleName(),tl.getInsureddob(),tl.getInsuredsex(), tl.getStatusVerifiedDate(), eligibility,tl.getEligibilityCheckSelected(),tl.getSsn(),tl.getMop(),tl.getPatientRelationInsured());
+                tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
+            }
+        }
+
+
 
         for(X12Interchange l:list1) {
 
@@ -212,7 +246,7 @@ public void saveOperation( Demographics demographics)
        return  responseEntity;
     }
     @PostMapping("/eligibilityDetailHistory")
-    public List<MemberInsuranceEligibility> eligibilityDetailHistory(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
+    public List<Object> eligibilityDetailHistory(@RequestBody Demographics demographics1) throws Throwable
     {
      /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = formatter.parse("2020-04-22");
@@ -226,19 +260,52 @@ public void saveOperation( Demographics demographics)
         memberInsuranceRepository.save(memberinsurance);*/
 
         List<Object> list1=new ArrayList<>();
-        List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+       // List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(memberInsuranceEligibility.getMrnNumber());
+        List<PrimaryInsuranceDetail> plist =primaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+        list1.addAll(plist);
+        List<SecondaryInsuranceDetail> slist =secondaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+        list1.addAll(slist);
+        List<TertiaryInsuranceDetail> tlist =tertiaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+        list1.addAll(tlist);
 
-          return list;
+          return list1;
 
 
     }
-    @PostMapping("/eligibilityDetail")
+  /*  @PostMapping("/eligibilityDetail")
     public List<MemberInsuranceEligibility> eligibilityDetail(@RequestBody MemberInsuranceEligibility memberInsuranceEligibility) throws Throwable
     {
 
         List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByID(memberInsuranceEligibility.getMrnNumber());
         return list;
+    }*/
+
+    @PostMapping("/eligibilityDetail")
+    public List<Object> eligibilityDetail(@RequestBody Demographics demographics1) throws Throwable
+    {
+
+        List<Object> list1 =new ArrayList<>();
+
+
+        if(demographics1.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail().getEligibilityCheckSelected())
+        {
+        List<PrimaryInsuranceDetail> plist =primaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+        list1.addAll(plist);
+        }
+        if(demographics1.getInsuranceDetailByPolicy().getSecondaryInsuranceDetail().getEligibilityCheckSelected())
+        {
+            List<SecondaryInsuranceDetail> slist =secondaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+            list1.addAll(slist);
+        }
+        if(demographics1.getInsuranceDetailByPolicy().getTertiaryInsuranceDetail().getEligibilityCheckSelected())
+        {
+            List<TertiaryInsuranceDetail> tlist =tertiaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+            list1.addAll(tlist);
+        }
+        return list1;
     }
+
+
    private static final String HEADER1 = "Content-Disposition";
     private static final String HEADER_VAL_ATTACHMENT = "attachment; filename=";
     private static final String HEADER2 = "Content-Type";
