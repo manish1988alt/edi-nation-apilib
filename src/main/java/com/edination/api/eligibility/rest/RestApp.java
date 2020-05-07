@@ -81,6 +81,9 @@ public class RestApp implements Serializable {
     @PostMapping("/write")
     public ResponseEntity<?> createDemographics(@RequestBody Demographics demographics) throws Throwable {
         Demographics demographics1=new Demographics();
+
+        Optional<Demographics> optionalDemographics = Optional.ofNullable(demographics);
+
        // saveOperation(demographics);
         Boolean preserveWhitespace = false;
         String charSet = "utf-8";
@@ -89,25 +92,28 @@ public class RestApp implements Serializable {
         Boolean eancomS3 = false;
         String contentType = "application/json";
         StringBuilder out = new StringBuilder();
-        demographics1= service.get(demographics.getMrnNumber());
-        File file = new File("Hipaa-5010-270-GenericRequest.txt");
-        generateFile(demographics1,file);
-        //new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
-        String ackn=new SFTPFILE().fileUpload(file, demographics.getMrnNumber()+"_"+file.getName());
+        String ackn="";
+        String eligibility = "";
+        if (optionalDemographics.isPresent()) {
+            demographics1 = service.get(demographics.getMrnNumber());
+            File file = new File("Hipaa-5010-270-GenericRequest.txt");
+            generateFile(demographics1, file);
+            //new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
+             ackn = new SFTPFILE().fileUpload(file, demographics.getMrnNumber() + "_" + file.getName());
 
-        File f1=new File("Hipaa-5010-271-GenericResponse.txt");
-        new SFTPFILE().downloadFile(f1,demographics.getMrnNumber()+"_"+f1.getName());
-        List<X12Interchange>   list1= x12.read(f1, false, false, " ", " ");
-        System.out.println("Insertion method called");
-        String eligibility="";
-        ediDataElement272=  new exampleParseX12FileOne().insertOpertion271(f1,ediDataElement271,demographics1.getMrnNumber());
-        edi271Service.save(ediDataElement272);
-        List<EdiDataElement271> list2 =edi271Repository.findByMrnNumber(demographics.getMrnNumber());
+            File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
+            new SFTPFILE().downloadFile(f1, demographics.getMrnNumber() + "_" + f1.getName());
+            List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
+            System.out.println("Insertion method called");
 
-        for(EdiDataElement271 edi271:list2) {
-            eligibility=edi271.getEligibilityorBenefitInformation();
+            ediDataElement272 = new exampleParseX12FileOne().insertOpertion271(f1, ediDataElement271, demographics1.getMrnNumber());
+            edi271Service.save(ediDataElement272);
+            List<EdiDataElement271> list2 = edi271Repository.findByMrnNumber(demographics.getMrnNumber());
+
+            for (EdiDataElement271 edi271 : list2) {
+                eligibility = edi271.getEligibilityorBenefitInformation();
+            }
         }
-
         //List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
         //MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
         PrimaryInsuranceDetail Priinsurancedetail=null;
@@ -126,43 +132,57 @@ public class RestApp implements Serializable {
             memberinsurance2.setSecondaryInsuranceDetail(secondaryInsuranceDetail);
             memberinsurance2.setTertiaryInsuranceDetail(tertiaryInsuranceDetail);
               memberInsuranceRepository.save(memberinsurance2);*/
+
         boolean p=false;
         boolean vs=false;
         boolean t=false;
-        if(demographics.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail().getEligibilityCheckSelected()) {
-            p=true;
-            List<PrimaryInsuranceDetail> plist = primaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
-            for (PrimaryInsuranceDetail pl : plist) {
-                Priinsurancedetail = new PrimaryInsuranceDetail(pl.getPolicyNumber(),pl.getGroup_name(),pl.getInsurancePlanName(),pl.getInsurancePlanType(),pl.getInsuranceAddress(),pl.getStartDate(),pl.getEndDate(),pl.getMrnNumber(),pl.getCity(), pl.getState(),pl.getZipcode(),pl.getInsuredlastName(), pl.getInsuredfirstName(), pl.getInsuredmiddleName(),pl.getInsureddob(),pl.getInsuredsex(),pl.getStatusVerifiedDate(), eligibility,pl.getEligibilityCheckSelected(),pl.getSsn(),pl.getMop(),pl.getPatientRelationInsured());
-                primaryInsuranceDetailRepository.save(Priinsurancedetail);
-            }
-        }
+        Optional<InsuranceDetailByPolicy> optionalProject = Optional.ofNullable(demographics.getInsuranceDetailByPolicy());
+        if (optionalProject.isPresent()) {
+            Optional<PrimaryInsuranceDetail> primary = Optional.ofNullable(optionalProject.get().getPrimaryInsuranceDetail());
 
-        if(demographics.getInsuranceDetailByPolicy().getSecondaryInsuranceDetail().getEligibilityCheckSelected())
-        {
-            vs=true;
-            List<SecondaryInsuranceDetail> slist =secondaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
-            for(SecondaryInsuranceDetail sl:slist)
-            {
-                secondaryInsuranceDetail = new SecondaryInsuranceDetail(sl.getPolicyNumber(),sl.getGroup_name(),sl.getInsurancePlanName(),sl.getInsurancePlanType(),sl.getInsuranceAddress(),sl.getStartDate(),sl.getEndDate(),sl.getMrnNumber(),sl.getCity(),sl.getState(),sl.getZipcode(),sl.getInsuredlastName(), sl.getInsuredfirstName(),sl.getInsuredmiddleName(),sl.getInsureddob(),sl.getInsuredsex(),sl.getStatusVerifiedDate(), eligibility,sl.getEligibilityCheckSelected(),sl.getSsn(),sl.getMop(),sl.getPatientRelationInsured());
-                secondaryInsuranceDetailRepository.save(secondaryInsuranceDetail);
+            if (primary.isPresent()) {
+                if (primary.get().getEligibilityCheckSelected()) {
+                    p = true;
+                    List<PrimaryInsuranceDetail> plist = primaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+                    for (PrimaryInsuranceDetail pl : plist) {
+                        Priinsurancedetail = new PrimaryInsuranceDetail(pl.getPolicyNumber(), pl.getGroup_name(), pl.getInsurancePlanName(), pl.getInsurancePlanType(), pl.getInsuranceAddress(), pl.getStartDate(), pl.getEndDate(), pl.getMrnNumber(), pl.getCity(), pl.getState(), pl.getZipcode(), pl.getInsuredlastName(), pl.getInsuredfirstName(), pl.getInsuredmiddleName(), pl.getInsureddob(), pl.getInsuredsex(), pl.getStatusVerifiedDate(), eligibility, pl.getEligibilityCheckSelected(), pl.getSsn(), pl.getMop(), pl.getPatientRelationInsured());
+
+                    }
+                    primaryInsuranceDetailRepository.save(Priinsurancedetail);
+                }
             }
-        }
-        if(demographics.getInsuranceDetailByPolicy().getTertiaryInsuranceDetail().getEligibilityCheckSelected())
-        {
-            t=true;
-            List<TertiaryInsuranceDetail> tlist =tertiaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
-            for(TertiaryInsuranceDetail tl:tlist)
-            {
-                tertiaryInsuranceDetail = new TertiaryInsuranceDetail(tl.getPolicyNumber(),tl.getGroup_name(),tl.getInsurancePlanName(),tl.getInsurancePlanType(),tl.getInsuranceAddress(), tl.getStartDate(),tl.getEndDate(),tl.getMrnNumber(), tl.getCity(),tl.getState(),tl.getZipcode(),tl.getInsuredlastName(),tl.getInsuredfirstName(), tl.getInsuredmiddleName(),tl.getInsureddob(),tl.getInsuredsex(), tl.getStatusVerifiedDate(), eligibility,tl.getEligibilityCheckSelected(),tl.getSsn(),tl.getMop(),tl.getPatientRelationInsured());
-                tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
+
+            Optional<SecondaryInsuranceDetail> secondary = Optional.ofNullable(optionalProject.get().getSecondaryInsuranceDetail());
+
+            if (secondary.isPresent()) {
+                if (secondary.get().getEligibilityCheckSelected()) {
+                    vs = true;
+                    List<SecondaryInsuranceDetail> slist = secondaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+                    for (SecondaryInsuranceDetail sl : slist) {
+                        secondaryInsuranceDetail = new SecondaryInsuranceDetail(sl.getPolicyNumber(), sl.getGroup_name(), sl.getInsurancePlanName(), sl.getInsurancePlanType(), sl.getInsuranceAddress(), sl.getStartDate(), sl.getEndDate(), sl.getMrnNumber(), sl.getCity(), sl.getState(), sl.getZipcode(), sl.getInsuredlastName(), sl.getInsuredfirstName(), sl.getInsuredmiddleName(), sl.getInsureddob(), sl.getInsuredsex(), sl.getStatusVerifiedDate(), eligibility, sl.getEligibilityCheckSelected(), sl.getSsn(), sl.getMop(), sl.getPatientRelationInsured());
+
+                    }
+                    secondaryInsuranceDetailRepository.save(secondaryInsuranceDetail);
+                }
+            }
+            Optional<TertiaryInsuranceDetail> tertiary = Optional.ofNullable(optionalProject.get().getTertiaryInsuranceDetail());
+            if (tertiary.isPresent()) {
+                if (tertiary.get().getEligibilityCheckSelected()) {
+                    t = true;
+                    List<TertiaryInsuranceDetail> tlist = tertiaryInsuranceDetailRepository.findByMrnNumber(demographics1.getMrnNumber());
+                    for (TertiaryInsuranceDetail tl : tlist) {
+                        tertiaryInsuranceDetail = new TertiaryInsuranceDetail(tl.getPolicyNumber(), tl.getGroup_name(), tl.getInsurancePlanName(), tl.getInsurancePlanType(), tl.getInsuranceAddress(), tl.getStartDate(), tl.getEndDate(), tl.getMrnNumber(), tl.getCity(), tl.getState(), tl.getZipcode(), tl.getInsuredlastName(), tl.getInsuredfirstName(), tl.getInsuredmiddleName(), tl.getInsureddob(), tl.getInsuredsex(), tl.getStatusVerifiedDate(), eligibility, tl.getEligibilityCheckSelected(), tl.getSsn(), tl.getMop(), tl.getPatientRelationInsured());
+
+                    }
+                    tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
+                }
             }
         }
         VerifyFlag flag=new VerifyFlag(demographics.getMrnNumber(),p,vs,t);
         verifyFlagService.save(flag);
 
 
-        for(X12Interchange l:list1) {
+    /*    for(X12Interchange l:list1) {
 
             for(X12Group s: l.getGroups())
             {
@@ -170,7 +190,7 @@ public class RestApp implements Serializable {
 
             }
 
-        }
+        }*/
 
 
      /*   FileOutputStream outputStream = new FileOutputStream("271File-containt.txt");
@@ -299,27 +319,36 @@ public void saveOperation( Demographics demographics)
         boolean checks=false;
         boolean checkt=false;
 
-        if(demographics1.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail().getEligibilityCheckSelected())
-        {
-        List<PrimaryInsuranceDetail> plist =primaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
-        list1.addAll(plist);
-        checkp=true;
-        }
+        Optional<InsuranceDetailByPolicy> optionalProject = Optional.ofNullable(demographics1.getInsuranceDetailByPolicy());
+        if (optionalProject.isPresent()) {
+            Optional<PrimaryInsuranceDetail> primary = Optional.ofNullable(optionalProject.get().getPrimaryInsuranceDetail());
 
-        if(demographics1.getInsuranceDetailByPolicy().getSecondaryInsuranceDetail().getEligibilityCheckSelected())
-        {
-            List<SecondaryInsuranceDetail> slist =secondaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
-            list1.addAll(slist);
-            checks=true;
-        }
+            if (primary.isPresent()) {
+                if (primary.get().getEligibilityCheckSelected()) {
+                    List<PrimaryInsuranceDetail> plist = primaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+                    list1.addAll(plist);
+                    checkp = true;
+                }
+            }
+            Optional<SecondaryInsuranceDetail> secondary = Optional.ofNullable(optionalProject.get().getSecondaryInsuranceDetail());
 
-        if(demographics1.getInsuranceDetailByPolicy().getTertiaryInsuranceDetail().getEligibilityCheckSelected())
-        {
-            List<TertiaryInsuranceDetail> tlist =tertiaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
-            list1.addAll(tlist);
-            checkt=true;
-        }
+            if (secondary.isPresent()) {
+                if (secondary.get().getEligibilityCheckSelected()) {
+                    List<SecondaryInsuranceDetail> slist = secondaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+                    list1.addAll(slist);
+                    checks = true;
+                }
+            }
 
+            Optional<TertiaryInsuranceDetail> tertiary = Optional.ofNullable(optionalProject.get().getTertiaryInsuranceDetail());
+            if (tertiary.isPresent()) {
+                if (tertiary.get().getEligibilityCheckSelected()) {
+                    List<TertiaryInsuranceDetail> tlist = tertiaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
+                    list1.addAll(tlist);
+                    checkt = true;
+                }
+            }
+        }
         if(checkp==false) {
             if (flagList.getPrimaryflag()) {
                 List<PrimaryInsuranceDetail> plist = primaryInsuranceDetailRepository.findByID(demographics1.getMrnNumber());
