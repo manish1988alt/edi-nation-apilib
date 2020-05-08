@@ -136,6 +136,8 @@ public class RestApp implements Serializable {
         boolean p=false;
         boolean vs=false;
         boolean t=false;
+        VerifyFlag flagList=verifyFlagService.get(demographics1.getMrnNumber());
+
         Optional<InsuranceDetailByPolicy> optionalProject = Optional.ofNullable(demographics.getInsuranceDetailByPolicy());
         if (optionalProject.isPresent()) {
             Optional<PrimaryInsuranceDetail> primary = Optional.ofNullable(optionalProject.get().getPrimaryInsuranceDetail());
@@ -150,6 +152,14 @@ public class RestApp implements Serializable {
                     }
                     primaryInsuranceDetailRepository.save(Priinsurancedetail);
                 }
+                else
+                {
+                    p=flagList.getPrimaryflag();
+                }
+            }
+            else
+            {
+                p=flagList.getPrimaryflag();
             }
 
             Optional<SecondaryInsuranceDetail> secondary = Optional.ofNullable(optionalProject.get().getSecondaryInsuranceDetail());
@@ -164,6 +174,14 @@ public class RestApp implements Serializable {
                     }
                     secondaryInsuranceDetailRepository.save(secondaryInsuranceDetail);
                 }
+                else
+                {
+                    vs=flagList.getSecondaryFlag();
+                }
+            }
+            else
+            {
+                vs=flagList.getSecondaryFlag();
             }
             Optional<TertiaryInsuranceDetail> tertiary = Optional.ofNullable(optionalProject.get().getTertiaryInsuranceDetail());
             if (tertiary.isPresent()) {
@@ -176,7 +194,21 @@ public class RestApp implements Serializable {
                     }
                     tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
                 }
+                else
+                {
+                    t=flagList.getTertiaryFlag();
+                }
             }
+            else
+            {
+                t=flagList.getTertiaryFlag();
+            }
+        }
+        else
+        {
+            p=flagList.getPrimaryflag();
+            vs=flagList.getSecondaryFlag();
+            t=flagList.getTertiaryFlag();
         }
         VerifyFlag flag=new VerifyFlag(demographics.getMrnNumber(),p,vs,t);
         verifyFlagService.save(flag);
