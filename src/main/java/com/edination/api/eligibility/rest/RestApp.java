@@ -103,7 +103,7 @@ public class RestApp implements Serializable {
 
             File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
             new SFTPFILE().downloadFile(f1, demographics.getMrnNumber() + "_" + f1.getName());
-            List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
+          //  List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
             System.out.println("Insertion method called");
 
             ediDataElement272 = new exampleParseX12FileOne().insertOpertion271(f1, ediDataElement271, demographics1.getMrnNumber());
