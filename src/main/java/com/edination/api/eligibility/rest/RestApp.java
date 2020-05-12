@@ -136,7 +136,7 @@ public class RestApp implements Serializable {
         boolean p=false;
         boolean vs=false;
         boolean t=false;
-        VerifyFlag flagList=verifyFlagService.get(demographics1.getMrnNumber());
+       // VerifyFlag flagList=verifyFlagService.get(demographics1.getMrnNumber());
 
         Optional<InsuranceDetailByPolicy> optionalProject = Optional.ofNullable(demographics.getInsuranceDetailByPolicy());
         if (optionalProject.isPresent()) {
@@ -152,16 +152,16 @@ public class RestApp implements Serializable {
                     }
                     primaryInsuranceDetailRepository.save(Priinsurancedetail);
                 }
-                else
+               /* else
                 {
                     p=flagList.getPrimaryflag();
-                }
+                }*/
             }
-            else
+          /*  else
             {
                 p=flagList.getPrimaryflag();
             }
-
+*/
             Optional<SecondaryInsuranceDetail> secondary = Optional.ofNullable(optionalProject.get().getSecondaryInsuranceDetail());
 
             if (secondary.isPresent()) {
@@ -174,15 +174,15 @@ public class RestApp implements Serializable {
                     }
                     secondaryInsuranceDetailRepository.save(secondaryInsuranceDetail);
                 }
-                else
+                /*else
                 {
                     vs=flagList.getSecondaryFlag();
-                }
+                }*/
             }
-            else
+            /*else
             {
                 vs=flagList.getSecondaryFlag();
-            }
+            }*/
             Optional<TertiaryInsuranceDetail> tertiary = Optional.ofNullable(optionalProject.get().getTertiaryInsuranceDetail());
             if (tertiary.isPresent()) {
                 if (tertiary.get().getEligibilityCheckSelected()) {
@@ -194,22 +194,22 @@ public class RestApp implements Serializable {
                     }
                     tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
                 }
-                else
+               /* else
                 {
                     t=flagList.getTertiaryFlag();
-                }
+                }*/
             }
-            else
+           /* else
             {
                 t=flagList.getTertiaryFlag();
-            }
+            }*/
         }
-        else
+        /*else
         {
             p=flagList.getPrimaryflag();
             vs=flagList.getSecondaryFlag();
             t=flagList.getTertiaryFlag();
-        }
+        }*/
         VerifyFlag flag=new VerifyFlag(demographics.getMrnNumber(),p,vs,t);
         verifyFlagService.save(flag);
 
