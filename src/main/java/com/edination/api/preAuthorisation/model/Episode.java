@@ -1,14 +1,14 @@
 package com.edination.api.preAuthorisation.model;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "Episode")
 public class Episode {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
     private String mrnNumber;
     private String	episodeType;
     private String payorType;
@@ -93,10 +93,27 @@ public class Episode {
         return admissionDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPreAuthorisationStatus() {
+        return preAuthorisationStatus;
+    }
+
+    public void setPreAuthorisationStatus(String preAuthorisationStatus) {
+        this.preAuthorisationStatus = preAuthorisationStatus;
+    }
+
     @Override
     public String toString() {
         return "Episode{" +
-                "mrnNumber='" + mrnNumber + '\'' +
+                "id=" + id +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", episodeType='" + episodeType + '\'' +
                 ", payorType='" + payorType + '\'' +
                 ", preauthFormStatus='" + preauthFormStatus + '\'' +
@@ -106,8 +123,4 @@ public class Episode {
                 ", admissionDate=" + admissionDate +
                 '}';
     }
-
-
-
-
 }

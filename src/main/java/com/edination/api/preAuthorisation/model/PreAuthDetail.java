@@ -5,9 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "PreAuthDetail")
 public class PreAuthDetail {
-
     @Id
-    private String preAuthId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int preAuthId;
+
+    //private String preAuthId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "preAuthMrnNumber")
@@ -19,15 +21,11 @@ public class PreAuthDetail {
 
     public PreAuthDetail(){}
 
-    public PreAuthDetail(String preAuthId) {
-        this.preAuthId = preAuthId;
-    }
-
-    public String getPreAuthId() {
+    public int getPreAuthId() {
         return preAuthId;
     }
 
-    public void setPreAuthId(String preAuthId) {
+    public void setPreAuthId(int preAuthId) {
         this.preAuthId = preAuthId;
     }
 

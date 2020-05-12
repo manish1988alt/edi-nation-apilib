@@ -1,8 +1,6 @@
 package com.edination.api.preAuthorisation.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -10,6 +8,9 @@ import java.util.Date;
 public class PreAuthDemographics {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
     private String mrnNumber;
     private String firstName;
     private String lastName;
@@ -30,6 +31,14 @@ public class PreAuthDemographics {
         this.gender = gender;
         this.dob = dob;
         this.ssn = ssn;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMrnNumber() {
@@ -99,7 +108,8 @@ public class PreAuthDemographics {
     @Override
     public String toString() {
         return "PreAuthDemographics{" +
-                "mrnNumber='" + mrnNumber + '\'' +
+                "id=" + id +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
