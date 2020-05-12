@@ -1,31 +1,44 @@
 package com.edination.api.preAuthorisation.model;
 
-import sun.util.calendar.LocalGregorianCalendar;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "AdmissionDetail")
 public class AdmissionDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
+    private String mrnNumber;
     private String	requestType;
-	private LocalGregorianCalendar.Date admissionDate;
-    private LocalGregorianCalendar.Date	dischargeDate;
+	private Date admissionDate;
+    private Date	dischargeDate;
     private String	referringPhysician;
     private String	primaryDiagnosis;
     private String	primaryDiagnosisDescription;
-    private String admissionStatus;
+
 
     public AdmissionDetail(){}
 
-    public AdmissionDetail(String requestType, LocalGregorianCalendar.Date admissionDate, LocalGregorianCalendar.Date dischargeDate, String referringPhysician, String primaryDiagnosis, String primaryDiagnosisDescription, String admissionStatus) {
+    public AdmissionDetail(String mrnNumber, String requestType, Date admissionDate, Date dischargeDate, String referringPhysician, String primaryDiagnosis, String primaryDiagnosisDescription) {
+        this.mrnNumber = mrnNumber;
         this.requestType = requestType;
         this.admissionDate = admissionDate;
         this.dischargeDate = dischargeDate;
         this.referringPhysician = referringPhysician;
         this.primaryDiagnosis = primaryDiagnosis;
         this.primaryDiagnosisDescription = primaryDiagnosisDescription;
-        this.admissionStatus = admissionStatus;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getRequestType() {
@@ -36,19 +49,19 @@ public class AdmissionDetail {
         this.requestType = requestType;
     }
 
-    public LocalGregorianCalendar.Date getAdmissionDate() {
+    public Date getAdmissionDate() {
         return admissionDate;
     }
 
-    public void setAdmissionDate(LocalGregorianCalendar.Date admissionDate) {
+    public void setAdmissionDate(Date admissionDate) {
         this.admissionDate = admissionDate;
     }
 
-    public LocalGregorianCalendar.Date getDischargeDate() {
+    public Date getDischargeDate() {
         return dischargeDate;
     }
 
-    public void setDischargeDate(LocalGregorianCalendar.Date dischargeDate) {
+    public void setDischargeDate(Date dischargeDate) {
         this.dischargeDate = dischargeDate;
     }
 
@@ -76,24 +89,25 @@ public class AdmissionDetail {
         this.primaryDiagnosisDescription = primaryDiagnosisDescription;
     }
 
-    public String getAdmissionStatus() {
-        return admissionStatus;
+    public String getMrnNumber() {
+        return mrnNumber;
     }
 
-    public void setAdmissionStatus(String admissionStatus) {
-        this.admissionStatus = admissionStatus;
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     @Override
     public String toString() {
         return "AdmissionDetail{" +
-                "requestType='" + requestType + '\'' +
+                "id=" + id +
+                ", mrnNumber='" + mrnNumber + '\'' +
+                ", requestType='" + requestType + '\'' +
                 ", admissionDate=" + admissionDate +
                 ", dischargeDate=" + dischargeDate +
                 ", referringPhysician='" + referringPhysician + '\'' +
                 ", primaryDiagnosis='" + primaryDiagnosis + '\'' +
                 ", primaryDiagnosisDescription='" + primaryDiagnosisDescription + '\'' +
-                ", admissionStatus='" + admissionStatus + '\'' +
                 '}';
     }
 }
