@@ -2,10 +2,7 @@ package com.edination.api.preAuthorisation.rest;
 
 import com.edination.api.Dao.*;
 import com.edination.api.eligibility.model.Demographics;
-import com.edination.api.preAuthorisation.model.Episode;
-import com.edination.api.preAuthorisation.model.HomeHealthPreAuthorizationForm;
-import com.edination.api.preAuthorisation.model.PreAuthDemographics;
-import com.edination.api.preAuthorisation.model.PreAuthDetail;
+import com.edination.api.preAuthorisation.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +18,8 @@ import java.util.List;
 public class PreAuthRestApp implements Serializable {
     @Autowired
     PreAuthService preAuthService;
+    @Autowired
+    RequestServiceRepository requestServiceRepository;
 
     @Autowired
     HomeHealthPreAuthFormService homeHealthPreAuthFormService;
@@ -37,9 +36,8 @@ public class PreAuthRestApp implements Serializable {
     @PostMapping("/preauthview")
     public List<HomeHealthPreAuthorizationForm> preAuthView(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
     {
+     List<HomeHealthPreAuthorizationForm> list=  homeHealthPreAuthFormRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
 
-        //List<HomeHealthPreAuthorizationForm> list=homeHealthPreAuthFormService.listAll();
-        List<HomeHealthPreAuthorizationForm> list=  homeHealthPreAuthFormRepository.findByMrnNumber("P100");
-        return   list;
+    return list;
     }
 }

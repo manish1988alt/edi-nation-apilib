@@ -3,26 +3,15 @@ package com.edination.api.preAuthorisation.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RequestServices")
+@Table(name = "RequestService")
 public class RequestService {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String mrnNumber;
-    private int revenueCode;
-    private int visits;
-    private int units;
-    private boolean homeHealthAide;
-    private boolean medicalSocialWork;
-    private boolean occupationTherapy;
-    private boolean skilledNursing;
-    private boolean physicalTherapy;
-    private boolean speechPathology;
 
-
-/*    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "homeHealthMrnNumber")
     private HomeHealthAide homeHealthAide;
 
@@ -44,22 +33,13 @@ public class RequestService {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "speechPathologyMrnNumber")
-    SpeechPathology speechPathology;*/
+    SpeechPathology speechPathology;
 
     public RequestService() {
     }
 
-    public RequestService(String mrnNumber, int revenueCode, int visits, int units, boolean homeHealthAide, boolean medicalSocialWork, boolean occupationTherapy, boolean skilledNursing, boolean physicalTherapy, boolean speechPathology) {
+    public RequestService(String mrnNumber) {
         this.mrnNumber = mrnNumber;
-        this.revenueCode = revenueCode;
-        this.visits = visits;
-        this.units = units;
-        this.homeHealthAide = homeHealthAide;
-        this.medicalSocialWork = medicalSocialWork;
-        this.occupationTherapy = occupationTherapy;
-        this.skilledNursing = skilledNursing;
-        this.physicalTherapy = physicalTherapy;
-        this.speechPathology = speechPathology;
     }
 
     public String getMrnNumber() {
@@ -70,6 +50,14 @@ public class RequestService {
         this.mrnNumber = mrnNumber;
     }
 
+    public HomeHealthAide getHomeHealthAide() {
+        return homeHealthAide;
+    }
+
+    public void setHomeHealthAide(HomeHealthAide homeHealthAide) {
+        this.homeHealthAide = homeHealthAide;
+    }
+
     public int getId() {
         return id;
     }
@@ -78,135 +66,50 @@ public class RequestService {
         this.id = id;
     }
 
-    public int getRevenueCode() {
-        return revenueCode;
-    }
-
-    public void setRevenueCode(int revenueCode) {
-        this.revenueCode = revenueCode;
-    }
-
-    public int getVisits() {
-        return visits;
-    }
-
-    public void setVisits(int visits) {
-        this.visits = visits;
-    }
-
-    public int getUnits() {
-        return units;
-    }
-
-    public void setUnits(int units) {
-        this.units = units;
-    }
-
-    public boolean isHomeHealthAide() {
-        return homeHealthAide;
-    }
-
-    public void setHomeHealthAide(boolean homeHealthAide) {
-        this.homeHealthAide = homeHealthAide;
-    }
-
-    public boolean isMedicalSocialWork() {
+    public MedicalSocialWork getMedicalSocialWork() {
         return medicalSocialWork;
     }
 
-    public void setMedicalSocialWork(boolean medicalSocialWork) {
+    public void setMedicalSocialWork(MedicalSocialWork medicalSocialWork) {
         this.medicalSocialWork = medicalSocialWork;
     }
 
-    public boolean isOccupationTherapy() {
+    public OccupationTherapy getOccupationTherapy() {
         return occupationTherapy;
     }
 
-    public void setOccupationTherapy(boolean occupationTherapy) {
+    public void setOccupationTherapy(OccupationTherapy occupationTherapy) {
         this.occupationTherapy = occupationTherapy;
     }
 
-    public boolean isSkilledNursing() {
+    public SkilledNursing getSkilledNursing() {
         return skilledNursing;
     }
 
-    public void setSkilledNursing(boolean skilledNursing) {
+    public void setSkilledNursing(SkilledNursing skilledNursing) {
         this.skilledNursing = skilledNursing;
     }
 
-    public boolean isPhysicalTherapy() {
+    public PhysicalTherapy getPhysicalTherapy() {
         return physicalTherapy;
     }
 
-    public void setPhysicalTherapy(boolean physicalTherapy) {
+    public void setPhysicalTherapy(PhysicalTherapy physicalTherapy) {
         this.physicalTherapy = physicalTherapy;
     }
 
-    public boolean isSpeechPathology() {
+    public SpeechPathology getSpeechPathology() {
         return speechPathology;
     }
 
-    public void setSpeechPathology(boolean speechPathology) {
+    public void setSpeechPathology(SpeechPathology speechPathology) {
         this.speechPathology = speechPathology;
     }
-
-    /*  public HomeHealthAide getHomeHealthAide() {
-            return homeHealthAide;
-        }
-
-        public void setHomeHealthAide(HomeHealthAide homeHealthAide) {
-            this.homeHealthAide = homeHealthAide;
-        }
-
-        public MedicalSocialWork getMedicalSocialWork() {
-            return medicalSocialWork;
-        }
-
-        public void setMedicalSocialWork(MedicalSocialWork medicalSocialWork) {
-            this.medicalSocialWork = medicalSocialWork;
-        }
-
-        public OccupationTherapy getOccupationTherapy() {
-            return occupationTherapy;
-        }
-
-        public void setOccupationTherapy(OccupationTherapy occupationTherapy) {
-            this.occupationTherapy = occupationTherapy;
-        }
-
-        public SkilledNursing getSkilledNursing() {
-            return skilledNursing;
-        }
-
-        public void setSkilledNursing(SkilledNursing skilledNursing) {
-            this.skilledNursing = skilledNursing;
-        }
-
-        public PhysicalTherapy getPhysicalTherapy() {
-            return physicalTherapy;
-        }
-
-        public void setPhysicalTherapy(PhysicalTherapy physicalTherapy) {
-            this.physicalTherapy = physicalTherapy;
-        }
-
-        public SpeechPathology getSpeechPathology() {
-            return speechPathology;
-        }
-
-        public void setSpeechPathology(SpeechPathology speechPathology) {
-            this.speechPathology = speechPathology;
-        }
-    */
 
     @Override
     public String toString() {
         return "RequestService{" +
-                "id=" + id +
-                ", mrnNumber='" + mrnNumber + '\'' +
-                ", revenueCode=" + revenueCode +
-                ", visits=" + visits +
-                ", units=" + units +
+                "mrnNumber='" + mrnNumber + '\'' +
                 ", homeHealthAide=" + homeHealthAide +
                 ", medicalSocialWork=" + medicalSocialWork +
                 ", occupationTherapy=" + occupationTherapy +
