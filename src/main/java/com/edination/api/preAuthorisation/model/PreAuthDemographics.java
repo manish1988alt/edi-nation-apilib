@@ -7,10 +7,11 @@ import java.util.Date;
 @Table(name = "PreAuthDemographics")
 public class PreAuthDemographics {
 
-    @Id
+/*    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int id;*/
 
+    @Id
     private String mrnNumber;
     private String firstName;
     private String lastName;
@@ -33,13 +34,13 @@ public class PreAuthDemographics {
         this.ssn = ssn;
     }
 
-    public int getId() {
+/*    public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     public String getMrnNumber() {
         return mrnNumber;
@@ -108,7 +109,6 @@ public class PreAuthDemographics {
     @Override
     public String toString() {
         return "PreAuthDemographics{" +
-                "id=" + id +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
