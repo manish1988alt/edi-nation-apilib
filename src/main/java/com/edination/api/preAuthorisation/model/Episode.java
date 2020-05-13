@@ -71,14 +71,14 @@ public class Episode {
         this.mrnNumber = mrnNumber;
     }
 
-    public String getFormStatus() {
+    /*public String getFormStatus() {
         return preAuthorisationStatus;
     }
 
     public void setFormStatus(String preAuthorisationStatus) {
         this.preAuthorisationStatus = preAuthorisationStatus;
     }
-
+*/
     public String getAdmissionStatus() {
         return admissionStatus;
     }

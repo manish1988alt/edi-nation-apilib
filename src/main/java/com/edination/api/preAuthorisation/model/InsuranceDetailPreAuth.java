@@ -41,7 +41,7 @@ public class InsuranceDetailPreAuth {
         this.mrnNumber = mrnNumber;
     }
 
-    public String isInsuranceTypeSelcted() {
+    public String getInsuranceTypeSelcted() {
         return insuranceTypeSelcted;
     }
 
