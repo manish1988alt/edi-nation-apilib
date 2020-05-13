@@ -4,10 +4,7 @@ import com.edination.api.Dao.*;
 import com.edination.api.eligibility.model.Demographics;
 import com.edination.api.preAuthorisation.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class PreAuthRestApp implements Serializable {
     }
 
     @PostMapping("/preauthview")
-    public List<HomeHealthPreAuthorizationForm> preAuthView(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
+    public List<HomeHealthPreAuthorizationForm> preAuthView(@RequestBody  HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
     {
      List<HomeHealthPreAuthorizationForm> list=  homeHealthPreAuthFormRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
 
