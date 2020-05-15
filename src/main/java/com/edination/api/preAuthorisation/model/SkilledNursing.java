@@ -66,7 +66,7 @@ public class SkilledNursing {
         this.units = units;
     }
 
-    public boolean isSkilledNursing() {
+    public boolean getSkilledNursing() {
         return skilledNursing;
     }
 

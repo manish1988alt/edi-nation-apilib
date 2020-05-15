@@ -42,7 +42,7 @@ public class PhysicalTherapy {
         this.revenueCode = revenueCode;
     }
 
-    public boolean isPhysicalTherapy() {
+    public boolean getPhysicalTherapy() {
         return PhysicalTherapy;
     }
 

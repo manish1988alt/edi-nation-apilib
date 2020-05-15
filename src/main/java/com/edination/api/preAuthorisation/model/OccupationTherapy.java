@@ -66,7 +66,7 @@ public class OccupationTherapy {
         this.units = units;
     }
 
-    public boolean isOccupationTherapy() {
+    public boolean getOccupationTherapy() {
         return occupationTherapy;
     }
 

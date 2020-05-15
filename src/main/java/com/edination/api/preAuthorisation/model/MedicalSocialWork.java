@@ -65,7 +65,7 @@ public class MedicalSocialWork {
         this.units = units;
     }
 
-    public boolean isMedicalSocialWork() {
+    public boolean getMedicalSocialWork() {
         return medicalSocialWork;
     }
 

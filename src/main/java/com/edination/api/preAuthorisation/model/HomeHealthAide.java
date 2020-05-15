@@ -58,7 +58,7 @@ public class HomeHealthAide {
         this.units = units;
     }
 
-    public boolean isHomeHealthAide() {
+    public boolean getHomeHealthAide() {
         return homeHealthAide;
     }
 

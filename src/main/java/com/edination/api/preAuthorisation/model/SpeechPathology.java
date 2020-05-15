@@ -65,7 +65,7 @@ public class SpeechPathology {
         this.units = units;
     }
 
-    public boolean isSpeechPathology() {
+    public boolean getSpeechPathology() {
         return speechPathology;
     }
 
