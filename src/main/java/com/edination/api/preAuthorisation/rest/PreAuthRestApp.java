@@ -24,7 +24,8 @@ public class PreAuthRestApp implements Serializable {
     PreAuthRepository preAuthRepository;
     @Autowired
     RequestServiceRepository requestServiceRepository;
-
+@Autowired
+PreAuthDemographicService preAuthDemographicService;
     @Autowired
     HomeHealthPreAuthFormService homeHealthPreAuthFormService;
     @Autowired
@@ -32,9 +33,14 @@ public class PreAuthRestApp implements Serializable {
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
     {
-
+        List<PreAuthDetail> list=new ArrayList<>();
+        List<PreAuthDemographics> authDemographicsList=preAuthDemographicService.listAll();
+        for(PreAuthDemographics preAuthDemographics:authDemographicsList)
+        {
+            list.addAll(preAuthRepository.findByID(preAuthDemographics.getMrnNumber()));
+        }
   // List<PreAuthDetail> list=preAuthService.listAll();
-        List<PreAuthDetail> list=   preAuthRepository.findByID();
+
         return   list;
     }
 

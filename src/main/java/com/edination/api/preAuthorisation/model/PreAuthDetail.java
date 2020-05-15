@@ -9,7 +9,7 @@ public class PreAuthDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int preAuthId;
 
-    //private String preAuthId;
+    private String mrnNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "preAuthMrnNumber")
@@ -21,13 +21,25 @@ public class PreAuthDetail {
 
     public PreAuthDetail(){}
 
+    public PreAuthDetail(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
     public int getPreAuthId() {
         return preAuthId;
     }
-
     public void setPreAuthId(int preAuthId) {
         this.preAuthId = preAuthId;
     }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
 
     public PreAuthDemographics getPreAuthDemographics() {
         return preAuthDemographics;
@@ -44,13 +56,14 @@ public class PreAuthDetail {
     public void setEpisode(Episode episode) {
         this.episode = episode;
     }
-
     @Override
     public String toString() {
         return "PreAuthDetail{" +
-                "preAuthId='" + preAuthId + '\'' +
+                "preAuthId=" + preAuthId +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", preAuthDemographics=" + preAuthDemographics +
                 ", episode=" + episode +
                 '}';
     }
+
 }

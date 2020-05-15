@@ -37,7 +37,7 @@ public class RequestFor {
         this.id = id;
     }
 
-    public boolean isNewadmissionService() {
+    public boolean getNewadmissionService() {
         return newadmissionService;
     }
 

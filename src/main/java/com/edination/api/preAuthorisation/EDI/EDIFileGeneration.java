@@ -180,9 +180,11 @@ public class EDIFileGeneration {
 
         s = x12.addSegment();
         s.addElement("UM");
-        s.addElement("AR");
-        s.addElement("I");
-        s.addElement("12");
+        s.addElement("HS");
+        if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
+         s.addElement("I");
+        }
+        s.addElement("A9");
         s.addElement("32:B");
        // s.addElement("B");
        /* s.addElement("4");
@@ -288,7 +290,18 @@ public class EDIFileGeneration {
             s.addElement("472");
             s.addElement("D8");
             s.addElement("20170406");
-            s = x12.addSegment();
+         s = x12.addSegment();
+         s.addElement("HSD");
+         s.addElement("VS");
+         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getVisits());
+         s.addElement(visit);
+         s.addElement("DA");
+         s.addElement("1");
+         s.addElement("34");
+         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getUnits());
+         s.addElement(unit);
+
+         s = x12.addSegment();
             s.addElement("PWK");
             s.addElement("M1");
             s.addElement("EL");
@@ -321,6 +334,16 @@ public class EDIFileGeneration {
             s.addElement("472");
             s.addElement("D8");
             s.addElement("20170406");
+         s = x12.addSegment();
+         s.addElement("HSD");
+         s.addElement("VS");
+         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getVisits());
+         s.addElement(visit);
+         s.addElement("DA");
+         s.addElement("1");
+         s.addElement("34");
+         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getUnits());
+         s.addElement(unit);
             s = x12.addSegment();
             s.addElement("PWK");
             s.addElement("M1");
@@ -354,6 +377,16 @@ public class EDIFileGeneration {
             s.addElement("472");
             s.addElement("D8");
             s.addElement("20170406");
+         s = x12.addSegment();
+         s.addElement("HSD");
+         s.addElement("VS");
+         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getVisits());
+         s.addElement(visit);
+         s.addElement("DA");
+         s.addElement("1");
+         s.addElement("34");
+         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getUnits());
+         s.addElement(unit);
             s = x12.addSegment();
             s.addElement("PWK");
             s.addElement("M1");
