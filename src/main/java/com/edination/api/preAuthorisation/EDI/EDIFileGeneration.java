@@ -184,6 +184,12 @@ public class EDIFileGeneration {
         if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
          s.addElement("I");
         }
+        if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().isServiceflag()) {
+            s.addElement("4");
+        }
+        if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().isServiceflag()) {
+            s.addElement("R");
+        }
         s.addElement("A9");
         s.addElement("32:B");
        // s.addElement("B");
