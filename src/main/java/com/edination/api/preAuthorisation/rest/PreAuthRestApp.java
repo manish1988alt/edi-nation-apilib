@@ -322,6 +322,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
     homeHealthPreAuthorizationForm1.setRequestFor(requestFor);
 
     RequestService requestService =new RequestService();
+    requestService.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMrnNumber());
     if(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide())
     {
         HomeHealthAide hha=new   HomeHealthAide();
