@@ -6,6 +6,9 @@ import com.edination.api.eligibility.EDIFile.X12Simple;
 import com.edination.api.eligibility.model.Demographics;
 import com.edination.api.preAuthorisation.model.HomeHealthPreAuthorizationForm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EDIFileGeneration {
     public EDIFileGeneration(){}
     public String generateFile(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
@@ -181,16 +184,8 @@ public class EDIFileGeneration {
         s = x12.addSegment();
         s.addElement("UM");
         s.addElement("HS");
-        if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
-         s.addElement("I");
-        }
-        if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().isServiceflag()) {
-            s.addElement("4");
-        }
-        if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().isServiceflag()) {
-            s.addElement("R");
-        }
-        s.addElement("A9");
+        s.addElement("I");
+         s.addElement("A9");
         s.addElement("32:B");
        // s.addElement("B");
        /* s.addElement("4");
@@ -273,137 +268,253 @@ public class EDIFileGeneration {
         s.addElement("NC");
         s.addElement("27705");
 
-        if(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide())
-        {
-
+        List<String> rl=new ArrayList<>();
+        if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
+            rl.add("N");
         }
-        if(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy())
-        {
-
-            s = x12.addSegment();
-            s.addElement("HL");
-            s.addElement("6");
-            s.addElement("5");
-            s.addElement("SS");
-            s.addElement("0");
-            s = x12.addSegment();
-            s.addElement("UM");
-            s.addElement("HS");
-            s.addElement("N");
-            s.addElement("AD");
-            s = x12.addSegment();
-            s.addElement("DTP");
-            s.addElement("472");
-            s.addElement("D8");
-            s.addElement("20170406");
-         s = x12.addSegment();
-         s.addElement("HSD");
-         s.addElement("VS");
-         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getVisits());
-         s.addElement(visit);
-         s.addElement("DA");
-         s.addElement("1");
-         s.addElement("34");
-         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getUnits());
-         s.addElement(unit);
-
-         s = x12.addSegment();
-            s.addElement("PWK");
-            s.addElement("M1");
-            s.addElement("EL");
-            s.addElement("AC");
-            s.addElement("102030405060");
-            s = x12.addSegment();
-            s.addElement("MSG");
-            s.addElement("A");
-
+        if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag()) {
+            rl.add("4");
         }
-        if(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork())
-        {
+        if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag()) {
+            rl.add("R");
+        }
 
-        }
-        if(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy())
-        {
-            s = x12.addSegment();
-            s.addElement("HL");
-            s.addElement("7");
-            s.addElement("5");
-            s.addElement("SS");
-            s.addElement("0");
-            s = x12.addSegment();
-            s.addElement("UM");
-            s.addElement("HS");
-            s.addElement("4");
-            s.addElement("PT");
-            s = x12.addSegment();
-            s.addElement("DTP");
-            s.addElement("472");
-            s.addElement("D8");
-            s.addElement("20170406");
-         s = x12.addSegment();
-         s.addElement("HSD");
-         s.addElement("VS");
-         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getVisits());
-         s.addElement(visit);
-         s.addElement("DA");
-         s.addElement("1");
-         s.addElement("34");
-         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getUnits());
-         s.addElement(unit);
-            s = x12.addSegment();
-            s.addElement("PWK");
-            s.addElement("M1");
-            s.addElement("EL");
-            s.addElement(" ");
-            s.addElement("AC");
-            s.addElement("222");
-            s = x12.addSegment();
-            s.addElement("MSG");
-            s.addElement("A");
-        }
-        if(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing())
-        {
 
-        }
-        if(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology())
-        {
+        for(String request:rl) {
+            if (homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide()) {
                 s = x12.addSegment();
-            s.addElement("HL");
-            s.addElement("8");
-            s.addElement("5");
-            s.addElement("SS");
-            s.addElement("0");
-            s = x12.addSegment();
-            s.addElement("UM");
-            s.addElement("HS");
-            s.addElement("R");
-            s.addElement("AF");
-            s = x12.addSegment();
-            s.addElement("DTP");
-            s.addElement("472");
-            s.addElement("D8");
-            s.addElement("20170406");
-         s = x12.addSegment();
-         s.addElement("HSD");
-         s.addElement("VS");
-         String visit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getVisits());
-         s.addElement(visit);
-         s.addElement("DA");
-         s.addElement("1");
-         s.addElement("34");
-         String unit=String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getUnits());
-         s.addElement(unit);
-            s = x12.addSegment();
-            s.addElement("PWK");
-            s.addElement("M1");
-            s.addElement("EL");
-            s.addElement(" ");
-            s.addElement("AC");
-            s.addElement("987457");
-            s = x12.addSegment();
-            s.addElement("MSG");
-            s.addElement("A");
+                s.addElement("HL");
+                s.addElement("6");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);
+                s.addElement("HHA");
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getUnits());
+                s.addElement(unit);
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement(" ");
+                s.addElement("AC");
+                s.addElement("222");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+//HHA
+            }
+            if (homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy()) {
+//OT
+                s = x12.addSegment();
+                s.addElement("HL");
+                s.addElement("7");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);
+                s.addElement("OT");//AD
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getUnits());
+                s.addElement(unit);
 
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement("AC");
+                s.addElement("102030405060");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+
+            }
+            if (homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork()) {
+//MSW
+                s = x12.addSegment();
+                s.addElement("HL");
+                s.addElement("8");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);
+                s.addElement("MSW");
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getUnits());
+                s.addElement(unit);
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement(" ");
+                s.addElement("AC");
+                s.addElement("222");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+            }
+            if (homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy()) {
+                s = x12.addSegment();
+                s.addElement("HL");
+                s.addElement("9");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);
+                s.addElement("PT");
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getUnits());
+                s.addElement(unit);
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement(" ");
+                s.addElement("AC");
+                s.addElement("222");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+            }
+            if (homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing()) {
+//SN
+                s = x12.addSegment();
+                s.addElement("HL");
+                s.addElement("10");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);
+                s.addElement("SN");
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getUnits());
+                s.addElement(unit);
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement(" ");
+                s.addElement("AC");
+                s.addElement("222");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+            }
+            if (homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology()) {
+                s = x12.addSegment();
+                s.addElement("HL");
+                s.addElement("11");
+                s.addElement("5");
+                s.addElement("SS");
+                s.addElement("0");
+                s = x12.addSegment();
+                s.addElement("UM");
+                s.addElement("HS");
+                s.addElement(request);//R
+                s.addElement("ST");
+                s = x12.addSegment();
+                s.addElement("DTP");
+                s.addElement("472");
+                s.addElement("D8");
+                s.addElement("20170406");
+                s = x12.addSegment();
+                s.addElement("HSD");
+                s.addElement("VS");
+                String visit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getVisits());
+                s.addElement(visit);
+                s.addElement("DA");
+                s.addElement("1");
+                s.addElement("34");
+                String unit = String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getUnits());
+                s.addElement(unit);
+                s = x12.addSegment();
+                s.addElement("PWK");
+                s.addElement("M1");
+                s.addElement("EL");
+                s.addElement(" ");
+                s.addElement("AC");
+                s.addElement("987457");
+                s = x12.addSegment();
+                s.addElement("MSG");
+                s.addElement("A");
+
+            }
         }
         s = x12.addSegment();
         s.addElement("TRN");

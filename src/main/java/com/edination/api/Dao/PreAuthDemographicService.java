@@ -22,11 +22,11 @@ public class PreAuthDemographicService {
         preAuthDemographicsRepository.save(expense);
     }
 
-    public PreAuthDemographics get(String id) {
+    public PreAuthDemographics get(int id) {
         return preAuthDemographicsRepository.findById(id).get();
     }
 
-    public void delete(String id) {
+    public void delete(int id) {
         preAuthDemographicsRepository.deleteById(id);
     }
 }

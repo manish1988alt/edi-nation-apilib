@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Table(name = "InsuranceDetailPreAuth")
 public class InsuranceDetailPreAuth {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
     private String mrnNumber;
     private String insuranceTypeSelcted;
 
@@ -49,6 +52,14 @@ public class InsuranceDetailPreAuth {
         this.insuranceTypeSelcted = insuranceTypeSelcted;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public PrimaryInsuranceDetail getPrimaryInsuranceDetail() {
         return primaryInsuranceDetail;
     }
@@ -76,8 +87,9 @@ public class InsuranceDetailPreAuth {
     @Override
     public String toString() {
         return "InsuranceDetailPreAuth{" +
-                "mrnNumber='" + mrnNumber + '\'' +
-                ", insuranceTypeSelcted=" + insuranceTypeSelcted +
+                "id=" + id +
+                ", mrnNumber='" + mrnNumber + '\'' +
+                ", insuranceTypeSelcted='" + insuranceTypeSelcted + '\'' +
                 ", primaryInsuranceDetail=" + primaryInsuranceDetail +
                 ", secondaryInsuranceDetail=" + secondaryInsuranceDetail +
                 ", tertiaryInsuranceDetail=" + tertiaryInsuranceDetail +

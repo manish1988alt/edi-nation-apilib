@@ -12,6 +12,6 @@ public class Configuration {
 
     //API key to authenticate requests
     //TODO: Replace the ocpApimSubscriptionKey with an appropriate value
-    public static String ocpApimSubscriptionKey = "a8f646fa49984ff8b4b6e01e2ac2e73a";
+    public static String ocpApimSubscriptionKey = "7b2a1bb6562b4b2bb2a8b1a08536e91c";
 
 }

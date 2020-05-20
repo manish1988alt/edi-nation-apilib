@@ -65,7 +65,7 @@ public class AdditionalServices {
         this.toDate = toDate;
     }
 
-    public boolean isServiceflag() {
+    public boolean getServiceflag() {
         return serviceflag;
     }
 

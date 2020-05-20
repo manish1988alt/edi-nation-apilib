@@ -56,7 +56,7 @@ public class Extension {
         this.toDate = toDate;
     }
 
-    public boolean isServiceflag() {
+    public boolean getServiceflag() {
         return serviceflag;
     }
 
