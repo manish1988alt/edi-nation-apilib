@@ -100,7 +100,7 @@ PreAuthDemographicService preAuthDemographicService;
 
     }
 
-  /*  @GetMapping("/preResponse")
+    @GetMapping("/preResponse")
     public void responseRequest() throws Throwable
     {
         PreAuthDetail preAuthDetail=new PreAuthDetail();
@@ -132,7 +132,7 @@ PreAuthDemographicService preAuthDemographicService;
            //List<PreAuthDetail> preauthlist= preAuthRepository.findByMrnNumber(preAuthDemographics.getMrnNumber());
 
 
-           *//*for(PreAuthDetail pre:preauthlist) {
+           /*for(PreAuthDetail pre:preauthlist) {
 
                demographics.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
                demographics.setFirstName(pre.getPreAuthDemographics().getFirstName());
@@ -160,10 +160,10 @@ PreAuthDemographicService preAuthDemographicService;
            preAuthDetail.setMrnNumber(preAuthDemographics.getMrnNumber());
            preAuthDetail.setPreAuthDemographics(demographics);
            preAuthDetail.setEpisode(episode);
-*//*
+*/
        }
         //preAuthService.save(preAuthDetail);
-    }*/
+    }
 
 public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
 {
@@ -174,8 +174,9 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
 
     InsuranceDetailPreAuth insuranceDetailPreAuth=new InsuranceDetailPreAuth();
     insuranceDetailPreAuth.setMrnNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getMrnNumber());
-    if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()).equals("Primary Insurance"))
-    {
+    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()).equals("Primary Insurance"))
+    /*if("Primary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
+    {*/
         insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
         PrimaryInsuranceDetail primary=new PrimaryInsuranceDetail();
         primary.setInsuredfirstName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuredfirstName());
@@ -202,10 +203,11 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         primary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getStatusVerifiedDate());
 
         insuranceDetailPreAuth.setPrimaryInsuranceDetail(primary);
-    }
+    //}
 
-    if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail()).equals("Secondary Insurance"))
-    {
+    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail()).equals("Secondary Insurance"))
+    /*if("Secondary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
+    {*/
 
         insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
         SecondaryInsuranceDetail secondary=new SecondaryInsuranceDetail();
@@ -233,9 +235,10 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         secondary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getStatusVerifiedDate());
         insuranceDetailPreAuth.setSecondaryInsuranceDetail(secondary);
 
-    }
-    if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail()).equals("Tertiary Insurance"))
-    {
+    //}
+    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail()).equals("Tertiary Insurance"))
+    /*if("Tertiary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
+    {*/
         insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
         TertiaryInsuranceDetail tertiary=new  TertiaryInsuranceDetail();
 
@@ -262,7 +265,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         tertiary.setEndDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getEndDate());
         tertiary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getStatusVerifiedDate());
         insuranceDetailPreAuth.setTertiaryInsuranceDetail(tertiary);
-    }
+   // }
     homeHealthPreAuthorizationForm1.setInsuranceDetailPreAuth(insuranceDetailPreAuth);
 
     ProviderDetail providerDetail=new ProviderDetail();
