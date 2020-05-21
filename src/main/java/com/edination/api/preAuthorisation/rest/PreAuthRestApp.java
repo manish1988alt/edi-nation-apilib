@@ -66,6 +66,34 @@ PreAuthDemographicService preAuthDemographicService;
     {
         String ackn="false";
         ackn=this.saveOperation(homeHealthPreAuthorizationForm);
+
+        PreAuthDetail preAuthDetail=new PreAuthDetail();
+        List<PreAuthDetail> list= preAuthRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        PreAuthDemographics demographics1=new PreAuthDemographics();
+        Episode episode=new Episode();
+        for(PreAuthDetail pre:list) {
+            demographics1.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
+            demographics1.setFirstName(pre.getPreAuthDemographics().getFirstName());
+            demographics1.setLastName(pre.getPreAuthDemographics().getLastName());
+            demographics1.setMiddleName(pre.getPreAuthDemographics().getMiddleName());
+            demographics1.setSuffix(pre.getPreAuthDemographics().getSuffix());
+            demographics1.setDob(pre.getPreAuthDemographics().getDob());
+            demographics1.setGender(pre.getPreAuthDemographics().getGender());
+            demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
+
+            episode.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
+            episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
+            episode.setEpisodeType(pre.getEpisode().getEpisodeType());
+            episode.setMrnNumber(pre.getEpisode().getMrnNumber());
+            episode.setPreauthFormStatus("Saved As Draft");
+            episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
+            episode.setPayorType(pre.getEpisode().getPayorType());
+            episode.setFormSentDate(homeHealthPreAuthorizationForm.getCurrenttimdate());
+            preAuthDetail.setPreAuthDemographics(demographics1);
+            preAuthDetail.setEpisode(episode);
+            preAuthDetail.setMrnNumber(pre.getMrnNumber());
+        }
+        preAuthService.save(preAuthDetail);
         if(ackn.equals("true")) {
             return generateSuccessObject("true",
                     " ");
@@ -84,9 +112,37 @@ PreAuthDemographicService preAuthDemographicService;
         File file = new File("Hipaa-5010-278-GenericRequest.txt");
         String ackn="false";
         generateFile(homeHealthPreAuthorizationForm, file);
-         ackn = new SFTPFILE().fileUpload(file, homeHealthPreAuthorizationForm.getMrnNumber() + "_" + file.getName());
+      new SFTPFILE().fileUpload(file, homeHealthPreAuthorizationForm.getMrnNumber() + "_" + file.getName());
 
-        ackn=this.saveOperation(homeHealthPreAuthorizationForm);
+       this.saveOperation(homeHealthPreAuthorizationForm);
+        PreAuthDetail preAuthDetail=new PreAuthDetail();
+        List<PreAuthDetail> list= preAuthRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        PreAuthDemographics demographics1=new PreAuthDemographics();
+        Episode episode=new Episode();
+        for(PreAuthDetail pre:list) {
+            demographics1.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
+            demographics1.setFirstName(pre.getPreAuthDemographics().getFirstName());
+            demographics1.setLastName(pre.getPreAuthDemographics().getLastName());
+            demographics1.setMiddleName(pre.getPreAuthDemographics().getMiddleName());
+            demographics1.setSuffix(pre.getPreAuthDemographics().getSuffix());
+            demographics1.setDob(pre.getPreAuthDemographics().getDob());
+            demographics1.setGender(pre.getPreAuthDemographics().getGender());
+            demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
+
+            episode.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
+            episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
+            episode.setEpisodeType(pre.getEpisode().getEpisodeType());
+            episode.setMrnNumber(pre.getEpisode().getMrnNumber());
+            episode.setPreauthFormStatus("Sent For Approval");
+            episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
+            episode.setPayorType(pre.getEpisode().getPayorType());
+            episode.setFormSentDate(homeHealthPreAuthorizationForm.getCurrenttimdate());
+            preAuthDetail.setPreAuthDemographics(demographics1);
+            preAuthDetail.setEpisode(episode);
+            preAuthDetail.setMrnNumber(pre.getMrnNumber());
+        }
+        preAuthService.save(preAuthDetail);
+        ackn="true";
         if(ackn.equals("true")) {
             return generateSuccessObject("true",
                     " ");
@@ -100,70 +156,7 @@ PreAuthDemographicService preAuthDemographicService;
 
     }
 
-    @GetMapping("/preResponse")
-    public void responseRequest() throws Throwable
-    {
-        PreAuthDetail preAuthDetail=new PreAuthDetail();
-        PreAuthDemographics demographics=new PreAuthDemographics();
-        Episode episode=new Episode();
-        List<X12Interchange> list =new ArrayList<X12Interchange>();
-        File f1 = new File("Hipaa-5010-278-GenericResponse.txt");
-       Set<PreAuthDemographics> preAuthDemographicsList=preAuthDemographicsRepository.uniqueDemographics();
-       for(PreAuthDemographics preAuthDemographics:preAuthDemographicsList)
-       {
-           System.out.println(preAuthDemographics.getMrnNumber());
-           new SFTPFILE().downloadFile(f1, preAuthDemographics.getMrnNumber() + "_" + f1.getName());
-           X12Controller x12=new X12Controller();
-           list= x12.read(f1, false, false, " ", " ");
-           String ackn="";
-           for(X12Interchange l:list)
-           {
 
-               System.out.println(l.getISA());
-               System.out.println(l.getGroups());
-               System.out.println(l.getResult());
-               System.out.println(l.getIEATrailers());
-               System.out.println(l.getTA1());
-
-           }
-
-
-           //List<PreAuthDetail> list=preAuthService.listAll();
-           //List<PreAuthDetail> preauthlist= preAuthRepository.findByMrnNumber(preAuthDemographics.getMrnNumber());
-
-
-           /*for(PreAuthDetail pre:preauthlist) {
-
-               demographics.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
-               demographics.setFirstName(pre.getPreAuthDemographics().getFirstName());
-               demographics.setLastName(pre.getPreAuthDemographics().getLastName());
-               demographics.setMiddleName(pre.getPreAuthDemographics().getMiddleName());
-               demographics.setSuffix(pre.getPreAuthDemographics().getSuffix());
-               demographics.setDob(pre.getPreAuthDemographics().getDob());
-               demographics.setGender(pre.getPreAuthDemographics().getGender());
-               demographics.setSsn(pre.getPreAuthDemographics().getSsn());
-               episode.setAdmissionDate(pre.getEpisode().getAdmissionDate());
-               episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
-               episode.setEpisodeType(pre.getEpisode().getEpisodeType());
-               episode.setMrnNumber(pre.getEpisode().getMrnNumber());
-               episode.setPreauthFormStatus("Response received");
-               if(ackn.equals("")) {
-                   episode.setPreAuthorisationStatus("Approved");
-               }
-               else
-               {
-                   episode.setPreAuthorisationStatus("Rejected");
-               }
-               episode.setPayorType(pre.getEpisode().getPayorType());
-               episode.setFormSentDate(pre.getEpisode().getFormSentDate());
-           }
-           preAuthDetail.setMrnNumber(preAuthDemographics.getMrnNumber());
-           preAuthDetail.setPreAuthDemographics(demographics);
-           preAuthDetail.setEpisode(episode);
-*/
-       }
-        //preAuthService.save(preAuthDetail);
-    }
 
 public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
 {
@@ -291,8 +284,8 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
     RequestFor requestFor=new RequestFor();
     requestFor.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
     requestFor.setNewadmissionService(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService());
-    if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag())
-    {
+    //if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag())
+   // {
         AdditionalServices ad=new AdditionalServices();
         ad.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag());
         ad.setNumberOfServiceCompletedTillDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getNumberOfServiceCompletedTillDate());
@@ -300,28 +293,28 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         ad.setFromDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getFromDate());
         ad.setToDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getToDate());
         requestFor.setAdditionalServices(ad);
-    }
-    else
+  //  }
+  /* else
     {
         AdditionalServices ad=new AdditionalServices();
         ad.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag());
         requestFor.setAdditionalServices(ad);
-    }
-    if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag())
-    {
+    }*/
+  //  if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag())
+  //  {
         Extension  ext=new Extension();
         ext.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag());
         ext.setPreviousAuthorizationNumber(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getPreviousAuthorizationNumber());
         ext.setFromDate(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getFromDate());
         ext.setToDate(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getToDate());
         requestFor.setExtension(ext);
-    }
-    else
+  //  }
+  /*  else
     {
         Extension  ext=new Extension();
         ext.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag());
         requestFor.setExtension(ext);
-    }
+    }*/
     homeHealthPreAuthorizationForm1.setRequestFor(requestFor);
 
     RequestService requestService =new RequestService();
@@ -331,7 +324,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         HomeHealthAide hha=new   HomeHealthAide();
         hha.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getMrnNumber());
         hha.setHomeHealthAide(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide());
-        hha.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getRevenueCode());
+        hha.setRevenueCode(570);
         hha.setUnits(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getUnits());
         hha.setVisits(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getVisits());
         requestService.setHomeHealthAide(hha);
@@ -342,7 +335,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         HomeHealthAide hha=new   HomeHealthAide();
         hha.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getMrnNumber());
         hha.setHomeHealthAide(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide());
-        hha.setRevenueCode(0);
+        hha.setRevenueCode(570);
         hha.setUnits(0);
         hha.setVisits(0);
         requestService.setHomeHealthAide(hha);
@@ -352,7 +345,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         OccupationTherapy oct=new OccupationTherapy();
         oct.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getMrnNumber());
         oct.setOccupationTherapy(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy());
-        oct.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getRevenueCode());
+        oct.setRevenueCode(430);
         oct.setUnits(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getUnits());
         oct.setVisits(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getVisits());
         requestService.setOccupationTherapy(oct);
@@ -362,7 +355,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         OccupationTherapy oct=new OccupationTherapy();
         oct.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getMrnNumber());
         oct.setOccupationTherapy(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy());
-        oct.setRevenueCode(0);
+        oct.setRevenueCode(430);
         oct.setUnits(0);
         oct.setVisits(0);
         requestService.setOccupationTherapy(oct);
@@ -372,7 +365,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         PhysicalTherapy pt=new PhysicalTherapy();
         pt.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getMrnNumber());
         pt.setPhysicalTherapy(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy());
-        pt.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getRevenueCode());
+        pt.setRevenueCode(420);
         pt.setUnits(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getUnits());
         pt.setVisits(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getVisits());
         requestService.setPhysicalTherapy(pt);
@@ -382,7 +375,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         PhysicalTherapy pt=new PhysicalTherapy();
         pt.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getMrnNumber());
         pt.setPhysicalTherapy(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy());
-        pt.setRevenueCode(0);
+        pt.setRevenueCode(420);
         pt.setUnits(0);
         pt.setVisits(0);
         requestService.setPhysicalTherapy(pt);
@@ -392,7 +385,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         SpeechPathology sp=new SpeechPathology();
         sp.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getMrnNumber());
         sp.setSpeechPathology(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology());
-        sp.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getRevenueCode());
+        sp.setRevenueCode(440);
         sp.setUnits(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getUnits());
         sp.setVisits(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getVisits());
         requestService.setSpeechPathology(sp);
@@ -402,7 +395,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         SpeechPathology sp=new SpeechPathology();
         sp.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getMrnNumber());
         sp.setSpeechPathology(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology());
-        sp.setRevenueCode(0);
+        sp.setRevenueCode(440);
         sp.setUnits(0);
         sp.setVisits(0);
         requestService.setSpeechPathology(sp);
@@ -412,7 +405,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         MedicalSocialWork msw=new MedicalSocialWork();
         msw.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMrnNumber());
         msw.setMedicalSocialWork(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork());
-        msw.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getRevenueCode());
+        msw.setRevenueCode(560);
         msw.setUnits(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getUnits());
         msw.setVisits(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getVisits());
         requestService.setMedicalSocialWork(msw);
@@ -422,7 +415,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         MedicalSocialWork msw=new MedicalSocialWork();
         msw.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMrnNumber());
         msw.setMedicalSocialWork(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork());
-        msw.setRevenueCode(0);
+        msw.setRevenueCode(560);
         msw.setUnits(0);
         msw.setVisits(0);
         requestService.setMedicalSocialWork(msw);
@@ -432,7 +425,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         SkilledNursing sn=new SkilledNursing();
         sn.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getMrnNumber());
         sn.setSkilledNursing(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing());
-        sn.setRevenueCode(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getRevenueCode());
+        sn.setRevenueCode(550);
         sn.setUnits(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getUnits());
         sn.setVisits(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getVisits());
         requestService.setSkilledNursing(sn);
@@ -442,7 +435,7 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         SkilledNursing sn=new SkilledNursing();
         sn.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getMrnNumber());
         sn.setSkilledNursing(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing());
-        sn.setRevenueCode(0);
+        sn.setRevenueCode(550);
         sn.setUnits(0);
         sn.setVisits(0);
         requestService.setSkilledNursing(sn);
@@ -464,33 +457,8 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
     homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm1);
 
 
-    PreAuthDetail preAuthDetail=new PreAuthDetail();
-    List<PreAuthDetail> list= preAuthRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
-    PreAuthDemographics demographics1=new PreAuthDemographics();
-    Episode episode=new Episode();
-    for(PreAuthDetail pre:list) {
-        demographics1.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
-        demographics1.setFirstName(pre.getPreAuthDemographics().getFirstName());
-        demographics1.setLastName(pre.getPreAuthDemographics().getLastName());
-        demographics1.setMiddleName(pre.getPreAuthDemographics().getMiddleName());
-        demographics1.setSuffix(pre.getPreAuthDemographics().getSuffix());
-        demographics1.setDob(pre.getPreAuthDemographics().getDob());
-        demographics1.setGender(pre.getPreAuthDemographics().getGender());
-        demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
 
-        episode.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
-        episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
-        episode.setEpisodeType(pre.getEpisode().getEpisodeType());
-        episode.setMrnNumber(pre.getEpisode().getMrnNumber());
-        episode.setPreauthFormStatus("Saved As Draft");
-        episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
-        episode.setPayorType(pre.getEpisode().getPayorType());
-        episode.setFormSentDate(homeHealthPreAuthorizationForm.getCurrenttimdate());
-        preAuthDetail.setPreAuthDemographics(demographics1);
-        preAuthDetail.setEpisode(episode);
-        preAuthDetail.setMrnNumber(pre.getMrnNumber());
-    }
-    preAuthService.save(preAuthDetail);
+
      ackn="true";
     return  ackn;
 }
