@@ -19,7 +19,7 @@ public interface PreAuthDemographicsRepository   extends JpaRepository<PreAuthDe
     PreAuthDemographics updateDemographics(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm);*/
    // @Query(value="SELECT DISTINCT mrn_number FROM pre_auth_demographics ORDER BY id",nativeQuery=true)
     @Query(value = "FROM PreAuthDemographics")
-    Set<PreAuthDemographics> uniqueDemographics();
+    List<PreAuthDemographics> uniqueDemographics();
 
 
 }

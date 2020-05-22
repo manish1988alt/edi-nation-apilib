@@ -1,13 +1,8 @@
 package com.edination.api.preAuthorisation.rest;
 
 import com.edination.api.Dao.*;
-import com.edination.api.controllers.X12Controller;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
-import com.edination.api.eligibility.model.Demographics;
-import com.edination.api.eligibility.model.PrimaryInsuranceDetail;
-import com.edination.api.eligibility.model.SecondaryInsuranceDetail;
-import com.edination.api.eligibility.model.TertiaryInsuranceDetail;
-import com.edination.api.models.X12Interchange;
+import com.edination.api.eligibility.model.*;
 import com.edination.api.preAuthorisation.EDI.EDIFileGeneration;
 import com.edination.api.preAuthorisation.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +26,17 @@ public class PreAuthRestApp implements Serializable {
     PreAuthRepository preAuthRepository;
     @Autowired
     RequestServiceRepository requestServiceRepository;
-@Autowired
-PreAuthDemographicService preAuthDemographicService;
+    @Autowired
+    PreAuthDemographicService preAuthDemographicService;
     @Autowired
     PreAuthDemographicsRepository preAuthDemographicsRepository;
     @Autowired
     HomeHealthPreAuthFormService homeHealthPreAuthFormService;
     @Autowired
     HomeHealthPreAuthFormRepository homeHealthPreAuthFormRepository;
+
+    @Autowired
+    PreAuthorizationResponseRepository preAuthorizationResponseRepository;
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
     {
@@ -156,9 +154,15 @@ PreAuthDemographicService preAuthDemographicService;
 
     }
 
+    @PostMapping("/preAuthResponse")
+    public List<PreAuthorizationResponse> preAuthResponse(@RequestBody  HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
+    {
+
+        return preAuthorizationResponseRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
+    }
 
 
-public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
+    public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
 {
     String ackn="false";
     HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm1=new HomeHealthPreAuthorizationForm();
@@ -500,4 +504,5 @@ public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthoriz
         }
         return  responseEntity;
     }
+
 }
