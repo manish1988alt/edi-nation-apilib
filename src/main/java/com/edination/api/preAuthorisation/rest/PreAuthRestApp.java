@@ -42,9 +42,16 @@ public class PreAuthRestApp implements Serializable {
     {
         List<PreAuthDetail> list=new ArrayList<>();
         List<PreAuthDemographics> authDemographicsList=preAuthDemographicService.listAll();
+
+        Set<String> setmrn=new HashSet<>();
+
         for(PreAuthDemographics preAuthDemographics:authDemographicsList)
         {
-            list.addAll(preAuthRepository.findByID(preAuthDemographics.getMrnNumber()));
+            setmrn.add(preAuthDemographics.getMrnNumber());
+        }
+        for(String mrn:setmrn)
+        {
+            list.addAll(preAuthRepository.findByID(mrn));
         }
   // List<PreAuthDetail> list=preAuthService.listAll();
 
