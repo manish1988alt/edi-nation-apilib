@@ -74,7 +74,7 @@ public class PreAuthorizationResponse {
     private String dependentSuffix;
     private String dependentGender;
     private Date dependentDob;
-    private String dependentPrefix;
+   // private String dependentPrefix;
     private String dependentReletionship;
 
     private String servicingProviderFullName;
@@ -120,12 +120,15 @@ public class PreAuthorizationResponse {
     @JoinColumn(name = "STId")
     private SpeechPathologyResponse speechPathologyResponse;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "authorizationId")
+    private AuthorizationDetail authorizationDetail;
 
     public PreAuthorizationResponse()
     {
     }
 
-    public PreAuthorizationResponse(String enquiryId, Date processDateAndTime, Date serviceDateFrom, Date serviceDateTo, Date effectiveDateTo, Date effectiveDateFrom, Date expirationeDateTo, Date admitDate, Date dischargeDate, String certificationIdentificationNumber, String preAuthorizationStatus, String enquiryDetailStatus, String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String reqProviderFullName, String reqProviderFirstName, String reqProviderLastName,  String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, String reqProviderRejectionReason, String reqProviderFollowUpActionDescription, String reqProviderDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentSuffix, String dependentGender, Date dependentDob, String dependentPrefix, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus, HomeHealthAideResponse homeHealthAideResponse, OccupationalTherapyResponse occupationalTherapyResponse, MedicalSocialWorkResponse medicalSocialWorkResponse, PhysicalTherapyResponse physicalTherapyResponse, SkilledNursingResponse skilledNursingResponse, SpeechPathologyResponse speechPathologyResponse) {
+    public PreAuthorizationResponse(String enquiryId, Date processDateAndTime, Date serviceDateFrom, Date serviceDateTo, Date effectiveDateTo, Date effectiveDateFrom, Date expirationeDateTo, Date admitDate, Date dischargeDate, String certificationIdentificationNumber, String preAuthorizationStatus, String enquiryDetailStatus, String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String reqProviderFullName, String reqProviderFirstName, String reqProviderLastName,  String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, String reqProviderRejectionReason, String reqProviderFollowUpActionDescription, String reqProviderDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentSuffix, String dependentGender, Date dependentDob, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus, HomeHealthAideResponse homeHealthAideResponse, OccupationalTherapyResponse occupationalTherapyResponse, MedicalSocialWorkResponse medicalSocialWorkResponse, PhysicalTherapyResponse physicalTherapyResponse, SkilledNursingResponse skilledNursingResponse, SpeechPathologyResponse speechPathologyResponse) {
 
         this.enquiryId = enquiryId;
         this.processDateAndTime = processDateAndTime;
@@ -184,7 +187,6 @@ public class PreAuthorizationResponse {
         this.dependentSuffix = dependentSuffix;
         this.dependentGender = dependentGender;
         this.dependentDob = dependentDob;
-        this.dependentPrefix = dependentPrefix;
         this.dependentReletionship = dependentReletionship;
         this.servicingProviderFullName = servicingProviderFullName;
         this.servicingProviderFirstName = servicingProviderFirstName;
@@ -676,13 +678,13 @@ public class PreAuthorizationResponse {
         this.dependentDob = dependentDob;
     }
 
-    public String getDependentPrefix() {
+   /* public String getDependentPrefix() {
         return dependentPrefix;
     }
 
     public void setDependentPrefix(String dependentPrefix) {
         this.dependentPrefix = dependentPrefix;
-    }
+    }*/
 
     public String getDependentReletionship() {
         return dependentReletionship;
@@ -870,6 +872,14 @@ public class PreAuthorizationResponse {
         this.speechPathologyResponse = speechPathologyResponse;
     }
 
+    public AuthorizationDetail getAuthorizationDetail() {
+        return authorizationDetail;
+    }
+
+    public void setAuthorizationDetail(AuthorizationDetail authorizationDetail) {
+        this.authorizationDetail = authorizationDetail;
+    }
+
     @Override
     public String toString() {
         return "PreAuthorizationResponse{" +
@@ -931,7 +941,6 @@ public class PreAuthorizationResponse {
                 ", dependentSuffix='" + dependentSuffix + '\'' +
                 ", dependentGender='" + dependentGender + '\'' +
                 ", dependentDob=" + dependentDob +
-                ", dependentPrefix='" + dependentPrefix + '\'' +
                 ", dependentReletionship='" + dependentReletionship + '\'' +
                 ", servicingProviderFullName='" + servicingProviderFullName + '\'' +
                 ", servicingProviderFirstName='" + servicingProviderFirstName + '\'' +
@@ -955,6 +964,7 @@ public class PreAuthorizationResponse {
                 ", physicalTherapyResponse=" + physicalTherapyResponse +
                 ", skilledNursingResponse=" + skilledNursingResponse +
                 ", speechPathologyResponse=" + speechPathologyResponse +
+                ", authorizationDetail=" + authorizationDetail +
                 '}';
     }
 }
