@@ -10,7 +10,7 @@ public class PreAuthorizationResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
+/*
     private String enquiryId;
     private Date processDateAndTime;
     private Date serviceDateFrom;
@@ -22,7 +22,7 @@ public class PreAuthorizationResponse {
     private Date dischargeDate;
     private String certificationIdentificationNumber;
     private String preAuthorizationStatus;
-    private String enquiryDetailStatus;
+    private String enquiryDetailStatus;*/
 
     private String mrnNumber;
     private String memberfirstName;
@@ -45,7 +45,7 @@ public class PreAuthorizationResponse {
     private String reqProviderFullName;
     private String reqProviderFirstName;
     private String reqProviderLastName;
-    //private String reqProviderMiddleName;
+   private String reqProviderMiddleName;
     private String reqProviderType;
     private String reqProviderIdentificationNumber;
     private String reqProviderIdentificationNumberType;
@@ -80,7 +80,7 @@ public class PreAuthorizationResponse {
     private String servicingProviderFullName;
     private String servicingProviderFirstName;
     private String servicingProviderLastName;
-    //private String servicingProviderMiddleName;
+    private String servicingProviderMiddleName;
     private String servicingProviderType;
     private String servicingProviderAddress;
     private String servicingProviderCity;
@@ -128,20 +128,7 @@ public class PreAuthorizationResponse {
     {
     }
 
-    public PreAuthorizationResponse(String enquiryId, Date processDateAndTime, Date serviceDateFrom, Date serviceDateTo, Date effectiveDateTo, Date effectiveDateFrom, Date expirationeDateTo, Date admitDate, Date dischargeDate, String certificationIdentificationNumber, String preAuthorizationStatus, String enquiryDetailStatus, String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String reqProviderFullName, String reqProviderFirstName, String reqProviderLastName,  String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, String reqProviderRejectionReason, String reqProviderFollowUpActionDescription, String reqProviderDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentSuffix, String dependentGender, Date dependentDob, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus, HomeHealthAideResponse homeHealthAideResponse, OccupationalTherapyResponse occupationalTherapyResponse, MedicalSocialWorkResponse medicalSocialWorkResponse, PhysicalTherapyResponse physicalTherapyResponse, SkilledNursingResponse skilledNursingResponse, SpeechPathologyResponse speechPathologyResponse) {
-
-        this.enquiryId = enquiryId;
-        this.processDateAndTime = processDateAndTime;
-        this.serviceDateFrom = serviceDateFrom;
-        this.serviceDateTo = serviceDateTo;
-        this.effectiveDateTo = effectiveDateTo;
-        this.effectiveDateFrom = effectiveDateFrom;
-        this.expirationeDateTo = expirationeDateTo;
-        this.admitDate = admitDate;
-        this.dischargeDate = dischargeDate;
-        this.certificationIdentificationNumber = certificationIdentificationNumber;
-        this.preAuthorizationStatus = preAuthorizationStatus;
-        this.enquiryDetailStatus = enquiryDetailStatus;
+    public PreAuthorizationResponse(String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String reqProviderFullName, String reqProviderFirstName, String reqProviderLastName, String reqProviderMiddleName, String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, String reqProviderRejectionReason, String reqProviderFollowUpActionDescription, String reqProviderDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentSuffix, String dependentGender, Date dependentDob, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderMiddleName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus) {
         this.mrnNumber = mrnNumber;
         this.memberfirstName = memberfirstName;
         this.memberlastName = memberlastName;
@@ -161,6 +148,7 @@ public class PreAuthorizationResponse {
         this.reqProviderFullName = reqProviderFullName;
         this.reqProviderFirstName = reqProviderFirstName;
         this.reqProviderLastName = reqProviderLastName;
+        this.reqProviderMiddleName = reqProviderMiddleName;
         this.reqProviderType = reqProviderType;
         this.reqProviderIdentificationNumber = reqProviderIdentificationNumber;
         this.reqProviderIdentificationNumberType = reqProviderIdentificationNumberType;
@@ -191,6 +179,7 @@ public class PreAuthorizationResponse {
         this.servicingProviderFullName = servicingProviderFullName;
         this.servicingProviderFirstName = servicingProviderFirstName;
         this.servicingProviderLastName = servicingProviderLastName;
+        this.servicingProviderMiddleName = servicingProviderMiddleName;
         this.servicingProviderType = servicingProviderType;
         this.servicingProviderAddress = servicingProviderAddress;
         this.servicingProviderCity = servicingProviderCity;
@@ -204,12 +193,6 @@ public class PreAuthorizationResponse {
         this.servicingProviderRejectionReason = servicingProviderRejectionReason;
         this.servicingProviderFollowUpActionDescription = servicingProviderFollowUpActionDescription;
         this.servicingProviderDetailStatus = servicingProviderDetailStatus;
-        this.homeHealthAideResponse = homeHealthAideResponse;
-        this.occupationalTherapyResponse = occupationalTherapyResponse;
-        this.medicalSocialWorkResponse = medicalSocialWorkResponse;
-        this.physicalTherapyResponse = physicalTherapyResponse;
-        this.skilledNursingResponse = skilledNursingResponse;
-        this.speechPathologyResponse = speechPathologyResponse;
     }
 
     public int getId() {
@@ -220,7 +203,7 @@ public class PreAuthorizationResponse {
         this.id = id;
     }
 
-    public String getEnquiryId() {
+   /* public String getEnquiryId() {
         return enquiryId;
     }
 
@@ -314,7 +297,7 @@ public class PreAuthorizationResponse {
 
     public void setEnquiryDetailStatus(String enquiryDetailStatus) {
         this.enquiryDetailStatus = enquiryDetailStatus;
-    }
+    }*/
 
     public String getMrnNumber() {
         return mrnNumber;
@@ -880,22 +863,26 @@ public class PreAuthorizationResponse {
         this.authorizationDetail = authorizationDetail;
     }
 
+    public String getReqProviderMiddleName() {
+        return reqProviderMiddleName;
+    }
+
+    public void setReqProviderMiddleName(String reqProviderMiddleName) {
+        this.reqProviderMiddleName = reqProviderMiddleName;
+    }
+
+    public String getServicingProviderMiddleName() {
+        return servicingProviderMiddleName;
+    }
+
+    public void setServicingProviderMiddleName(String servicingProviderMiddleName) {
+        this.servicingProviderMiddleName = servicingProviderMiddleName;
+    }
+
     @Override
     public String toString() {
         return "PreAuthorizationResponse{" +
                 "id=" + id +
-                ", enquiryId='" + enquiryId + '\'' +
-                ", processDateAndTime=" + processDateAndTime +
-                ", serviceDateFrom=" + serviceDateFrom +
-                ", serviceDateTo=" + serviceDateTo +
-                ", effectiveDateTo=" + effectiveDateTo +
-                ", effectiveDateFrom=" + effectiveDateFrom +
-                ", expirationeDateTo=" + expirationeDateTo +
-                ", admitDate=" + admitDate +
-                ", dischargeDate=" + dischargeDate +
-                ", certificationIdentificationNumber='" + certificationIdentificationNumber + '\'' +
-                ", preAuthorizationStatus='" + preAuthorizationStatus + '\'' +
-                ", enquiryDetailStatus='" + enquiryDetailStatus + '\'' +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 ", memberfirstName='" + memberfirstName + '\'' +
                 ", memberlastName='" + memberlastName + '\'' +
@@ -915,6 +902,7 @@ public class PreAuthorizationResponse {
                 ", reqProviderFullName='" + reqProviderFullName + '\'' +
                 ", reqProviderFirstName='" + reqProviderFirstName + '\'' +
                 ", reqProviderLastName='" + reqProviderLastName + '\'' +
+                ", reqProviderMiddleName='" + reqProviderMiddleName + '\'' +
                 ", reqProviderType='" + reqProviderType + '\'' +
                 ", reqProviderIdentificationNumber='" + reqProviderIdentificationNumber + '\'' +
                 ", reqProviderIdentificationNumberType='" + reqProviderIdentificationNumberType + '\'' +
@@ -945,6 +933,7 @@ public class PreAuthorizationResponse {
                 ", servicingProviderFullName='" + servicingProviderFullName + '\'' +
                 ", servicingProviderFirstName='" + servicingProviderFirstName + '\'' +
                 ", servicingProviderLastName='" + servicingProviderLastName + '\'' +
+                ", servicingProviderMiddleName='" + servicingProviderMiddleName + '\'' +
                 ", servicingProviderType='" + servicingProviderType + '\'' +
                 ", servicingProviderAddress='" + servicingProviderAddress + '\'' +
                 ", servicingProviderCity='" + servicingProviderCity + '\'' +

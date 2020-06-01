@@ -11,9 +11,18 @@ public class AuthorizationDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String   authorizationNo;
-    private Date     authStartDate;
-    private Date     authEndDate;
+    private String enquiryId;
+    private Date processDateAndTime;
+    private Date serviceDateFrom;
+    private Date serviceDateTo;
+    private Date effectiveDateTo;
+    private Date effectiveDateFrom;
+    private Date expirationeDateTo;
+    private Date admitDate;
+    private Date dischargeDate;
+    private String certificationIdentificationNumber;
+    private String preAuthorizationStatus;
+    private String enquiryDetailStatus;
     private int      totalUnitsApproved;
     private int      totalUnitsConsumed;
     private int      remainingUnits;
@@ -23,11 +32,19 @@ public class AuthorizationDetail {
     public AuthorizationDetail() {
     }
 
-    public AuthorizationDetail(int id, String authorizationNo, Date authStartDate, Date authEndDate, int totalUnitsApproved, int totalUnitsConsumed, int remainingUnits, int noOfUnitsTobeUsed, String unitsForNoOfUnitsTobeUsed) {
-        this.id = id;
-        this.authorizationNo = authorizationNo;
-        this.authStartDate = authStartDate;
-        this.authEndDate = authEndDate;
+    public AuthorizationDetail(String enquiryId, Date processDateAndTime, Date serviceDateFrom, Date serviceDateTo, Date effectiveDateTo, Date effectiveDateFrom, Date expirationeDateTo, Date admitDate, Date dischargeDate, String certificationIdentificationNumber, String preAuthorizationStatus, String enquiryDetailStatus, int totalUnitsApproved, int totalUnitsConsumed, int remainingUnits, int noOfUnitsTobeUsed, String unitsForNoOfUnitsTobeUsed) {
+        this.enquiryId = enquiryId;
+        this.processDateAndTime = processDateAndTime;
+        this.serviceDateFrom = serviceDateFrom;
+        this.serviceDateTo = serviceDateTo;
+        this.effectiveDateTo = effectiveDateTo;
+        this.effectiveDateFrom = effectiveDateFrom;
+        this.expirationeDateTo = expirationeDateTo;
+        this.admitDate = admitDate;
+        this.dischargeDate = dischargeDate;
+        this.certificationIdentificationNumber = certificationIdentificationNumber;
+        this.preAuthorizationStatus = preAuthorizationStatus;
+        this.enquiryDetailStatus = enquiryDetailStatus;
         this.totalUnitsApproved = totalUnitsApproved;
         this.totalUnitsConsumed = totalUnitsConsumed;
         this.remainingUnits = remainingUnits;
@@ -43,28 +60,100 @@ public class AuthorizationDetail {
         this.id = id;
     }
 
-    public String getAuthorizationNo() {
-        return authorizationNo;
+    public String getEnquiryId() {
+        return enquiryId;
     }
 
-    public void setAuthorizationNo(String authorizationNo) {
-        this.authorizationNo = authorizationNo;
+    public void setEnquiryId(String enquiryId) {
+        this.enquiryId = enquiryId;
     }
 
-    public Date getAuthStartDate() {
-        return authStartDate;
+    public Date getProcessDateAndTime() {
+        return processDateAndTime;
     }
 
-    public void setAuthStartDate(Date authStartDate) {
-        this.authStartDate = authStartDate;
+    public void setProcessDateAndTime(Date processDateAndTime) {
+        this.processDateAndTime = processDateAndTime;
     }
 
-    public Date getAuthEndDate() {
-        return authEndDate;
+    public Date getServiceDateFrom() {
+        return serviceDateFrom;
     }
 
-    public void setAuthEndDate(Date authEndDate) {
-        this.authEndDate = authEndDate;
+    public void setServiceDateFrom(Date serviceDateFrom) {
+        this.serviceDateFrom = serviceDateFrom;
+    }
+
+    public Date getServiceDateTo() {
+        return serviceDateTo;
+    }
+
+    public void setServiceDateTo(Date serviceDateTo) {
+        this.serviceDateTo = serviceDateTo;
+    }
+
+    public Date getEffectiveDateTo() {
+        return effectiveDateTo;
+    }
+
+    public void setEffectiveDateTo(Date effectiveDateTo) {
+        this.effectiveDateTo = effectiveDateTo;
+    }
+
+    public Date getEffectiveDateFrom() {
+        return effectiveDateFrom;
+    }
+
+    public void setEffectiveDateFrom(Date effectiveDateFrom) {
+        this.effectiveDateFrom = effectiveDateFrom;
+    }
+
+    public Date getExpirationeDateTo() {
+        return expirationeDateTo;
+    }
+
+    public void setExpirationeDateTo(Date expirationeDateTo) {
+        this.expirationeDateTo = expirationeDateTo;
+    }
+
+    public Date getAdmitDate() {
+        return admitDate;
+    }
+
+    public void setAdmitDate(Date admitDate) {
+        this.admitDate = admitDate;
+    }
+
+    public Date getDischargeDate() {
+        return dischargeDate;
+    }
+
+    public void setDischargeDate(Date dischargeDate) {
+        this.dischargeDate = dischargeDate;
+    }
+
+    public String getCertificationIdentificationNumber() {
+        return certificationIdentificationNumber;
+    }
+
+    public void setCertificationIdentificationNumber(String certificationIdentificationNumber) {
+        this.certificationIdentificationNumber = certificationIdentificationNumber;
+    }
+
+    public String getPreAuthorizationStatus() {
+        return preAuthorizationStatus;
+    }
+
+    public void setPreAuthorizationStatus(String preAuthorizationStatus) {
+        this.preAuthorizationStatus = preAuthorizationStatus;
+    }
+
+    public String getEnquiryDetailStatus() {
+        return enquiryDetailStatus;
+    }
+
+    public void setEnquiryDetailStatus(String enquiryDetailStatus) {
+        this.enquiryDetailStatus = enquiryDetailStatus;
     }
 
     public int getTotalUnitsApproved() {
@@ -111,9 +200,18 @@ public class AuthorizationDetail {
     public String toString() {
         return "AuthorizationDetail{" +
                 "id=" + id +
-                ", authorizationNo='" + authorizationNo + '\'' +
-                ", authStartDate=" + authStartDate +
-                ", authEndDate=" + authEndDate +
+                ", enquiryId='" + enquiryId + '\'' +
+                ", processDateAndTime=" + processDateAndTime +
+                ", serviceDateFrom=" + serviceDateFrom +
+                ", serviceDateTo=" + serviceDateTo +
+                ", effectiveDateTo=" + effectiveDateTo +
+                ", effectiveDateFrom=" + effectiveDateFrom +
+                ", expirationeDateTo=" + expirationeDateTo +
+                ", admitDate=" + admitDate +
+                ", dischargeDate=" + dischargeDate +
+                ", certificationIdentificationNumber='" + certificationIdentificationNumber + '\'' +
+                ", preAuthorizationStatus='" + preAuthorizationStatus + '\'' +
+                ", enquiryDetailStatus='" + enquiryDetailStatus + '\'' +
                 ", totalUnitsApproved=" + totalUnitsApproved +
                 ", totalUnitsConsumed=" + totalUnitsConsumed +
                 ", remainingUnits=" + remainingUnits +
