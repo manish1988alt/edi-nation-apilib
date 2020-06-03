@@ -2,10 +2,7 @@ package com.edination.api.PDGM.rest;
 
 
 import com.edination.api.PDGM.dao.*;
-import com.edination.api.PDGM.model.AdmissionSource;
-import com.edination.api.PDGM.model.EpisodeDetail;
-import com.edination.api.PDGM.model.PDGMRapListing;
-import com.edination.api.PDGM.model.TimingAndSourceOfAdmission;
+import com.edination.api.PDGM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,6 +111,25 @@ public class PDGMRestApp implements Serializable {
         list.add(episodeDetail);
         list.addAll(timingAndSourceOfAdmissionsList);
 
+        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses=pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapList.getPrimaryDiagnosisCode());
+        list.addAll(clinicalGroupingPrimaryDiagnoses);
+
         return list;
     }
+
+ /*   @PostMapping("/pdgmToolPosition2")
+    public List<Object> pdgmToolPosition2(@RequestBody  PDGMRapListing pdgmRapList ) throws Throwable
+    {
+        List<Object> list=new ArrayList<>();
+        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses=pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapList.getPrimaryDiagnosisCode());
+        list.addAll(clinicalGroupingPrimaryDiagnoses);
+        List<CalculationClinicalGroupHIPPSCode> calculationClinicalGroupHIPPSCodes=new ArrayList<>();
+        for(ClinicalGroupingPrimaryDiagnosis primaryDiagnosis:clinicalGroupingPrimaryDiagnoses )
+        {
+         calculationClinicalGroupHIPPSCodes = pdgmRapListRepository.findCalculationClinicalGroupHIPPSCode(primaryDiagnosis.getClinicalGroup());
+       }
+        list.addAll(calculationClinicalGroupHIPPSCodes);
+        return list;
+
+    }*/
 }

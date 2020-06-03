@@ -1,9 +1,6 @@
 package com.edination.api.PDGM.dao;
 
-import com.edination.api.PDGM.model.AdmissionSource;
-import com.edination.api.PDGM.model.EpisodeDetail;
-import com.edination.api.PDGM.model.PDGMRapListing;
-import com.edination.api.PDGM.model.TimingAndSourceOfAdmission;
+import com.edination.api.PDGM.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,6 +18,12 @@ public interface PDGMRapListRepository extends JpaRepository<PDGMRapListing,Stri
 
     @Query(value="FROM AdmissionSource WHERE mrn_number = ?1")
     public AdmissionSource findAdmissionSourceByMrn(String mrnNumber);
+
+    @Query(value="FROM ClinicalGroupingPrimaryDiagnosis WHERE primary_diagnosis_code = ?1")
+    public List<ClinicalGroupingPrimaryDiagnosis> findClinicalGroupingPrimaryDiagnosis(String primaryDiagnosisCode);
+
+    @Query(value="FROM CalculationClinicalGroupHIPPSCode WHERE clinical_groupcode = ?1")
+    public List<CalculationClinicalGroupHIPPSCode> findCalculationClinicalGroupHIPPSCode(String clinicalGroupcode);
 
 
 }

@@ -25,11 +25,11 @@ public class PDGMRapListing {
     private String hippsCode;
     private String oasisKey;
     private String claimType;
-
+    private String primaryDiagnosisCode;
     public PDGMRapListing() {
     }
 
-    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, String oasisKey, String claimType) {
+    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, String oasisKey, String claimType, String primaryDiagnosisCode) {
         this.mrnNumber = mrnNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,6 +44,7 @@ public class PDGMRapListing {
         this.hippsCode = hippsCode;
         this.oasisKey = oasisKey;
         this.claimType = claimType;
+        this.primaryDiagnosisCode = primaryDiagnosisCode;
     }
 
     public String getMrnNumber() {
@@ -158,6 +159,14 @@ public class PDGMRapListing {
         this.claimType = claimType;
     }
 
+    public String getPrimaryDiagnosisCode() {
+        return primaryDiagnosisCode;
+    }
+
+    public void setPrimaryDiagnosisCode(String primaryDiagnosisCode) {
+        this.primaryDiagnosisCode = primaryDiagnosisCode;
+    }
+
     @Override
     public String toString() {
         return "PDGMRapListing{" +
@@ -175,6 +184,7 @@ public class PDGMRapListing {
                 ", hippsCode='" + hippsCode + '\'' +
                 ", oasisKey='" + oasisKey + '\'' +
                 ", claimType='" + claimType + '\'' +
+                ", primaryDiagnosisCode='" + primaryDiagnosisCode + '\'' +
                 '}';
     }
 }
