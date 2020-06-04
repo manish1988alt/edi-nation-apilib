@@ -29,6 +29,10 @@ public class OASISItemContributed {
     private M1840 m1840;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "M1850Id")
+    private M1850 m1850;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "M1860Id")
     private M1860 m1860;
 
@@ -96,6 +100,14 @@ public class OASISItemContributed {
         this.m1860 = m1860;
     }
 
+    public M1850 getM1850() {
+        return m1850;
+    }
+
+    public void setM1850(M1850 m1850) {
+        this.m1850 = m1850;
+    }
+
     @Override
     public String toString() {
         return "OASISItemContributed{" +
@@ -105,6 +117,7 @@ public class OASISItemContributed {
                 ", m1820=" + m1820 +
                 ", m1830=" + m1830 +
                 ", m1840=" + m1840 +
+                ", m1850=" + m1850 +
                 ", m1860=" + m1860 +
                 '}';
     }

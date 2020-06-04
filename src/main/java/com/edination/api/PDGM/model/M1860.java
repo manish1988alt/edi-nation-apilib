@@ -33,7 +33,7 @@ public class M1860 {
         this.id = id;
     }
 
-    public boolean isFlag() {
+    public boolean getFlag() {
         return flag;
     }
 

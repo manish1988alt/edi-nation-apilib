@@ -5,8 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "M1830")
-public class M1830 {
+@Table(name = "M1850")
+public class M1850 {
 
     @Id
     private int id;
@@ -14,10 +14,10 @@ public class M1830 {
     private String discription;
     private int functionalPoint;
 
-    public M1830() {
+    public M1850() {
     }
 
-    public M1830(int id, boolean flag, String discription, int functionalPoint) {
+    public M1850(int id, boolean flag, String discription, int functionalPoint) {
         this.id = id;
         this.flag = flag;
         this.discription = discription;
@@ -58,7 +58,7 @@ public class M1830 {
 
     @Override
     public String toString() {
-        return "M1830{" +
+        return "M1850{" +
                 "id=" + id +
                 ", flag=" + flag +
                 ", discription='" + discription + '\'' +
