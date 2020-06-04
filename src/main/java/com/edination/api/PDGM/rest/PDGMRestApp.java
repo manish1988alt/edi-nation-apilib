@@ -28,7 +28,8 @@ public class PDGMRestApp implements Serializable {
     TimingAndSourceRepository timingAndSourceRepository;
     @Autowired
     EpisodeDetailService episodeDetailService;
-
+@Autowired
+OasisItemContributedService oasisItemContributedService;
     @GetMapping("/rapList")
     public List<PDGMRapListing> rapList()  throws Throwable{
 
@@ -63,7 +64,7 @@ public class PDGMRestApp implements Serializable {
         {
             lateVisit=true;
         }
-        else if(visitdays>60&&visitdays<=90)
+        else if(visitdays>=60&&visitdays<=90)
         {
             earlyVisit=true;
         }
@@ -117,19 +118,12 @@ public class PDGMRestApp implements Serializable {
         return list;
     }
 
- /*   @PostMapping("/pdgmToolPosition2")
-    public List<Object> pdgmToolPosition2(@RequestBody  PDGMRapListing pdgmRapList ) throws Throwable
+   @PostMapping("/pdgmToolPosition3")
+    public String pdgmToolPosition3(@RequestBody  OASISItemContributed oasisItemContributed ) throws Throwable
     {
-        List<Object> list=new ArrayList<>();
-        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses=pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapList.getPrimaryDiagnosisCode());
-        list.addAll(clinicalGroupingPrimaryDiagnoses);
-        List<CalculationClinicalGroupHIPPSCode> calculationClinicalGroupHIPPSCodes=new ArrayList<>();
-        for(ClinicalGroupingPrimaryDiagnosis primaryDiagnosis:clinicalGroupingPrimaryDiagnoses )
-        {
-         calculationClinicalGroupHIPPSCodes = pdgmRapListRepository.findCalculationClinicalGroupHIPPSCode(primaryDiagnosis.getClinicalGroup());
-       }
-        list.addAll(calculationClinicalGroupHIPPSCodes);
-        return list;
 
-    }*/
+        oasisItemContributedService.save(oasisItemContributed);
+        return "Saved Successfully";
+
+    }
 }
