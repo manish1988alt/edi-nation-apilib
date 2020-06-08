@@ -73,7 +73,7 @@ public class EDIFileGeneration {
         s = x12.addSegment();
         s.addElement("NM1");
         s.addElement("X3");
-        if(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted().equals("primary")) {
+       /* if(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted().equals("primary")) {
             //s.addElement("BLUE CROSS BLUE SHIELD NC");
             s.addElement(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsurancePlanName());
             s.addElement("46");
@@ -90,7 +90,7 @@ public class EDIFileGeneration {
             s.addElement(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsurancePlanName());
             s.addElement("46");
             s.addElement(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getGroup_name());
-        }
+        }*/
         s = x12.addSegment();
         s.addElement("HL");
         s.addElement("2");
@@ -103,16 +103,16 @@ public class EDIFileGeneration {
         s.addElement("1P");
         s.addElement("1");
        // s.addElement("HELBY");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getProviderName());
+       // s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getProviderName());
         //s.addElement("MARCUS");
         s.addElement("");
         s.addElement("XX");
         //s.addElement("1111122222");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingProviderIDNumber());
+        //s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingProviderIDNumber());
         s = x12.addSegment();
         s.addElement("N3");
         s.addElement("200");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+     //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
         s = x12.addSegment();
         s.addElement("N4");
         s.addElement("JEFFERSON");
@@ -124,8 +124,8 @@ public class EDIFileGeneration {
         s.addElement("IC");
         s.addElement("TE");
        // s.addElement("9194567890");
-        String phone=String.valueOf(homeHealthPreAuthorizationForm.getProviderDetail().getPhoneNumber());
-        s.addElement(phone);
+        //String phone=String.valueOf(homeHealthPreAuthorizationForm.getProviderDetail().getPhoneNumber());
+        //s.addElement(phone);
         s = x12.addSegment();
         s.addElement("HL");
         s.addElement("3");
@@ -195,7 +195,7 @@ public class EDIFileGeneration {
         s.addElement("DTP");
         s.addElement("435");
         s.addElement("D8");
-        if(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted().equals("primary")) {
+      /*  if(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted().equals("primary")) {
             // s.addElement("20100101");
             String start=String.valueOf(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getStartDate());
             s.addElement(start);
@@ -238,7 +238,7 @@ public class EDIFileGeneration {
         s.addElement("BF");
         s.addElement("D8");
         String admission=String.valueOf(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
-        s.addElement(admission);
+        s.addElement(admission);*/
 
         s = x12.addSegment();
         s.addElement("HSD");
@@ -255,7 +255,7 @@ public class EDIFileGeneration {
         s.addElement("FA");
         s.addElement("2");
        // s.addElement("FLINTSTONE UNIVERSITY HOSPITAL");
-        s.addElement(homeHealthPreAuthorizationForm.getAdmissionDetail().getReferringPhysician());
+       /* s.addElement(homeHealthPreAuthorizationForm.getAdmissionDetail().getReferringPhysician());*/
         s.addElement("XX");
         s.addElement("1001234567");
 
@@ -269,7 +269,7 @@ public class EDIFileGeneration {
         s.addElement("27705");
 
         List<String> rl=new ArrayList<>();
-        if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
+   /*     if(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService()) {
             rl.add("N");
         }
         if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag()) {
@@ -277,10 +277,10 @@ public class EDIFileGeneration {
         }
         if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag()) {
             rl.add("R");
-        }
+        }*/
 
 
-        for(String request:rl) {
+       /* for(String request:rl) {
             if (homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide()) {
                 s = x12.addSegment();
                 s.addElement("HL");
@@ -319,8 +319,8 @@ public class EDIFileGeneration {
                 s.addElement("MSG");
                 s.addElement("A");
 //HHA
-            }
-            if (homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy()) {
+            }*/
+           /* if (homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy()) {
 //OT
                 s = x12.addSegment();
                 s.addElement("HL");
@@ -529,7 +529,7 @@ public class EDIFileGeneration {
 
         String start=String.valueOf(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getStartDate());
         String end=String.valueOf(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getEndDate());
-        s.addElement(start+"-"+end);
+        s.addElement(start+"-"+end);*/
 
         s = x12.addSegment();
         s.addElement("SV2");

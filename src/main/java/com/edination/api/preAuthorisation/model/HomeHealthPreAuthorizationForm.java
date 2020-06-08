@@ -4,34 +4,48 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "HomeHealthPreAuthorizationForm")
+@Table(name = "HomeHealthPreAuthorizationForm1")
 public class HomeHealthPreAuthorizationForm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String mrnNumber;
-    private Date currenttimdate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "enquiryid")
+    private EnquiryDeatils enquiryDeatils;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "demographicMrnNumber")
     private PreAuthDemographics preAuthDemographics;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orgnizationId")
+    private OrganizationInformation organizationInformation;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subscriberId")
+    private SubscriberDetails subscriberDetails;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dependentId")
+    private DependentDetails dependentDetails;
+
+  /*  @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "insurancedetailMrnNumber")
-    private InsuranceDetailPreAuth insuranceDetailPreAuth;
+    private InsuranceDetailPreAuth insuranceDetailPreAuth;*/
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "providerId")
-    private ProviderDetail providerDetail;
+    private RequesterDetails providerDetail;
 
-    @OneToOne(cascade = CascadeType.ALL)
+ /*   @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admissionMrnNumber")
-    private AdmissionDetail admissionDetail;
+    private AdmissionDetail admissionDetail;*/
 
-    @OneToOne(cascade = CascadeType.ALL)
+   /* @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "requestforMrnNumber")
-    private RequestFor requestFor;
+    private RequestFor requestFor;*/
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "requestserviceMrnNumber")
@@ -40,72 +54,14 @@ public class HomeHealthPreAuthorizationForm {
     public HomeHealthPreAuthorizationForm() {
     }
 
-    public HomeHealthPreAuthorizationForm(String mrnNumber, Date currenttimdate) {
+    public HomeHealthPreAuthorizationForm(String mrnNumber, EnquiryDeatils enquiryDeatils, PreAuthDemographics preAuthDemographics, OrganizationInformation organizationInformation, SubscriberDetails subscriberDetails, DependentDetails dependentDetails, RequesterDetails providerDetail, RequestService requestService) {
         this.mrnNumber = mrnNumber;
-        this.currenttimdate = currenttimdate;
-    }
-
-    public String getMrnNumber() {
-        return mrnNumber;
-    }
-
-    public void setMrnNumber(String mrnNumber) {
-        this.mrnNumber = mrnNumber;
-    }
-
-    public Date getCurrenttimdate() {
-        return currenttimdate;
-    }
-
-    public void setCurrenttimdate(Date currenttimdate) {
-        this.currenttimdate = currenttimdate;
-    }
-
-    public PreAuthDemographics getPreAuthDemographics() {
-        return preAuthDemographics;
-    }
-
-    public void setPreAuthDemographics(PreAuthDemographics preAuthDemographics) {
+        this.enquiryDeatils = enquiryDeatils;
         this.preAuthDemographics = preAuthDemographics;
-    }
-
-    public InsuranceDetailPreAuth getInsuranceDetailPreAuth() {
-        return insuranceDetailPreAuth;
-    }
-
-    public void setInsuranceDetailPreAuth(InsuranceDetailPreAuth insuranceDetailPreAuth) {
-        this.insuranceDetailPreAuth = insuranceDetailPreAuth;
-    }
-
-    public ProviderDetail getProviderDetail() {
-        return providerDetail;
-    }
-
-    public void setProviderDetail(ProviderDetail providerDetail) {
+        this.organizationInformation = organizationInformation;
+        this.subscriberDetails = subscriberDetails;
+        this.dependentDetails = dependentDetails;
         this.providerDetail = providerDetail;
-    }
-
-    public AdmissionDetail getAdmissionDetail() {
-        return admissionDetail;
-    }
-
-    public void setAdmissionDetail(AdmissionDetail admissionDetail) {
-        this.admissionDetail = admissionDetail;
-    }
-
-    public RequestFor getRequestFor() {
-        return requestFor;
-    }
-
-    public void setRequestFor(RequestFor requestFor) {
-        this.requestFor = requestFor;
-    }
-
-    public RequestService getRequestService() {
-        return requestService;
-    }
-
-    public void setRequestService(RequestService requestService) {
         this.requestService = requestService;
     }
 
@@ -117,17 +73,81 @@ public class HomeHealthPreAuthorizationForm {
         this.id = id;
     }
 
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
+    public EnquiryDeatils getEnquiryDeatils() {
+        return enquiryDeatils;
+    }
+
+    public void setEnquiryDeatils(EnquiryDeatils enquiryDeatils) {
+        this.enquiryDeatils = enquiryDeatils;
+    }
+
+    public PreAuthDemographics getPreAuthDemographics() {
+        return preAuthDemographics;
+    }
+
+    public void setPreAuthDemographics(PreAuthDemographics preAuthDemographics) {
+        this.preAuthDemographics = preAuthDemographics;
+    }
+
+    public OrganizationInformation getOrganizationInformation() {
+        return organizationInformation;
+    }
+
+    public void setOrganizationInformation(OrganizationInformation organizationInformation) {
+        this.organizationInformation = organizationInformation;
+    }
+
+    public SubscriberDetails getSubscriberDetails() {
+        return subscriberDetails;
+    }
+
+    public void setSubscriberDetails(SubscriberDetails subscriberDetails) {
+        this.subscriberDetails = subscriberDetails;
+    }
+
+    public DependentDetails getDependentDetails() {
+        return dependentDetails;
+    }
+
+    public void setDependentDetails(DependentDetails dependentDetails) {
+        this.dependentDetails = dependentDetails;
+    }
+
+    public RequesterDetails getProviderDetail() {
+        return providerDetail;
+    }
+
+    public void setProviderDetail(RequesterDetails providerDetail) {
+        this.providerDetail = providerDetail;
+    }
+
+    public RequestService getRequestService() {
+        return requestService;
+    }
+
+    public void setRequestService(RequestService requestService) {
+        this.requestService = requestService;
+    }
+
     @Override
     public String toString() {
         return "HomeHealthPreAuthorizationForm{" +
                 "id=" + id +
                 ", mrnNumber='" + mrnNumber + '\'' +
-                ", currenttimdate=" + currenttimdate +
+                ", enquiryDeatils=" + enquiryDeatils +
                 ", preAuthDemographics=" + preAuthDemographics +
-                ", insuranceDetailPreAuth=" + insuranceDetailPreAuth +
+                ", organizationInformation=" + organizationInformation +
+                ", subscriberDetails=" + subscriberDetails +
+                ", dependentDetails=" + dependentDetails +
                 ", providerDetail=" + providerDetail +
-                ", admissionDetail=" + admissionDetail +
-                ", requestFor=" + requestFor +
                 ", requestService=" + requestService +
                 '}';
     }

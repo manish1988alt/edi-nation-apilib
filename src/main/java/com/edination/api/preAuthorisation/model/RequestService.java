@@ -53,7 +53,6 @@ public class RequestService {
     public HomeHealthAide getHomeHealthAide() {
         return homeHealthAide;
     }
-
     public void setHomeHealthAide(HomeHealthAide homeHealthAide) {
         this.homeHealthAide = homeHealthAide;
     }

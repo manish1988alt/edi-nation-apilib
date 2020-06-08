@@ -19,10 +19,11 @@ public class PreAuthDemographics {
     private String gender;
     private Date dob;
     private String ssn;
-
+    private String prefix;
+    private String relationshipToSubscriber;
     public PreAuthDemographics(){}
 
-    public PreAuthDemographics(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String gender, Date dob, String ssn) {
+    public PreAuthDemographics(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String gender, Date dob, String ssn, String prefix, String relationshipToSubscriber) {
         this.mrnNumber = mrnNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,9 +32,11 @@ public class PreAuthDemographics {
         this.gender = gender;
         this.dob = dob;
         this.ssn = ssn;
+        this.prefix = prefix;
+        this.relationshipToSubscriber = relationshipToSubscriber;
     }
 
-   public int getId() {
+    public int getId() {
         return id;
     }
 
@@ -105,9 +108,26 @@ public class PreAuthDemographics {
         this.ssn = ssn;
     }
 
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getRelationshipToSubscriber() {
+        return relationshipToSubscriber;
+    }
+
+    public void setRelationshipToSubscriber(String relationshipToSubscriber) {
+        this.relationshipToSubscriber = relationshipToSubscriber;
+    }
+
     @Override
     public String toString() {
         return "PreAuthDemographics{" +
+                "id=" + id +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -116,6 +136,8 @@ public class PreAuthDemographics {
                 ", gender='" + gender + '\'' +
                 ", dob=" + dob +
                 ", ssn='" + ssn + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", relationshipToSubscriber='" + relationshipToSubscriber + '\'' +
                 '}';
     }
 }

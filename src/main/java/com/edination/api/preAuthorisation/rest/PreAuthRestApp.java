@@ -85,15 +85,16 @@ public class PreAuthRestApp implements Serializable {
             demographics1.setDob(pre.getPreAuthDemographics().getDob());
             demographics1.setGender(pre.getPreAuthDemographics().getGender());
             demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
-
-            episode.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
+            demographics1.setPrefix(pre.getPreAuthDemographics().getPrefix());
+            demographics1.setRelationshipToSubscriber(pre.getPreAuthDemographics().getRelationshipToSubscriber());
+            episode.setAdmissionDate(pre.getEpisode().getAdmissionDate());
             episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
             episode.setEpisodeType(pre.getEpisode().getEpisodeType());
             episode.setMrnNumber(pre.getEpisode().getMrnNumber());
             episode.setPreauthFormStatus("Saved As Draft");
             episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
             episode.setPayorType(pre.getEpisode().getPayorType());
-            episode.setFormSentDate(homeHealthPreAuthorizationForm.getCurrenttimdate());
+            episode.setFormSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
             preAuthDetail.setPreAuthDemographics(demographics1);
             preAuthDetail.setEpisode(episode);
             preAuthDetail.setMrnNumber(pre.getMrnNumber());
@@ -134,14 +135,14 @@ public class PreAuthRestApp implements Serializable {
             demographics1.setGender(pre.getPreAuthDemographics().getGender());
             demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
 
-            episode.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
+            episode.setAdmissionDate(pre.getEpisode().getAdmissionDate());
             episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
             episode.setEpisodeType(pre.getEpisode().getEpisodeType());
             episode.setMrnNumber(pre.getEpisode().getMrnNumber());
             episode.setPreauthFormStatus("Sent For Approval");
             episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
             episode.setPayorType(pre.getEpisode().getPayorType());
-            episode.setFormSentDate(homeHealthPreAuthorizationForm.getCurrenttimdate());
+            episode.setFormSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
             preAuthDetail.setPreAuthDemographics(demographics1);
             preAuthDetail.setEpisode(episode);
             preAuthDetail.setMrnNumber(pre.getMrnNumber());
@@ -174,281 +175,401 @@ public class PreAuthRestApp implements Serializable {
     String ackn="false";
     HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm1=new HomeHealthPreAuthorizationForm();
     homeHealthPreAuthorizationForm1.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
-    homeHealthPreAuthorizationForm1.setCurrenttimdate(homeHealthPreAuthorizationForm.getCurrenttimdate());
 
-    InsuranceDetailPreAuth insuranceDetailPreAuth=new InsuranceDetailPreAuth();
-    insuranceDetailPreAuth.setMrnNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getMrnNumber());
-    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()).equals("Primary Insurance"))
-    /*if("Primary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
-    {*/
-        insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
-        PrimaryInsuranceDetail primary=new PrimaryInsuranceDetail();
-        primary.setInsuredfirstName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuredfirstName());
-        primary.setInsuredlastName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuredlastName());
-        primary.setInsuredmiddleName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuredmiddleName());
-        primary.setInsureddob(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsureddob());
-        primary.setInsuredsex(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuredsex());
-        primary.setMrnNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getMrnNumber());
-        primary.setSsn(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getSsn());
-        primary.setInsuranceAddress(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsuranceAddress());
-        primary.setCity(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getCity());
-        primary.setState(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getState());
-        primary.setZipcode(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getZipcode());
-        primary.setMop(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getMop());
-        primary.setPolicyNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getPolicyNumber());
-        primary.setGroup_name(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getGroup_name());
-        primary.setInsurancePlanName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsurancePlanName());
-        primary.setInsurancePlanType(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getInsurancePlanType());
-        primary.setPatientRelationInsured(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getPatientRelationInsured());
-        primary.setEligibility(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getEligibility());
-        primary.setEligibilityCheckSelected(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getEligibilityCheckSelected());
-        primary.setStartDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getStartDate());
-        primary.setEndDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getEndDate());
-        primary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getPrimaryInsuranceDetail().getStatusVerifiedDate());
+    EnquiryDeatils enquiryDeatils=new EnquiryDeatils();
+    enquiryDeatils.setEnquiryId(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId());
+    enquiryDeatils.setPreauthReqSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
+    enquiryDeatils.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+    homeHealthPreAuthorizationForm1.setEnquiryDeatils(enquiryDeatils);
 
-        insuranceDetailPreAuth.setPrimaryInsuranceDetail(primary);
-    //}
+    OrganizationInformation organizationInformation=new OrganizationInformation();
+    organizationInformation.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+    organizationInformation.setOrganizationName(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrganizationName());
+    organizationInformation.setOrgIdentificationCode(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrgIdentificationCode());
+    organizationInformation.setOrgIdentificationCodeType(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrgIdentificationCodeType());
+    organizationInformation.setOrgCommunicationNo(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrgCommunicationNo());
+    organizationInformation.setOrgCommunicationType(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrgCommunicationType());
+    organizationInformation.setOrgCommunicationExt(homeHealthPreAuthorizationForm.getOrganizationInformation().getOrgCommunicationExt());
+    homeHealthPreAuthorizationForm1.setOrganizationInformation(organizationInformation);
 
-    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail()).equals("Secondary Insurance"))
-    /*if("Secondary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
-    {*/
-
-        insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
-        SecondaryInsuranceDetail secondary=new SecondaryInsuranceDetail();
-        secondary.setInsuredfirstName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsuredfirstName());
-        secondary.setInsuredlastName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsuredlastName());
-        secondary.setInsuredmiddleName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsuredmiddleName());
-        secondary.setInsureddob(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsureddob());
-        secondary.setInsuredsex(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsuredsex());
-        secondary.setMrnNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getMrnNumber());
-        secondary.setSsn(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getSsn());
-        secondary.setInsuranceAddress(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsuranceAddress());
-        secondary.setCity(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getCity());
-        secondary.setState(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getState());
-        secondary.setZipcode(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getZipcode());
-        secondary.setMop(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getMop());
-        secondary.setPolicyNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getPolicyNumber());
-        secondary.setGroup_name(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getGroup_name());
-        secondary.setInsurancePlanName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsurancePlanName());
-        secondary.setInsurancePlanType(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getInsurancePlanType());
-        secondary.setPatientRelationInsured(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getPatientRelationInsured());
-        secondary.setEligibility(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getEligibility());
-        secondary.setEligibilityCheckSelected(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getEligibilityCheckSelected());
-        secondary.setStartDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getStartDate());
-        secondary.setEndDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getEndDate());
-        secondary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getSecondaryInsuranceDetail().getStatusVerifiedDate());
-        insuranceDetailPreAuth.setSecondaryInsuranceDetail(secondary);
-
-    //}
-    //if((homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail()).equals("Tertiary Insurance"))
-    /*if("Tertiary Insurance".equals(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted()))
-    {*/
-        insuranceDetailPreAuth.setInsuranceTypeSelcted(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getInsuranceTypeSelcted());
-        TertiaryInsuranceDetail tertiary=new  TertiaryInsuranceDetail();
-
-        tertiary.setInsuredfirstName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsuredfirstName());
-        tertiary.setInsuredlastName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsuredlastName());
-        tertiary.setInsuredmiddleName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsuredmiddleName());
-        tertiary.setInsureddob(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsureddob());
-        tertiary.setInsuredsex(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsuredsex());
-        tertiary.setMrnNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getMrnNumber());
-        tertiary.setSsn(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getSsn());
-        tertiary.setInsuranceAddress(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsuranceAddress());
-        tertiary.setCity(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getCity());
-        tertiary.setState(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getState());
-        tertiary.setZipcode(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getZipcode());
-        tertiary.setMop(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getMop());
-        tertiary.setPolicyNumber(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getPolicyNumber());
-        tertiary.setGroup_name(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getGroup_name());
-        tertiary.setInsurancePlanName(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsurancePlanName());
-        tertiary.setInsurancePlanType(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getInsurancePlanType());
-        tertiary.setPatientRelationInsured(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getPatientRelationInsured());
-        tertiary.setEligibility(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getEligibility());
-        tertiary.setEligibilityCheckSelected(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getEligibilityCheckSelected());
-        tertiary.setStartDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getStartDate());
-        tertiary.setEndDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getEndDate());
-        tertiary.setStatusVerifiedDate(homeHealthPreAuthorizationForm.getInsuranceDetailPreAuth().getTertiaryInsuranceDetail().getStatusVerifiedDate());
-        insuranceDetailPreAuth.setTertiaryInsuranceDetail(tertiary);
-   // }
-    homeHealthPreAuthorizationForm1.setInsuranceDetailPreAuth(insuranceDetailPreAuth);
-
-    ProviderDetail providerDetail=new ProviderDetail();
-    providerDetail.setProviderName(homeHealthPreAuthorizationForm.getProviderDetail().getProviderName());
-    providerDetail.setPhoneNumber(homeHealthPreAuthorizationForm.getProviderDetail().getPhoneNumber());
-    providerDetail.setExtension(homeHealthPreAuthorizationForm.getProviderDetail().getExtension());
-    providerDetail.setFaxNumber(homeHealthPreAuthorizationForm.getProviderDetail().getFaxNumber());
-    providerDetail.setRequestingAgency(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
-    providerDetail.setRequestingProviderIDNumber(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingProviderIDNumber());
-    providerDetail.setProviderTaxIDNumber(homeHealthPreAuthorizationForm.getProviderDetail().getProviderTaxIDNumber());
+    RequesterDetails providerDetail=new RequesterDetails();
+    providerDetail.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+    providerDetail.setReqProviderFullName(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderFullName());
+    providerDetail.setAdmitDate(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate());
+    providerDetail.setDischargeDate(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate());
+    providerDetail.setCertificationType(homeHealthPreAuthorizationForm.getProviderDetail().getCertificationType());
+    providerDetail.setReqProviderIdentificationNumber(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderIdentificationNumber());
+    providerDetail.setReqProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderIdentificationNumberType());
+    providerDetail.setLevelOfService(homeHealthPreAuthorizationForm.getProviderDetail().getLevelOfService());
+    providerDetail.setReqProviderIdNumberType(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderIdNumberType());
+    providerDetail.setReqProviderSupplimentalId(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderSupplimentalId());
+    providerDetail.setReqProviderType(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderType());
+    providerDetail.setRequestCategory(homeHealthPreAuthorizationForm.getProviderDetail().getRequestCategory());
+    providerDetail.setServiceDateFrom(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom());
+    providerDetail.setServiceDateTo(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo());
+    providerDetail.setServiceType(homeHealthPreAuthorizationForm.getProviderDetail().getServiceType());
     homeHealthPreAuthorizationForm1.setProviderDetail(providerDetail);
-
-    AdmissionDetail admissionDetail=new AdmissionDetail();
-    admissionDetail.setMrnNumber(homeHealthPreAuthorizationForm.getAdmissionDetail().getMrnNumber());
-    admissionDetail.setAdmissionDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getAdmissionDate());
-    admissionDetail.setDischargeDate(homeHealthPreAuthorizationForm.getAdmissionDetail().getDischargeDate());
-    admissionDetail.setPrimaryDiagnosis(homeHealthPreAuthorizationForm.getAdmissionDetail().getPrimaryDiagnosis());
-    admissionDetail.setPrimaryDiagnosisDescription(homeHealthPreAuthorizationForm.getAdmissionDetail().getPrimaryDiagnosisDescription());
-    admissionDetail.setReferringPhysician(homeHealthPreAuthorizationForm.getAdmissionDetail().getReferringPhysician());
-    admissionDetail.setRequestType(homeHealthPreAuthorizationForm.getAdmissionDetail().getRequestType());
-    homeHealthPreAuthorizationForm1.setAdmissionDetail(admissionDetail);
-
-    RequestFor requestFor=new RequestFor();
-    requestFor.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
-    requestFor.setNewadmissionService(homeHealthPreAuthorizationForm.getRequestFor().getNewadmissionService());
-    //if(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag())
-   // {
-        AdditionalServices ad=new AdditionalServices();
-        ad.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag());
-        ad.setNumberOfServiceCompletedTillDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getNumberOfServiceCompletedTillDate());
-        ad.setPreviousAuthorizationNumber(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getPreviousAuthorizationNumber());
-        ad.setFromDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getFromDate());
-        ad.setToDate(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getToDate());
-        requestFor.setAdditionalServices(ad);
-  //  }
-  /* else
-    {
-        AdditionalServices ad=new AdditionalServices();
-        ad.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getAdditionalServices().getServiceflag());
-        requestFor.setAdditionalServices(ad);
-    }*/
-  //  if(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag())
-  //  {
-        Extension  ext=new Extension();
-        ext.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag());
-        ext.setPreviousAuthorizationNumber(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getPreviousAuthorizationNumber());
-        ext.setFromDate(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getFromDate());
-        ext.setToDate(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getToDate());
-        requestFor.setExtension(ext);
-  //  }
-  /*  else
-    {
-        Extension  ext=new Extension();
-        ext.setServiceflag(homeHealthPreAuthorizationForm.getRequestFor().getExtension().getServiceflag());
-        requestFor.setExtension(ext);
-    }*/
-    homeHealthPreAuthorizationForm1.setRequestFor(requestFor);
 
     RequestService requestService =new RequestService();
     requestService.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMrnNumber());
-    if(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide())
+    if(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideSelected())
     {
         HomeHealthAide hha=new   HomeHealthAide();
-        hha.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getMrnNumber());
-        hha.setHomeHealthAide(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide());
-        hha.setRevenueCode(570);
-        hha.setUnits(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getUnits());
-        hha.setVisits(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getVisits());
+        hha.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        hha.setHomeHealthAideSelected(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideSelected());
+        hha.setHomeHealthAideRevenueCode(570);
+        hha.setHomeHealthAideUnit(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideUnit());
+        hha.setHomeHealthAideVisit(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideVisit());
+        hha.setHomeHealthAideCertificationType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideCertificationType());
+        hha.setHomeHealthAideLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideLevelOfService());
+        hha.setHomeHealthAideProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderFirstName());
+        hha.setHomeHealthAidePoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAidePoviderLastName());
+        hha.setHomeHealthAideProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderMiddleName());
+        hha.setHomeHealthAideProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderFullName());
+        hha.setHomeHealthAideProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderAddress());
+        hha.setHomeHealthAideProviderCity(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCity());
+        hha.setHomeHealthAideProviderState(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderState());
+        hha.setHomeHealthAideProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCountryCode());
+        hha.setHomeHealthAideProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderPostalCode());
+        hha.setHomeHealthAideProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumber());
+        hha.setHomeHealthAideProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumberType());
+        hha.setHomeHealthAideProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdNumberType());
+        hha.setHomeHealthAideProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderSupplimentalId());
+        hha.setHomeHealthAideProviderType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderType());
+        hha.setHomeHealthAideRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom());
+        hha.setHomeHealthAideRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo());
+        hha.setHomeHealthAideServiceType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideServiceType());
+        hha.setHomeHealthAideRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestCategory());
         requestService.setHomeHealthAide(hha);
-
     }
     else
     {
         HomeHealthAide hha=new   HomeHealthAide();
-        hha.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getMrnNumber());
-        hha.setHomeHealthAide(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAide());
-        hha.setRevenueCode(570);
-        hha.setUnits(0);
-        hha.setVisits(0);
+        hha.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        hha.setHomeHealthAideSelected(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideSelected());
+        hha.setHomeHealthAideRevenueCode(570);
+        hha.setHomeHealthAideUnit(0);
+        hha.setHomeHealthAideVisit(0);
+        hha.setHomeHealthAideCertificationType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideCertificationType());
+        hha.setHomeHealthAideLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideLevelOfService());
+        hha.setHomeHealthAideProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderFirstName());
+        hha.setHomeHealthAidePoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAidePoviderLastName());
+        hha.setHomeHealthAideProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderMiddleName());
+        hha.setHomeHealthAideProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderFullName());
+        hha.setHomeHealthAideProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderAddress());
+        hha.setHomeHealthAideProviderCity(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCity());
+        hha.setHomeHealthAideProviderState(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderState());
+        hha.setHomeHealthAideProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCountryCode());
+        hha.setHomeHealthAideProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderPostalCode());
+        hha.setHomeHealthAideProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumber());
+        hha.setHomeHealthAideProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumberType());
+        hha.setHomeHealthAideProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdNumberType());
+        hha.setHomeHealthAideProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderSupplimentalId());
+        hha.setHomeHealthAideProviderType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderType());
+        hha.setHomeHealthAideRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom());
+        hha.setHomeHealthAideRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo());
+        hha.setHomeHealthAideServiceType(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideServiceType());
+        hha.setHomeHealthAideRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestCategory());
         requestService.setHomeHealthAide(hha);
     }
-    if(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy())
+    if(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapySelected())
     {
         OccupationTherapy oct=new OccupationTherapy();
-        oct.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getMrnNumber());
-        oct.setOccupationTherapy(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy());
-        oct.setRevenueCode(430);
-        oct.setUnits(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getUnits());
-        oct.setVisits(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getVisits());
+        oct.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        oct.setOccupationTherapySelected(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapySelected());
+        oct.setOccupationTherapyRevenueCode(430);
+        oct.setOccupationTherapyUnit(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyUnit());
+        oct.setOccupationTherapyVisit(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyVisit());
+        oct.setOccupationTherapyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyCertificationType());
+        oct.setOccupationTherapyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyLevelOfService());
+        oct.setOccupationTherapyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderFirstName());
+        oct.setOccupationTherapyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyPoviderLastName());
+        oct.setOccupationTherapyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderMiddleName());
+        oct.setOccupationTherapyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderFullName());
+        oct.setOccupationTherapyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderAddress());
+        oct.setOccupationTherapyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCity());
+        oct.setOccupationTherapyProviderState(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderState());
+        oct.setOccupationTherapyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCountryCode());
+        oct.setOccupationTherapyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderPostalCode());
+        oct.setOccupationTherapyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumber());
+        oct.setOccupationTherapyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumberType());
+        oct.setOccupationTherapyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdNumberType());
+        oct.setOccupationTherapyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderSupplimentalId());
+        oct.setOccupationTherapyProviderType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderType());
+        oct.setOccupationTherapyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom());
+        oct.setOccupationTherapyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo());
+        oct.setOccupationTherapyServiceType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyServiceType());
+        oct.setOccupationTherapyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestCategory());
         requestService.setOccupationTherapy(oct);
     }
     else
     {
         OccupationTherapy oct=new OccupationTherapy();
-        oct.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getMrnNumber());
-        oct.setOccupationTherapy(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapy());
-        oct.setRevenueCode(430);
-        oct.setUnits(0);
-        oct.setVisits(0);
+        oct.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        oct.setOccupationTherapySelected(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapySelected());
+        oct.setOccupationTherapyRevenueCode(430);
+        oct.setOccupationTherapyUnit(0);
+        oct.setOccupationTherapyVisit(0);
+        oct.setOccupationTherapyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyCertificationType());
+        oct.setOccupationTherapyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyLevelOfService());
+        oct.setOccupationTherapyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderFirstName());
+        oct.setOccupationTherapyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyPoviderLastName());
+        oct.setOccupationTherapyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderMiddleName());
+        oct.setOccupationTherapyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderFullName());
+        oct.setOccupationTherapyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderAddress());
+        oct.setOccupationTherapyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCity());
+        oct.setOccupationTherapyProviderState(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderState());
+        oct.setOccupationTherapyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCountryCode());
+        oct.setOccupationTherapyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderPostalCode());
+        oct.setOccupationTherapyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumber());
+        oct.setOccupationTherapyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumberType());
+        oct.setOccupationTherapyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdNumberType());
+        oct.setOccupationTherapyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderSupplimentalId());
+        oct.setOccupationTherapyProviderType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderType());
+        oct.setOccupationTherapyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom());
+        oct.setOccupationTherapyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo());
+        oct.setOccupationTherapyServiceType(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyServiceType());
+        oct.setOccupationTherapyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestCategory());
         requestService.setOccupationTherapy(oct);
     }
-    if(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy())
+    if(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapySelected())
     {
         PhysicalTherapy pt=new PhysicalTherapy();
-        pt.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getMrnNumber());
-        pt.setPhysicalTherapy(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy());
-        pt.setRevenueCode(420);
-        pt.setUnits(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getUnits());
-        pt.setVisits(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getVisits());
+        pt.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        pt.setPhysicalTherapySelected(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapySelected());
+        pt.setPhysicalTherapyrevenueCode(420);
+        pt.setPhysicalTherapyUnit(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyUnit());
+        pt.setPhysicalTherapyVisit(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyVisit());
+        pt.setPhysicalTherapyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyCertificationType());
+        pt.setPhysicalTherapyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyLevelOfService());
+        pt.setPhysicalTherapyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderFirstName());
+        pt.setPhysicalTherapyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyPoviderLastName());
+        pt.setPhysicalTherapyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderMiddleName());
+        pt.setPhysicalTherapyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderFullName());
+        pt.setPhysicalTherapyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderAddress());
+        pt.setPhysicalTherapyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCity());
+        pt.setPhysicalTherapyProviderState(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderState());
+        pt.setPhysicalTherapyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCountryCode());
+        pt.setPhysicalTherapyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderPostalCode());
+        pt.setPhysicalTherapyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumber());
+        pt.setPhysicalTherapyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumberType());
+        pt.setPhysicalTherapyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdNumberType());
+        pt.setPhysicalTherapyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderSupplimentalId());
+        pt.setPhysicalTherapyProviderType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderType());
+        pt.setPhysicalTherapyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom());
+        pt.setPhysicalTherapyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo());
+        pt.setPhysicalTherapyServiceType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyServiceType());
+        pt.setPhysicalTherapyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestCategory());
         requestService.setPhysicalTherapy(pt);
     }
     else
     {
         PhysicalTherapy pt=new PhysicalTherapy();
-        pt.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getMrnNumber());
-        pt.setPhysicalTherapy(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapy());
-        pt.setRevenueCode(420);
-        pt.setUnits(0);
-        pt.setVisits(0);
+        pt.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        pt.setPhysicalTherapySelected(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapySelected());
+        pt.setPhysicalTherapyrevenueCode(420);
+        pt.setPhysicalTherapyUnit(0);
+        pt.setPhysicalTherapyVisit(0);
+        pt.setPhysicalTherapyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyCertificationType());
+        pt.setPhysicalTherapyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyLevelOfService());
+        pt.setPhysicalTherapyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderFirstName());
+        pt.setPhysicalTherapyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyPoviderLastName());
+        pt.setPhysicalTherapyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderMiddleName());
+        pt.setPhysicalTherapyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderFullName());
+        pt.setPhysicalTherapyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderAddress());
+        pt.setPhysicalTherapyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCity());
+        pt.setPhysicalTherapyProviderState(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderState());
+        pt.setPhysicalTherapyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCountryCode());
+        pt.setPhysicalTherapyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderPostalCode());
+        pt.setPhysicalTherapyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumber());
+        pt.setPhysicalTherapyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumberType());
+        pt.setPhysicalTherapyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdNumberType());
+        pt.setPhysicalTherapyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderSupplimentalId());
+        pt.setPhysicalTherapyProviderType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderType());
+        pt.setPhysicalTherapyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom());
+        pt.setPhysicalTherapyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo());
+        pt.setPhysicalTherapyServiceType(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyServiceType());
+        pt.setPhysicalTherapyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestCategory());
         requestService.setPhysicalTherapy(pt);
     }
-    if(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology())
+    if(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologySelected())
     {
         SpeechPathology sp=new SpeechPathology();
-        sp.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getMrnNumber());
-        sp.setSpeechPathology(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology());
-        sp.setRevenueCode(440);
-        sp.setUnits(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getUnits());
-        sp.setVisits(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getVisits());
+        sp.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        sp.setSpeechPathologySelected(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologySelected());
+        sp.setSpeechPathologyRevenueCode(440);
+        sp.setSpeechPathologyUnit(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyUnit());
+        sp.setSpeechPathologyVisit(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyVisit());
+        sp.setSpeechPathologyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyCertificationType());
+        sp.setSpeechPathologyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyLevelOfService());
+        sp.setSpeechPathologyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderFirstName());
+        sp.setSpeechPathologyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyPoviderLastName());
+        sp.setSpeechPathologyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderMiddleName());
+        sp.setSpeechPathologyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderFullName());
+        sp.setSpeechPathologyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderAddress());
+        sp.setSpeechPathologyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCity());
+        sp.setSpeechPathologyProviderState(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderState());
+        sp.setSpeechPathologyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCountryCode());
+        sp.setSpeechPathologyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderPostalCode());
+        sp.setSpeechPathologyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumber());
+        sp.setSpeechPathologyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumberType());
+        sp.setSpeechPathologyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdNumberType());
+        sp.setSpeechPathologyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderSupplimentalId());
+        sp.setSpeechPathologyProviderType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderType());
+        sp.setSpeechPathologyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateFrom());
+        sp.setSpeechPathologyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo());
+        sp.setSpeechPathologyServiceType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyServiceType());
+        sp.setSpeechPathologyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestCategory());
         requestService.setSpeechPathology(sp);
     }
     else
     {
         SpeechPathology sp=new SpeechPathology();
-        sp.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getMrnNumber());
-        sp.setSpeechPathology(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathology());
-        sp.setRevenueCode(440);
-        sp.setUnits(0);
-        sp.setVisits(0);
+        sp.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        sp.setSpeechPathologySelected(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologySelected());
+        sp.setSpeechPathologyRevenueCode(440);
+        sp.setSpeechPathologyUnit(0);
+        sp.setSpeechPathologyVisit(0);
+        sp.setSpeechPathologyCertificationType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyCertificationType());
+        sp.setSpeechPathologyLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyLevelOfService());
+        sp.setSpeechPathologyProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderFirstName());
+        sp.setSpeechPathologyPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyPoviderLastName());
+        sp.setSpeechPathologyProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderMiddleName());
+        sp.setSpeechPathologyProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderFullName());
+        sp.setSpeechPathologyProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderAddress());
+        sp.setSpeechPathologyProviderCity(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCity());
+        sp.setSpeechPathologyProviderState(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderState());
+        sp.setSpeechPathologyProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCountryCode());
+        sp.setSpeechPathologyProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderPostalCode());
+        sp.setSpeechPathologyProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumber());
+        sp.setSpeechPathologyProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumberType());
+        sp.setSpeechPathologyProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdNumberType());
+        sp.setSpeechPathologyProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderSupplimentalId());
+        sp.setSpeechPathologyProviderType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderType());
+        sp.setSpeechPathologyRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateFrom());
+        sp.setSpeechPathologyRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo());
+        sp.setSpeechPathologyServiceType(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyServiceType());
+        sp.setSpeechPathologyRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestCategory());
         requestService.setSpeechPathology(sp);
     }
-    if(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork())
+    if(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkSelected())
     {
         MedicalSocialWork msw=new MedicalSocialWork();
-        msw.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMrnNumber());
-        msw.setMedicalSocialWork(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork());
-        msw.setRevenueCode(560);
-        msw.setUnits(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getUnits());
-        msw.setVisits(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getVisits());
+        msw.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        msw.setMedicalSocialWorkSelected(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkSelected());
+        msw.setMedicalSocialWorkRevenueCode(560);
+        msw.setMedicalSocialWorkUnit(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkUnit());
+        msw.setMedicalSocialWorkVisit(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkVisit());
+        msw.setMedicalSocialWorkCertificationType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkCertificationType());
+        msw.setMedicalSocialWorkLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkLevelOfService());
+        msw.setMedicalSocialWorkProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderFirstName());
+        msw.setMedicalSocialWorkPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkPoviderLastName());
+        msw.setMedicalSocialWorkProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderMiddleName());
+        msw.setMedicalSocialWorkProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderFullName());
+        msw.setMedicalSocialWorkProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderAddress());
+        msw.setMedicalSocialWorkProviderCity(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCity());
+        msw.setMedicalSocialWorkProviderState(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderState());
+        msw.setMedicalSocialWorkProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCountryCode());
+        msw.setMedicalSocialWorkProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderPostalCode());
+        msw.setMedicalSocialWorkProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumber());
+        msw.setMedicalSocialWorkProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumberType());
+        msw.setMedicalSocialWorkProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdNumberType());
+        msw.setMedicalSocialWorkProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderSupplimentalId());
+        msw.setMedicalSocialWorkProviderType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderType());
+        msw.setMedicalSocialWorkRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom());
+        msw.setMedicalSocialWorkRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo());
+        msw.setMedicalSocialWorkServiceType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkServiceType());
+        msw.setMedicalSocialWorkRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestCategory());
         requestService.setMedicalSocialWork(msw);
     }
     else
     {
         MedicalSocialWork msw=new MedicalSocialWork();
-        msw.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMrnNumber());
-        msw.setMedicalSocialWork(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWork());
-        msw.setRevenueCode(560);
-        msw.setUnits(0);
-        msw.setVisits(0);
+        msw.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        msw.setMedicalSocialWorkSelected(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkSelected());
+        msw.setMedicalSocialWorkRevenueCode(560);
+        msw.setMedicalSocialWorkUnit(0);
+        msw.setMedicalSocialWorkVisit(0);
+        msw.setMedicalSocialWorkCertificationType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkCertificationType());
+        msw.setMedicalSocialWorkLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkLevelOfService());
+        msw.setMedicalSocialWorkProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderFirstName());
+        msw.setMedicalSocialWorkPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkPoviderLastName());
+        msw.setMedicalSocialWorkProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderMiddleName());
+        msw.setMedicalSocialWorkProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderFullName());
+        msw.setMedicalSocialWorkProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderAddress());
+        msw.setMedicalSocialWorkProviderCity(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCity());
+        msw.setMedicalSocialWorkProviderState(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderState());
+        msw.setMedicalSocialWorkProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCountryCode());
+        msw.setMedicalSocialWorkProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderPostalCode());
+        msw.setMedicalSocialWorkProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumber());
+        msw.setMedicalSocialWorkProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumberType());
+        msw.setMedicalSocialWorkProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdNumberType());
+        msw.setMedicalSocialWorkProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderSupplimentalId());
+        msw.setMedicalSocialWorkProviderType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderType());
+        msw.setMedicalSocialWorkRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom());
+        msw.setMedicalSocialWorkRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo());
+        msw.setMedicalSocialWorkServiceType(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkServiceType());
+        msw.setMedicalSocialWorkRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestCategory());
         requestService.setMedicalSocialWork(msw);
     }
-    if(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing())
+    if(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingSelected())
     {
         SkilledNursing sn=new SkilledNursing();
-        sn.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getMrnNumber());
-        sn.setSkilledNursing(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing());
-        sn.setRevenueCode(550);
-        sn.setUnits(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getUnits());
-        sn.setVisits(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getVisits());
+        sn.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        sn.setSkilledNursingSelected(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingSelected());
+        sn.setSkilledNursingRevenueCode(550);
+        sn.setSkilledNursingUnit(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingUnit());
+        sn.setSkilledNursingVisit(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingVisit());
+        sn.setSkilledNursingCertificationType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingCertificationType());
+        sn.setSkilledNursingLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingLevelOfService());
+        sn.setSkilledNursingProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderFirstName());
+        sn.setSkilledNursingPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingPoviderLastName());
+        sn.setSkilledNursingProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderMiddleName());
+        sn.setSkilledNursingProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderFullName());
+        sn.setSkilledNursingProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderAddress());
+        sn.setSkilledNursingProviderCity(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCity());
+        sn.setSkilledNursingProviderState(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderState());
+        sn.setSkilledNursingProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCountryCode());
+        sn.setSkilledNursingProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderPostalCode());
+        sn.setSkilledNursingProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumber());
+        sn.setSkilledNursingProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumberType());
+        sn.setSkilledNursingProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdNumberType());
+        sn.setSkilledNursingProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderSupplimentalId());
+        sn.setSkilledNursingProviderType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderType());
+        sn.setSkilledNursingRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom());
+        sn.setSkilledNursingRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo());
+        sn.setSkilledNursingServiceType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingServiceType());
+        sn.setSkilledNursingRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestCategory());
         requestService.setSkilledNursing(sn);
     }
     else
     {
         SkilledNursing sn=new SkilledNursing();
-        sn.setMrnNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getMrnNumber());
-        sn.setSkilledNursing(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursing());
-        sn.setRevenueCode(550);
-        sn.setUnits(0);
-        sn.setVisits(0);
+        sn.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        sn.setSkilledNursingSelected(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingSelected());
+        sn.setSkilledNursingRevenueCode(550);
+        sn.setSkilledNursingUnit(0);
+        sn.setSkilledNursingVisit(0);
+        sn.setSkilledNursingCertificationType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingCertificationType());
+        sn.setSkilledNursingLevelOfService(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingLevelOfService());
+        sn.setSkilledNursingProviderFirstName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderFirstName());
+        sn.setSkilledNursingPoviderLastName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingPoviderLastName());
+        sn.setSkilledNursingProviderMiddleName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderMiddleName());
+        sn.setSkilledNursingProviderFullName(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderFullName());
+        sn.setSkilledNursingProviderAddress(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderAddress());
+        sn.setSkilledNursingProviderCity(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCity());
+        sn.setSkilledNursingProviderState(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderState());
+        sn.setSkilledNursingProviderCountryCode(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCountryCode());
+        sn.setSkilledNursingProviderPostalCode(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderPostalCode());
+        sn.setSkilledNursingProviderIdentificationNumber(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumber());
+        sn.setSkilledNursingProviderIdentificationNumberType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumberType());
+        sn.setSkilledNursingProviderIdNumberType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdNumberType());
+        sn.setSkilledNursingProviderSupplimentalId(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderSupplimentalId());
+        sn.setSkilledNursingProviderType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderType());
+        sn.setSkilledNursingRequestServiceDateFrom(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom());
+        sn.setSkilledNursingRequestServiceDateTo(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo());
+        sn.setSkilledNursingServiceType(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingServiceType());
+        sn.setSkilledNursingRequestCategory(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestCategory());
         requestService.setSkilledNursing(sn);
     }
 
@@ -463,7 +584,41 @@ public class PreAuthRestApp implements Serializable {
     demographics.setDob(homeHealthPreAuthorizationForm.getPreAuthDemographics().getDob());
     demographics.setGender(homeHealthPreAuthorizationForm.getPreAuthDemographics().getGender());
     demographics.setSsn(homeHealthPreAuthorizationForm.getPreAuthDemographics().getSsn());
+    demographics.setPrefix(homeHealthPreAuthorizationForm.getPreAuthDemographics().getPrefix());
+    demographics.setRelationshipToSubscriber(homeHealthPreAuthorizationForm.getPreAuthDemographics().getRelationshipToSubscriber());
     homeHealthPreAuthorizationForm1.setPreAuthDemographics(demographics);
+
+    SubscriberDetails subscriberDetail=new SubscriberDetails();
+    subscriberDetail.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+    subscriberDetail.setSubscriberFirstName(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberFirstName());
+    subscriberDetail.setSubscriberLastName(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberLastName());
+    subscriberDetail.setSubscriberMiddleName(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberMiddleName());
+    subscriberDetail.setSubscriberDob(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberDob());
+    subscriberDetail.setSubscriberGender(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberGender());
+    subscriberDetail.setSubscriberSuffix(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberSuffix());
+    subscriberDetail.setSubscriberPrefix(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberPrefix());
+    subscriberDetail.setSubscriberIdentificationCode(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberIdentificationCode());
+    subscriberDetail.setSubscriberIdNumberType(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberIdNumberType());
+    subscriberDetail.setSubscriberRelToInsured(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberRelToInsured());
+    subscriberDetail.setSubscriberSupplementalId(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberSupplementalId());
+    subscriberDetail.setSubscriberIdentificationNumberType(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberIdentificationNumberType());
+    homeHealthPreAuthorizationForm1.setSubscriberDetails(subscriberDetail);
+
+    DependentDetails dependentDetails =new DependentDetails();
+    dependentDetails.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+    dependentDetails.setDependentFirstName(homeHealthPreAuthorizationForm.getDependentDetails().getDependentFirstName());
+    dependentDetails.setDependentLastName(homeHealthPreAuthorizationForm.getDependentDetails().getDependentLastName());
+    dependentDetails.setDependentMiddleName(homeHealthPreAuthorizationForm.getDependentDetails().getDependentMiddleName());
+    dependentDetails.setDependentPrefix(homeHealthPreAuthorizationForm.getDependentDetails().getDependentPrefix());
+    dependentDetails.setDependentSuffix(homeHealthPreAuthorizationForm.getDependentDetails().getDependentSuffix());
+    dependentDetails.setDependentDob(homeHealthPreAuthorizationForm.getDependentDetails().getDependentDob());
+    dependentDetails.setDependentGender(homeHealthPreAuthorizationForm.getDependentDetails().getDependentGender());
+    dependentDetails.setDependentRelToSubscriber(homeHealthPreAuthorizationForm.getDependentDetails().getDependentRelToSubscriber());
+    dependentDetails.setDependentSubscriberIdentificationCode(homeHealthPreAuthorizationForm.getDependentDetails().getDependentSubscriberIdentificationCode());
+    dependentDetails.setDependentSubscriberIdentificationNumberType(homeHealthPreAuthorizationForm.getDependentDetails().getDependentSubscriberIdentificationNumberType());
+    dependentDetails.setDependentSubscriberIdNumberType(homeHealthPreAuthorizationForm.getDependentDetails().getDependentSubscriberIdNumberType());
+    dependentDetails.setDependentSubscriberSupplementalId(homeHealthPreAuthorizationForm.getDependentDetails().getDependentSubscriberSupplementalId());
+    homeHealthPreAuthorizationForm1.setDependentDetails(dependentDetails);
 
     homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm1);
 
