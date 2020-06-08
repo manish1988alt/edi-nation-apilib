@@ -22,8 +22,8 @@ public interface PDGMRapListRepository extends JpaRepository<PDGMRapListing,Stri
     @Query(value="FROM ClinicalGroupingPrimaryDiagnosis WHERE primary_diagnosis_code = ?1")
     public List<ClinicalGroupingPrimaryDiagnosis> findClinicalGroupingPrimaryDiagnosis(String primaryDiagnosisCode);
 
-    /*@Query(value="FROM CalculationClinicalGroupHIPPSCode WHERE clinical_groupcode = ?1")
-    public List<CalculationClinicalGroupHIPPSCode> findCalculationClinicalGroupHIPPSCode(String clinicalGroupcode);*/
+    @Query(value="FROM CalculationClinicalGroupHIPPSCode WHERE clinical_sub_groupcode = ?1 AND function_score=?2")
+    public List<CalculationClinicalGroupHIPPSCode> findCalculationClinicalGroupHIPPSCode(String clinicalSubGroupcode,int functionScore);
 
 
 }

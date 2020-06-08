@@ -17,11 +17,13 @@ public class Episode {
     private String	preAuthorisationStatus;
     private String admissionStatus;
     private Date admissionDate;
+    private Date formReceivedDate;
 
     public Episode() {
     }
 
-    public Episode(String episodeType, String payorType, String preauthFormStatus, Date formSentDate, String preAuthorisationStatus, String admissionStatus,Date admissionDate) {
+    public Episode(String mrnNumber, String episodeType, String payorType, String preauthFormStatus, Date formSentDate, String preAuthorisationStatus, String admissionStatus, Date admissionDate, Date formReceivedDate) {
+        this.mrnNumber = mrnNumber;
         this.episodeType = episodeType;
         this.payorType = payorType;
         this.preauthFormStatus = preauthFormStatus;
@@ -29,6 +31,15 @@ public class Episode {
         this.preAuthorisationStatus = preAuthorisationStatus;
         this.admissionStatus = admissionStatus;
         this.admissionDate = admissionDate;
+        this.formReceivedDate = formReceivedDate;
+    }
+
+    public Date getFormReceivedDate() {
+        return formReceivedDate;
+    }
+
+    public void setFormReceivedDate(Date formReceivedDate) {
+        this.formReceivedDate = formReceivedDate;
     }
 
     public String getEpisodeType() {
@@ -71,14 +82,6 @@ public class Episode {
         this.mrnNumber = mrnNumber;
     }
 
-    /*public String getFormStatus() {
-        return preAuthorisationStatus;
-    }
-
-    public void setFormStatus(String preAuthorisationStatus) {
-        this.preAuthorisationStatus = preAuthorisationStatus;
-    }
-*/
     public String getAdmissionStatus() {
         return admissionStatus;
     }
@@ -121,6 +124,7 @@ public class Episode {
                 ", preAuthorisationStatus='" + preAuthorisationStatus + '\'' +
                 ", admissionStatus='" + admissionStatus + '\'' +
                 ", admissionDate=" + admissionDate +
+                ", formReceivedDate=" + formReceivedDate +
                 '}';
     }
 }

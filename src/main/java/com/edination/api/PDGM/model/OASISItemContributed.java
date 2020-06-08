@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "OASISItemContributed")
 public class OASISItemContributed {
     @Id
+    private int oasisId;
     private String mrnNumbe;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -40,7 +41,8 @@ public class OASISItemContributed {
     public OASISItemContributed() {
     }
 
-    public OASISItemContributed(String mrnNumbe) {
+    public OASISItemContributed(int oasisId, String mrnNumbe) {
+        this.oasisId = oasisId;
         this.mrnNumbe = mrnNumbe;
     }
 
@@ -108,10 +110,19 @@ public class OASISItemContributed {
         this.m1850 = m1850;
     }
 
+    public int getOasisId() {
+        return oasisId;
+    }
+
+    public void setOasisId(int oasisId) {
+        this.oasisId = oasisId;
+    }
+
     @Override
     public String toString() {
         return "OASISItemContributed{" +
-                "mrnNumbe='" + mrnNumbe + '\'' +
+                "oasisId='" + oasisId + '\'' +
+                ", mrnNumbe='" + mrnNumbe + '\'' +
                 ", m1800=" + m1800 +
                 ", m1810=" + m1810 +
                 ", m1820=" + m1820 +
@@ -121,4 +132,7 @@ public class OASISItemContributed {
                 ", m1860=" + m1860 +
                 '}';
     }
+
+
+
 }

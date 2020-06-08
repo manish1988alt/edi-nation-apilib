@@ -23,11 +23,11 @@ OasisItemContributedRepository oasisItemContributedRepository;
         oasisItemContributedRepository.save(expense);
     }
 
-    public OASISItemContributed get(String id) {
+    public OASISItemContributed get(int id) {
         return oasisItemContributedRepository.findById(id).get();
     }
 
-    public void delete(String id) {
+    public void delete(int id) {
         oasisItemContributedRepository.deleteById(id);
     }
 }
