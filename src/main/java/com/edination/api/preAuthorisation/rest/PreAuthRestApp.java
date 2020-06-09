@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -73,7 +74,7 @@ public class PreAuthRestApp implements Serializable {
         ackn=this.saveOperation(homeHealthPreAuthorizationForm);
 
         PreAuthDetail preAuthDetail=new PreAuthDetail();
-        List<PreAuthDetail> list= preAuthRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        List<PreAuthDetail> list= preAuthRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
         PreAuthDemographics demographics1=new PreAuthDemographics();
         Episode episode=new Episode();
         for(PreAuthDetail pre:list) {
@@ -122,7 +123,7 @@ public class PreAuthRestApp implements Serializable {
 
        this.saveOperation(homeHealthPreAuthorizationForm);
         PreAuthDetail preAuthDetail=new PreAuthDetail();
-        List<PreAuthDetail> list= preAuthRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
+        List<PreAuthDetail> list= preAuthRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
         PreAuthDemographics demographics1=new PreAuthDemographics();
         Episode episode=new Episode();
         for(PreAuthDetail pre:list) {
@@ -169,13 +170,63 @@ public class PreAuthRestApp implements Serializable {
         return preAuthorizationResponseRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
     }
 
+    @PostMapping("/preAuthRequestEdit")
+    public List<HomeHealthPreAuthorizationForm>   preAuthRequestEdit(@RequestBody  HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
+    {
+        List<HomeHealthPreAuthorizationForm> homeHealthPreAuthorizationFormList=new ArrayList<>();
+        EnquiryDeatils enquiryDeatils=new EnquiryDeatils();
+        String preauthformStatus="";
+        List<PreAuthDetail> preAuthDetailList= preAuthRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
+        for(PreAuthDetail preAuthDetail:preAuthDetailList)
+        {
+            preauthformStatus=preAuthDetail.getEpisode().getPreauthFormStatus();
+        }
+
+
+        List<HomeHealthPreAuthorizationForm> list=   homeHealthPreAuthFormRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
+
+        HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm1=new HomeHealthPreAuthorizationForm();
+
+
+
+        for(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm2:list)
+        {
+            homeHealthPreAuthorizationForm1.setMrnNumber(homeHealthPreAuthorizationForm2.getMrnNumber());
+            if("Sent For Approval".equals(preauthformStatus))
+            {
+                int enquiryId=homeHealthPreAuthorizationForm2.getEnquiryDeatils().getEnquiryId();
+                enquiryDeatils.setEnquiryId(enquiryId+1);
+                String currentDate = java.time.LocalDate.now().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date currentDateF = formatter.parse(currentDate);
+                enquiryDeatils.setPreauthReqSentDate(currentDateF);
+            }
+            else
+            {
+                enquiryDeatils.setEnquiryId(homeHealthPreAuthorizationForm2.getEnquiryDeatils().getEnquiryId());
+                enquiryDeatils.setPreauthReqSentDate(homeHealthPreAuthorizationForm2.getEnquiryDeatils().getPreauthReqSentDate());
+            }
+            enquiryDeatils.setMrnNumber(homeHealthPreAuthorizationForm2.getMrnNumber());
+            homeHealthPreAuthorizationForm1.setEnquiryDeatils(enquiryDeatils);
+            homeHealthPreAuthorizationForm1.setPreAuthDemographics(homeHealthPreAuthorizationForm2.getPreAuthDemographics());
+            homeHealthPreAuthorizationForm1.setOrganizationInformation(homeHealthPreAuthorizationForm2.getOrganizationInformation());
+            homeHealthPreAuthorizationForm1.setSubscriberDetails(homeHealthPreAuthorizationForm2.getSubscriberDetails());
+            homeHealthPreAuthorizationForm1.setDependentDetails(homeHealthPreAuthorizationForm2.getDependentDetails());
+            homeHealthPreAuthorizationForm1.setRequestService(homeHealthPreAuthorizationForm2.getRequestService());
+            homeHealthPreAuthorizationForm1.setProviderDetail(homeHealthPreAuthorizationForm2.getProviderDetail());
+
+        }
+        homeHealthPreAuthorizationFormList.add(homeHealthPreAuthorizationForm1);
+        return homeHealthPreAuthorizationFormList;
+
+    }
+
 
     public String saveOperation(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)
 {
     String ackn="false";
     HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm1=new HomeHealthPreAuthorizationForm();
     homeHealthPreAuthorizationForm1.setMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
-
     EnquiryDeatils enquiryDeatils=new EnquiryDeatils();
     enquiryDeatils.setEnquiryId(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId());
     enquiryDeatils.setPreauthReqSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
