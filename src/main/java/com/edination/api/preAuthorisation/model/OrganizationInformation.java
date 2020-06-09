@@ -12,20 +12,22 @@ public class OrganizationInformation {
     private String  orgIdentificationCode;
     private String orgIdentificationCodeType;
     private String  organizationName;
-    private String  orgCommunicationType;
-    private int  orgCommunicationNo;
+    private String  orgCommunicationTypeTelephone;
+    private int  orgCommunicationTypeFacsimile;
+    private String  orgCommunicationTypeEMail;
     private int  orgCommunicationExt;
 
     public OrganizationInformation() {
     }
 
-    public OrganizationInformation(String mrnNumber, String orgIdentificationCode, String orgIdentificationCodeType, String organizationName, String orgCommunicationType, int orgCommunicationNo, int orgCommunicationExt) {
+    public OrganizationInformation(String mrnNumber, String orgIdentificationCode, String orgIdentificationCodeType, String organizationName, String orgCommunicationTypeTelephone, int orgCommunicationTypeFacsimile, String orgCommunicationTypeEMail, int orgCommunicationExt) {
         this.mrnNumber = mrnNumber;
         this.orgIdentificationCode = orgIdentificationCode;
         this.orgIdentificationCodeType = orgIdentificationCodeType;
         this.organizationName = organizationName;
-        this.orgCommunicationType = orgCommunicationType;
-        this.orgCommunicationNo = orgCommunicationNo;
+        this.orgCommunicationTypeTelephone = orgCommunicationTypeTelephone;
+        this.orgCommunicationTypeFacsimile = orgCommunicationTypeFacsimile;
+        this.orgCommunicationTypeEMail = orgCommunicationTypeEMail;
         this.orgCommunicationExt = orgCommunicationExt;
     }
 
@@ -69,20 +71,28 @@ public class OrganizationInformation {
         this.organizationName = organizationName;
     }
 
-    public String getOrgCommunicationType() {
-        return orgCommunicationType;
+    public String getOrgCommunicationTypeTelephone() {
+        return orgCommunicationTypeTelephone;
     }
 
-    public void setOrgCommunicationType(String orgCommunicationType) {
-        this.orgCommunicationType = orgCommunicationType;
+    public void setOrgCommunicationTypeTelephone(String orgCommunicationTypeTelephone) {
+        this.orgCommunicationTypeTelephone = orgCommunicationTypeTelephone;
     }
 
-    public int getOrgCommunicationNo() {
-        return orgCommunicationNo;
+    public int getOrgCommunicationTypeFacsimile() {
+        return orgCommunicationTypeFacsimile;
     }
 
-    public void setOrgCommunicationNo(int orgCommunicationNo) {
-        this.orgCommunicationNo = orgCommunicationNo;
+    public void setOrgCommunicationTypeFacsimile(int orgCommunicationTypeFacsimile) {
+        this.orgCommunicationTypeFacsimile = orgCommunicationTypeFacsimile;
+    }
+
+    public String getOrgCommunicationTypeEMail() {
+        return orgCommunicationTypeEMail;
+    }
+
+    public void setOrgCommunicationTypeEMail(String orgCommunicationTypeEMail) {
+        this.orgCommunicationTypeEMail = orgCommunicationTypeEMail;
     }
 
     @Override
@@ -93,8 +103,9 @@ public class OrganizationInformation {
                 ", orgIdentificationCode='" + orgIdentificationCode + '\'' +
                 ", orgIdentificationCodeType='" + orgIdentificationCodeType + '\'' +
                 ", organizationName='" + organizationName + '\'' +
-                ", orgCommunicationType='" + orgCommunicationType + '\'' +
-                ", orgCommunicationNo=" + orgCommunicationNo +
+                ", orgCommunicationTypeTelephone='" + orgCommunicationTypeTelephone + '\'' +
+                ", orgCommunicationTypeFacsimile=" + orgCommunicationTypeFacsimile +
+                ", orgCommunicationTypeEMail='" + orgCommunicationTypeEMail + '\'' +
                 ", orgCommunicationExt=" + orgCommunicationExt +
                 '}';
     }
@@ -106,6 +117,10 @@ public class OrganizationInformation {
     public void setOrgCommunicationExt(int orgCommunicationExt) {
         this.orgCommunicationExt = orgCommunicationExt;
     }
+
+
+
+
 
 
 }

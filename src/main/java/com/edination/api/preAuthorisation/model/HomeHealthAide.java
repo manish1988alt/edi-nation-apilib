@@ -25,6 +25,8 @@ public class HomeHealthAide {
     private String homeHealthAideProviderFirstName;
     private String homeHealthAidePoviderLastName;
     private String homeHealthAideProviderMiddleName;
+    private String homeHealthAideProviderSuffix;
+    private String homeHealthAideProviderPrefix;
     private String homeHealthAideProviderType;
     private String homeHealthAideProviderAddress;
     private String homeHealthAideProviderCity;
@@ -39,7 +41,7 @@ public class HomeHealthAide {
     public HomeHealthAide() {
     }
 
-    public HomeHealthAide(String mrnNumber, int homeHealthAideRevenueCode, boolean homeHealthAideSelected, Date homeHealthAideRequestServiceDateFrom, Date homeHealthAideRequestServiceDateTo, int homeHealthAideVisit, int homeHealthAideUnit, String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideProviderFullName, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderType, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType) {
+    public HomeHealthAide(String mrnNumber, int homeHealthAideRevenueCode, boolean homeHealthAideSelected, Date homeHealthAideRequestServiceDateFrom, Date homeHealthAideRequestServiceDateTo, int homeHealthAideVisit, int homeHealthAideUnit, String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideProviderFullName, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, String homeHealthAideProviderType, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.homeHealthAideRevenueCode = homeHealthAideRevenueCode;
         this.homeHealthAideSelected = homeHealthAideSelected;
@@ -55,6 +57,8 @@ public class HomeHealthAide {
         this.homeHealthAideProviderFirstName = homeHealthAideProviderFirstName;
         this.homeHealthAidePoviderLastName = homeHealthAidePoviderLastName;
         this.homeHealthAideProviderMiddleName = homeHealthAideProviderMiddleName;
+        this.homeHealthAideProviderSuffix = homeHealthAideProviderSuffix;
+        this.homeHealthAideProviderPrefix = homeHealthAideProviderPrefix;
         this.homeHealthAideProviderType = homeHealthAideProviderType;
         this.homeHealthAideProviderAddress = homeHealthAideProviderAddress;
         this.homeHealthAideProviderCity = homeHealthAideProviderCity;
@@ -85,6 +89,22 @@ public class HomeHealthAide {
 
     public int getHomeHealthAideRevenueCode() {
         return homeHealthAideRevenueCode;
+    }
+
+    public String getHomeHealthAideProviderSuffix() {
+        return homeHealthAideProviderSuffix;
+    }
+
+    public void setHomeHealthAideProviderSuffix(String homeHealthAideProviderSuffix) {
+        this.homeHealthAideProviderSuffix = homeHealthAideProviderSuffix;
+    }
+
+    public String getHomeHealthAideProviderPrefix() {
+        return homeHealthAideProviderPrefix;
+    }
+
+    public void setHomeHealthAideProviderPrefix(String homeHealthAideProviderPrefix) {
+        this.homeHealthAideProviderPrefix = homeHealthAideProviderPrefix;
     }
 
     public void setHomeHealthAideRevenueCode(int homeHealthAideRevenueCode) {
@@ -294,6 +314,8 @@ public class HomeHealthAide {
                 ", homeHealthAideProviderFirstName='" + homeHealthAideProviderFirstName + '\'' +
                 ", homeHealthAidePoviderLastName='" + homeHealthAidePoviderLastName + '\'' +
                 ", homeHealthAideProviderMiddleName='" + homeHealthAideProviderMiddleName + '\'' +
+                ", homeHealthAideProviderSuffix='" + homeHealthAideProviderSuffix + '\'' +
+                ", homeHealthAideProviderPrefix='" + homeHealthAideProviderPrefix + '\'' +
                 ", homeHealthAideProviderType='" + homeHealthAideProviderType + '\'' +
                 ", homeHealthAideProviderAddress='" + homeHealthAideProviderAddress + '\'' +
                 ", homeHealthAideProviderCity='" + homeHealthAideProviderCity + '\'' +

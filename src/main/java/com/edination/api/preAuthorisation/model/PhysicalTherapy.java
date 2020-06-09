@@ -25,6 +25,8 @@ public class PhysicalTherapy {
     private String physicalTherapyProviderFirstName;
     private String physicalTherapyPoviderLastName;
     private String physicalTherapyProviderMiddleName;
+    private String physicalTherapyProviderSuffix;
+    private String physicalTherapyProviderPrefix;
     private String physicalTherapyProviderType;
     private String physicalTherapyProviderAddress;
     private String physicalTherapyProviderCity;
@@ -41,7 +43,7 @@ public class PhysicalTherapy {
     public PhysicalTherapy() {
     }
 
-    public PhysicalTherapy(String mrnNumber, int physicalTherapyrevenueCode, boolean physicalTherapySelected, Date physicalTherapyRequestServiceDateFrom, Date physicalTherapyRequestServiceDateTo, int physicalTherapyVisit, int physicalTherapyUnit, String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyProviderFullName, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderType, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType) {
+    public PhysicalTherapy(String mrnNumber, int physicalTherapyrevenueCode, boolean physicalTherapySelected, Date physicalTherapyRequestServiceDateFrom, Date physicalTherapyRequestServiceDateTo, int physicalTherapyVisit, int physicalTherapyUnit, String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyProviderFullName, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, String physicalTherapyProviderType, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.physicalTherapyrevenueCode = physicalTherapyrevenueCode;
         this.physicalTherapySelected = physicalTherapySelected;
@@ -57,6 +59,8 @@ public class PhysicalTherapy {
         this.physicalTherapyProviderFirstName = physicalTherapyProviderFirstName;
         this.physicalTherapyPoviderLastName = physicalTherapyPoviderLastName;
         this.physicalTherapyProviderMiddleName = physicalTherapyProviderMiddleName;
+        this.physicalTherapyProviderSuffix = physicalTherapyProviderSuffix;
+        this.physicalTherapyProviderPrefix = physicalTherapyProviderPrefix;
         this.physicalTherapyProviderType = physicalTherapyProviderType;
         this.physicalTherapyProviderAddress = physicalTherapyProviderAddress;
         this.physicalTherapyProviderCity = physicalTherapyProviderCity;
@@ -67,6 +71,22 @@ public class PhysicalTherapy {
         this.physicalTherapyProviderIdentificationNumberType = physicalTherapyProviderIdentificationNumberType;
         this.physicalTherapyProviderSupplimentalId = physicalTherapyProviderSupplimentalId;
         this.physicalTherapyProviderIdNumberType = physicalTherapyProviderIdNumberType;
+    }
+
+    public String getPhysicalTherapyProviderSuffix() {
+        return physicalTherapyProviderSuffix;
+    }
+
+    public void setPhysicalTherapyProviderSuffix(String physicalTherapyProviderSuffix) {
+        this.physicalTherapyProviderSuffix = physicalTherapyProviderSuffix;
+    }
+
+    public String getPhysicalTherapyProviderPrefix() {
+        return physicalTherapyProviderPrefix;
+    }
+
+    public void setPhysicalTherapyProviderPrefix(String physicalTherapyProviderPrefix) {
+        this.physicalTherapyProviderPrefix = physicalTherapyProviderPrefix;
     }
 
     public String getMrnNumber() {
@@ -296,6 +316,8 @@ public class PhysicalTherapy {
                 ", physicalTherapyProviderFirstName='" + physicalTherapyProviderFirstName + '\'' +
                 ", physicalTherapyPoviderLastName='" + physicalTherapyPoviderLastName + '\'' +
                 ", physicalTherapyProviderMiddleName='" + physicalTherapyProviderMiddleName + '\'' +
+                ", physicalTherapyProviderSuffix='" + physicalTherapyProviderSuffix + '\'' +
+                ", physicalTherapyProviderPrefix='" + physicalTherapyProviderPrefix + '\'' +
                 ", physicalTherapyProviderType='" + physicalTherapyProviderType + '\'' +
                 ", physicalTherapyProviderAddress='" + physicalTherapyProviderAddress + '\'' +
                 ", physicalTherapyProviderCity='" + physicalTherapyProviderCity + '\'' +

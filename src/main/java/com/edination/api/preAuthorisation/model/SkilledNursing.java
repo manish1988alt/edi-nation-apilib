@@ -25,6 +25,8 @@ public class SkilledNursing {
     private String skilledNursingProviderFirstName;
     private String skilledNursingPoviderLastName;
     private String skilledNursingProviderMiddleName;
+    private String skilledNursingProviderSuffix;
+    private String skilledNursingProviderPrefix;
     private String skilledNursingProviderType;
     private String skilledNursingProviderAddress;
     private String skilledNursingProviderCity;
@@ -39,7 +41,7 @@ public class SkilledNursing {
     public SkilledNursing() {
     }
 
-    public SkilledNursing(String mrnNumber, int skilledNursingRevenueCode, boolean skilledNursingSelected, Date skilledNursingRequestServiceDateFrom, Date skilledNursingRequestServiceDateTo, int skilledNursingVisit, int skilledNursingUnit, String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingProviderFullName, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderType, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType) {
+    public SkilledNursing(String mrnNumber, int skilledNursingRevenueCode, boolean skilledNursingSelected, Date skilledNursingRequestServiceDateFrom, Date skilledNursingRequestServiceDateTo, int skilledNursingVisit, int skilledNursingUnit, String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingProviderFullName, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, String skilledNursingProviderType, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.skilledNursingRevenueCode = skilledNursingRevenueCode;
         this.skilledNursingSelected = skilledNursingSelected;
@@ -55,6 +57,8 @@ public class SkilledNursing {
         this.skilledNursingProviderFirstName = skilledNursingProviderFirstName;
         this.skilledNursingPoviderLastName = skilledNursingPoviderLastName;
         this.skilledNursingProviderMiddleName = skilledNursingProviderMiddleName;
+        this.skilledNursingProviderSuffix = skilledNursingProviderSuffix;
+        this.skilledNursingProviderPrefix = skilledNursingProviderPrefix;
         this.skilledNursingProviderType = skilledNursingProviderType;
         this.skilledNursingProviderAddress = skilledNursingProviderAddress;
         this.skilledNursingProviderCity = skilledNursingProviderCity;
@@ -65,6 +69,22 @@ public class SkilledNursing {
         this.skilledNursingProviderIdentificationNumberType = skilledNursingProviderIdentificationNumberType;
         this.skilledNursingProviderSupplimentalId = skilledNursingProviderSupplimentalId;
         this.skilledNursingProviderIdNumberType = skilledNursingProviderIdNumberType;
+    }
+
+    public String getSkilledNursingProviderSuffix() {
+        return skilledNursingProviderSuffix;
+    }
+
+    public void setSkilledNursingProviderSuffix(String skilledNursingProviderSuffix) {
+        this.skilledNursingProviderSuffix = skilledNursingProviderSuffix;
+    }
+
+    public String getSkilledNursingProviderPrefix() {
+        return skilledNursingProviderPrefix;
+    }
+
+    public void setSkilledNursingProviderPrefix(String skilledNursingProviderPrefix) {
+        this.skilledNursingProviderPrefix = skilledNursingProviderPrefix;
     }
 
     public int getId() {
@@ -294,6 +314,8 @@ public class SkilledNursing {
                 ", skilledNursingProviderFirstName='" + skilledNursingProviderFirstName + '\'' +
                 ", skilledNursingPoviderLastName='" + skilledNursingPoviderLastName + '\'' +
                 ", skilledNursingProviderMiddleName='" + skilledNursingProviderMiddleName + '\'' +
+                ", skilledNursingProviderSuffix='" + skilledNursingProviderSuffix + '\'' +
+                ", skilledNursingProviderPrefix='" + skilledNursingProviderPrefix + '\'' +
                 ", skilledNursingProviderType='" + skilledNursingProviderType + '\'' +
                 ", skilledNursingProviderAddress='" + skilledNursingProviderAddress + '\'' +
                 ", skilledNursingProviderCity='" + skilledNursingProviderCity + '\'' +

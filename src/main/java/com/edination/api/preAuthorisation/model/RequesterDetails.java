@@ -12,6 +12,11 @@ public class RequesterDetails {
     private int id;
     private String mrnNumber;
 	private String   reqProviderFullName;
+    private String   reqProviderFirstName;
+    private String   reqProviderLastName;
+    private String   reqProviderMiddleName;
+    private String   reqProviderSuffix;
+    private String   reqProviderPrefix;
 	private String reqProviderType;
     private String reqProviderIdentificationNumber;
     private String  reqProviderIdentificationNumberType;
@@ -29,9 +34,14 @@ public class RequesterDetails {
     public RequesterDetails() {
     }
 
-    public RequesterDetails(String mrnNumber, String reqProviderFullName, String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, Date serviceDateFrom, Date serviceDateTo, Date admitDate, Date dischargeDate, String requestCategory, String certificationType, String serviceType, String levelOfService) {
+    public RequesterDetails(String mrnNumber, String reqProviderFullName, String reqProviderFirstName, String reqProviderLastName, String reqProviderMiddleName, String reqProviderSuffix, String reqProviderPrefix, String reqProviderType, String reqProviderIdentificationNumber, String reqProviderIdentificationNumberType, String reqProviderSupplimentalId, String reqProviderIdNumberType, Date serviceDateFrom, Date serviceDateTo, Date admitDate, Date dischargeDate, String requestCategory, String certificationType, String serviceType, String levelOfService) {
         this.mrnNumber = mrnNumber;
         this.reqProviderFullName = reqProviderFullName;
+        this.reqProviderFirstName = reqProviderFirstName;
+        this.reqProviderLastName = reqProviderLastName;
+        this.reqProviderMiddleName = reqProviderMiddleName;
+        this.reqProviderSuffix = reqProviderSuffix;
+        this.reqProviderPrefix = reqProviderPrefix;
         this.reqProviderType = reqProviderType;
         this.reqProviderIdentificationNumber = reqProviderIdentificationNumber;
         this.reqProviderIdentificationNumberType = reqProviderIdentificationNumberType;
@@ -69,6 +79,46 @@ public class RequesterDetails {
 
     public void setReqProviderFullName(String reqProviderFullName) {
         this.reqProviderFullName = reqProviderFullName;
+    }
+
+    public String getReqProviderFirstName() {
+        return reqProviderFirstName;
+    }
+
+    public void setReqProviderFirstName(String reqProviderFirstName) {
+        this.reqProviderFirstName = reqProviderFirstName;
+    }
+
+    public String getReqProviderLastName() {
+        return reqProviderLastName;
+    }
+
+    public void setReqProviderLastName(String reqProviderLastName) {
+        this.reqProviderLastName = reqProviderLastName;
+    }
+
+    public String getReqProviderMiddleName() {
+        return reqProviderMiddleName;
+    }
+
+    public void setReqProviderMiddleName(String reqProviderMiddleName) {
+        this.reqProviderMiddleName = reqProviderMiddleName;
+    }
+
+    public String getReqProviderSuffix() {
+        return reqProviderSuffix;
+    }
+
+    public void setReqProviderSuffix(String reqProviderSuffix) {
+        this.reqProviderSuffix = reqProviderSuffix;
+    }
+
+    public String getReqProviderPrefix() {
+        return reqProviderPrefix;
+    }
+
+    public void setReqProviderPrefix(String reqProviderPrefix) {
+        this.reqProviderPrefix = reqProviderPrefix;
     }
 
     public String getReqProviderType() {
@@ -181,6 +231,11 @@ public class RequesterDetails {
                 "id=" + id +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 ", reqProviderFullName='" + reqProviderFullName + '\'' +
+                ", reqProviderFirstName='" + reqProviderFirstName + '\'' +
+                ", reqProviderLastName='" + reqProviderLastName + '\'' +
+                ", reqProviderMiddleName='" + reqProviderMiddleName + '\'' +
+                ", reqProviderSuffix='" + reqProviderSuffix + '\'' +
+                ", reqProviderPrefix='" + reqProviderPrefix + '\'' +
                 ", reqProviderType='" + reqProviderType + '\'' +
                 ", reqProviderIdentificationNumber='" + reqProviderIdentificationNumber + '\'' +
                 ", reqProviderIdentificationNumberType='" + reqProviderIdentificationNumberType + '\'' +
@@ -196,4 +251,8 @@ public class RequesterDetails {
                 ", levelOfService='" + levelOfService + '\'' +
                 '}';
     }
+
+
+
+
 }

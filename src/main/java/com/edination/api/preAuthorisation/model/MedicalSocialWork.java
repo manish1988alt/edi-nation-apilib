@@ -24,6 +24,8 @@ public class MedicalSocialWork {
     private String medicalSocialWorkProviderFirstName;
     private String medicalSocialWorkPoviderLastName;
     private String medicalSocialWorkProviderMiddleName;
+    private String medicalSocialWorkProviderSuffix;
+    private String medicalSocialWorkProviderPrefix;
     private String medicalSocialWorkProviderType;
     private String medicalSocialWorkProviderAddress;
     private String medicalSocialWorkProviderCity;
@@ -38,7 +40,7 @@ public class MedicalSocialWork {
     public MedicalSocialWork() {
     }
 
-    public MedicalSocialWork(String mrnNumber, int medicalSocialWorkRevenueCode, boolean medicalSocialWorkSelected, Date medicalSocialWorkRequestServiceDateFrom, Date medicalSocialWorkRequestServiceDateTo, int medicalSocialWorkVisit, int medicalSocialWorkUnit, String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkProviderFullName, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderType, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType) {
+    public MedicalSocialWork(String mrnNumber, int medicalSocialWorkRevenueCode, boolean medicalSocialWorkSelected, Date medicalSocialWorkRequestServiceDateFrom, Date medicalSocialWorkRequestServiceDateTo, int medicalSocialWorkVisit, int medicalSocialWorkUnit, String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkProviderFullName, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, String medicalSocialWorkProviderType, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.medicalSocialWorkRevenueCode = medicalSocialWorkRevenueCode;
         this.medicalSocialWorkSelected = medicalSocialWorkSelected;
@@ -54,6 +56,8 @@ public class MedicalSocialWork {
         this.medicalSocialWorkProviderFirstName = medicalSocialWorkProviderFirstName;
         this.medicalSocialWorkPoviderLastName = medicalSocialWorkPoviderLastName;
         this.medicalSocialWorkProviderMiddleName = medicalSocialWorkProviderMiddleName;
+        this.medicalSocialWorkProviderSuffix = medicalSocialWorkProviderSuffix;
+        this.medicalSocialWorkProviderPrefix = medicalSocialWorkProviderPrefix;
         this.medicalSocialWorkProviderType = medicalSocialWorkProviderType;
         this.medicalSocialWorkProviderAddress = medicalSocialWorkProviderAddress;
         this.medicalSocialWorkProviderCity = medicalSocialWorkProviderCity;
@@ -80,6 +84,22 @@ public class MedicalSocialWork {
 
     public void setMrnNumber(String mrnNumber) {
         this.mrnNumber = mrnNumber;
+    }
+
+    public String getMedicalSocialWorkProviderSuffix() {
+        return medicalSocialWorkProviderSuffix;
+    }
+
+    public void setMedicalSocialWorkProviderSuffix(String medicalSocialWorkProviderSuffix) {
+        this.medicalSocialWorkProviderSuffix = medicalSocialWorkProviderSuffix;
+    }
+
+    public String getMedicalSocialWorkProviderPrefix() {
+        return medicalSocialWorkProviderPrefix;
+    }
+
+    public void setMedicalSocialWorkProviderPrefix(String medicalSocialWorkProviderPrefix) {
+        this.medicalSocialWorkProviderPrefix = medicalSocialWorkProviderPrefix;
     }
 
     public int getMedicalSocialWorkRevenueCode() {
@@ -293,6 +313,8 @@ public class MedicalSocialWork {
                 ", medicalSocialWorkProviderFirstName='" + medicalSocialWorkProviderFirstName + '\'' +
                 ", medicalSocialWorkPoviderLastName='" + medicalSocialWorkPoviderLastName + '\'' +
                 ", medicalSocialWorkProviderMiddleName='" + medicalSocialWorkProviderMiddleName + '\'' +
+                ", medicalSocialWorkProviderSuffix='" + medicalSocialWorkProviderSuffix + '\'' +
+                ", medicalSocialWorkProviderPrefix='" + medicalSocialWorkProviderPrefix + '\'' +
                 ", medicalSocialWorkProviderType='" + medicalSocialWorkProviderType + '\'' +
                 ", medicalSocialWorkProviderAddress='" + medicalSocialWorkProviderAddress + '\'' +
                 ", medicalSocialWorkProviderCity='" + medicalSocialWorkProviderCity + '\'' +

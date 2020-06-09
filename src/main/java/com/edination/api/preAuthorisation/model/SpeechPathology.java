@@ -24,6 +24,8 @@ public class SpeechPathology {
     private String speechPathologyProviderFirstName;
     private String speechPathologyPoviderLastName;
     private String speechPathologyProviderMiddleName;
+    private String speechPathologyProviderSuffix;
+    private String speechPathologyProviderPrefix;
     private String speechPathologyProviderType;
     private String speechPathologyProviderAddress;
     private String speechPathologyProviderCity;
@@ -38,7 +40,7 @@ public class SpeechPathology {
     public SpeechPathology() {
     }
 
-    public SpeechPathology(String mrnNumber, int speechPathologyRevenueCode, boolean speechPathologySelected, Date speechPathologyRequestServiceDateFrom, Date speechPathologyRequestServiceDateTo, int speechPathologyVisit, int speechPathologyUnit, String speechPathologyRequestCategory, String speechPathologyCertificationType, String speechPathologyServiceType, String speechPathologyLevelOfService, String speechPathologyProviderFullName, String speechPathologyProviderFirstName, String speechPathologyPoviderLastName, String speechPathologyProviderMiddleName, String speechPathologyProviderType, String speechPathologyProviderAddress, String speechPathologyProviderCity, String speechPathologyProviderState, String speechPathologyProviderPostalCode, String speechPathologyProviderCountryCode, String speechPathologyProviderIdentificationNumber, String speechPathologyProviderIdentificationNumberType, String speechPathologyProviderSupplimentalId, String speechPathologyProviderIdNumberType) {
+    public SpeechPathology(String mrnNumber, int speechPathologyRevenueCode, boolean speechPathologySelected, Date speechPathologyRequestServiceDateFrom, Date speechPathologyRequestServiceDateTo, int speechPathologyVisit, int speechPathologyUnit, String speechPathologyRequestCategory, String speechPathologyCertificationType, String speechPathologyServiceType, String speechPathologyLevelOfService, String speechPathologyProviderFullName, String speechPathologyProviderFirstName, String speechPathologyPoviderLastName, String speechPathologyProviderMiddleName, String speechPathologyProviderSuffix, String speechPathologyProviderPrefix, String speechPathologyProviderType, String speechPathologyProviderAddress, String speechPathologyProviderCity, String speechPathologyProviderState, String speechPathologyProviderPostalCode, String speechPathologyProviderCountryCode, String speechPathologyProviderIdentificationNumber, String speechPathologyProviderIdentificationNumberType, String speechPathologyProviderSupplimentalId, String speechPathologyProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.speechPathologyRevenueCode = speechPathologyRevenueCode;
         this.speechPathologySelected = speechPathologySelected;
@@ -54,6 +56,8 @@ public class SpeechPathology {
         this.speechPathologyProviderFirstName = speechPathologyProviderFirstName;
         this.speechPathologyPoviderLastName = speechPathologyPoviderLastName;
         this.speechPathologyProviderMiddleName = speechPathologyProviderMiddleName;
+        this.speechPathologyProviderSuffix = speechPathologyProviderSuffix;
+        this.speechPathologyProviderPrefix = speechPathologyProviderPrefix;
         this.speechPathologyProviderType = speechPathologyProviderType;
         this.speechPathologyProviderAddress = speechPathologyProviderAddress;
         this.speechPathologyProviderCity = speechPathologyProviderCity;
@@ -80,6 +84,22 @@ public class SpeechPathology {
 
     public void setMrnNumber(String mrnNumber) {
         this.mrnNumber = mrnNumber;
+    }
+
+    public String getSpeechPathologyProviderSuffix() {
+        return speechPathologyProviderSuffix;
+    }
+
+    public void setSpeechPathologyProviderSuffix(String speechPathologyProviderSuffix) {
+        this.speechPathologyProviderSuffix = speechPathologyProviderSuffix;
+    }
+
+    public String getSpeechPathologyProviderPrefix() {
+        return speechPathologyProviderPrefix;
+    }
+
+    public void setSpeechPathologyProviderPrefix(String speechPathologyProviderPrefix) {
+        this.speechPathologyProviderPrefix = speechPathologyProviderPrefix;
     }
 
     public int getSpeechPathologyRevenueCode() {
@@ -293,6 +313,8 @@ public class SpeechPathology {
                 ", speechPathologyProviderFirstName='" + speechPathologyProviderFirstName + '\'' +
                 ", speechPathologyPoviderLastName='" + speechPathologyPoviderLastName + '\'' +
                 ", speechPathologyProviderMiddleName='" + speechPathologyProviderMiddleName + '\'' +
+                ", speechPathologyProviderSuffix='" + speechPathologyProviderSuffix + '\'' +
+                ", speechPathologyProviderPrefix='" + speechPathologyProviderPrefix + '\'' +
                 ", speechPathologyProviderType='" + speechPathologyProviderType + '\'' +
                 ", speechPathologyProviderAddress='" + speechPathologyProviderAddress + '\'' +
                 ", speechPathologyProviderCity='" + speechPathologyProviderCity + '\'' +

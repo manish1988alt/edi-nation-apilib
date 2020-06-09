@@ -25,6 +25,8 @@ public class OccupationTherapy {
     private String occupationTherapyProviderFirstName;
     private String occupationTherapyPoviderLastName;
     private String occupationTherapyProviderMiddleName;
+    private String occupationTherapyProviderSuffix;
+    private String occupationTherapyProviderPrefix;
     private String occupationTherapyProviderType;
     private String occupationTherapyProviderAddress;
     private String occupationTherapyProviderCity;
@@ -39,7 +41,7 @@ public class OccupationTherapy {
     public OccupationTherapy() {
     }
 
-    public OccupationTherapy(String mrnNumber, int occupationTherapyRevenueCode, boolean occupationTherapySelected, Date occupationTherapyRequestServiceDateFrom, Date occupationTherapyRequestServiceDateTo, int occupationTherapyVisit, int occupationTherapyUnit, String occupationTherapyRequestCategory, String occupationTherapyCertificationType, String occupationTherapyServiceType, String occupationTherapyLevelOfService, String occupationTherapyProviderFullName, String occupationTherapyProviderFirstName, String occupationTherapyPoviderLastName, String occupationTherapyProviderMiddleName, String occupationTherapyProviderType, String occupationTherapyProviderAddress, String occupationTherapyProviderCity, String occupationTherapyProviderState, String occupationTherapyProviderPostalCode, String occupationTherapyProviderCountryCode, String occupationTherapyProviderIdentificationNumber, String occupationTherapyProviderIdentificationNumberType, String occupationTherapyProviderSupplimentalId, String occupationTherapyProviderIdNumberType) {
+    public OccupationTherapy(String mrnNumber, int occupationTherapyRevenueCode, boolean occupationTherapySelected, Date occupationTherapyRequestServiceDateFrom, Date occupationTherapyRequestServiceDateTo, int occupationTherapyVisit, int occupationTherapyUnit, String occupationTherapyRequestCategory, String occupationTherapyCertificationType, String occupationTherapyServiceType, String occupationTherapyLevelOfService, String occupationTherapyProviderFullName, String occupationTherapyProviderFirstName, String occupationTherapyPoviderLastName, String occupationTherapyProviderMiddleName, String occupationTherapyProviderSuffix, String occupationTherapyProviderPrefix, String occupationTherapyProviderType, String occupationTherapyProviderAddress, String occupationTherapyProviderCity, String occupationTherapyProviderState, String occupationTherapyProviderPostalCode, String occupationTherapyProviderCountryCode, String occupationTherapyProviderIdentificationNumber, String occupationTherapyProviderIdentificationNumberType, String occupationTherapyProviderSupplimentalId, String occupationTherapyProviderIdNumberType) {
         this.mrnNumber = mrnNumber;
         this.occupationTherapyRevenueCode = occupationTherapyRevenueCode;
         this.occupationTherapySelected = occupationTherapySelected;
@@ -55,6 +57,8 @@ public class OccupationTherapy {
         this.occupationTherapyProviderFirstName = occupationTherapyProviderFirstName;
         this.occupationTherapyPoviderLastName = occupationTherapyPoviderLastName;
         this.occupationTherapyProviderMiddleName = occupationTherapyProviderMiddleName;
+        this.occupationTherapyProviderSuffix = occupationTherapyProviderSuffix;
+        this.occupationTherapyProviderPrefix = occupationTherapyProviderPrefix;
         this.occupationTherapyProviderType = occupationTherapyProviderType;
         this.occupationTherapyProviderAddress = occupationTherapyProviderAddress;
         this.occupationTherapyProviderCity = occupationTherapyProviderCity;
@@ -81,6 +85,22 @@ public class OccupationTherapy {
 
     public void setMrnNumber(String mrnNumber) {
         this.mrnNumber = mrnNumber;
+    }
+
+    public String getOccupationTherapyProviderSuffix() {
+        return occupationTherapyProviderSuffix;
+    }
+
+    public void setOccupationTherapyProviderSuffix(String occupationTherapyProviderSuffix) {
+        this.occupationTherapyProviderSuffix = occupationTherapyProviderSuffix;
+    }
+
+    public String getOccupationTherapyProviderPrefix() {
+        return occupationTherapyProviderPrefix;
+    }
+
+    public void setOccupationTherapyProviderPrefix(String occupationTherapyProviderPrefix) {
+        this.occupationTherapyProviderPrefix = occupationTherapyProviderPrefix;
     }
 
     public int getOccupationTherapyRevenueCode() {
@@ -294,6 +314,8 @@ public class OccupationTherapy {
                 ", occupationTherapyProviderFirstName='" + occupationTherapyProviderFirstName + '\'' +
                 ", occupationTherapyPoviderLastName='" + occupationTherapyPoviderLastName + '\'' +
                 ", occupationTherapyProviderMiddleName='" + occupationTherapyProviderMiddleName + '\'' +
+                ", occupationTherapyProviderSuffix='" + occupationTherapyProviderSuffix + '\'' +
+                ", occupationTherapyProviderPrefix='" + occupationTherapyProviderPrefix + '\'' +
                 ", occupationTherapyProviderType='" + occupationTherapyProviderType + '\'' +
                 ", occupationTherapyProviderAddress='" + occupationTherapyProviderAddress + '\'' +
                 ", occupationTherapyProviderCity='" + occupationTherapyProviderCity + '\'' +
