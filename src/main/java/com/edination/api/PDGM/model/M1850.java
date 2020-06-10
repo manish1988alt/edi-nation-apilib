@@ -1,27 +1,44 @@
 package com.edination.api.PDGM.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "M1850")
 public class M1850 {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int M1850ID;
     private int id;
     private boolean flag;
     private String discription;
     private int functionalPoint;
-
+    private String mrnNumber;
     public M1850() {
     }
 
-    public M1850(int id, boolean flag, String discription, int functionalPoint) {
+    public M1850(int m1850ID, int id, boolean flag, String discription, int functionalPoint, String mrnNumber) {
+        M1850ID = m1850ID;
         this.id = id;
         this.flag = flag;
         this.discription = discription;
         this.functionalPoint = functionalPoint;
+        this.mrnNumber = mrnNumber;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
+    }
+
+    public int getM1850ID() {
+        return M1850ID;
+    }
+
+    public void setM1850ID(int m1850ID) {
+        M1850ID = m1850ID;
     }
 
     public int getId() {
@@ -59,10 +76,12 @@ public class M1850 {
     @Override
     public String toString() {
         return "M1850{" +
-                "id=" + id +
+                "M1850ID=" + M1850ID +
+                ", id=" + id +
                 ", flag=" + flag +
                 ", discription='" + discription + '\'' +
                 ", functionalPoint=" + functionalPoint +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 '}';
     }
 }
