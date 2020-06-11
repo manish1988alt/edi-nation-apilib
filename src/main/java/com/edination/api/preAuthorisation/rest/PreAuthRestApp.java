@@ -96,6 +96,7 @@ public class PreAuthRestApp implements Serializable {
             episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
             episode.setPayorType(pre.getEpisode().getPayorType());
             episode.setFormSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
+            episode.setFormReceivedDate(pre.getEpisode().getFormReceivedDate());
             preAuthDetail.setPreAuthDemographics(demographics1);
             preAuthDetail.setEpisode(episode);
             preAuthDetail.setMrnNumber(pre.getMrnNumber());
@@ -144,6 +145,7 @@ public class PreAuthRestApp implements Serializable {
             episode.setPreAuthorisationStatus(pre.getEpisode().getPreAuthorisationStatus());
             episode.setPayorType(pre.getEpisode().getPayorType());
             episode.setFormSentDate(homeHealthPreAuthorizationForm.getEnquiryDeatils().getPreauthReqSentDate());
+            episode.setFormReceivedDate(pre.getEpisode().getFormReceivedDate());
             preAuthDetail.setPreAuthDemographics(demographics1);
             preAuthDetail.setEpisode(episode);
             preAuthDetail.setMrnNumber(pre.getMrnNumber());
