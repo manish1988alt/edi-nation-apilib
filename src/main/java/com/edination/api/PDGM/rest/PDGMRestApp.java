@@ -165,22 +165,24 @@ public class PDGMRestApp implements Serializable {
         for(M1033 oasisItemContributedlist:oasisItemContributed.getM1033List())
          {
 
-             if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7 && !(oasisItemContributedlist.getId()==10)) {
+             if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7) {
 
                  if (oasisItemContributedlist.getFlag()) {
                     count= count+1;
                  }
-                 if(count>=4)
+                 if(count>=4 && !(oasisItemContributedlist.getId()==10 && oasisItemContributedlist.getFlag()))
                  {
                      m1033=new M1033();
                      m1033.setId(oasisItemContributedlist.getId());
                      m1033.setFlag(oasisItemContributedlist.getFlag());
                      m1033.setDiscription(oasisItemContributedlist.getDiscription());
-                     m1033.setFunctionalPoint(11);
+                     if(oasisItemContributedlist.getId()==4 && oasisItemContributedlist.getFlag()) {
+                         m1033.setFunctionalPoint(11);
+                     }
                      m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
                      m1033Service.save(m1033);
                  }
-                 else
+                 /*else
                  {
                      m1033=new M1033();
                      m1033.setId(oasisItemContributedlist.getId());
@@ -190,7 +192,7 @@ public class PDGMRestApp implements Serializable {
                      m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
                      m1033Service.save(m1033);
 
-                 }
+                 }*/
 
 
              }
@@ -211,22 +213,34 @@ public class PDGMRestApp implements Serializable {
                  }
 
              }
-             if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7 && (oasisItemContributedlist.getId() ==8 || oasisItemContributedlist.getId() ==9) && !(oasisItemContributedlist.getId()==10))
+             if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7 && (oasisItemContributedlist.getId() ==8 || oasisItemContributedlist.getId() ==9))
              {
                  if (oasisItemContributedlist.getFlag()) {
                      count= count+1;
                  }
-                 if(count>=4 && (oasisItemContributedlist.getId()==8 && oasisItemContributedlist.getFlag()||oasisItemContributedlist.getId()==9 && oasisItemContributedlist.getFlag()))
+                 if(count>=4 && (oasisItemContributedlist.getId()==8 && oasisItemContributedlist.getFlag()||oasisItemContributedlist.getId()==9 && !(oasisItemContributedlist.getFlag()&&oasisItemContributedlist.getId()==10)))
                  {
                      m1033=new M1033();
                      m1033.setId(oasisItemContributedlist.getId());
                      m1033.setFlag(oasisItemContributedlist.getFlag());
                      m1033.setDiscription(oasisItemContributedlist.getDiscription());
-                     m1033.setFunctionalPoint(11);
+                     if(oasisItemContributedlist.getId()==4 && oasisItemContributedlist.getFlag()) {
+                         m1033.setFunctionalPoint(11);
+                     }
                      m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
                      m1033Service.save(m1033);
                  }
-               if(count<4 && (oasisItemContributedlist.getId()==8 && oasisItemContributedlist.getFlag()||oasisItemContributedlist.getId()==9 && oasisItemContributedlist.getFlag()))
+               if(count<4 && (oasisItemContributedlist.getId()==8 && oasisItemContributedlist.getFlag()||oasisItemContributedlist.getId()==9 &&oasisItemContributedlist.getFlag()) && !(oasisItemContributedlist.getFlag()&&oasisItemContributedlist.getId()==10))
+                 {
+                     m1033=new M1033();
+                     m1033.setId(oasisItemContributedlist.getId());
+                     m1033.setFlag(oasisItemContributedlist.getFlag());
+                     m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                     m1033.setFunctionalPoint(0);
+                     m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                     m1033Service.save(m1033);
+                 }
+                 if(count>=4 && (oasisItemContributedlist.getId()==8 && oasisItemContributedlist.getFlag()||oasisItemContributedlist.getId()==9 && oasisItemContributedlist.getFlag()) && (oasisItemContributedlist.getId()==10 && oasisItemContributedlist.getFlag()))
                  {
                      m1033=new M1033();
                      m1033.setId(oasisItemContributedlist.getId());
@@ -238,7 +252,7 @@ public class PDGMRestApp implements Serializable {
                  }
 
              }
-             if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7 && (oasisItemContributedlist.getId() ==8 || oasisItemContributedlist.getId() ==9) && oasisItemContributedlist.getId()==10)
+            /* if (oasisItemContributedlist.getId() >0 && oasisItemContributedlist.getId() <=7 && (oasisItemContributedlist.getId() ==8 || oasisItemContributedlist.getId() ==9) && oasisItemContributedlist.getId()==10)
              {
                  if (oasisItemContributedlist.getFlag()) {
                      count= count+1;
@@ -254,7 +268,77 @@ public class PDGMRestApp implements Serializable {
                      m1033Service.save(m1033);
                  }
 
+             }*/
+             if (oasisItemContributedlist.getId() ==1)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
              }
+             if (oasisItemContributedlist.getId() ==2)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }
+             if (oasisItemContributedlist.getId() ==3)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }/*
+             if (oasisItemContributedlist.getId() ==4)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }
+             if (oasisItemContributedlist.getId() ==5)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }
+             if (oasisItemContributedlist.getId() ==6)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }
+             if (oasisItemContributedlist.getId() ==7)
+             {
+                 m1033=new M1033();
+                 m1033.setId(oasisItemContributedlist.getId());
+                 m1033.setFlag(oasisItemContributedlist.getFlag());
+                 m1033.setDiscription(oasisItemContributedlist.getDiscription());
+                 m1033.setFunctionalPoint(0);
+                 m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                 m1033Service.save(m1033);
+             }*/
              if (oasisItemContributedlist.getId() ==8)
              {
                  m1033=new M1033();

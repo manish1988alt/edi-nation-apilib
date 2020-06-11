@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface M1850Repository  extends JpaRepository<M1850,Integer> {
 
-    @Query(value = "SELECT a.* FROM (SELECT * FROM m1850 c WHERE c.mrn_number ='P100' ORDER BY c.m1850id DESC ) a LIMIT 6" ,nativeQuery = true)
+    @Query(value = "SELECT d.* FROM (SELECT a.* FROM (SELECT * FROM m1850 c WHERE c.mrn_number =?1 ORDER BY c.m1850id DESC ) a LIMIT 6) d WHERE d.mrn_number =?1 ORDER BY d.m1850id ASC" ,nativeQuery = true)
     List<M1850> findM1850ByMrnNumber(String mrnNumber);
 }
