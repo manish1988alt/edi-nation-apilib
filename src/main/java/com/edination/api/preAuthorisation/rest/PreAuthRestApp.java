@@ -715,7 +715,7 @@ public class PreAuthRestApp implements Serializable {
 
 
 
-    public void generateFile(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm,File file)
+    public void generateFile(HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm,File file) throws Exception
     {
         String data=new EDIFileGeneration().generateFile(homeHealthPreAuthorizationForm);
         FileWriter fr = null;

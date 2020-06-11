@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -23,6 +24,12 @@ public class PhysicalTherapyResponse {
     private String physicalTherapyProviderFirstName;
     private String physicalTherapyPoviderLastName;
     private String physicalTherapyProviderMiddleName;
+    private String physicalTherapyProviderSuffix;
+    private String physicalTherapyProviderPrefix;
+    private Date physicalTherapyResponseServiceDateFrom;
+    private Date physicalTherapyResponseServiceDateTo;
+    private int physicalTherapyRevenueCode;
+    private String mrnNumber;
     private String physicalTherapyProviderType;
     private String physicalTherapyProviderIdentificationNumber;
     private String physicalTherapyProviderIdentificationNumberType;
@@ -40,7 +47,8 @@ public class PhysicalTherapyResponse {
     public PhysicalTherapyResponse() {
     }
 
-    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus) {
+
+    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, Date physicalTherapyResponseServiceDateFrom, Date physicalTherapyResponseServiceDateTo, int physicalTherapyRevenueCode, String mrnNumber, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus) {
         this.physicalTherapyRequestCategory = physicalTherapyRequestCategory;
         this.physicalTherapyCertificationType = physicalTherapyCertificationType;
         this.physicalTherapyServiceType = physicalTherapyServiceType;
@@ -53,6 +61,12 @@ public class PhysicalTherapyResponse {
         this.physicalTherapyProviderFirstName = physicalTherapyProviderFirstName;
         this.physicalTherapyPoviderLastName = physicalTherapyPoviderLastName;
         this.physicalTherapyProviderMiddleName = physicalTherapyProviderMiddleName;
+        this.physicalTherapyProviderSuffix = physicalTherapyProviderSuffix;
+        this.physicalTherapyProviderPrefix = physicalTherapyProviderPrefix;
+        this.physicalTherapyResponseServiceDateFrom = physicalTherapyResponseServiceDateFrom;
+        this.physicalTherapyResponseServiceDateTo = physicalTherapyResponseServiceDateTo;
+        this.physicalTherapyRevenueCode = physicalTherapyRevenueCode;
+        this.mrnNumber = mrnNumber;
         this.physicalTherapyProviderType = physicalTherapyProviderType;
         this.physicalTherapyProviderIdentificationNumber = physicalTherapyProviderIdentificationNumber;
         this.physicalTherapyProviderIdentificationNumberType = physicalTherapyProviderIdentificationNumberType;
@@ -67,6 +81,54 @@ public class PhysicalTherapyResponse {
         this.physicalTherapyProviderCountryCode = physicalTherapyProviderCountryCode;
         this.physicalTherapyProviderFullName = physicalTherapyProviderFullName;
         this.physicalTherapyDetailStatus = physicalTherapyDetailStatus;
+    }
+
+    public String getPhysicalTherapyProviderSuffix() {
+        return physicalTherapyProviderSuffix;
+    }
+
+    public void setPhysicalTherapyProviderSuffix(String physicalTherapyProviderSuffix) {
+        this.physicalTherapyProviderSuffix = physicalTherapyProviderSuffix;
+    }
+
+    public String getPhysicalTherapyProviderPrefix() {
+        return physicalTherapyProviderPrefix;
+    }
+
+    public void setPhysicalTherapyProviderPrefix(String physicalTherapyProviderPrefix) {
+        this.physicalTherapyProviderPrefix = physicalTherapyProviderPrefix;
+    }
+
+    public Date getPhysicalTherapyResponseServiceDateFrom() {
+        return physicalTherapyResponseServiceDateFrom;
+    }
+
+    public void setPhysicalTherapyResponseServiceDateFrom(Date physicalTherapyResponseServiceDateFrom) {
+        this.physicalTherapyResponseServiceDateFrom = physicalTherapyResponseServiceDateFrom;
+    }
+
+    public Date getPhysicalTherapyResponseServiceDateTo() {
+        return physicalTherapyResponseServiceDateTo;
+    }
+
+    public void setPhysicalTherapyResponseServiceDateTo(Date physicalTherapyResponseServiceDateTo) {
+        this.physicalTherapyResponseServiceDateTo = physicalTherapyResponseServiceDateTo;
+    }
+
+    public int getPhysicalTherapyRevenueCode() {
+        return physicalTherapyRevenueCode;
+    }
+
+    public void setPhysicalTherapyRevenueCode(int physicalTherapyRevenueCode) {
+        this.physicalTherapyRevenueCode = physicalTherapyRevenueCode;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public int getId() {
@@ -301,6 +363,12 @@ public class PhysicalTherapyResponse {
                 ", physicalTherapyProviderFirstName='" + physicalTherapyProviderFirstName + '\'' +
                 ", physicalTherapyPoviderLastName='" + physicalTherapyPoviderLastName + '\'' +
                 ", physicalTherapyProviderMiddleName='" + physicalTherapyProviderMiddleName + '\'' +
+                ", physicalTherapyProviderSuffix='" + physicalTherapyProviderSuffix + '\'' +
+                ", physicalTherapyProviderPrefix='" + physicalTherapyProviderPrefix + '\'' +
+                ", physicalTherapyResponseServiceDateFrom=" + physicalTherapyResponseServiceDateFrom +
+                ", physicalTherapyResponseServiceDateTo=" + physicalTherapyResponseServiceDateTo +
+                ", physicalTherapyRevenueCode=" + physicalTherapyRevenueCode +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", physicalTherapyProviderType='" + physicalTherapyProviderType + '\'' +
                 ", physicalTherapyProviderIdentificationNumber='" + physicalTherapyProviderIdentificationNumber + '\'' +
                 ", physicalTherapyProviderIdentificationNumberType='" + physicalTherapyProviderIdentificationNumberType + '\'' +

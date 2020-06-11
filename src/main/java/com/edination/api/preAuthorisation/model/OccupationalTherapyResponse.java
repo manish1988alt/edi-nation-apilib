@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -23,6 +24,12 @@ public class OccupationalTherapyResponse {
     private String OccupationalTherapyProviderFirstName;
     private String OccupationalTherapyProviderLastName;
     private String OccupationalTherapyProviderMiddleName;
+    private String occupationalTherapyProviderSuffix;
+    private String occupationalTherapyProviderPrefix;
+    private Date occupationalTherapyResponseServiceDateFrom;
+    private Date occupationalTherapyResponseServiceDateTo;
+    private int occupationalTherapyRevenueCode;
+    private String mrnNumber;
     private String OccupationalTherapyProviderType;
     private String OccupationalTherapyProviderIdentificationNumber;
     private String OccupationalProviderIdentificationNumberType;
@@ -40,7 +47,7 @@ public class OccupationalTherapyResponse {
     public OccupationalTherapyResponse() {
     }
 
-    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus) {
+    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderSuffix, String occupationalTherapyProviderPrefix, Date occupationalTherapyResponseServiceDateFrom, Date occupationalTherapyResponseServiceDateTo, int occupationalTherapyRevenueCode, String mrnNumber, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus) {
         OccupationalTherapyRequestCategory = occupationalTherapyRequestCategory;
         OccupationalTherapyCertificationType = occupationalTherapyCertificationType;
         OccupationalTherapyServiceType = occupationalTherapyServiceType;
@@ -53,6 +60,12 @@ public class OccupationalTherapyResponse {
         OccupationalTherapyProviderFirstName = occupationalTherapyProviderFirstName;
         OccupationalTherapyProviderLastName = occupationalTherapyProviderLastName;
         OccupationalTherapyProviderMiddleName = occupationalTherapyProviderMiddleName;
+        this.occupationalTherapyProviderSuffix = occupationalTherapyProviderSuffix;
+        this.occupationalTherapyProviderPrefix = occupationalTherapyProviderPrefix;
+        this.occupationalTherapyResponseServiceDateFrom = occupationalTherapyResponseServiceDateFrom;
+        this.occupationalTherapyResponseServiceDateTo = occupationalTherapyResponseServiceDateTo;
+        this.occupationalTherapyRevenueCode = occupationalTherapyRevenueCode;
+        this.mrnNumber = mrnNumber;
         OccupationalTherapyProviderType = occupationalTherapyProviderType;
         OccupationalTherapyProviderIdentificationNumber = occupationalTherapyProviderIdentificationNumber;
         OccupationalProviderIdentificationNumberType = occupationalProviderIdentificationNumberType;
@@ -67,6 +80,54 @@ public class OccupationalTherapyResponse {
         OccupationalTherapyCountryCode = occupationalTherapyCountryCode;
         OccupationalTherapyProviderFullName = occupationalTherapyProviderFullName;
         OccupationalTherapyDetailStatus = occupationalTherapyDetailStatus;
+    }
+
+    public String getOccupationalTherapyProviderSuffix() {
+        return occupationalTherapyProviderSuffix;
+    }
+
+    public void setOccupationalTherapyProviderSuffix(String occupationalTherapyProviderSuffix) {
+        this.occupationalTherapyProviderSuffix = occupationalTherapyProviderSuffix;
+    }
+
+    public String getOccupationalTherapyProviderPrefix() {
+        return occupationalTherapyProviderPrefix;
+    }
+
+    public void setOccupationalTherapyProviderPrefix(String occupationalTherapyProviderPrefix) {
+        this.occupationalTherapyProviderPrefix = occupationalTherapyProviderPrefix;
+    }
+
+    public Date getOccupationalTherapyResponseServiceDateFrom() {
+        return occupationalTherapyResponseServiceDateFrom;
+    }
+
+    public void setOccupationalTherapyResponseServiceDateFrom(Date occupationalTherapyResponseServiceDateFrom) {
+        this.occupationalTherapyResponseServiceDateFrom = occupationalTherapyResponseServiceDateFrom;
+    }
+
+    public Date getOccupationalTherapyResponseServiceDateTo() {
+        return occupationalTherapyResponseServiceDateTo;
+    }
+
+    public void setOccupationalTherapyResponseServiceDateTo(Date occupationalTherapyResponseServiceDateTo) {
+        this.occupationalTherapyResponseServiceDateTo = occupationalTherapyResponseServiceDateTo;
+    }
+
+    public int getOccupationalTherapyRevenueCode() {
+        return occupationalTherapyRevenueCode;
+    }
+
+    public void setOccupationalTherapyRevenueCode(int occupationalTherapyRevenueCode) {
+        this.occupationalTherapyRevenueCode = occupationalTherapyRevenueCode;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public int getId() {
@@ -301,6 +362,12 @@ public class OccupationalTherapyResponse {
                 ", OccupationalTherapyProviderFirstName='" + OccupationalTherapyProviderFirstName + '\'' +
                 ", OccupationalTherapyProviderLastName='" + OccupationalTherapyProviderLastName + '\'' +
                 ", OccupationalTherapyProviderMiddleName='" + OccupationalTherapyProviderMiddleName + '\'' +
+                ", occupationalTherapyProviderSuffix='" + occupationalTherapyProviderSuffix + '\'' +
+                ", occupationalTherapyProviderPrefix='" + occupationalTherapyProviderPrefix + '\'' +
+                ", occupationalTherapyResponseServiceDateFrom=" + occupationalTherapyResponseServiceDateFrom +
+                ", occupationalTherapyResponseServiceDateTo=" + occupationalTherapyResponseServiceDateTo +
+                ", occupationalTherapyRevenueCode=" + occupationalTherapyRevenueCode +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", OccupationalTherapyProviderType='" + OccupationalTherapyProviderType + '\'' +
                 ", OccupationalTherapyProviderIdentificationNumber='" + OccupationalTherapyProviderIdentificationNumber + '\'' +
                 ", OccupationalProviderIdentificationNumberType='" + OccupationalProviderIdentificationNumberType + '\'' +

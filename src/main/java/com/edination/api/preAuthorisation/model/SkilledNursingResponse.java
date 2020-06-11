@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -22,6 +23,12 @@ public class SkilledNursingResponse {
     private String SkilledNursingProviderFirstName;
     private String SkilledNursingPoviderLastName;
     private String SkilledNursingProviderMiddleName;
+    private String skilledNursingProviderSuffix;
+    private String skilledNursingProviderPrefix;
+    private Date skilledNursingResponseServiceDateFrom;
+    private Date skilledNursingResponseServiceDateTo;
+    private int skilledNursingRevenueCode;
+    private String mrnNumber;
     private String SkilledNursingProviderType;
     private String SkilledNursingProviderIdentificationNumber;
     private String SkilledNursingProviderIdentificationNumberType;
@@ -39,7 +46,7 @@ public class SkilledNursingResponse {
     public SkilledNursingResponse() {
     }
 
-    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus) {
+    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, Date skilledNursingResponseServiceDateFrom, Date skilledNursingResponseServiceDateTo, int skilledNursingRevenueCode, String mrnNumber, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus) {
         SkilledNursingRequestCategory = skilledNursingRequestCategory;
         SkilledNursingCertificationType = skilledNursingCertificationType;
         SkilledNursingServiceType = skilledNursingServiceType;
@@ -52,6 +59,12 @@ public class SkilledNursingResponse {
         SkilledNursingProviderFirstName = skilledNursingProviderFirstName;
         SkilledNursingPoviderLastName = skilledNursingPoviderLastName;
         SkilledNursingProviderMiddleName = skilledNursingProviderMiddleName;
+        this.skilledNursingProviderSuffix = skilledNursingProviderSuffix;
+        this.skilledNursingProviderPrefix = skilledNursingProviderPrefix;
+        this.skilledNursingResponseServiceDateFrom = skilledNursingResponseServiceDateFrom;
+        this.skilledNursingResponseServiceDateTo = skilledNursingResponseServiceDateTo;
+        this.skilledNursingRevenueCode = skilledNursingRevenueCode;
+        this.mrnNumber = mrnNumber;
         SkilledNursingProviderType = skilledNursingProviderType;
         SkilledNursingProviderIdentificationNumber = skilledNursingProviderIdentificationNumber;
         SkilledNursingProviderIdentificationNumberType = skilledNursingProviderIdentificationNumberType;
@@ -66,6 +79,54 @@ public class SkilledNursingResponse {
         SkilledNursingProviderCountryCode = skilledNursingProviderCountryCode;
         SkilledNursingProviderFullName = skilledNursingProviderFullName;
         SkilledNursingDetailStatus = skilledNursingDetailStatus;
+    }
+
+    public String getSkilledNursingProviderSuffix() {
+        return skilledNursingProviderSuffix;
+    }
+
+    public void setSkilledNursingProviderSuffix(String skilledNursingProviderSuffix) {
+        this.skilledNursingProviderSuffix = skilledNursingProviderSuffix;
+    }
+
+    public String getSkilledNursingProviderPrefix() {
+        return skilledNursingProviderPrefix;
+    }
+
+    public void setSkilledNursingProviderPrefix(String skilledNursingProviderPrefix) {
+        this.skilledNursingProviderPrefix = skilledNursingProviderPrefix;
+    }
+
+    public Date getSkilledNursingResponseServiceDateFrom() {
+        return skilledNursingResponseServiceDateFrom;
+    }
+
+    public void setSkilledNursingResponseServiceDateFrom(Date skilledNursingResponseServiceDateFrom) {
+        this.skilledNursingResponseServiceDateFrom = skilledNursingResponseServiceDateFrom;
+    }
+
+    public Date getSkilledNursingResponseServiceDateTo() {
+        return skilledNursingResponseServiceDateTo;
+    }
+
+    public void setSkilledNursingResponseServiceDateTo(Date skilledNursingResponseServiceDateTo) {
+        this.skilledNursingResponseServiceDateTo = skilledNursingResponseServiceDateTo;
+    }
+
+    public int getSkilledNursingRevenueCode() {
+        return skilledNursingRevenueCode;
+    }
+
+    public void setSkilledNursingRevenueCode(int skilledNursingRevenueCode) {
+        this.skilledNursingRevenueCode = skilledNursingRevenueCode;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public int getId() {
@@ -300,6 +361,12 @@ public class SkilledNursingResponse {
                 ", SkilledNursingProviderFirstName='" + SkilledNursingProviderFirstName + '\'' +
                 ", SkilledNursingPoviderLastName='" + SkilledNursingPoviderLastName + '\'' +
                 ", SkilledNursingProviderMiddleName='" + SkilledNursingProviderMiddleName + '\'' +
+                ", skilledNursingProviderSuffix='" + skilledNursingProviderSuffix + '\'' +
+                ", skilledNursingProviderPrefix='" + skilledNursingProviderPrefix + '\'' +
+                ", skilledNursingResponseServiceDateFrom=" + skilledNursingResponseServiceDateFrom +
+                ", skilledNursingResponseServiceDateTo=" + skilledNursingResponseServiceDateTo +
+                ", skilledNursingRevenueCode=" + skilledNursingRevenueCode +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", SkilledNursingProviderType='" + SkilledNursingProviderType + '\'' +
                 ", SkilledNursingProviderIdentificationNumber='" + SkilledNursingProviderIdentificationNumber + '\'' +
                 ", SkilledNursingProviderIdentificationNumberType='" + SkilledNursingProviderIdentificationNumberType + '\'' +

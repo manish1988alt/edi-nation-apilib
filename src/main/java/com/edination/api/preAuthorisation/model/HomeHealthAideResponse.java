@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -10,6 +11,7 @@ public class HomeHealthAideResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
 
     private String HomeHealthAideRequestCategory;
     private String HomeHealthAideCertificationType;
@@ -23,6 +25,12 @@ public class HomeHealthAideResponse {
     private String HomeHealthAideProviderFirstName;
     private String HomeHealthAidePoviderLastName;
     private String HomeHealthAideProviderMiddleName;
+    private String homeHealthAideProviderSuffix;
+    private String homeHealthAideProviderPrefix;
+    private Date homeHealthAideResponseServiceDateFrom;
+    private Date homeHealthAideResponseServiceDateTo;
+    private int homeHealthAideRevenueCode;
+    private String mrnNumber;
     private String HomeHealthAideProviderType;
     private String HomeHealthAideProviderIdentificationNumber;
     private String HomeHealthAideProviderIdentificationNumberType;
@@ -40,7 +48,7 @@ public class HomeHealthAideResponse {
     public HomeHealthAideResponse() {
     }
 
-    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus) {
+    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, Date homeHealthAideResponseServiceDateFrom, Date homeHealthAideResponseServiceDateTo, int homeHealthAideRevenueCode, String mrnNumber, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus) {
         HomeHealthAideRequestCategory = homeHealthAideRequestCategory;
         HomeHealthAideCertificationType = homeHealthAideCertificationType;
         HomeHealthAideServiceType = homeHealthAideServiceType;
@@ -53,6 +61,12 @@ public class HomeHealthAideResponse {
         HomeHealthAideProviderFirstName = homeHealthAideProviderFirstName;
         HomeHealthAidePoviderLastName = homeHealthAidePoviderLastName;
         HomeHealthAideProviderMiddleName = homeHealthAideProviderMiddleName;
+        this.homeHealthAideProviderSuffix = homeHealthAideProviderSuffix;
+        this.homeHealthAideProviderPrefix = homeHealthAideProviderPrefix;
+        this.homeHealthAideResponseServiceDateFrom = homeHealthAideResponseServiceDateFrom;
+        this.homeHealthAideResponseServiceDateTo = homeHealthAideResponseServiceDateTo;
+        this.homeHealthAideRevenueCode = homeHealthAideRevenueCode;
+        this.mrnNumber = mrnNumber;
         HomeHealthAideProviderType = homeHealthAideProviderType;
         HomeHealthAideProviderIdentificationNumber = homeHealthAideProviderIdentificationNumber;
         HomeHealthAideProviderIdentificationNumberType = homeHealthAideProviderIdentificationNumberType;
@@ -67,6 +81,54 @@ public class HomeHealthAideResponse {
         HomeHealthAideProviderCountryCode = homeHealthAideProviderCountryCode;
         HomeHealthAideProviderFullName = homeHealthAideProviderFullName;
         HomeHealthAideDetailStatus = homeHealthAideDetailStatus;
+    }
+
+    public String getHomeHealthAideProviderSuffix() {
+        return homeHealthAideProviderSuffix;
+    }
+
+    public void setHomeHealthAideProviderSuffix(String homeHealthAideProviderSuffix) {
+        this.homeHealthAideProviderSuffix = homeHealthAideProviderSuffix;
+    }
+
+    public String getHomeHealthAideProviderPrefix() {
+        return homeHealthAideProviderPrefix;
+    }
+
+    public void setHomeHealthAideProviderPrefix(String homeHealthAideProviderPrefix) {
+        this.homeHealthAideProviderPrefix = homeHealthAideProviderPrefix;
+    }
+
+    public Date getHomeHealthAideResponseServiceDateFrom() {
+        return homeHealthAideResponseServiceDateFrom;
+    }
+
+    public void setHomeHealthAideResponseServiceDateFrom(Date homeHealthAideResponseServiceDateFrom) {
+        this.homeHealthAideResponseServiceDateFrom = homeHealthAideResponseServiceDateFrom;
+    }
+
+    public Date getHomeHealthAideResponseServiceDateTo() {
+        return homeHealthAideResponseServiceDateTo;
+    }
+
+    public void setHomeHealthAideResponseServiceDateTo(Date homeHealthAideResponseServiceDateTo) {
+        this.homeHealthAideResponseServiceDateTo = homeHealthAideResponseServiceDateTo;
+    }
+
+    public int getHomeHealthAideRevenueCode() {
+        return homeHealthAideRevenueCode;
+    }
+
+    public void setHomeHealthAideRevenueCode(int homeHealthAideRevenueCode) {
+        this.homeHealthAideRevenueCode = homeHealthAideRevenueCode;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public int getId() {
@@ -301,6 +363,12 @@ public class HomeHealthAideResponse {
                 ", HomeHealthAideProviderFirstName='" + HomeHealthAideProviderFirstName + '\'' +
                 ", HomeHealthAidePoviderLastName='" + HomeHealthAidePoviderLastName + '\'' +
                 ", HomeHealthAideProviderMiddleName='" + HomeHealthAideProviderMiddleName + '\'' +
+                ", homeHealthAideProviderSuffix='" + homeHealthAideProviderSuffix + '\'' +
+                ", homeHealthAideProviderPrefix='" + homeHealthAideProviderPrefix + '\'' +
+                ", homeHealthAideResponseServiceDateFrom=" + homeHealthAideResponseServiceDateFrom +
+                ", homeHealthAideResponseServiceDateTo=" + homeHealthAideResponseServiceDateTo +
+                ", homeHealthAideRevenueCode=" + homeHealthAideRevenueCode +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", HomeHealthAideProviderType='" + HomeHealthAideProviderType + '\'' +
                 ", HomeHealthAideProviderIdentificationNumber='" + HomeHealthAideProviderIdentificationNumber + '\'' +
                 ", HomeHealthAideProviderIdentificationNumberType='" + HomeHealthAideProviderIdentificationNumberType + '\'' +

@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -22,6 +23,12 @@ public class MedicalSocialWorkResponse {
     private String MedicalSocialWorkProviderFirstName;
     private String MedicalSocialWorkPoviderLastName;
     private String MedicalSocialWorkProviderMiddleName;
+    private String medicalSocialWorkProviderSuffix;
+    private String medicalSocialWorkProviderPrefix;
+    private Date medicalSocialWorkResponseServiceDateFrom;
+    private Date medicalSocialWorkResponseServiceDateTo;
+    private int medicalSocialWorkRevenueCode;
+    private String mrnNumber;
     private String MedicalSocialWorkProviderType;
     private String MedicalSocialWorkProviderIdentificationNumber;
     private String MedicalSocialWorkProviderIdentificationNumberType;
@@ -40,7 +47,7 @@ public class MedicalSocialWorkResponse {
     public MedicalSocialWorkResponse() {
     }
 
-    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus) {
+    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, Date medicalSocialWorkResponseServiceDateFrom, Date medicalSocialWorkResponseServiceDateTo, int medicalSocialWorkRevenueCode, String mrnNumber, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus) {
         MedicalSocialWorkRequestCategory = medicalSocialWorkRequestCategory;
         MedicalSocialWorkCertificationType = medicalSocialWorkCertificationType;
         MedicalSocialWorkServiceType = medicalSocialWorkServiceType;
@@ -53,6 +60,12 @@ public class MedicalSocialWorkResponse {
         MedicalSocialWorkProviderFirstName = medicalSocialWorkProviderFirstName;
         MedicalSocialWorkPoviderLastName = medicalSocialWorkPoviderLastName;
         MedicalSocialWorkProviderMiddleName = medicalSocialWorkProviderMiddleName;
+        this.medicalSocialWorkProviderSuffix = medicalSocialWorkProviderSuffix;
+        this.medicalSocialWorkProviderPrefix = medicalSocialWorkProviderPrefix;
+        this.medicalSocialWorkResponseServiceDateFrom = medicalSocialWorkResponseServiceDateFrom;
+        this.medicalSocialWorkResponseServiceDateTo = medicalSocialWorkResponseServiceDateTo;
+        this.medicalSocialWorkRevenueCode = medicalSocialWorkRevenueCode;
+        this.mrnNumber = mrnNumber;
         MedicalSocialWorkProviderType = medicalSocialWorkProviderType;
         MedicalSocialWorkProviderIdentificationNumber = medicalSocialWorkProviderIdentificationNumber;
         MedicalSocialWorkProviderIdentificationNumberType = medicalSocialWorkProviderIdentificationNumberType;
@@ -67,6 +80,54 @@ public class MedicalSocialWorkResponse {
         MedicalSocialWorkProviderCountryCode = medicalSocialWorkProviderCountryCode;
         MedicalSocialWorkProviderFullName = medicalSocialWorkProviderFullName;
         MedicalSocialWorkDetailStatus = medicalSocialWorkDetailStatus;
+    }
+
+    public String getMedicalSocialWorkProviderSuffix() {
+        return medicalSocialWorkProviderSuffix;
+    }
+
+    public void setMedicalSocialWorkProviderSuffix(String medicalSocialWorkProviderSuffix) {
+        this.medicalSocialWorkProviderSuffix = medicalSocialWorkProviderSuffix;
+    }
+
+    public String getMedicalSocialWorkProviderPrefix() {
+        return medicalSocialWorkProviderPrefix;
+    }
+
+    public void setMedicalSocialWorkProviderPrefix(String medicalSocialWorkProviderPrefix) {
+        this.medicalSocialWorkProviderPrefix = medicalSocialWorkProviderPrefix;
+    }
+
+    public Date getMedicalSocialWorkResponseServiceDateFrom() {
+        return medicalSocialWorkResponseServiceDateFrom;
+    }
+
+    public void setMedicalSocialWorkResponseServiceDateFrom(Date medicalSocialWorkResponseServiceDateFrom) {
+        this.medicalSocialWorkResponseServiceDateFrom = medicalSocialWorkResponseServiceDateFrom;
+    }
+
+    public Date getMedicalSocialWorkResponseServiceDateTo() {
+        return medicalSocialWorkResponseServiceDateTo;
+    }
+
+    public void setMedicalSocialWorkResponseServiceDateTo(Date medicalSocialWorkResponseServiceDateTo) {
+        this.medicalSocialWorkResponseServiceDateTo = medicalSocialWorkResponseServiceDateTo;
+    }
+
+    public int getMedicalSocialWorkRevenueCode() {
+        return medicalSocialWorkRevenueCode;
+    }
+
+    public void setMedicalSocialWorkRevenueCode(int medicalSocialWorkRevenueCode) {
+        this.medicalSocialWorkRevenueCode = medicalSocialWorkRevenueCode;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public int getId() {
@@ -301,6 +362,12 @@ public class MedicalSocialWorkResponse {
                 ", MedicalSocialWorkProviderFirstName='" + MedicalSocialWorkProviderFirstName + '\'' +
                 ", MedicalSocialWorkPoviderLastName='" + MedicalSocialWorkPoviderLastName + '\'' +
                 ", MedicalSocialWorkProviderMiddleName='" + MedicalSocialWorkProviderMiddleName + '\'' +
+                ", medicalSocialWorkProviderSuffix='" + medicalSocialWorkProviderSuffix + '\'' +
+                ", medicalSocialWorkProviderPrefix='" + medicalSocialWorkProviderPrefix + '\'' +
+                ", medicalSocialWorkResponseServiceDateFrom=" + medicalSocialWorkResponseServiceDateFrom +
+                ", medicalSocialWorkResponseServiceDateTo=" + medicalSocialWorkResponseServiceDateTo +
+                ", medicalSocialWorkRevenueCode=" + medicalSocialWorkRevenueCode +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 ", MedicalSocialWorkProviderType='" + MedicalSocialWorkProviderType + '\'' +
                 ", MedicalSocialWorkProviderIdentificationNumber='" + MedicalSocialWorkProviderIdentificationNumber + '\'' +
                 ", MedicalSocialWorkProviderIdentificationNumberType='" + MedicalSocialWorkProviderIdentificationNumberType + '\'' +
