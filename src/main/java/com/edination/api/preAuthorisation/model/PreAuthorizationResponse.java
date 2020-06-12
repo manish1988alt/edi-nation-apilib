@@ -10,20 +10,8 @@ public class PreAuthorizationResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-/*
-    private String enquiryId;
-    private Date processDateAndTime;
-    private Date serviceDateFrom;
-    private Date serviceDateTo;
-    private Date effectiveDateTo;
-    private Date effectiveDateFrom;
-    private Date expirationeDateTo;
-    private Date admitDate;
-    private Date dischargeDate;
-    private String certificationIdentificationNumber;
-    private String preAuthorizationStatus;
-    private String enquiryDetailStatus;*/
 
+    private String enquiryId;
     private String mrnNumber;
     private String memberfirstName;
     private String memberlastName;
@@ -128,7 +116,8 @@ public class PreAuthorizationResponse {
     {
     }
 
-    public PreAuthorizationResponse(String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgCommunicationTypeTelephone, String orgCommunicationTypeFacsimile, String orgCommunicationTypeEMail, String orgCommunicationExt, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRelToInsured, String subscriberIdentificationCode, String subscriberIdNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentPrefix, String dependentSuffix, String dependentGender, Date dependentDob, String dependentSubscriberIdentificationCode, String dependentSubscriberIdNumberType, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderMiddleName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus) {
+    public PreAuthorizationResponse(String enquiryId,String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgCommunicationTypeTelephone, String orgCommunicationTypeFacsimile, String orgCommunicationTypeEMail, String orgCommunicationExt, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRelToInsured, String subscriberIdentificationCode, String subscriberIdNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentPrefix, String dependentSuffix, String dependentGender, Date dependentDob, String dependentSubscriberIdentificationCode, String dependentSubscriberIdNumberType, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderMiddleName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus) {
+        this.enquiryId=enquiryId;
         this.mrnNumber = mrnNumber;
         this.memberfirstName = memberfirstName;
         this.memberlastName = memberlastName;
@@ -279,6 +268,14 @@ public class PreAuthorizationResponse {
 
     public void setDependentSubscriberIdNumberType(String dependentSubscriberIdNumberType) {
         this.dependentSubscriberIdNumberType = dependentSubscriberIdNumberType;
+    }
+
+    public String getEnquiryId() {
+        return enquiryId;
+    }
+
+    public void setEnquiryId(String enquiryId) {
+        this.enquiryId = enquiryId;
     }
 
     public int getId() {
@@ -775,6 +772,7 @@ public class PreAuthorizationResponse {
     public String toString() {
         return "PreAuthorizationResponse{" +
                 "id=" + id +
+                ", enquiryId='" + enquiryId + '\'' +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 ", memberfirstName='" + memberfirstName + '\'' +
                 ", memberlastName='" + memberlastName + '\'' +

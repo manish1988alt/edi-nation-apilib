@@ -12,8 +12,13 @@ public interface PreAuthorizationResponseRepository extends JpaRepository<PreAut
     @Query("FROM PreAuthorizationResponse c WHERE mrn_number = ?1 ORDER BY c.id DESC")
     List<PreAuthorizationResponse> findByMrnNumber(String mrnNumber);
 
+    @Query(value = "SELECT  c.* FROM pre_authorization_response c WHERE c.mrn_number = ?1 AND c.enquiry_id=?2",nativeQuery = true)
+    List<PreAuthorizationResponse> findByMrnNumberHistoryView(String mrnNumber,String enquiryId);
+
+
     @Query(value = "SELECT a.* FROM (SELECT * FROM pre_authorization_response c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM pre_authorization_response e WHERE e.mrn_number = ?1) ",nativeQuery = true)
     List<PreAuthorizationResponse> findByID(String mrnNumber);
+
 
     @Query(value ="SELECT c.discription FROM entity_identifier_code_master c WHERE code = ?1",nativeQuery = true)
     String findEntityIdentifierCode(String code);

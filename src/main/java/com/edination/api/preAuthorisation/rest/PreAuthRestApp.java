@@ -35,9 +35,11 @@ public class PreAuthRestApp implements Serializable {
     HomeHealthPreAuthFormService homeHealthPreAuthFormService;
     @Autowired
     HomeHealthPreAuthFormRepository homeHealthPreAuthFormRepository;
-
+    @Autowired
+    PreAuthorizationResponseHistoryRepository preAuthorizationResponseHistoryRepository;
     @Autowired
     PreAuthorizationResponseRepository preAuthorizationResponseRepository;
+
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
     {
@@ -53,6 +55,7 @@ public class PreAuthRestApp implements Serializable {
         for(String mrn:setmrn)
         {
             list.addAll(preAuthRepository.findByID(mrn));
+
         }
   // List<PreAuthDetail> list=preAuthService.listAll();
 
@@ -170,6 +173,19 @@ public class PreAuthRestApp implements Serializable {
     {
 
         return preAuthorizationResponseRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
+    }
+
+
+    @PostMapping("/preAuthResponseHistoryList")
+    public List<PreAuthorizationResponseHistory> preAuthResponseHistoryList(@RequestBody  PreAuthDetail preAuthDetail)  throws Throwable
+    {
+        return preAuthorizationResponseHistoryRepository.findByMrnNumber(preAuthDetail.getMrnNumber());
+    }
+
+    @PostMapping("/preAuthResponseHistoryView")
+    public List<PreAuthorizationResponse> preAuthResponseHistoryView(@RequestBody  PreAuthorizationResponseHistory preAuthorizationResponseHistory)  throws Throwable
+    {
+        return preAuthorizationResponseRepository.findByMrnNumberHistoryView(preAuthorizationResponseHistory.getMrnNumber(),preAuthorizationResponseHistory.getEnquiryId());
     }
 
     @PostMapping("/preAuthRequestEdit")
