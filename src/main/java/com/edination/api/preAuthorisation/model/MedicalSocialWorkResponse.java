@@ -44,10 +44,16 @@ public class MedicalSocialWorkResponse {
     private String MedicalSocialWorkProviderFullName;
     private String MedicalSocialWorkDetailStatus;
 
+    private String medicalSocialWorkAuthorizationIdNo;
+    private String  medicalSocialWorkEffectiveDateFrom;
+    private String medicalSocialWorkEffectiveDateTo;
+    private String medicalSocialWorkExpirationDate;
+    private boolean medicalSocialWorkSelected;
+
     public MedicalSocialWorkResponse() {
     }
 
-    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, Date medicalSocialWorkResponseServiceDateFrom, Date medicalSocialWorkResponseServiceDateTo, int medicalSocialWorkRevenueCode, String mrnNumber, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus) {
+    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, Date medicalSocialWorkResponseServiceDateFrom, Date medicalSocialWorkResponseServiceDateTo, int medicalSocialWorkRevenueCode, String mrnNumber, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus, String medicalSocialWorkAuthorizationIdNo, String medicalSocialWorkEffectiveDateFrom, String medicalSocialWorkEffectiveDateTo, String medicalSocialWorkExpirationDate, boolean medicalSocialWorkSelected) {
         MedicalSocialWorkRequestCategory = medicalSocialWorkRequestCategory;
         MedicalSocialWorkCertificationType = medicalSocialWorkCertificationType;
         MedicalSocialWorkServiceType = medicalSocialWorkServiceType;
@@ -80,6 +86,51 @@ public class MedicalSocialWorkResponse {
         MedicalSocialWorkProviderCountryCode = medicalSocialWorkProviderCountryCode;
         MedicalSocialWorkProviderFullName = medicalSocialWorkProviderFullName;
         MedicalSocialWorkDetailStatus = medicalSocialWorkDetailStatus;
+        this.medicalSocialWorkAuthorizationIdNo = medicalSocialWorkAuthorizationIdNo;
+        this.medicalSocialWorkEffectiveDateFrom = medicalSocialWorkEffectiveDateFrom;
+        this.medicalSocialWorkEffectiveDateTo = medicalSocialWorkEffectiveDateTo;
+        this.medicalSocialWorkExpirationDate = medicalSocialWorkExpirationDate;
+        this.medicalSocialWorkSelected = medicalSocialWorkSelected;
+    }
+
+    public String getMedicalSocialWorkAuthorizationIdNo() {
+        return medicalSocialWorkAuthorizationIdNo;
+    }
+
+    public void setMedicalSocialWorkAuthorizationIdNo(String medicalSocialWorkAuthorizationIdNo) {
+        this.medicalSocialWorkAuthorizationIdNo = medicalSocialWorkAuthorizationIdNo;
+    }
+
+    public String getMedicalSocialWorkEffectiveDateFrom() {
+        return medicalSocialWorkEffectiveDateFrom;
+    }
+
+    public void setMedicalSocialWorkEffectiveDateFrom(String medicalSocialWorkEffectiveDateFrom) {
+        this.medicalSocialWorkEffectiveDateFrom = medicalSocialWorkEffectiveDateFrom;
+    }
+
+    public String getMedicalSocialWorkEffectiveDateTo() {
+        return medicalSocialWorkEffectiveDateTo;
+    }
+
+    public void setMedicalSocialWorkEffectiveDateTo(String medicalSocialWorkEffectiveDateTo) {
+        this.medicalSocialWorkEffectiveDateTo = medicalSocialWorkEffectiveDateTo;
+    }
+
+    public String getMedicalSocialWorkExpirationDate() {
+        return medicalSocialWorkExpirationDate;
+    }
+
+    public void setMedicalSocialWorkExpirationDate(String medicalSocialWorkExpirationDate) {
+        this.medicalSocialWorkExpirationDate = medicalSocialWorkExpirationDate;
+    }
+
+    public boolean getMedicalSocialWorkSelected() {
+        return medicalSocialWorkSelected;
+    }
+
+    public void setMedicalSocialWorkSelected(boolean medicalSocialWorkSelected) {
+        this.medicalSocialWorkSelected = medicalSocialWorkSelected;
     }
 
     public String getMedicalSocialWorkProviderSuffix() {
@@ -382,6 +433,11 @@ public class MedicalSocialWorkResponse {
                 ", MedicalSocialWorkProviderCountryCode='" + MedicalSocialWorkProviderCountryCode + '\'' +
                 ", MedicalSocialWorkProviderFullName='" + MedicalSocialWorkProviderFullName + '\'' +
                 ", MedicalSocialWorkDetailStatus='" + MedicalSocialWorkDetailStatus + '\'' +
+                ", medicalSocialWorkAuthorizationIdNo='" + medicalSocialWorkAuthorizationIdNo + '\'' +
+                ", medicalSocialWorkEffectiveDateFrom='" + medicalSocialWorkEffectiveDateFrom + '\'' +
+                ", medicalSocialWorkEffectiveDateTo='" + medicalSocialWorkEffectiveDateTo + '\'' +
+                ", medicalSocialWorkExpirationDate='" + medicalSocialWorkExpirationDate + '\'' +
+                ", medicalSocialWorkSelected=" + medicalSocialWorkSelected +
                 '}';
     }
 }

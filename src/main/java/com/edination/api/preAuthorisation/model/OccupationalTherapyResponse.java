@@ -44,10 +44,16 @@ public class OccupationalTherapyResponse {
     private String OccupationalTherapyCountryCode;
     private String OccupationalTherapyProviderFullName;
     private String OccupationalTherapyDetailStatus;
+
+    private String occupationalTherapyAuthorizationIdNo;
+    private String  occupationalTherapyEffectiveDateFrom;
+    private String occupationalTherapyEffectiveDateTo;
+    private String occupationalTherapyExpirationDate;
+    private boolean occupationalTherapySelected;
     public OccupationalTherapyResponse() {
     }
 
-    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderSuffix, String occupationalTherapyProviderPrefix, Date occupationalTherapyResponseServiceDateFrom, Date occupationalTherapyResponseServiceDateTo, int occupationalTherapyRevenueCode, String mrnNumber, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus) {
+    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderSuffix, String occupationalTherapyProviderPrefix, Date occupationalTherapyResponseServiceDateFrom, Date occupationalTherapyResponseServiceDateTo, int occupationalTherapyRevenueCode, String mrnNumber, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus, String occupationalTherapyAuthorizationIdNo, String occupationalTherapyEffectiveDateFrom, String occupationalTherapyEffectiveDateTo, String occupationalTherapyExpirationDate,boolean occupationalTherapySelected) {
         OccupationalTherapyRequestCategory = occupationalTherapyRequestCategory;
         OccupationalTherapyCertificationType = occupationalTherapyCertificationType;
         OccupationalTherapyServiceType = occupationalTherapyServiceType;
@@ -80,6 +86,52 @@ public class OccupationalTherapyResponse {
         OccupationalTherapyCountryCode = occupationalTherapyCountryCode;
         OccupationalTherapyProviderFullName = occupationalTherapyProviderFullName;
         OccupationalTherapyDetailStatus = occupationalTherapyDetailStatus;
+        this.occupationalTherapyAuthorizationIdNo = occupationalTherapyAuthorizationIdNo;
+        this.occupationalTherapyEffectiveDateFrom = occupationalTherapyEffectiveDateFrom;
+        this.occupationalTherapyEffectiveDateTo = occupationalTherapyEffectiveDateTo;
+        this.occupationalTherapyExpirationDate = occupationalTherapyExpirationDate;
+        this.occupationalTherapySelected = occupationalTherapySelected;
+    }
+
+    public String getOccupationalTherapyAuthorizationIdNo() {
+        return occupationalTherapyAuthorizationIdNo;
+    }
+
+    public void setOccupationalTherapyAuthorizationIdNo(String occupationalTherapyAuthorizationIdNo) {
+        this.occupationalTherapyAuthorizationIdNo = occupationalTherapyAuthorizationIdNo;
+    }
+
+    public String getOccupationalTherapyEffectiveDateFrom() {
+        return occupationalTherapyEffectiveDateFrom;
+    }
+
+    public void setOccupationalTherapyEffectiveDateFrom(String occupationalTherapyEffectiveDateFrom) {
+        this.occupationalTherapyEffectiveDateFrom = occupationalTherapyEffectiveDateFrom;
+    }
+
+    public String getOccupationalTherapyEffectiveDateTo() {
+        return occupationalTherapyEffectiveDateTo;
+    }
+
+    public void setOccupationalTherapyEffectiveDateTo(String occupationalTherapyEffectiveDateTo) {
+        this.occupationalTherapyEffectiveDateTo = occupationalTherapyEffectiveDateTo;
+    }
+
+    public String getOccupationalTherapyExpirationDate() {
+        return occupationalTherapyExpirationDate;
+    }
+
+    public void setOccupationalTherapyExpirationDate(String occupationalTherapyExpirationDate) {
+        this.occupationalTherapyExpirationDate = occupationalTherapyExpirationDate;
+    }
+
+
+    public boolean getOccupationalTherapySelected() {
+        return occupationalTherapySelected;
+    }
+
+    public void setOccupationalTherapySelected(boolean occupationalTherapySelected) {
+        this.occupationalTherapySelected = occupationalTherapySelected;
     }
 
     public String getOccupationalTherapyProviderSuffix() {
@@ -382,6 +434,11 @@ public class OccupationalTherapyResponse {
                 ", OccupationalTherapyCountryCode='" + OccupationalTherapyCountryCode + '\'' +
                 ", OccupationalTherapyProviderFullName='" + OccupationalTherapyProviderFullName + '\'' +
                 ", OccupationalTherapyDetailStatus='" + OccupationalTherapyDetailStatus + '\'' +
+                ", occupationalTherapyAuthorizationIdNo='" + occupationalTherapyAuthorizationIdNo + '\'' +
+                ", occupationalTherapyEffectiveDateFrom='" + occupationalTherapyEffectiveDateFrom + '\'' +
+                ", occupationalTherapyEffectiveDateTo='" + occupationalTherapyEffectiveDateTo + '\'' +
+                ", occupationalTherapyExpirationDate='" + occupationalTherapyExpirationDate + '\'' +
+                ", occupationalTherapySelected=" + occupationalTherapySelected +
                 '}';
     }
 }

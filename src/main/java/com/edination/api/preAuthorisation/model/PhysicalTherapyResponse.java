@@ -44,11 +44,16 @@ public class PhysicalTherapyResponse {
     private String physicalTherapyProviderCountryCode;
     private String physicalTherapyProviderFullName;
     private String physicalTherapyDetailStatus;
+    private String physicalTherapyAuthorizationIdNo;
+    private String  physicalTherapyEffectiveDateFrom;
+    private String physicalTherapyEffectiveDateTo;
+    private String physicalTherapyExpirationDate;
+    private boolean physicalTherapySelected;
     public PhysicalTherapyResponse() {
     }
 
 
-    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, Date physicalTherapyResponseServiceDateFrom, Date physicalTherapyResponseServiceDateTo, int physicalTherapyRevenueCode, String mrnNumber, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus) {
+    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, Date physicalTherapyResponseServiceDateFrom, Date physicalTherapyResponseServiceDateTo, int physicalTherapyRevenueCode, String mrnNumber, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus, String physicalTherapyAuthorizationIdNo, String physicalTherapyEffectiveDateFrom, String physicalTherapyEffectiveDateTo, String physicalTherapyExpirationDate, boolean physicalTherapySelected) {
         this.physicalTherapyRequestCategory = physicalTherapyRequestCategory;
         this.physicalTherapyCertificationType = physicalTherapyCertificationType;
         this.physicalTherapyServiceType = physicalTherapyServiceType;
@@ -81,6 +86,51 @@ public class PhysicalTherapyResponse {
         this.physicalTherapyProviderCountryCode = physicalTherapyProviderCountryCode;
         this.physicalTherapyProviderFullName = physicalTherapyProviderFullName;
         this.physicalTherapyDetailStatus = physicalTherapyDetailStatus;
+        this.physicalTherapyAuthorizationIdNo = physicalTherapyAuthorizationIdNo;
+        this.physicalTherapyEffectiveDateFrom = physicalTherapyEffectiveDateFrom;
+        this.physicalTherapyEffectiveDateTo = physicalTherapyEffectiveDateTo;
+        this.physicalTherapyExpirationDate = physicalTherapyExpirationDate;
+        this.physicalTherapySelected = physicalTherapySelected;
+    }
+
+    public String getPhysicalTherapyAuthorizationIdNo() {
+        return physicalTherapyAuthorizationIdNo;
+    }
+
+    public void setPhysicalTherapyAuthorizationIdNo(String physicalTherapyAuthorizationIdNo) {
+        this.physicalTherapyAuthorizationIdNo = physicalTherapyAuthorizationIdNo;
+    }
+
+    public String getPhysicalTherapyEffectiveDateFrom() {
+        return physicalTherapyEffectiveDateFrom;
+    }
+
+    public void setPhysicalTherapyEffectiveDateFrom(String physicalTherapyEffectiveDateFrom) {
+        this.physicalTherapyEffectiveDateFrom = physicalTherapyEffectiveDateFrom;
+    }
+
+    public String getPhysicalTherapyEffectiveDateTo() {
+        return physicalTherapyEffectiveDateTo;
+    }
+
+    public void setPhysicalTherapyEffectiveDateTo(String physicalTherapyEffectiveDateTo) {
+        this.physicalTherapyEffectiveDateTo = physicalTherapyEffectiveDateTo;
+    }
+
+    public String getPhysicalTherapyExpirationDate() {
+        return physicalTherapyExpirationDate;
+    }
+
+    public void setPhysicalTherapyExpirationDate(String physicalTherapyExpirationDate) {
+        this.physicalTherapyExpirationDate = physicalTherapyExpirationDate;
+    }
+
+    public boolean getPhysicalTherapySelected() {
+        return physicalTherapySelected;
+    }
+
+    public void setPhysicalTherapySelected(boolean physicalTherapySelected) {
+        this.physicalTherapySelected = physicalTherapySelected;
     }
 
     public String getPhysicalTherapyProviderSuffix() {
@@ -383,6 +433,11 @@ public class PhysicalTherapyResponse {
                 ", physicalTherapyProviderCountryCode='" + physicalTherapyProviderCountryCode + '\'' +
                 ", physicalTherapyProviderFullName='" + physicalTherapyProviderFullName + '\'' +
                 ", physicalTherapyDetailStatus='" + physicalTherapyDetailStatus + '\'' +
+                ", physicalTherapyAuthorizationIdNo='" + physicalTherapyAuthorizationIdNo + '\'' +
+                ", physicalTherapyEffectiveDateFrom='" + physicalTherapyEffectiveDateFrom + '\'' +
+                ", physicalTherapyEffectiveDateTo='" + physicalTherapyEffectiveDateTo + '\'' +
+                ", physicalTherapyExpirationDate='" + physicalTherapyExpirationDate + '\'' +
+                ", physicalTherapySelected=" + physicalTherapySelected +
                 '}';
     }
 }

@@ -44,10 +44,15 @@ public class SpeechPathologyResponse {
     private String SpeechPathologyProviderCountryCode;
     private String SpeechPathologyProviderFullName;
     private String SpeechPathologyDetailStatus;
+    private String speechPathologyAuthorizationIdNo;
+    private String  speechPathologyEffectiveDateFrom;
+    private String speechPathologyEffectiveDateTo;
+    private String speechPathologyExpirationDate;
+    private boolean speechPathologySelected;
     public SpeechPathologyResponse() {
     }
 
-    public SpeechPathologyResponse(String speechPathologyRequestCategory, String speechPathologyCertificationType, String speechPathologyServiceType, String speechPathologyLevelOfService, String speechPathologyVisit, String speechPathologyUnit, String speechPathologyCertificationAction, String speechPathologyRejectionReason, String speechPathologyRejectionReasonMSG, String speechPathologyProviderFirstName, String speechPathologyPoviderLastName, String speechPathologyProviderMiddleName, String speechPathologyProviderSuffix, String speechPathologyProviderPrefix, Date speechPathologyResponseServiceDateFrom, Date speechPathologyResponseServiceDateTo, int speechPathologyRevenueCode, String mrnNumber, String speechPathologyProviderType, String speechPathologyProviderIdentificationNumber, String speechPathologyProviderIdentificationNumberType, String speechPathologyProviderSupplimentalId, String speechPathologyProviderIdNumberType, String speechPathologyProviderRejectionReason, String speechPathologyProviderFollowUpActionDescription, String speechPathologyProviderAddress, String speechPathologyProviderCity, String speechPathologyProviderState, String speechPathologyProviderPostalCode, String speechPathologyProviderCountryCode, String speechPathologyProviderFullName, String speechPathologyDetailStatus) {
+    public SpeechPathologyResponse(String speechPathologyRequestCategory, String speechPathologyCertificationType, String speechPathologyServiceType, String speechPathologyLevelOfService, String speechPathologyVisit, String speechPathologyUnit, String speechPathologyCertificationAction, String speechPathologyRejectionReason, String speechPathologyRejectionReasonMSG, String speechPathologyProviderFirstName, String speechPathologyPoviderLastName, String speechPathologyProviderMiddleName, String speechPathologyProviderSuffix, String speechPathologyProviderPrefix, Date speechPathologyResponseServiceDateFrom, Date speechPathologyResponseServiceDateTo, int speechPathologyRevenueCode, String mrnNumber, String speechPathologyProviderType, String speechPathologyProviderIdentificationNumber, String speechPathologyProviderIdentificationNumberType, String speechPathologyProviderSupplimentalId, String speechPathologyProviderIdNumberType, String speechPathologyProviderRejectionReason, String speechPathologyProviderFollowUpActionDescription, String speechPathologyProviderAddress, String speechPathologyProviderCity, String speechPathologyProviderState, String speechPathologyProviderPostalCode, String speechPathologyProviderCountryCode, String speechPathologyProviderFullName, String speechPathologyDetailStatus, String speechPathologyAuthorizationIdNo, String speechPathologyEffectiveDateFrom, String speechPathologyEffectiveDateTo, String speechPathologyExpirationDate, boolean speechPathologySelected) {
         SpeechPathologyRequestCategory = speechPathologyRequestCategory;
         SpeechPathologyCertificationType = speechPathologyCertificationType;
         SpeechPathologyServiceType = speechPathologyServiceType;
@@ -80,6 +85,51 @@ public class SpeechPathologyResponse {
         SpeechPathologyProviderCountryCode = speechPathologyProviderCountryCode;
         SpeechPathologyProviderFullName = speechPathologyProviderFullName;
         SpeechPathologyDetailStatus = speechPathologyDetailStatus;
+        this.speechPathologyAuthorizationIdNo = speechPathologyAuthorizationIdNo;
+        this.speechPathologyEffectiveDateFrom = speechPathologyEffectiveDateFrom;
+        this.speechPathologyEffectiveDateTo = speechPathologyEffectiveDateTo;
+        this.speechPathologyExpirationDate = speechPathologyExpirationDate;
+        this.speechPathologySelected = speechPathologySelected;
+    }
+
+    public String getspeechPathologyAuthorizationIdNo() {
+        return speechPathologyAuthorizationIdNo;
+    }
+
+    public void setspeechPathologyAuthorizationIdNo(String speechPathologyAuthorizationIdNo) {
+        this.speechPathologyAuthorizationIdNo = speechPathologyAuthorizationIdNo;
+    }
+
+    public String getspeechPathologyEffectiveDateFrom() {
+        return speechPathologyEffectiveDateFrom;
+    }
+
+    public void setspeechPathologyEffectiveDateFrom(String speechPathologyEffectiveDateFrom) {
+        this.speechPathologyEffectiveDateFrom = speechPathologyEffectiveDateFrom;
+    }
+
+    public String getspeechPathologyEffectiveDateTo() {
+        return speechPathologyEffectiveDateTo;
+    }
+
+    public void setspeechPathologyEffectiveDateTo(String speechPathologyEffectiveDateTo) {
+        this.speechPathologyEffectiveDateTo = speechPathologyEffectiveDateTo;
+    }
+
+    public String getspeechPathologyExpirationDate() {
+        return speechPathologyExpirationDate;
+    }
+
+    public void setspeechPathologyExpirationDate(String speechPathologyExpirationDate) {
+        this.speechPathologyExpirationDate = speechPathologyExpirationDate;
+    }
+
+    public boolean getspeechPathologySelected() {
+        return speechPathologySelected;
+    }
+
+    public void setspeechPathologySelected(boolean speechPathologySelected) {
+        this.speechPathologySelected = speechPathologySelected;
     }
 
     public String getSpeechPathologyProviderSuffix() {
@@ -382,6 +432,11 @@ public class SpeechPathologyResponse {
                 ", SpeechPathologyProviderCountryCode='" + SpeechPathologyProviderCountryCode + '\'' +
                 ", SpeechPathologyProviderFullName='" + SpeechPathologyProviderFullName + '\'' +
                 ", SpeechPathologyDetailStatus='" + SpeechPathologyDetailStatus + '\'' +
+                ", speechPathologyAuthorizationIdNo='" + speechPathologyAuthorizationIdNo + '\'' +
+                ", speechPathologyEffectiveDateFrom='" + speechPathologyEffectiveDateFrom + '\'' +
+                ", speechPathologyEffectiveDateTo='" + speechPathologyEffectiveDateTo + '\'' +
+                ", speechPathologyExpirationDate='" + speechPathologyExpirationDate + '\'' +
+                ", speechPathologySelected=" + speechPathologySelected +
                 '}';
     }
 }

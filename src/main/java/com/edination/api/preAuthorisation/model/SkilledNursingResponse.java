@@ -43,10 +43,15 @@ public class SkilledNursingResponse {
     private String SkilledNursingProviderCountryCode;
     private String SkilledNursingProviderFullName;
     private String SkilledNursingDetailStatus;
+    private String skilledNursingAuthorizationIdNo;
+    private String  skilledNursingEffectiveDateFrom;
+    private String skilledNursingEffectiveDateTo;
+    private String skilledNursingExpirationDate;
+    private boolean skilledNursingSelected;
     public SkilledNursingResponse() {
     }
 
-    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, Date skilledNursingResponseServiceDateFrom, Date skilledNursingResponseServiceDateTo, int skilledNursingRevenueCode, String mrnNumber, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus) {
+    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, Date skilledNursingResponseServiceDateFrom, Date skilledNursingResponseServiceDateTo, int skilledNursingRevenueCode, String mrnNumber, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus, String skilledNursingAuthorizationIdNo, String skilledNursingEffectiveDateFrom, String skilledNursingEffectiveDateTo, String skilledNursingExpirationDate, boolean skilledNursingSelected) {
         SkilledNursingRequestCategory = skilledNursingRequestCategory;
         SkilledNursingCertificationType = skilledNursingCertificationType;
         SkilledNursingServiceType = skilledNursingServiceType;
@@ -79,6 +84,51 @@ public class SkilledNursingResponse {
         SkilledNursingProviderCountryCode = skilledNursingProviderCountryCode;
         SkilledNursingProviderFullName = skilledNursingProviderFullName;
         SkilledNursingDetailStatus = skilledNursingDetailStatus;
+        this.skilledNursingAuthorizationIdNo = skilledNursingAuthorizationIdNo;
+        this.skilledNursingEffectiveDateFrom = skilledNursingEffectiveDateFrom;
+        this.skilledNursingEffectiveDateTo = skilledNursingEffectiveDateTo;
+        this.skilledNursingExpirationDate = skilledNursingExpirationDate;
+        this.skilledNursingSelected = skilledNursingSelected;
+    }
+
+    public String getSkilledNursingAuthorizationIdNo() {
+        return skilledNursingAuthorizationIdNo;
+    }
+
+    public void setSkilledNursingAuthorizationIdNo(String skilledNursingAuthorizationIdNo) {
+        this.skilledNursingAuthorizationIdNo = skilledNursingAuthorizationIdNo;
+    }
+
+    public String getSkilledNursingEffectiveDateFrom() {
+        return skilledNursingEffectiveDateFrom;
+    }
+
+    public void setSkilledNursingEffectiveDateFrom(String skilledNursingEffectiveDateFrom) {
+        this.skilledNursingEffectiveDateFrom = skilledNursingEffectiveDateFrom;
+    }
+
+    public String getSkilledNursingEffectiveDateTo() {
+        return skilledNursingEffectiveDateTo;
+    }
+
+    public void setSkilledNursingEffectiveDateTo(String skilledNursingEffectiveDateTo) {
+        this.skilledNursingEffectiveDateTo = skilledNursingEffectiveDateTo;
+    }
+
+    public String getSkilledNursingExpirationDate() {
+        return skilledNursingExpirationDate;
+    }
+
+    public void setSkilledNursingExpirationDate(String skilledNursingExpirationDate) {
+        this.skilledNursingExpirationDate = skilledNursingExpirationDate;
+    }
+
+    public boolean getSkilledNursingSelected() {
+        return skilledNursingSelected;
+    }
+
+    public void setSkilledNursingSelected(boolean skilledNursingSelected) {
+        this.skilledNursingSelected = skilledNursingSelected;
     }
 
     public String getSkilledNursingProviderSuffix() {
@@ -381,6 +431,11 @@ public class SkilledNursingResponse {
                 ", SkilledNursingProviderCountryCode='" + SkilledNursingProviderCountryCode + '\'' +
                 ", SkilledNursingProviderFullName='" + SkilledNursingProviderFullName + '\'' +
                 ", SkilledNursingDetailStatus='" + SkilledNursingDetailStatus + '\'' +
+                ", skilledNursingAuthorizationIdNo='" + skilledNursingAuthorizationIdNo + '\'' +
+                ", skilledNursingEffectiveDateFrom='" + skilledNursingEffectiveDateFrom + '\'' +
+                ", skilledNursingEffectiveDateTo='" + skilledNursingEffectiveDateTo + '\'' +
+                ", skilledNursingExpirationDate='" + skilledNursingExpirationDate + '\'' +
+                ", skilledNursingSelected=" + skilledNursingSelected +
                 '}';
     }
 }

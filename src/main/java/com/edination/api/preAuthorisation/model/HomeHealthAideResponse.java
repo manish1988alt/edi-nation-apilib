@@ -45,10 +45,16 @@ public class HomeHealthAideResponse {
     private String HomeHealthAideProviderCountryCode;
     private String HomeHealthAideProviderFullName;
     private String HomeHealthAideDetailStatus;
+    private String homeHealthAideAuthorizationIdNo;
+    private String  homeHealthAideEffectiveDateFrom;
+    private String homeHealthAideEffectiveDateTo;
+    private String homeHealthAideExpirationDate;
+    private boolean homeHealthAideSelected;
+
     public HomeHealthAideResponse() {
     }
 
-    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, Date homeHealthAideResponseServiceDateFrom, Date homeHealthAideResponseServiceDateTo, int homeHealthAideRevenueCode, String mrnNumber, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus) {
+    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, Date homeHealthAideResponseServiceDateFrom, Date homeHealthAideResponseServiceDateTo, int homeHealthAideRevenueCode, String mrnNumber, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus, String homeHealthAideAuthorizationIdNo, String homeHealthAideEffectiveDateFrom, String homeHealthAideEffectiveDateTo, String homeHealthAideExpirationDate, boolean homeHealthAideSelected) {
         HomeHealthAideRequestCategory = homeHealthAideRequestCategory;
         HomeHealthAideCertificationType = homeHealthAideCertificationType;
         HomeHealthAideServiceType = homeHealthAideServiceType;
@@ -81,6 +87,52 @@ public class HomeHealthAideResponse {
         HomeHealthAideProviderCountryCode = homeHealthAideProviderCountryCode;
         HomeHealthAideProviderFullName = homeHealthAideProviderFullName;
         HomeHealthAideDetailStatus = homeHealthAideDetailStatus;
+        this.homeHealthAideAuthorizationIdNo = homeHealthAideAuthorizationIdNo;
+        this.homeHealthAideEffectiveDateFrom = homeHealthAideEffectiveDateFrom;
+        this.homeHealthAideEffectiveDateTo = homeHealthAideEffectiveDateTo;
+        this.homeHealthAideExpirationDate = homeHealthAideExpirationDate;
+        this.homeHealthAideSelected = homeHealthAideSelected;
+    }
+
+    public String getHomeHealthAideAuthorizationIdNo() {
+        return homeHealthAideAuthorizationIdNo;
+    }
+
+    public void setHomeHealthAideAuthorizationIdNo(String homeHealthAideAuthorizationIdNo) {
+        this.homeHealthAideAuthorizationIdNo = homeHealthAideAuthorizationIdNo;
+    }
+
+    public String getHomeHealthAideEffectiveDateFrom() {
+        return homeHealthAideEffectiveDateFrom;
+    }
+
+    public void setHomeHealthAideEffectiveDateFrom(String homeHealthAideEffectiveDateFrom) {
+        this.homeHealthAideEffectiveDateFrom = homeHealthAideEffectiveDateFrom;
+    }
+
+    public String getHomeHealthAideEffectiveDateTo() {
+        return homeHealthAideEffectiveDateTo;
+    }
+
+    public void setHomeHealthAideEffectiveDateTo(String homeHealthAideEffectiveDateTo) {
+        this.homeHealthAideEffectiveDateTo = homeHealthAideEffectiveDateTo;
+    }
+
+    public String getHomeHealthAideExpirationDate() {
+        return homeHealthAideExpirationDate;
+    }
+
+    public void setHomeHealthAideExpirationDate(String homeHealthAideExpirationDate) {
+        this.homeHealthAideExpirationDate = homeHealthAideExpirationDate;
+    }
+
+
+    public boolean getHomeHealthAideSelected() {
+        return homeHealthAideSelected;
+    }
+
+    public void setHomeHealthAideSelected(boolean homeHealthAideSelected) {
+        this.homeHealthAideSelected = homeHealthAideSelected;
     }
 
     public String getHomeHealthAideProviderSuffix() {
@@ -383,6 +435,11 @@ public class HomeHealthAideResponse {
                 ", HomeHealthAideProviderCountryCode='" + HomeHealthAideProviderCountryCode + '\'' +
                 ", HomeHealthAideProviderFullName='" + HomeHealthAideProviderFullName + '\'' +
                 ", HomeHealthAideDetailStatus='" + HomeHealthAideDetailStatus + '\'' +
+                ", homeHealthAideAuthorizationIdNo='" + homeHealthAideAuthorizationIdNo + '\'' +
+                ", homeHealthAideEffectiveDateFrom='" + homeHealthAideEffectiveDateFrom + '\'' +
+                ", homeHealthAideEffectiveDateTo='" + homeHealthAideEffectiveDateTo + '\'' +
+                ", homeHealthAideExpirationDate='" + homeHealthAideExpirationDate + '\'' +
+                ", homeHealthAideSelected=" + homeHealthAideSelected +
                 '}';
     }
 }
