@@ -50,16 +50,7 @@ public class PreAuthorizationResponse {
     private String subscriberFollowUpActionDescription;
     private String subscriberDetailStatus;
 
-    private String dependentFirstName;
-    private String dependentLastName;
-    private String dependentMiddleName;
-    private String dependentPrefix;
-    private String dependentSuffix;
-    private String dependentGender;
-    private Date dependentDob;
-    private String dependentSubscriberIdentificationCode;
-    private String dependentSubscriberIdNumberType;
-    private String dependentReletionship;
+
 
     private String servicingProviderFullName;
     private String servicingProviderFirstName;
@@ -112,12 +103,17 @@ public class PreAuthorizationResponse {
     @JoinColumn(name = "requesterId")
     private RequesterResponseInformation requesterResponseInformation;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dependentId")
+    private DependentDetailResponse dependentDetailResponse;
+
+
     public PreAuthorizationResponse()
     {
     }
 
-    public PreAuthorizationResponse(String enquiryId,String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgCommunicationTypeTelephone, String orgCommunicationTypeFacsimile, String orgCommunicationTypeEMail, String orgCommunicationExt, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRelToInsured, String subscriberIdentificationCode, String subscriberIdNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String dependentFirstName, String dependentLastName, String dependentMiddleName, String dependentPrefix, String dependentSuffix, String dependentGender, Date dependentDob, String dependentSubscriberIdentificationCode, String dependentSubscriberIdNumberType, String dependentReletionship, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderMiddleName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus) {
-        this.enquiryId=enquiryId;
+    public PreAuthorizationResponse(String enquiryId, String mrnNumber, String memberfirstName, String memberlastName, String membermiddleName, String membersuffix, String membergender, Date memberdob, String memberPrefix, String memberRelationshipToSubscriber, String memberDetailStatus, String organizationName, String orgIdentificationCode, String orgIdentificationCodeType, String orgCommunicationTypeTelephone, String orgCommunicationTypeFacsimile, String orgCommunicationTypeEMail, String orgCommunicationExt, String orgRejectionReason, String orgFollowUpActionDescription, String orgDetailStatus, String subscriberFirstName, String subscriberLastName, String subscriberMiddleName, String subscriberSuffix, String subscriberGender, Date subscriberDob, String subscriberPrefix, String subscriberSupplementalId, String subscriberIdentificationNumberType, String subscriberRelToInsured, String subscriberIdentificationCode, String subscriberIdNumberType, String subscriberRejectionReason, String subscriberFollowUpActionDescription, String subscriberDetailStatus, String servicingProviderFullName, String servicingProviderFirstName, String servicingProviderLastName, String servicingProviderMiddleName, String servicingProviderType, String servicingProviderAddress, String servicingProviderCity, String servicingProviderState, String servicingProviderPostalCode, String servicingProviderCountryCode, String servicingProviderIdentificationNumber, String servicingProviderIdentificationNumberType, String servicingProviderSupplimentId, String servicingProviderIdNumberType, String servicingProviderRejectionReason, String servicingProviderFollowUpActionDescription, String servicingProviderDetailStatus, HomeHealthAideResponse homeHealthAideResponse, OccupationalTherapyResponse occupationalTherapyResponse, MedicalSocialWorkResponse medicalSocialWorkResponse, PhysicalTherapyResponse physicalTherapyResponse, SkilledNursingResponse skilledNursingResponse, SpeechPathologyResponse speechPathologyResponse, AuthorizationDetail authorizationDetail, RequesterResponseInformation requesterResponseInformation) {
+        this.enquiryId = enquiryId;
         this.mrnNumber = mrnNumber;
         this.memberfirstName = memberfirstName;
         this.memberlastName = memberlastName;
@@ -153,16 +149,6 @@ public class PreAuthorizationResponse {
         this.subscriberRejectionReason = subscriberRejectionReason;
         this.subscriberFollowUpActionDescription = subscriberFollowUpActionDescription;
         this.subscriberDetailStatus = subscriberDetailStatus;
-        this.dependentFirstName = dependentFirstName;
-        this.dependentLastName = dependentLastName;
-        this.dependentMiddleName = dependentMiddleName;
-        this.dependentPrefix = dependentPrefix;
-        this.dependentSuffix = dependentSuffix;
-        this.dependentGender = dependentGender;
-        this.dependentDob = dependentDob;
-        this.dependentSubscriberIdentificationCode = dependentSubscriberIdentificationCode;
-        this.dependentSubscriberIdNumberType = dependentSubscriberIdNumberType;
-        this.dependentReletionship = dependentReletionship;
         this.servicingProviderFullName = servicingProviderFullName;
         this.servicingProviderFirstName = servicingProviderFirstName;
         this.servicingProviderLastName = servicingProviderLastName;
@@ -180,6 +166,22 @@ public class PreAuthorizationResponse {
         this.servicingProviderRejectionReason = servicingProviderRejectionReason;
         this.servicingProviderFollowUpActionDescription = servicingProviderFollowUpActionDescription;
         this.servicingProviderDetailStatus = servicingProviderDetailStatus;
+        this.homeHealthAideResponse = homeHealthAideResponse;
+        this.occupationalTherapyResponse = occupationalTherapyResponse;
+        this.medicalSocialWorkResponse = medicalSocialWorkResponse;
+        this.physicalTherapyResponse = physicalTherapyResponse;
+        this.skilledNursingResponse = skilledNursingResponse;
+        this.speechPathologyResponse = speechPathologyResponse;
+        this.authorizationDetail = authorizationDetail;
+        this.requesterResponseInformation = requesterResponseInformation;
+    }
+
+    public DependentDetailResponse getDependentDetailResponse() {
+        return dependentDetailResponse;
+    }
+
+    public void setDependentDetailResponse(DependentDetailResponse dependentDetailResponse) {
+        this.dependentDetailResponse = dependentDetailResponse;
     }
 
     public RequesterResponseInformation getRequesterResponseInformation() {
@@ -244,30 +246,6 @@ public class PreAuthorizationResponse {
 
     public void setSubscriberIdNumberType(String subscriberIdNumberType) {
         this.subscriberIdNumberType = subscriberIdNumberType;
-    }
-
-    public String getDependentPrefix() {
-        return dependentPrefix;
-    }
-
-    public void setDependentPrefix(String dependentPrefix) {
-        this.dependentPrefix = dependentPrefix;
-    }
-
-    public String getDependentSubscriberIdentificationCode() {
-        return dependentSubscriberIdentificationCode;
-    }
-
-    public void setDependentSubscriberIdentificationCode(String dependentSubscriberIdentificationCode) {
-        this.dependentSubscriberIdentificationCode = dependentSubscriberIdentificationCode;
-    }
-
-    public String getDependentSubscriberIdNumberType() {
-        return dependentSubscriberIdNumberType;
-    }
-
-    public void setDependentSubscriberIdNumberType(String dependentSubscriberIdNumberType) {
-        this.dependentSubscriberIdNumberType = dependentSubscriberIdNumberType;
     }
 
     public String getEnquiryId() {
@@ -510,70 +488,6 @@ public class PreAuthorizationResponse {
         this.subscriberDetailStatus = subscriberDetailStatus;
     }
 
-    public String getDependentFirstName() {
-        return dependentFirstName;
-    }
-
-    public void setDependentFirstName(String dependentFirstName) {
-        this.dependentFirstName = dependentFirstName;
-    }
-
-    public String getDependentLastName() {
-        return dependentLastName;
-    }
-
-    public void setDependentLastName(String dependentLastName) {
-        this.dependentLastName = dependentLastName;
-    }
-
-    public String getDependentMiddleName() {
-        return dependentMiddleName;
-    }
-
-    public void setDependentMiddleName(String dependentMiddleName) {
-        this.dependentMiddleName = dependentMiddleName;
-    }
-
-    public String getDependentSuffix() {
-        return dependentSuffix;
-    }
-
-    public void setDependentSuffix(String dependentSuffix) {
-        this.dependentSuffix = dependentSuffix;
-    }
-
-    public String getDependentGender() {
-        return dependentGender;
-    }
-
-    public void setDependentGender(String dependentGender) {
-        this.dependentGender = dependentGender;
-    }
-
-    public Date getDependentDob() {
-        return dependentDob;
-    }
-
-    public void setDependentDob(Date dependentDob) {
-        this.dependentDob = dependentDob;
-    }
-
-   /* public String getDependentPrefix() {
-        return dependentPrefix;
-    }
-
-    public void setDependentPrefix(String dependentPrefix) {
-        this.dependentPrefix = dependentPrefix;
-    }*/
-
-    public String getDependentReletionship() {
-        return dependentReletionship;
-    }
-
-    public void setDependentReletionship(String dependentReletionship) {
-        this.dependentReletionship = dependentReletionship;
-    }
-
     public String getServicingProviderFullName() {
         return servicingProviderFullName;
     }
@@ -808,16 +722,6 @@ public class PreAuthorizationResponse {
                 ", subscriberRejectionReason='" + subscriberRejectionReason + '\'' +
                 ", subscriberFollowUpActionDescription='" + subscriberFollowUpActionDescription + '\'' +
                 ", subscriberDetailStatus='" + subscriberDetailStatus + '\'' +
-                ", dependentFirstName='" + dependentFirstName + '\'' +
-                ", dependentLastName='" + dependentLastName + '\'' +
-                ", dependentMiddleName='" + dependentMiddleName + '\'' +
-                ", dependentPrefix='" + dependentPrefix + '\'' +
-                ", dependentSuffix='" + dependentSuffix + '\'' +
-                ", dependentGender='" + dependentGender + '\'' +
-                ", dependentDob=" + dependentDob +
-                ", dependentSubscriberIdentificationCode='" + dependentSubscriberIdentificationCode + '\'' +
-                ", dependentSubscriberIdNumberType='" + dependentSubscriberIdNumberType + '\'' +
-                ", dependentReletionship='" + dependentReletionship + '\'' +
                 ", servicingProviderFullName='" + servicingProviderFullName + '\'' +
                 ", servicingProviderFirstName='" + servicingProviderFirstName + '\'' +
                 ", servicingProviderLastName='" + servicingProviderLastName + '\'' +
@@ -843,6 +747,7 @@ public class PreAuthorizationResponse {
                 ", speechPathologyResponse=" + speechPathologyResponse +
                 ", authorizationDetail=" + authorizationDetail +
                 ", requesterResponseInformation=" + requesterResponseInformation +
+                ", dependentDetailResponse=" + dependentDetailResponse +
                 '}';
     }
 }

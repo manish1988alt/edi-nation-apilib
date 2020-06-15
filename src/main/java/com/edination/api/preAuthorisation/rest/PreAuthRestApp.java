@@ -4,6 +4,7 @@ import com.edination.api.Dao.*;
 import com.edination.api.eligibility.EDIFile.SFTPFILE;
 import com.edination.api.eligibility.model.*;
 import com.edination.api.preAuthorisation.EDI.EDIFileGeneration;
+import com.edination.api.preAuthorisation.MasterCode.preauthComparator;
 import com.edination.api.preAuthorisation.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @RestController
@@ -43,6 +46,7 @@ public class PreAuthRestApp implements Serializable {
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
     {
+        PreAuthDetail preAuthDetail=new PreAuthDetail();
         List<PreAuthDetail> list=new ArrayList<>();
         List<PreAuthDemographics> authDemographicsList=preAuthDemographicService.listAll();
 
@@ -57,7 +61,7 @@ public class PreAuthRestApp implements Serializable {
             list.addAll(preAuthRepository.findByID(mrn));
 
         }
-  // List<PreAuthDetail> list=preAuthService.listAll();
+     Collections.sort(list,new preauthComparator());
 
         return   list;
     }
