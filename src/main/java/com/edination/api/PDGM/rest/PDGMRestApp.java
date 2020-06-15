@@ -4,15 +4,16 @@ package com.edination.api.PDGM.rest;
 import com.edination.api.PDGM.dao.*;
 import com.edination.api.PDGM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("pdgm")
@@ -150,7 +151,7 @@ public class PDGMRestApp implements Serializable {
     }
 
    @PostMapping("/pdgmToolPosition3")
-    public String pdgmToolPosition3(@RequestBody  OasisItemContributedList oasisItemContributed ) throws Throwable
+    public ResponseEntity<?> pdgmToolPosition3(@RequestBody  OasisItemContributedList oasisItemContributed ) throws Throwable
     {
 
         M1033 m1033=new M1033();
@@ -802,9 +803,17 @@ public class PDGMRestApp implements Serializable {
                 m1860Service.save(m1860);
             }
         }
+        String ackn="Success";
+        if(ackn.equals("Success")) {
+            return generateSuccessObject("Success",
+                    " ");
+        }
+        else
+        {
+            return generateSuccessObject("Error",
+                    "Sent failed ");
+        }
 
-
-        return "Saved Successfully";
 
     }
 
@@ -891,6 +900,21 @@ public class PDGMRestApp implements Serializable {
 
         return list;
     }
+    protected ResponseEntity<?> generateSuccessObject(String key, String errorBuilder){
+        Response.ResponseBuilder builder = null;
 
+        ResponseEntity responseEntity;
+
+        try{
+            Map<String, Object> responseObj = new HashMap<String, Object>();
+            responseObj.put("ackn",key);
+            responseEntity= new ResponseEntity<>(responseObj, HttpStatus.ACCEPTED);
+        }catch (Exception e) {
+            Map<String, Object> responseObj1 = new HashMap<String, Object>();
+            responseObj1.put("Error",HttpStatus.BAD_REQUEST);
+            responseEntity= new ResponseEntity<>(responseObj1,HttpStatus.EXPECTATION_FAILED);
+        }
+        return  responseEntity;
+    }
 
 }

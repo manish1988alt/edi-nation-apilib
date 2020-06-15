@@ -42,6 +42,10 @@ public class PreAuthRestApp implements Serializable {
     PreAuthorizationResponseHistoryRepository preAuthorizationResponseHistoryRepository;
     @Autowired
     PreAuthorizationResponseRepository preAuthorizationResponseRepository;
+    @Autowired
+    PreAuthorizationResponseService preAuthorizationResponseService;
+    @Autowired
+    PreAuthorizationResponseHistoryService preAuthorizationResponseHistoryService;
 
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
@@ -69,7 +73,6 @@ public class PreAuthRestApp implements Serializable {
     @PostMapping("/preauthview")
     public List<HomeHealthPreAuthorizationForm> preAuthView(@RequestBody  HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable
     {
-    // List<HomeHealthPreAuthorizationForm> list=  homeHealthPreAuthFormRepository.findByMrnNumber(homeHealthPreAuthorizationForm.getMrnNumber());
         List<HomeHealthPreAuthorizationForm> list=   homeHealthPreAuthFormRepository.findByID(homeHealthPreAuthorizationForm.getMrnNumber());
     return list;
     }
@@ -121,7 +124,436 @@ public class PreAuthRestApp implements Serializable {
 
 
     }
+    @PostMapping("/preAuthManualResponseSave")
+    public ResponseEntity<?>  preAuthManualResponseSave(@RequestBody  PreAuthorizationResponse preAuthorizationResponse)  throws Throwable
+    {
+       String ackn= this.preAuthResponseSaveOperation(preAuthorizationResponse);
+        if(ackn.equals("true")) {
+            PreAuthorizationResponseHistory preAuthorizationResponseHistory=new PreAuthorizationResponseHistory();
+            preAuthorizationResponseHistory.setEnquiryId(preAuthorizationResponse.getEnquiryId());
+            preAuthorizationResponseHistory.setFirstName(preAuthorizationResponse.getMemberfirstName());
+            preAuthorizationResponseHistory.setLastName(preAuthorizationResponse.getMemberlastName());
+            preAuthorizationResponseHistory.setMiddleName(preAuthorizationResponse.getMembermiddleName());
+            preAuthorizationResponseHistory.setPrefix(preAuthorizationResponse.getMemberPrefix());
+            preAuthorizationResponseHistory.setSuffix(preAuthorizationResponse.getMembersuffix());
+            String currentDate = java.time.LocalDate.now().toString();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date processDate = formatter.parse(currentDate);
 
+            String EffectiveDateTo = formatter.format(preAuthorizationResponse.getAuthorizationDetail().getEffectiveDateTo());
+            LocalDate EffectiveDateToBefore = LocalDate.parse(EffectiveDateTo);
+            LocalDate currentdateAfter = LocalDate.parse(currentDate);
+
+            //calculating number of days in between
+            long visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+
+        if(visitdays>=0)
+           {
+             preAuthorizationResponseHistory.setAuthorizationEffectiveNess("Active");
+            }
+           else
+           {
+             preAuthorizationResponseHistory.setAuthorizationEffectiveNess("Archived");
+           }
+            preAuthorizationResponseHistory.setAuthorizationStatus(preAuthorizationResponse.getAuthorizationDetail().getPreAuthorizationStatus());
+            preAuthorizationResponseHistory.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            List<PreAuthDetail> list= preAuthRepository.findByID(preAuthorizationResponse.getMrnNumber());
+            for(PreAuthDetail pre:list) {
+                preAuthorizationResponseHistory.setRequestSentDate(pre.getEpisode().getFormSentDate());
+            }
+            preAuthorizationResponseHistory.setResponseReceiveDate(processDate);
+            preAuthorizationResponseHistory.setResponseType("Manual");
+
+            preAuthorizationResponseHistoryService.save(preAuthorizationResponseHistory);
+            return generateSuccessObject("true", " ");
+        }
+        else
+        {
+            return generateSuccessObject("false",
+                    "Save failed ");
+        }
+    }
+    public String preAuthResponseSaveOperation(PreAuthorizationResponse preAuthorizationResponse1) throws Throwable
+    {
+       // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        PreAuthorizationResponse preAuthorizationResponse=new PreAuthorizationResponse();
+        preAuthorizationResponse.setMemberDetailStatus(preAuthorizationResponse1.getMemberDetailStatus());
+        preAuthorizationResponse.setMemberfirstName(preAuthorizationResponse1.getMemberfirstName());
+        preAuthorizationResponse.setMemberlastName(preAuthorizationResponse1.getMemberlastName());
+        preAuthorizationResponse.setMembermiddleName(preAuthorizationResponse1.getMembermiddleName());
+        preAuthorizationResponse.setMembersuffix(preAuthorizationResponse1.getMembersuffix());
+        preAuthorizationResponse.setMemberPrefix(preAuthorizationResponse1.getMemberPrefix());
+       // Date d=formatter.parse("2020-03-23");
+        preAuthorizationResponse.setMemberdob(preAuthorizationResponse1.getMemberdob());
+        preAuthorizationResponse.setMembergender(preAuthorizationResponse1.getMembergender());
+        preAuthorizationResponse.setMemberRelationshipToSubscriber(preAuthorizationResponse1.getMemberRelationshipToSubscriber());
+        preAuthorizationResponse.setMrnNumber(preAuthorizationResponse1.getMrnNumber());
+
+        //String orgName=preAuthorizationResponse1.+" "+insurMap.get("ResponseContactFirstName_04")+" "+insurMap.get("ResponseContactMiddleName_05")+" "+insurMap.get("ResponseContactNameSuffix_07");
+        preAuthorizationResponse.setOrganizationName(preAuthorizationResponse1.getOrganizationName());
+        preAuthorizationResponse.setOrgDetailStatus(preAuthorizationResponse1.getOrgDetailStatus());
+        preAuthorizationResponse.setOrgFollowUpActionDescription(preAuthorizationResponse1.getOrgFollowUpActionDescription());
+        preAuthorizationResponse.setOrgIdentificationCode(preAuthorizationResponse1.getOrgIdentificationCode());
+        preAuthorizationResponse.setOrgIdentificationCodeType(preAuthorizationResponse1.getOrgIdentificationCodeType());
+        preAuthorizationResponse.setOrgRejectionReason(preAuthorizationResponse1.getOrgRejectionReason());
+        preAuthorizationResponse.setOrgCommunicationExt(preAuthorizationResponse1.getOrgCommunicationExt());
+        preAuthorizationResponse.setOrgCommunicationTypeTelephone(preAuthorizationResponse1.getOrgCommunicationTypeTelephone());
+        preAuthorizationResponse.setOrgCommunicationTypeEMail(preAuthorizationResponse1.getOrgCommunicationTypeEMail());
+        preAuthorizationResponse.setOrgCommunicationTypeFacsimile(preAuthorizationResponse1.getOrgCommunicationTypeFacsimile());
+
+        RequesterResponseInformation requesterResponseInformation=new RequesterResponseInformation();
+        requesterResponseInformation.setReqProviderDetailStatus(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderDetailStatus());
+        requesterResponseInformation.setReqProviderFirstName(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderFirstName());
+        requesterResponseInformation.setReqProviderLastName(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderLastName());
+        requesterResponseInformation.setReqProviderMiddleName(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderMiddleName());
+        String reqproviderfullname=preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderLastName()+" "+preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderFirstName()+" "+preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderMiddleName()+" "+preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderPrefix()+" "+preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderSuffix();
+        requesterResponseInformation.setReqProviderFullName(reqproviderfullname);
+        requesterResponseInformation.setReqProviderPrefix(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderPrefix());
+        requesterResponseInformation.setReqProviderSuffix(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderSuffix());
+        requesterResponseInformation.setAdmitDate(preAuthorizationResponse1.getRequesterResponseInformation().getAdmitDate());
+        requesterResponseInformation.setDischargeDate(preAuthorizationResponse1.getRequesterResponseInformation().getDischargeDate());
+        requesterResponseInformation.setCertificationType(preAuthorizationResponse1.getRequesterResponseInformation().getCertificationType());
+        requesterResponseInformation.setServiceType(preAuthorizationResponse1.getRequesterResponseInformation().getServiceType());
+        requesterResponseInformation.setServiceDateFrom(preAuthorizationResponse1.getRequesterResponseInformation().getServiceDateFrom());
+        requesterResponseInformation.setServiceDateTo(preAuthorizationResponse1.getRequesterResponseInformation().getServiceDateTo());
+        requesterResponseInformation.setRequestCategory(preAuthorizationResponse1.getRequesterResponseInformation().getRequestCategory());
+        requesterResponseInformation.setReqProviderSupplimentalId(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderSupplimentalId());
+        requesterResponseInformation.setReqProviderIdentificationNumber(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderIdentificationNumber());
+        requesterResponseInformation.setReqProviderIdentificationNumberType(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderIdentificationNumberType());
+        requesterResponseInformation.setReqProviderIdNumberType(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderIdNumberType());
+        requesterResponseInformation.setReqProviderType(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderType());
+        requesterResponseInformation.setReqProviderFollowUpActionDescription(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderFollowUpActionDescription());
+        requesterResponseInformation.setReqProviderRejectionReason(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderRejectionReason());
+        preAuthorizationResponse.setRequesterResponseInformation(requesterResponseInformation);
+
+        preAuthorizationResponse.setSubscriberDetailStatus(preAuthorizationResponse1.getSubscriberDetailStatus());
+        preAuthorizationResponse.setSubscriberFirstName(preAuthorizationResponse1.getSubscriberFirstName());
+        preAuthorizationResponse.setSubscriberLastName(preAuthorizationResponse1.getSubscriberLastName());
+        preAuthorizationResponse.setSubscriberMiddleName(preAuthorizationResponse1.getSubscriberMiddleName());
+        preAuthorizationResponse.setSubscriberSuffix(preAuthorizationResponse1.getSubscriberSuffix());
+        preAuthorizationResponse.setSubscriberPrefix(preAuthorizationResponse1.getSubscriberPrefix());
+        preAuthorizationResponse.setSubscriberDob(preAuthorizationResponse1.getSubscriberDob());
+        preAuthorizationResponse.setSubscriberGender(preAuthorizationResponse1.getSubscriberGender());
+        preAuthorizationResponse.setSubscriberIdentificationNumberType(preAuthorizationResponse1.getSubscriberIdentificationNumberType());
+        preAuthorizationResponse.setSubscriberSupplementalId(preAuthorizationResponse1.getSubscriberSupplementalId());
+        preAuthorizationResponse.setSubscriberFollowUpActionDescription(preAuthorizationResponse1.getSubscriberFollowUpActionDescription());
+        preAuthorizationResponse.setSubscriberRejectionReason(preAuthorizationResponse1.getSubscriberRejectionReason());
+        preAuthorizationResponse.setSubscriberRelToInsured(preAuthorizationResponse1.getSubscriberRelToInsured());
+        preAuthorizationResponse.setSubscriberIdentificationCode(preAuthorizationResponse1.getSubscriberIdentificationCode());
+        preAuthorizationResponse.setSubscriberIdNumberType(preAuthorizationResponse1.getSubscriberIdNumberType());
+
+        DependentDetailResponse dependentDetailResponse=new DependentDetailResponse();
+        dependentDetailResponse.setDependentFirstName(preAuthorizationResponse1.getDependentDetailResponse().getDependentFirstName());
+        dependentDetailResponse.setDependentLastName(preAuthorizationResponse1.getDependentDetailResponse().getDependentLastName());
+        dependentDetailResponse.setDependentMiddleName(preAuthorizationResponse1.getDependentDetailResponse().getDependentMiddleName());
+        dependentDetailResponse.setDependentSuffix(preAuthorizationResponse1.getDependentDetailResponse().getDependentSuffix());
+        dependentDetailResponse.setDependentDob(preAuthorizationResponse1.getDependentDetailResponse().getDependentDob());
+        dependentDetailResponse.setDependentGender(preAuthorizationResponse1.getDependentDetailResponse().getDependentGender());
+        dependentDetailResponse.setDependentReletionship(preAuthorizationResponse1.getDependentDetailResponse().getDependentReletionship());
+        dependentDetailResponse.setDependentPrefix(preAuthorizationResponse1.getDependentDetailResponse().getDependentPrefix());
+        dependentDetailResponse.setDependentSubscriberIdentificationCode(preAuthorizationResponse1.getDependentDetailResponse().getDependentSubscriberIdentificationCode());
+        dependentDetailResponse.setDependentSubscriberIdNumberType(preAuthorizationResponse1.getDependentDetailResponse().getDependentSubscriberIdNumberType());
+        dependentDetailResponse.setDependentDetailStatus(preAuthorizationResponse1.getDependentDetailResponse().getDependentDetailStatus());
+        dependentDetailResponse.setDependentFollowUpActionDescription(preAuthorizationResponse1.getDependentDetailResponse().getDependentFollowUpActionDescription());
+        dependentDetailResponse.setDependentRejectionReaso(preAuthorizationResponse1.getDependentDetailResponse().getDependentRejectionReaso());
+        dependentDetailResponse.setDependentSupplementalId(preAuthorizationResponse1.getDependentDetailResponse().getDependentSupplementalId());
+        dependentDetailResponse.setDependentIdentificationNumberType(preAuthorizationResponse1.getDependentDetailResponse().getDependentIdentificationNumberType());
+        preAuthorizationResponse.setDependentDetailResponse(dependentDetailResponse);
+
+        preAuthorizationResponse.setServicingProviderFirstName(preAuthorizationResponse1.getServicingProviderFirstName());
+        preAuthorizationResponse.setServicingProviderLastName(preAuthorizationResponse1.getServicingProviderLastName());
+        preAuthorizationResponse.setServicingProviderMiddleName(preAuthorizationResponse1.getServicingProviderMiddleName());
+        String ServiceProviderFullName=preAuthorizationResponse1.getServicingProviderLastName()+" "+preAuthorizationResponse1.getServicingProviderFirstName()+" "+preAuthorizationResponse1.getServicingProviderMiddleName();
+        preAuthorizationResponse.setServicingProviderFullName(ServiceProviderFullName);
+        preAuthorizationResponse.setServicingProviderSupplimentId(preAuthorizationResponse1.getServicingProviderSupplimentId());
+        preAuthorizationResponse.setServicingProviderDetailStatus(preAuthorizationResponse1.getServicingProviderDetailStatus());
+        preAuthorizationResponse.setServicingProviderAddress(preAuthorizationResponse1.getServicingProviderAddress());
+        preAuthorizationResponse.setServicingProviderCity(preAuthorizationResponse1.getServicingProviderCity());
+        preAuthorizationResponse.setServicingProviderState(preAuthorizationResponse1.getServicingProviderState());
+        preAuthorizationResponse.setServicingProviderCountryCode(preAuthorizationResponse1.getServicingProviderCountryCode());
+        preAuthorizationResponse.setServicingProviderPostalCode(preAuthorizationResponse1.getServicingProviderPostalCode());
+        preAuthorizationResponse.setServicingProviderType(preAuthorizationResponse1.getServicingProviderType());
+        preAuthorizationResponse.setServicingProviderIdNumberType(preAuthorizationResponse1.getServicingProviderIdNumberType());
+        preAuthorizationResponse.setServicingProviderIdentificationNumber(preAuthorizationResponse1.getServicingProviderIdentificationNumber());
+        preAuthorizationResponse.setServicingProviderIdentificationNumberType(preAuthorizationResponse1.getServicingProviderIdentificationNumberType());
+        preAuthorizationResponse.setServicingProviderFollowUpActionDescription(preAuthorizationResponse1.getServicingProviderFollowUpActionDescription());
+        preAuthorizationResponse.setServicingProviderRejectionReason(preAuthorizationResponse1.getServicingProviderRejectionReason());
+
+        AuthorizationDetail authorizationDetail=new AuthorizationDetail();
+        authorizationDetail.setProcessDateAndTime(preAuthorizationResponse1.getAuthorizationDetail().getProcessDateAndTime());
+        authorizationDetail.setCertificationIdentificationNumber(preAuthorizationResponse1.getAuthorizationDetail().getCertificationIdentificationNumber());
+        authorizationDetail.setEnquiryId(preAuthorizationResponse1.getAuthorizationDetail().getEnquiryId());
+        authorizationDetail.setEnquiryDetailStatus(preAuthorizationResponse1.getAuthorizationDetail().getEnquiryDetailStatus());
+        authorizationDetail.setAdmitDate(preAuthorizationResponse1.getAuthorizationDetail().getAdmitDate());
+        authorizationDetail.setDischargeDate(preAuthorizationResponse1.getAuthorizationDetail().getDischargeDate());
+        authorizationDetail.setEffectiveDateFrom(preAuthorizationResponse1.getAuthorizationDetail().getEffectiveDateFrom());
+        authorizationDetail.setEffectiveDateTo(preAuthorizationResponse1.getAuthorizationDetail().getEffectiveDateTo());
+        authorizationDetail.setExpirationeDateTo(preAuthorizationResponse1.getAuthorizationDetail().getExpirationeDateTo());
+        authorizationDetail.setServiceDateFrom(preAuthorizationResponse1.getAuthorizationDetail().getServiceDateFrom());
+        authorizationDetail.setServiceDateTo(preAuthorizationResponse1.getAuthorizationDetail().getServiceDateTo());
+        authorizationDetail.setTotalUnitsApproved(preAuthorizationResponse1.getAuthorizationDetail().getTotalUnitsApproved());
+        authorizationDetail.setNoOfUnitsTobeUsed(preAuthorizationResponse1.getAuthorizationDetail().getNoOfUnitsTobeUsed());
+        authorizationDetail.setRemainingUnits(preAuthorizationResponse1.getAuthorizationDetail().getRemainingUnits());
+        authorizationDetail.setTotalUnitsConsumed(preAuthorizationResponse1.getAuthorizationDetail().getTotalUnitsConsumed());
+        authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponse1.getAuthorizationDetail().getUnitsForNoOfUnitsTobeUsed());
+        preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
+
+if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelected()) {
+    HomeHealthAideResponse homeHealthAideResponse = new HomeHealthAideResponse();
+    homeHealthAideResponse.setHomeHealthAideSelected(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelected());
+    homeHealthAideResponse.setHomeHealthAideAuthorizationIdNo(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideAuthorizationIdNo());
+    homeHealthAideResponse.setHomeHealthAideEffectiveDateFrom(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideEffectiveDateFrom());
+    homeHealthAideResponse.setHomeHealthAideEffectiveDateTo(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideEffectiveDateTo());
+    homeHealthAideResponse.setHomeHealthAideExpirationDate(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideExpirationDate());
+    homeHealthAideResponse.setHomeHealthAideCertificationAction(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideCertificationAction());
+    homeHealthAideResponse.setHomeHealthAideCertificationType(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideCertificationType());
+    homeHealthAideResponse.setHomeHealthAideDetailStatus(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideDetailStatus());
+    homeHealthAideResponse.setHomeHealthAideLevelOfService(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideLevelOfService());
+    homeHealthAideResponse.setHomeHealthAidePoviderLastName(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAidePoviderLastName());
+    homeHealthAideResponse.setHomeHealthAideProviderFirstName(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderFirstName());
+    homeHealthAideResponse.setHomeHealthAideProviderMiddleName(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderMiddleName());
+    String providerfullName = preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAidePoviderLastName() + " " + preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderFirstName() + " " + preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderMiddleName() + " " + preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderPrefix() + " " + preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderSuffix();
+    homeHealthAideResponse.setHomeHealthAideProviderFullName(providerfullName);
+    homeHealthAideResponse.setHomeHealthAideProviderAddress(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderAddress());
+    homeHealthAideResponse.setHomeHealthAideProviderCity(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderCity());
+    homeHealthAideResponse.setHomeHealthAideProviderState(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderState());
+    homeHealthAideResponse.setHomeHealthAideProviderCountryCode(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderCountryCode());
+    homeHealthAideResponse.setHomeHealthAideProviderPostalCode(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderPostalCode());
+    homeHealthAideResponse.setHomeHealthAideProviderSupplimentalId(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderSupplimentalId());
+    homeHealthAideResponse.setHomeHealthAideProviderIdentificationNumber(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderIdentificationNumber());
+    homeHealthAideResponse.setHomeHealthAideProviderIdentificationNumberType(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderIdentificationNumberType());
+    homeHealthAideResponse.setHomeHealthAideProviderIdNumberType(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderIdNumberType());
+    homeHealthAideResponse.setHomeHealthAideProviderType(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderType());
+    homeHealthAideResponse.setHomeHealthAideRequestCategory(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideRequestCategory());
+    homeHealthAideResponse.setHomeHealthAideServiceType(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideServiceType());
+    homeHealthAideResponse.setHomeHealthAideVisit(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideVisit());
+    homeHealthAideResponse.setHomeHealthAideUnit(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideUnit());
+    homeHealthAideResponse.setHomeHealthAideProviderFollowUpActionDescription(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderFollowUpActionDescription());
+    homeHealthAideResponse.setHomeHealthAideRejectionReason(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideRejectionReason());
+    homeHealthAideResponse.setHomeHealthAideRejectionReasonMSG(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideRejectionReasonMSG());
+    homeHealthAideResponse.setHomeHealthAideProviderRejectionReason(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderRejectionReason());
+    homeHealthAideResponse.setHomeHealthAideProviderPrefix(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderPrefix());
+    homeHealthAideResponse.setHomeHealthAideProviderSuffix(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideProviderSuffix());
+    homeHealthAideResponse.setHomeHealthAideResponseServiceDateFrom(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideResponseServiceDateFrom());
+    homeHealthAideResponse.setHomeHealthAideResponseServiceDateTo(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideResponseServiceDateTo());
+    homeHealthAideResponse.setMrnNumber(preAuthorizationResponse1.getHomeHealthAideResponse().getMrnNumber());
+    homeHealthAideResponse.setHomeHealthAideRevenueCode(570);
+    preAuthorizationResponse.setHomeHealthAideResponse(homeHealthAideResponse);
+}
+        if(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapySelected()) {
+            OccupationalTherapyResponse occupationalTherapyResponse = new OccupationalTherapyResponse();
+            occupationalTherapyResponse.setOccupationalTherapySelected(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapySelected());
+            occupationalTherapyResponse.setOccupationalTherapyAuthorizationIdNo(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyAuthorizationIdNo());
+            occupationalTherapyResponse.setOccupationalTherapyEffectiveDateFrom(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyEffectiveDateFrom());
+            occupationalTherapyResponse.setOccupationalTherapyEffectiveDateTo(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyEffectiveDateTo());
+            occupationalTherapyResponse.setOccupationalTherapyExpirationDate(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyExpirationDate());
+            occupationalTherapyResponse.setOccupationalTherapyCertificationAction(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyCertificationAction());
+            occupationalTherapyResponse.setOccupationalTherapyCertificationType(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyCertificationType());
+            occupationalTherapyResponse.setOccupationalTherapyDetailStatus(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyDetailStatus());
+            occupationalTherapyResponse.setOccupationalTherapyLevelOfService(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyLevelOfService());
+            occupationalTherapyResponse.setOccupationalTherapyProviderLastName(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderLastName());
+            occupationalTherapyResponse.setOccupationalTherapyProviderFirstName(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderFirstName());
+            occupationalTherapyResponse.setOccupationalTherapyProviderMiddleName(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderMiddleName());
+            String OccupationalTherapyProviderFullName = preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderLastName() + " " + preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderFirstName() + " " + preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderMiddleName() + " " + preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderPrefix() + " " + preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderSuffix();
+            occupationalTherapyResponse.setOccupationalTherapyProviderFullName(OccupationalTherapyProviderFullName);
+            occupationalTherapyResponse.setOccupationalTherapyAddress(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyAddress());
+            occupationalTherapyResponse.setOccupationalTherapyCity(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyCity());
+            occupationalTherapyResponse.setOccupationalTherapyState(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyState());
+            occupationalTherapyResponse.setOccupationalTherapyCountryCode(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyCountryCode());
+            occupationalTherapyResponse.setOccupationalTherapyPostalCode(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyPostalCode());
+            occupationalTherapyResponse.setOccupationalTherapyProviderSupplimentalId(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderSupplimentalId());
+            occupationalTherapyResponse.setOccupationalTherapyProviderIdentificationNumber(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderIdentificationNumber());
+            occupationalTherapyResponse.setOccupationalProviderIdentificationNumberType(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderIdNumberType());
+            occupationalTherapyResponse.setOccupationalTherapyProviderIdNumberType(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderIdNumberType());
+            occupationalTherapyResponse.setOccupationalTherapyProviderType(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderType());
+            occupationalTherapyResponse.setOccupationalTherapyRequestCategory(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyRequestCategory());
+            occupationalTherapyResponse.setOccupationalTherapyServiceType(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyServiceType());
+            occupationalTherapyResponse.setOccupationalTherapyVisit(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyVisit());
+            occupationalTherapyResponse.setOccupationalTherapyUnit(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyUnit());
+            occupationalTherapyResponse.setOccupationalTherapyProviderFollowUpActionDescription(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderFollowUpActionDescription());
+            occupationalTherapyResponse.setOccupationalTherapyRejectionReason(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyRejectionReason());
+            occupationalTherapyResponse.setOccupationalTherapyRejectionReasonMSG(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyRejectionReasonMSG());
+            occupationalTherapyResponse.setOccupationalTherapyProviderRejectionReason(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderRejectionReason());
+            occupationalTherapyResponse.setOccupationalTherapyProviderPrefix(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderPrefix());
+            occupationalTherapyResponse.setOccupationalTherapyProviderSuffix(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyProviderSuffix());
+            occupationalTherapyResponse.setOccupationalTherapyResponseServiceDateFrom(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyResponseServiceDateFrom());
+            occupationalTherapyResponse.setOccupationalTherapyResponseServiceDateTo(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyResponseServiceDateTo());
+            occupationalTherapyResponse.setMrnNumber(preAuthorizationResponse1.getOccupationalTherapyResponse().getMrnNumber());
+            occupationalTherapyResponse.setOccupationalTherapyRevenueCode(430);
+            preAuthorizationResponse.setOccupationalTherapyResponse(occupationalTherapyResponse);
+        }
+        if(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapySelected()) {
+            PhysicalTherapyResponse physicalTherapyResponse = new PhysicalTherapyResponse();
+            physicalTherapyResponse.setPhysicalTherapySelected(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapySelected());
+            physicalTherapyResponse.setPhysicalTherapyAuthorizationIdNo(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyAuthorizationIdNo());
+            physicalTherapyResponse.setPhysicalTherapyEffectiveDateFrom(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyEffectiveDateFrom());
+            physicalTherapyResponse.setPhysicalTherapyEffectiveDateTo(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyEffectiveDateTo());
+            physicalTherapyResponse.setPhysicalTherapyExpirationDate(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyExpirationDate());
+            physicalTherapyResponse.setPhysicalTherapyCertificationAction(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyCertificationAction());
+            physicalTherapyResponse.setPhysicalTherapyCertificationType(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyCertificationType());
+            physicalTherapyResponse.setPhysicalTherapyDetailStatus(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyDetailStatus());
+            physicalTherapyResponse.setPhysicalTherapyLevelOfService(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyLevelOfService());
+            physicalTherapyResponse.setPhysicalTherapyPoviderLastName(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyPoviderLastName());
+            physicalTherapyResponse.setPhysicalTherapyProviderFirstName(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderFirstName());
+            physicalTherapyResponse.setPhysicalTherapyProviderMiddleName(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderMiddleName());
+            String PhysicalTherapyResponseFullName = preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyPoviderLastName() + " " + preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderFirstName() + " " + preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderMiddleName() + " " + preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderPrefix() + " " + preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderSuffix();
+            physicalTherapyResponse.setPhysicalTherapyProviderFullName(PhysicalTherapyResponseFullName);
+            physicalTherapyResponse.setPhysicalTherapyProviderAddress(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderAddress());
+            physicalTherapyResponse.setPhysicalTherapyProviderCity(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderCity());
+            physicalTherapyResponse.setPhysicalTherapyProviderState(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderState());
+            physicalTherapyResponse.setPhysicalTherapyProviderCountryCode(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderCountryCode());
+            physicalTherapyResponse.setPhysicalTherapyProviderPostalCode(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderPostalCode());
+            physicalTherapyResponse.setPhysicalTherapyProviderSupplimentalId(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderSupplimentalId());
+            physicalTherapyResponse.setPhysicalTherapyProviderIdentificationNumber(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderIdentificationNumber());
+            physicalTherapyResponse.setPhysicalTherapyProviderIdentificationNumberType(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderIdentificationNumberType());
+            physicalTherapyResponse.setPhysicalTherapyProviderIdNumberType(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderIdNumberType());
+            physicalTherapyResponse.setPhysicalTherapyProviderType(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderType());
+            physicalTherapyResponse.setPhysicalTherapyRequestCategory(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyRequestCategory());
+            physicalTherapyResponse.setPhysicalTherapyServiceType(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyServiceType());
+            physicalTherapyResponse.setPhysicalTherapyVisit(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyVisit());
+            physicalTherapyResponse.setPhysicalTherapyUnit(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyUnit());
+            physicalTherapyResponse.setPhysicalTherapyProviderFollowUpActionDescription(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderFollowUpActionDescription());
+            physicalTherapyResponse.setPhysicalTherapyRejectionReason(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyRejectionReason());
+            physicalTherapyResponse.setPhysicalTherapyRejectionReasonMSG(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyRejectionReasonMSG());
+            physicalTherapyResponse.setPhysicalTherapyProviderRejectionReason(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderRejectionReason());
+            physicalTherapyResponse.setPhysicalTherapyProviderPrefix(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderPrefix());
+            physicalTherapyResponse.setPhysicalTherapyProviderSuffix(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyProviderSuffix());
+            physicalTherapyResponse.setPhysicalTherapyResponseServiceDateFrom(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyResponseServiceDateFrom());
+            physicalTherapyResponse.setPhysicalTherapyResponseServiceDateTo(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyResponseServiceDateTo());
+            physicalTherapyResponse.setMrnNumber(preAuthorizationResponse1.getPhysicalTherapyResponse().getMrnNumber());
+            physicalTherapyResponse.setPhysicalTherapyRevenueCode(420);
+            preAuthorizationResponse.setPhysicalTherapyResponse(physicalTherapyResponse);
+        }
+        if(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected()) {
+            MedicalSocialWorkResponse medicalSocialWorkResponse = new MedicalSocialWorkResponse();
+            medicalSocialWorkResponse.setMedicalSocialWorkSelected(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected());
+            medicalSocialWorkResponse.setMedicalSocialWorkAuthorizationIdNo(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkAuthorizationIdNo());
+            medicalSocialWorkResponse.setMedicalSocialWorkEffectiveDateFrom(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkEffectiveDateFrom());
+            medicalSocialWorkResponse.setMedicalSocialWorkEffectiveDateTo(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkEffectiveDateTo());
+            medicalSocialWorkResponse.setMedicalSocialWorkExpirationDate(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkExpirationDate());
+            medicalSocialWorkResponse.setMedicalSocialWorkCertificationAction(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkCertificationAction());
+            medicalSocialWorkResponse.setMedicalSocialWorkCertificationType(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkCertificationType());
+            medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkDetailStatus());
+            medicalSocialWorkResponse.setMedicalSocialWorkLevelOfService(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkLevelOfService());
+            medicalSocialWorkResponse.setMedicalSocialWorkPoviderLastName(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkPoviderLastName());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderFirstName(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderFirstName());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderMiddleName(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderMiddleName());
+            String MedicalSocialWorkfullName = preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkPoviderLastName() + " " + preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderFirstName() + " " + preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderMiddleName() + " " + preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderPrefix() + " " + preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderSuffix();
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderFullName(MedicalSocialWorkfullName);
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderAddress(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderAddress());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderCity(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderCity());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderState(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderState());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderCountryCode(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderCountryCode());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderPostalCode(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderPostalCode());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderSupplimentalId(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderSupplimentalId());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderIdentificationNumber(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderIdentificationNumber());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderIdentificationNumberType(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderIdentificationNumberType());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderIdNumberType(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderIdNumberType());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderType(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderType());
+            medicalSocialWorkResponse.setMedicalSocialWorkRequestCategory(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkRequestCategory());
+            medicalSocialWorkResponse.setMedicalSocialWorkServiceType(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkServiceType());
+            medicalSocialWorkResponse.setMedicalSocialWorkVisit(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkVisit());
+            medicalSocialWorkResponse.setMedicalSocialWorkUnit(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkUnit());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderFollowUpActionDescription(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderFollowUpActionDescription());
+            medicalSocialWorkResponse.setMedicalSocialWorkRejectionReason(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkRejectionReason());
+            medicalSocialWorkResponse.setMedicalSocialWorkRejectionReasonMSG(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkRejectionReasonMSG());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderRejectionReason(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderRejectionReason());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderPrefix(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderPrefix());
+            medicalSocialWorkResponse.setMedicalSocialWorkProviderSuffix(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkProviderSuffix());
+            medicalSocialWorkResponse.setMedicalSocialWorkResponseServiceDateFrom(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkResponseServiceDateFrom());
+            medicalSocialWorkResponse.setMedicalSocialWorkResponseServiceDateTo(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkResponseServiceDateTo());
+            medicalSocialWorkResponse.setMrnNumber(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMrnNumber());
+            medicalSocialWorkResponse.setMedicalSocialWorkRevenueCode(560);
+            preAuthorizationResponse.setMedicalSocialWorkResponse(medicalSocialWorkResponse);
+        }
+        if(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologySelected()) {
+            SpeechPathologyResponse speechPathologyResponse = new SpeechPathologyResponse();
+            speechPathologyResponse.setspeechPathologySelected(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologySelected());
+            speechPathologyResponse.setspeechPathologyAuthorizationIdNo(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologyAuthorizationIdNo());
+            speechPathologyResponse.setspeechPathologyEffectiveDateFrom(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologyEffectiveDateFrom());
+            speechPathologyResponse.setspeechPathologyEffectiveDateTo(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologyEffectiveDateTo());
+            speechPathologyResponse.setspeechPathologyExpirationDate(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologyExpirationDate());
+            speechPathologyResponse.setSpeechPathologyCertificationAction(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyCertificationAction());
+            speechPathologyResponse.setSpeechPathologyCertificationType(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyCertificationType());
+            speechPathologyResponse.setSpeechPathologyDetailStatus(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyDetailStatus());
+            speechPathologyResponse.setSpeechPathologyLevelOfService(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyLevelOfService());
+            speechPathologyResponse.setSpeechPathologyPoviderLastName(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyPoviderLastName());
+            speechPathologyResponse.setSpeechPathologyProviderFirstName(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderFirstName());
+            speechPathologyResponse.setSpeechPathologyProviderMiddleName(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderMiddleName());
+            String SpeechPathologyfullName = preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyPoviderLastName() + " " + preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderFirstName() + " " + preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderMiddleName() + " " + preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderPrefix() + " " + preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderSuffix();
+            speechPathologyResponse.setSpeechPathologyProviderFullName(SpeechPathologyfullName);
+            speechPathologyResponse.setSpeechPathologyProviderAddress(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderAddress());
+            speechPathologyResponse.setSpeechPathologyProviderCity(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderCity());
+            speechPathologyResponse.setSpeechPathologyProviderState(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderState());
+            speechPathologyResponse.setSpeechPathologyProviderCountryCode(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderCountryCode());
+            speechPathologyResponse.setSpeechPathologyProviderPostalCode(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderPostalCode());
+            speechPathologyResponse.setSpeechPathologyProviderSupplimentalId(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderSupplimentalId());
+            speechPathologyResponse.setSpeechPathologyProviderIdentificationNumber(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderIdentificationNumber());
+            speechPathologyResponse.setSpeechPathologyProviderIdentificationNumberType(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderIdentificationNumberType());
+            speechPathologyResponse.setSpeechPathologyProviderIdNumberType(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderIdNumberType());
+            speechPathologyResponse.setSpeechPathologyProviderType(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderType());
+            speechPathologyResponse.setSpeechPathologyRequestCategory(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyRequestCategory());
+            speechPathologyResponse.setSpeechPathologyServiceType(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyServiceType());
+            speechPathologyResponse.setSpeechPathologyVisit(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyVisit());
+            speechPathologyResponse.setSpeechPathologyUnit(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyUnit());
+            speechPathologyResponse.setSpeechPathologyProviderFollowUpActionDescription(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderFollowUpActionDescription());
+            speechPathologyResponse.setSpeechPathologyRejectionReason(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyRejectionReason());
+            speechPathologyResponse.setSpeechPathologyRejectionReasonMSG(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyRejectionReasonMSG());
+            speechPathologyResponse.setSpeechPathologyProviderRejectionReason(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderRejectionReason());
+            speechPathologyResponse.setSpeechPathologyProviderPrefix(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderPrefix());
+            speechPathologyResponse.setSpeechPathologyProviderSuffix(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyProviderSuffix());
+            speechPathologyResponse.setSpeechPathologyResponseServiceDateFrom(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyResponseServiceDateFrom());
+            speechPathologyResponse.setSpeechPathologyResponseServiceDateTo(preAuthorizationResponse1.getSpeechPathologyResponse().getSpeechPathologyResponseServiceDateTo());
+            speechPathologyResponse.setMrnNumber(preAuthorizationResponse1.getSpeechPathologyResponse().getMrnNumber());
+            speechPathologyResponse.setSpeechPathologyRevenueCode(440);
+            preAuthorizationResponse.setSpeechPathologyResponse(speechPathologyResponse);
+        }
+        if(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingSelected()) {
+            SkilledNursingResponse skilledNursingResponse = new SkilledNursingResponse();
+            skilledNursingResponse.setSkilledNursingSelected(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingSelected());
+            skilledNursingResponse.setSkilledNursingAuthorizationIdNo(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingAuthorizationIdNo());
+            skilledNursingResponse.setSkilledNursingEffectiveDateFrom(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingEffectiveDateFrom());
+            skilledNursingResponse.setSkilledNursingEffectiveDateTo(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingEffectiveDateTo());
+            skilledNursingResponse.setSkilledNursingExpirationDate(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingExpirationDate());
+            skilledNursingResponse.setSkilledNursingCertificationAction(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingCertificationAction());
+            skilledNursingResponse.setSkilledNursingCertificationType(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingCertificationType());
+            skilledNursingResponse.setSkilledNursingDetailStatus(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingDetailStatus());
+            skilledNursingResponse.setSkilledNursingLevelOfService(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingLevelOfService());
+            skilledNursingResponse.setSkilledNursingPoviderLastName(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingPoviderLastName());
+            skilledNursingResponse.setSkilledNursingProviderFirstName(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderFirstName());
+            skilledNursingResponse.setSkilledNursingProviderMiddleName(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderMiddleName());
+            String SkilledNursingproviderfullName = preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingPoviderLastName() + " " + preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderFirstName() + " " + preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderMiddleName() + " " + preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderPrefix() + " " + preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderSuffix();
+            skilledNursingResponse.setSkilledNursingProviderFullName(SkilledNursingproviderfullName);
+            skilledNursingResponse.setSkilledNursingProviderAddress(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderAddress());
+            skilledNursingResponse.setSkilledNursingProviderCity(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderCity());
+            skilledNursingResponse.setSkilledNursingProviderState(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderState());
+            skilledNursingResponse.setSkilledNursingProviderCountryCode(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderCountryCode());
+            skilledNursingResponse.setSkilledNursingProviderPostalCode(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderPostalCode());
+            skilledNursingResponse.setSkilledNursingProviderSupplimentalId(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderSupplimentalId());
+            skilledNursingResponse.setSkilledNursingProviderIdentificationNumber(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderIdentificationNumber());
+            skilledNursingResponse.setSkilledNursingProviderIdentificationNumberType(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderIdentificationNumberType());
+            skilledNursingResponse.setSkilledNursingProviderIdNumberType(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderIdNumberType());
+            skilledNursingResponse.setSkilledNursingProviderType(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderType());
+            skilledNursingResponse.setSkilledNursingRequestCategory(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingRequestCategory());
+            skilledNursingResponse.setSkilledNursingServiceType(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingServiceType());
+            skilledNursingResponse.setSkilledNursingVisit(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingVisit());
+            skilledNursingResponse.setSkilledNursingUnit(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingUnit());
+            skilledNursingResponse.setSkilledNursingProviderFollowUpActionDescription(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderFollowUpActionDescription());
+            skilledNursingResponse.setSkilledNursingRejectionReason(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingRejectionReason());
+            skilledNursingResponse.setSkilledNursingRejectionReasonMSG(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingRejectionReasonMSG());
+            skilledNursingResponse.setSkilledNursingProviderRejectionReason(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderRejectionReason());
+            skilledNursingResponse.setSkilledNursingProviderPrefix(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderPrefix());
+            skilledNursingResponse.setSkilledNursingProviderSuffix(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingProviderSuffix());
+            skilledNursingResponse.setSkilledNursingResponseServiceDateFrom(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingResponseServiceDateFrom());
+            skilledNursingResponse.setSkilledNursingResponseServiceDateTo(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingResponseServiceDateTo());
+            skilledNursingResponse.setMrnNumber(preAuthorizationResponse1.getSkilledNursingResponse().getMrnNumber());
+            skilledNursingResponse.setSkilledNursingRevenueCode(550);
+            preAuthorizationResponse.setSkilledNursingResponse(skilledNursingResponse);
+        }
+        preAuthorizationResponseService.save(preAuthorizationResponse);
+
+        return "true";
+    }
     @PostMapping("/preauthSendRequest")
     public ResponseEntity<?> preAuthSendRequest(@RequestBody  HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm)  throws Throwable {
         File file = new File("Hipaa-5010-278-GenericRequest.txt");
