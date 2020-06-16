@@ -340,26 +340,26 @@ public class EDIFileGeneration {
      s.addElement("D8");
      s.addElement("");
 
-     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-     Date serviceDateFrom = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom().toString());
-     Date serviceDateTo = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo().toString());
+     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+   /*  Date serviceDateFrom = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom());
+     Date serviceDateTo = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo().toString());*/
      s = x12.addSegment();
      s.addElement("DTP");
      s.addElement("472");
      s.addElement("RD8");
-     s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
-     Date admitdate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate().toString());
+     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo().toString());
+    // Date admitdate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate().toString());
      s = x12.addSegment();
      s.addElement("DTP");
      s.addElement("435");
      s.addElement("D8");
-     s.addElement(admitdate.toString());
-     Date dischargedate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate().toString());
+     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate().toString());
+    // Date dischargedate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate().toString());
      s = x12.addSegment();
      s.addElement("DTP");
      s.addElement("096");
      s.addElement("D8");
-     s.addElement(dischargedate.toString());
+     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate().toString());
 
      s = x12.addSegment();
      s.addElement("DTP");
@@ -439,7 +439,7 @@ public class EDIFileGeneration {
      s = x12.addSegment();
      s.addElement("CR6");
      s.addElement("7");
-     s.addElement(serviceDateFrom.toString());
+     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom().toString());
      s.addElement("");
      s.addElement("");
      s.addElement("");
@@ -500,13 +500,13 @@ public class EDIFileGeneration {
              s.addElement("");
 
 
-           Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom().toString());
-           Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo().toString());
+        //   Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom().toString());
+         //  Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo().toString());
           s = x12.addSegment();
           s.addElement("DTP");
           s.addElement("472");
           s.addElement("RD8");
-         s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+         s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo().toString());
 
         s = x12.addSegment();
         s.addElement("DTP");
@@ -622,13 +622,13 @@ public class EDIFileGeneration {
       s.addElement("");
 
 
-      Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom().toString());
-      Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo().toString());
+      //Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom().toString());
+     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo().toString());
       s = x12.addSegment();
       s.addElement("DTP");
       s.addElement("472");
       s.addElement("RD8");
-      s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo().toString());
 
       s = x12.addSegment();
       s.addElement("DTP");
@@ -745,13 +745,13 @@ public class EDIFileGeneration {
       s.addElement("");
 
 
-      Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom().toString());
-      Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo().toString());
+     // Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom().toString());
+     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo().toString());
       s = x12.addSegment();
       s.addElement("DTP");
       s.addElement("472");
       s.addElement("RD8");
-      s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo().toString());
 
       s = x12.addSegment();
       s.addElement("DTP");
@@ -868,13 +868,13 @@ public class EDIFileGeneration {
       s.addElement("");
 
 
-      Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom().toString());
-      Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateTo().toString());
+      //Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom().toString());
+      //Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateTo().toString());
       s = x12.addSegment();
       s.addElement("DTP");
       s.addElement("472");
       s.addElement("RD8");
-      s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateTo().toString());
 
       s = x12.addSegment();
       s.addElement("DTP");
@@ -990,13 +990,13 @@ public class EDIFileGeneration {
       s.addElement("");
 
 
-      Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom().toString());
-      Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo().toString());
+     // Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom().toString());
+     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo().toString());
       s = x12.addSegment();
       s.addElement("DTP");
       s.addElement("472");
       s.addElement("RD8");
-      s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo().toString());
 
       s = x12.addSegment();
       s.addElement("DTP");
@@ -1118,7 +1118,7 @@ public class EDIFileGeneration {
       s.addElement("DTP");
       s.addElement("472");
       s.addElement("RD8");
-      s.addElement(serviceDateFrom.toString()+serviceDateTo.toString());
+      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo().toString());
 
       s = x12.addSegment();
       s.addElement("DTP");

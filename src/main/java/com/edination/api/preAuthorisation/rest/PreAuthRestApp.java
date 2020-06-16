@@ -137,7 +137,7 @@ public class PreAuthRestApp implements Serializable {
             preAuthorizationResponseHistory.setPrefix(preAuthorizationResponse.getMemberPrefix());
             preAuthorizationResponseHistory.setSuffix(preAuthorizationResponse.getMembersuffix());
             String currentDate = java.time.LocalDate.now().toString();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date processDate = formatter.parse(currentDate);
 
             String EffectiveDateTo = formatter.format(preAuthorizationResponse.getAuthorizationDetail().getEffectiveDateTo());
@@ -177,6 +177,7 @@ public class PreAuthRestApp implements Serializable {
     {
        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         PreAuthorizationResponse preAuthorizationResponse=new PreAuthorizationResponse();
+        preAuthorizationResponse.setEnquiryId(preAuthorizationResponse1.getEnquiryId());
         preAuthorizationResponse.setMemberDetailStatus(preAuthorizationResponse1.getMemberDetailStatus());
         preAuthorizationResponse.setMemberfirstName(preAuthorizationResponse1.getMemberfirstName());
         preAuthorizationResponse.setMemberlastName(preAuthorizationResponse1.getMemberlastName());
@@ -298,7 +299,7 @@ public class PreAuthRestApp implements Serializable {
         authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponse1.getAuthorizationDetail().getUnitsForNoOfUnitsTobeUsed());
         preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
 
-if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelected()) {
+
     HomeHealthAideResponse homeHealthAideResponse = new HomeHealthAideResponse();
     homeHealthAideResponse.setHomeHealthAideSelected(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelected());
     homeHealthAideResponse.setHomeHealthAideAuthorizationIdNo(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideAuthorizationIdNo());
@@ -339,8 +340,7 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
     homeHealthAideResponse.setMrnNumber(preAuthorizationResponse1.getHomeHealthAideResponse().getMrnNumber());
     homeHealthAideResponse.setHomeHealthAideRevenueCode(570);
     preAuthorizationResponse.setHomeHealthAideResponse(homeHealthAideResponse);
-}
-        if(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapySelected()) {
+
             OccupationalTherapyResponse occupationalTherapyResponse = new OccupationalTherapyResponse();
             occupationalTherapyResponse.setOccupationalTherapySelected(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapySelected());
             occupationalTherapyResponse.setOccupationalTherapyAuthorizationIdNo(preAuthorizationResponse1.getOccupationalTherapyResponse().getOccupationalTherapyAuthorizationIdNo());
@@ -381,8 +381,7 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
             occupationalTherapyResponse.setMrnNumber(preAuthorizationResponse1.getOccupationalTherapyResponse().getMrnNumber());
             occupationalTherapyResponse.setOccupationalTherapyRevenueCode(430);
             preAuthorizationResponse.setOccupationalTherapyResponse(occupationalTherapyResponse);
-        }
-        if(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapySelected()) {
+
             PhysicalTherapyResponse physicalTherapyResponse = new PhysicalTherapyResponse();
             physicalTherapyResponse.setPhysicalTherapySelected(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapySelected());
             physicalTherapyResponse.setPhysicalTherapyAuthorizationIdNo(preAuthorizationResponse1.getPhysicalTherapyResponse().getPhysicalTherapyAuthorizationIdNo());
@@ -423,8 +422,7 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
             physicalTherapyResponse.setMrnNumber(preAuthorizationResponse1.getPhysicalTherapyResponse().getMrnNumber());
             physicalTherapyResponse.setPhysicalTherapyRevenueCode(420);
             preAuthorizationResponse.setPhysicalTherapyResponse(physicalTherapyResponse);
-        }
-        if(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected()) {
+
             MedicalSocialWorkResponse medicalSocialWorkResponse = new MedicalSocialWorkResponse();
             medicalSocialWorkResponse.setMedicalSocialWorkSelected(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected());
             medicalSocialWorkResponse.setMedicalSocialWorkAuthorizationIdNo(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMedicalSocialWorkAuthorizationIdNo());
@@ -465,8 +463,8 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
             medicalSocialWorkResponse.setMrnNumber(preAuthorizationResponse1.getMedicalSocialWorkResponse().getMrnNumber());
             medicalSocialWorkResponse.setMedicalSocialWorkRevenueCode(560);
             preAuthorizationResponse.setMedicalSocialWorkResponse(medicalSocialWorkResponse);
-        }
-        if(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologySelected()) {
+
+
             SpeechPathologyResponse speechPathologyResponse = new SpeechPathologyResponse();
             speechPathologyResponse.setspeechPathologySelected(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologySelected());
             speechPathologyResponse.setspeechPathologyAuthorizationIdNo(preAuthorizationResponse1.getSpeechPathologyResponse().getspeechPathologyAuthorizationIdNo());
@@ -507,8 +505,7 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
             speechPathologyResponse.setMrnNumber(preAuthorizationResponse1.getSpeechPathologyResponse().getMrnNumber());
             speechPathologyResponse.setSpeechPathologyRevenueCode(440);
             preAuthorizationResponse.setSpeechPathologyResponse(speechPathologyResponse);
-        }
-        if(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingSelected()) {
+
             SkilledNursingResponse skilledNursingResponse = new SkilledNursingResponse();
             skilledNursingResponse.setSkilledNursingSelected(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingSelected());
             skilledNursingResponse.setSkilledNursingAuthorizationIdNo(preAuthorizationResponse1.getSkilledNursingResponse().getSkilledNursingAuthorizationIdNo());
@@ -549,7 +546,7 @@ if(preAuthorizationResponse1.getHomeHealthAideResponse().getHomeHealthAideSelect
             skilledNursingResponse.setMrnNumber(preAuthorizationResponse1.getSkilledNursingResponse().getMrnNumber());
             skilledNursingResponse.setSkilledNursingRevenueCode(550);
             preAuthorizationResponse.setSkilledNursingResponse(skilledNursingResponse);
-        }
+
         preAuthorizationResponseService.save(preAuthorizationResponse);
 
         return "true";
