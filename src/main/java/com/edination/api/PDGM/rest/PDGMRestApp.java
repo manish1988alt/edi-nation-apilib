@@ -1,6 +1,7 @@
 package com.edination.api.PDGM.rest;
 
 
+import com.edination.api.PDGM.DiagnosisCode;
 import com.edination.api.PDGM.dao.*;
 import com.edination.api.PDGM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -900,6 +901,48 @@ public class PDGMRestApp implements Serializable {
 
         return list;
     }
+    @PostMapping("/pdgmToolDivision6")
+    public ResponseEntity<?> pdgmToolDivision6(@RequestBody DiagnosisCode diagnosisCode ) throws Throwable {
+        boolean diagnosiscodeflag = false;
+        boolean diagnosisSubChapterflag = false;
+        String comorbitiyCondition="";
+        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses = pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(diagnosisCode.getPrimaryDiagnosisCode());
+        List<String> seconddiagoniscode = diagnosisCode.getSecondaryDiagnosisCode();
+        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingSecondaryDiagnoses = new ArrayList<>();
+        for (String daignosiscode2 : seconddiagoniscode) {
+            clinicalGroupingSecondaryDiagnoses.addAll(pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(daignosiscode2));
+        }
+        for (ClinicalGroupingPrimaryDiagnosis clinicalGroupingPrimary : clinicalGroupingPrimaryDiagnoses) {
+            for (ClinicalGroupingPrimaryDiagnosis clinicalGroupingSecond : clinicalGroupingSecondaryDiagnoses) {
+                if (!(clinicalGroupingPrimary.getPrimaryDiagnosisCode().equals(clinicalGroupingSecond.getPrimaryDiagnosisCode()))) {
+                    diagnosiscodeflag = true;
+                }
+                if (!(clinicalGroupingPrimary.getSubChapterDescription().equals(clinicalGroupingSecond.getSubChapterDescription()))) {
+                    diagnosisSubChapterflag = true;
+                }
+            }
+        }
+        if (!(diagnosiscodeflag) && !(diagnosisSubChapterflag))
+        {
+            comorbitiyCondition="No-Comorbidity";
+        }
+        else
+        {
+
+        }
+
+        String ackn="Success";
+        if(ackn.equals("Success")) {
+            return generateSuccessObject("Success",
+                    " ");
+        }
+        else
+        {
+            return generateSuccessObject("Error",
+                    "Sent failed ");
+        }
+    }
+
     protected ResponseEntity<?> generateSuccessObject(String key, String errorBuilder){
         Response.ResponseBuilder builder = null;
 

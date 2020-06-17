@@ -12,17 +12,27 @@ public class ClinicalGroupingPrimaryDiagnosis {
     private String discription;
     private String clinicalGroup;
     private String comorbiditySubGroup;
+    private String subChapterDescription;
     private String  secondPositionHIPPSCode;
 
     public ClinicalGroupingPrimaryDiagnosis() {
     }
 
-    public ClinicalGroupingPrimaryDiagnosis(String primaryDiagnosisCode, String discription, String clinicalGroup, String comorbiditySubGroup, String secondPositionHIPPSCode) {
+    public ClinicalGroupingPrimaryDiagnosis(String primaryDiagnosisCode, String discription, String clinicalGroup, String comorbiditySubGroup, String subChapterDescription, String secondPositionHIPPSCode) {
         this.primaryDiagnosisCode = primaryDiagnosisCode;
         this.discription = discription;
         this.clinicalGroup = clinicalGroup;
         this.comorbiditySubGroup = comorbiditySubGroup;
+        this.subChapterDescription = subChapterDescription;
         this.secondPositionHIPPSCode = secondPositionHIPPSCode;
+    }
+
+    public String getSubChapterDescription() {
+        return subChapterDescription;
+    }
+
+    public void setSubChapterDescription(String subChapterDescription) {
+        this.subChapterDescription = subChapterDescription;
     }
 
     public String getPrimaryDiagnosisCode() {
@@ -60,7 +70,6 @@ public class ClinicalGroupingPrimaryDiagnosis {
     public String getSecondPositionHIPPSCode() {
         return secondPositionHIPPSCode;
     }
-
     public void setSecondPositionHIPPSCode(String secondPositionHIPPSCode) {
         this.secondPositionHIPPSCode = secondPositionHIPPSCode;
     }
@@ -72,7 +81,12 @@ public class ClinicalGroupingPrimaryDiagnosis {
                 ", discription='" + discription + '\'' +
                 ", clinicalGroup='" + clinicalGroup + '\'' +
                 ", comorbiditySubGroup='" + comorbiditySubGroup + '\'' +
+                ", subChapterDescription='" + subChapterDescription + '\'' +
                 ", secondPositionHIPPSCode='" + secondPositionHIPPSCode + '\'' +
                 '}';
     }
+
+
+
+
 }
