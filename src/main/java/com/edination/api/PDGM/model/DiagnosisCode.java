@@ -1,4 +1,4 @@
-package com.edination.api.PDGM;
+package com.edination.api.PDGM.model;
 
 import java.util.List;
 
