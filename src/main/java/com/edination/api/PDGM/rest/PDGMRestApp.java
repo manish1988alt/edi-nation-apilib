@@ -185,14 +185,51 @@ public class PDGMRestApp implements Serializable {
             position2=clinicalGroupingPrimaryDiagnosesPosition.getSecondPositionHIPPSCode();
         }
 
+        List<Object> listposition3= this.position3Operation(pdgmRapList);
+        CalculationClinicalGroupHIPPSCode groupHIPPSCode=(CalculationClinicalGroupHIPPSCode)listposition3.get(1);
+        position3=groupHIPPSCode.getHIPPSCode();
+
+
         ComorbidityTypeAndHippsCode comorbidityTypeAndHippsCodes=highComorbidityConditionRepository.findComorbidityTypeByMrn(pdgmRapList.getMrnNumber());
-        //list.addAll(comorbidityTypeAndHippsCodes);
         position4=comorbidityTypeAndHippsCodes.getHippsCode();
+
         Set<SecondDiagnosisCode> secondDiagnosisCodeVal=secondDaignosisCodeRepository.findSecondDiagnosisCodeByMrn(pdgmRapList.getMrnNumber());
         SecondDaignosisCodeList secondDaignosisCodeList =new SecondDaignosisCodeList();
         secondDaignosisCodeList.setComorbidityTypeAndHippsCode(comorbidityTypeAndHippsCodes);
         secondDaignosisCodeList.setSecondDiagnosisCodeList(secondDiagnosisCodeVal);
         list.add(secondDaignosisCodeList);
+
+        String finalHippsCode=position1+position2+position3+position4+position5;
+        HippsCodeWeight hippsCodeWeight=hippsCodeAndCaseMixWeightRepository.findHippsCodeByMrn(finalHippsCode);
+
+        PDGMRapListing rapListing=new PDGMRapListing();
+        rapListing.setMrnNumber(pdgmRapList.getMrnNumber());
+        rapListing.setHippsCode(hippsCodeWeight.getHippscode());
+        rapListing.setAging(pdgmRapList.getAging());
+        rapListing.setBillableVisit(pdgmRapList.getBillableVisit());
+        rapListing.setClaimType(pdgmRapList.getClaimType());
+        rapListing.setEpisodeEndDates(pdgmRapList.getEpisodeEndDates());
+        rapListing.setEpisodeId(pdgmRapList.getEpisodeId());
+        rapListing.setFirstName(pdgmRapList.getFirstName());
+        rapListing.setLastName(pdgmRapList.getLastName());
+        rapListing.setMiddleName(pdgmRapList.getMiddleName());
+        rapListing.setSuffix(pdgmRapList.getSuffix());
+        rapListing.setOasisKey(pdgmRapList.getOasisKey());
+        rapListing.setOasisType(pdgmRapList.getOasisType());
+        rapListing.setPrimaryDiagnosisCode(pdgmRapList.getPrimaryDiagnosisCode());
+        rapListing.setEpisodeStartDates(pdgmRapList.getEpisodeStartDates());
+        pdgmRapListService.save(rapListing);
+
+        HippsCodeAndCaseMixWeight hippsCodeAndCaseMixWeight=new HippsCodeAndCaseMixWeight();
+        hippsCodeAndCaseMixWeight.setMrnNumber(pdgmRapList.getMrnNumber());
+        hippsCodeAndCaseMixWeight.setPosition1(position1);
+        hippsCodeAndCaseMixWeight.setPosition2(position2);
+        hippsCodeAndCaseMixWeight.setPosition3(position3);
+        hippsCodeAndCaseMixWeight.setPosition4(position4);
+        hippsCodeAndCaseMixWeight.setPosition5(position5);
+        hippsCodeAndCaseMixWeight.setHippscode(hippsCodeWeight.getHippscode());
+        hippsCodeAndCaseMixWeight.setWeight(hippsCodeWeight.getWeight());
+        hippsCodeAndCaseMixWeightService.save(hippsCodeAndCaseMixWeight);
 
        List<HippsCodeAndCaseMixWeight> hippsCodeAndCaseMixWeightList =hippsCodeAndCaseMixWeightRepository.findHippsCodeAndCaseMixWeighByMrn(pdgmRapList.getMrnNumber());
         list.addAll(hippsCodeAndCaseMixWeightList);
@@ -871,6 +908,12 @@ public class PDGMRestApp implements Serializable {
     public List<Object> pdgmToolPosition3Oasis(@RequestBody  PDGMRapListing pdgmRapList ) throws Throwable
     {
         List<Object> list=new ArrayList<>();
+        list= this.position3Operation(pdgmRapList);
+        return list;
+    }
+    public List<Object> position3Operation(PDGMRapListing pdgmRapList)
+        {
+            List<Object> list=new ArrayList<>();
         List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnosesList=pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapList.getPrimaryDiagnosisCode());
         String subgroup="";
         int functionpoint=0;
