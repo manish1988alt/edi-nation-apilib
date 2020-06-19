@@ -76,6 +76,10 @@ public class PDGMRestApp implements Serializable {
     LowComorbidityConditionService lowComorbidityConditionService;
     @Autowired
     ComorbidityTypeAndHippsCodeService comorbidityTypeAndHippsCodeService;
+    @Autowired
+    HippsCodeAndCaseMixWeightRepository hippsCodeAndCaseMixWeightRepository;
+    @Autowired
+    HippsCodeAndCaseMixWeightService hippsCodeAndCaseMixWeightService;
 
     @GetMapping("/rapList")
     public List<PDGMRapListing> rapList()  throws Throwable{
@@ -86,6 +90,11 @@ public class PDGMRestApp implements Serializable {
     @PostMapping("/pdgmTool")
     public List<Object> pdgmTool(@RequestBody  PDGMRapListing pdgmRapList ) throws Throwable
     {
+        String position1="";
+        String position2="";
+        String position3="";
+        String position4="";
+        String position5="1";
         List<Object> list=new ArrayList<>();
         boolean earlyVisit=false;
         boolean lateVisit=false;
@@ -143,18 +152,22 @@ public class PDGMRestApp implements Serializable {
       if(earlyVisit&&community)
       {
           postionCode=1;
+          position1="1";
       }
         if(lateVisit&&community)
         {
             postionCode=3;
+            position1="3";
         }
         if(earlyVisit&&institutional)
         {
             postionCode=2;
+            position1="2";
         }
         if(lateVisit&&institutional)
         {
             postionCode=4;
+            position1="4";
         }
         TimingAndSourceOfAdmission timingAndSourceOfAdmission=new TimingAndSourceOfAdmission(admissionSource.getMrnNumber(),earlyVisit,lateVisit,community,institutional,postionCode);
         timingAndSourceService.save(timingAndSourceOfAdmission);
@@ -167,16 +180,22 @@ public class PDGMRestApp implements Serializable {
 
         List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses=pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapList.getPrimaryDiagnosisCode());
         list.addAll(clinicalGroupingPrimaryDiagnoses);
+        for(ClinicalGroupingPrimaryDiagnosis clinicalGroupingPrimaryDiagnosesPosition:clinicalGroupingPrimaryDiagnoses)
+        {
+            position2=clinicalGroupingPrimaryDiagnosesPosition.getSecondPositionHIPPSCode();
+        }
 
         ComorbidityTypeAndHippsCode comorbidityTypeAndHippsCodes=highComorbidityConditionRepository.findComorbidityTypeByMrn(pdgmRapList.getMrnNumber());
         //list.addAll(comorbidityTypeAndHippsCodes);
-
-        List<SecondDiagnosisCode> secondDiagnosisCodeVal=secondDaignosisCodeRepository.findSecondDiagnosisCodeByMrn(pdgmRapList.getMrnNumber());
+        position4=comorbidityTypeAndHippsCodes.getHippsCode();
+        Set<SecondDiagnosisCode> secondDiagnosisCodeVal=secondDaignosisCodeRepository.findSecondDiagnosisCodeByMrn(pdgmRapList.getMrnNumber());
         SecondDaignosisCodeList secondDaignosisCodeList =new SecondDaignosisCodeList();
         secondDaignosisCodeList.setComorbidityTypeAndHippsCode(comorbidityTypeAndHippsCodes);
         secondDaignosisCodeList.setSecondDiagnosisCodeList(secondDiagnosisCodeVal);
         list.add(secondDaignosisCodeList);
 
+       List<HippsCodeAndCaseMixWeight> hippsCodeAndCaseMixWeightList =hippsCodeAndCaseMixWeightRepository.findHippsCodeAndCaseMixWeighByMrn(pdgmRapList.getMrnNumber());
+        list.addAll(hippsCodeAndCaseMixWeightList);
         return list;
     }
 
@@ -948,34 +967,93 @@ public class PDGMRestApp implements Serializable {
         for (String daignosiscode2 : seconddiagoniscode) {
             clinicalGroupingSecondaryDiagnoses.addAll(pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(daignosiscode2));
         }
+          int CodeCount=0;
 
+          List<String> considercomorbidity=new ArrayList<>();
         for (ClinicalGroupingPrimaryDiagnosis clinicalGroupingPrimary : clinicalGroupingPrimaryDiagnoses) {
             for (ClinicalGroupingPrimaryDiagnosis clinicalGroupingSecond : clinicalGroupingSecondaryDiagnoses) {
-              SecondDiagnosisCode secondDiagnosisCode=new SecondDiagnosisCode();
-                secondDiagnosisCode.setSecondDiagnosisCode(clinicalGroupingSecond.getPrimaryDiagnosisCode());
-                secondDiagnosisCode.setDiscription(clinicalGroupingSecond.getDiscription());
-                secondDiagnosisCode.setClinicalGroup(clinicalGroupingSecond.getClinicalGroup());
-                secondDiagnosisCode.setComorbiditySubGroup(clinicalGroupingSecond.getComorbiditySubGroup());
-                secondDiagnosisCode.setMrnNumber(diagnosisCode.getMrnNumber());
-                secondDiagnosisCodeService.save(secondDiagnosisCode);
 
                 if (!(clinicalGroupingPrimary.getPrimaryDiagnosisCode().equals(clinicalGroupingSecond.getPrimaryDiagnosisCode()))) {
                     diagnosiscodeflag = true;
+                   // primaryCodeCount=primaryCodeCount+1;
+                    if (!(clinicalGroupingPrimary.getSubChapterDescription().equals(clinicalGroupingSecond.getSubChapterDescription()))) {
+                        diagnosisSubChapterflag = true;
+                       // secondaryCodeCount=secondaryCodeCount+1;
+                    }
                 }
-                if (!(clinicalGroupingPrimary.getSubChapterDescription().equals(clinicalGroupingSecond.getSubChapterDescription()))) {
-                    diagnosisSubChapterflag = true;
+
+                if(diagnosiscodeflag&&diagnosisSubChapterflag)
+                {
+                    considercomorbidity.add("Yes");
+                }
+                else
+                {
+                    considercomorbidity.add("No");
                 }
             }
         }
-        if (!(diagnosiscodeflag) && !(diagnosisSubChapterflag))
+        for(String considercomorbiditycon:considercomorbidity)
+        {
+            if("Yes".equals(considercomorbiditycon)) {
+                CodeCount = CodeCount + 1;
+            }
+        }
+        List<LowComorbidityCondition> lowComorbidityConditionList=lowComorbidityConditionService.listAll();
+        if (CodeCount<1)
         {
             comorbitiyCondition="No-Comorbidity";
             hippsCode="1";
         }
-        else
+        else if(CodeCount==1)
+        {
+            for(ClinicalGroupingPrimaryDiagnosis secondaryComorbiditySubGroup:clinicalGroupingSecondaryDiagnoses) {
+                LowComorbidityCondition lowComorbidityConditionObj = new LowComorbidityCondition();
+                for (LowComorbidityCondition lowComorbidityCondition : lowComorbidityConditionList) {
+                    lowComorbidityConditionObj.setId(lowComorbidityCondition.getId());
+                    if (secondaryComorbiditySubGroup.getComorbiditySubGroup().equals(lowComorbidityCondition.getPrimaryComorbiditySubgroup())) {
+                        primaryLowFlag = true;
+                        lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
+                        lowComorbidityConditionObj.setValidPrimaryComorbidity("Yes");
+                    } else {
+                        lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
+                        lowComorbidityConditionObj.setValidPrimaryComorbidity("No");
+                    }
+                    if (primaryLowFlag) {
+                        lowComorbidityConditionObj.setInteraction("True");
+                        interactionLowFlag = true;
+                    } else {
+                        lowComorbidityConditionObj.setInteraction("False");
+                        interactionLowFlag = false;
+                    }
+
+                    if (interactionLowFlag) {
+                        lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
+                        Lowcomorbiditylevel.add("Low");
+                    } else {
+                        lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Non-Low");
+                        Lowcomorbiditylevel.add("Non-Low");
+                    }
+                    lowComorbidityConditionService.save(lowComorbidityConditionObj);
+                }
+                int count1 = 0;
+                for (String lowcomor : Lowcomorbiditylevel) {
+                    if ("Low".equals(lowcomor)) {
+                        count1 = count1 + 1;
+                    }
+                }
+                if (count1 >= 1) {
+                    hippsCode = "2";
+                    comorbitiyCondition = "Low-Comorbidity";
+                } else {
+                    hippsCode = "1";
+                    comorbitiyCondition = "No-Comorbidity";
+                }
+            }
+        }
+        else if(CodeCount>1)
         {
         List<HighComorbidityCondition> highComorbidityConditionList=highComorbidityConditionService.listAll();
-        List<LowComorbidityCondition> lowComorbidityConditionList=lowComorbidityConditionService.listAll();
+
         for(ClinicalGroupingPrimaryDiagnosis secondaryComorbiditySubGroup:clinicalGroupingSecondaryDiagnoses) {
             List<String> comorbiditylevel = new ArrayList<>();
             for (HighComorbidityCondition highComorbidityubgroup : highComorbidityConditionList) {
@@ -1079,6 +1157,17 @@ public class PDGMRestApp implements Serializable {
             }
         }
         }
+          secondDaignosisCodeRepository.deletedSecondDiagnosisCodeByMrn(diagnosisCode.getMrnNumber());
+        for (ClinicalGroupingPrimaryDiagnosis clinicalGroupingSecond : clinicalGroupingSecondaryDiagnoses) {
+            SecondDiagnosisCode secondDiagnosisCode = new SecondDiagnosisCode();
+            secondDiagnosisCode.setSecondDiagnosisCode(clinicalGroupingSecond.getPrimaryDiagnosisCode());
+            secondDiagnosisCode.setDiscription(clinicalGroupingSecond.getDiscription());
+            secondDiagnosisCode.setClinicalGroup(clinicalGroupingSecond.getClinicalGroup());
+            secondDiagnosisCode.setComorbiditySubGroup(clinicalGroupingSecond.getComorbiditySubGroup());
+            secondDiagnosisCode.setMrnNumber(diagnosisCode.getMrnNumber());
+            secondDiagnosisCodeService.save(secondDiagnosisCode);
+        }
+
         ComorbidityTypeAndHippsCode comorbidityTypeAndHippsCode=new ComorbidityTypeAndHippsCode();
         comorbidityTypeAndHippsCode.setComorbidityType(comorbitiyCondition);
         comorbidityTypeAndHippsCode.setHippsCode(hippsCode);

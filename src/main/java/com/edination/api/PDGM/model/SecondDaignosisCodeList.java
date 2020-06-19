@@ -1,19 +1,20 @@
 package com.edination.api.PDGM.model;
 
 import java.util.List;
+import java.util.Set;
 
 public class SecondDaignosisCodeList {
-    List<SecondDiagnosisCode> secondDiagnosisCodeList;
+    Set<SecondDiagnosisCode> secondDiagnosisCodeList;
     ComorbidityTypeAndHippsCode comorbidityTypeAndHippsCode;
 
     public SecondDaignosisCodeList() {
     }
 
-    public List<SecondDiagnosisCode> getSecondDiagnosisCodeList() {
+    public Set<SecondDiagnosisCode> getSecondDiagnosisCodeList() {
         return secondDiagnosisCodeList;
     }
 
-    public void setSecondDiagnosisCodeList(List<SecondDiagnosisCode> secondDiagnosisCodeList) {
+    public void setSecondDiagnosisCodeList(Set<SecondDiagnosisCode> secondDiagnosisCodeList) {
         this.secondDiagnosisCodeList = secondDiagnosisCodeList;
     }
 
