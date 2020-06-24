@@ -15,4 +15,7 @@ public interface SecondaryInsuranceDetailRepository extends JpaRepository<Second
 
     @Query(value = "SELECT a.* FROM (SELECT * FROM secondary_insurance_detail c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM secondary_insurance_detail e WHERE e.mrn_number = ?1) ",nativeQuery = true)
     List<SecondaryInsuranceDetail> findByID(String mrnNumber);
+
+    @Query(value = "SELECT a.eligibility FROM (SELECT * FROM secondary_insurance_detail c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM secondary_insurance_detail e WHERE e.mrn_number = ?1) ",nativeQuery = true)
+    String findByIDEligibility(String mrnNumber);
 }

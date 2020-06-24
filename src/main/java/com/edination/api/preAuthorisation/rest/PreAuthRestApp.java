@@ -46,6 +46,12 @@ public class PreAuthRestApp implements Serializable {
     PreAuthorizationResponseService preAuthorizationResponseService;
     @Autowired
     PreAuthorizationResponseHistoryService preAuthorizationResponseHistoryService;
+    @Autowired
+    PrimaryInsuranceDetailRepository primaryInsuranceDetailRepository;
+    @Autowired
+    SecondaryInsuranceDetailRepository secondaryInsuranceDetailRepository;
+    @Autowired
+    TertiaryInsuranceDetailRepository tertiaryInsuranceDetailRepository;
 
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
@@ -70,16 +76,29 @@ public class PreAuthRestApp implements Serializable {
         List<PreAuthDetail> list1=new ArrayList<>();
         List<Episode> episodeList=new ArrayList<>();
         List<PreAuthDemographics> preAuthDemographicsList=new ArrayList<>();
+        String insuranceStatus="";
         for(PreAuthDetail prauthlist:shortList) {
             //PreAuthDetail preAuthDetail = new PreAuthDetail();
-
-            episodeList.add(prauthlist.getEpisode());
+            insuranceStatus=primaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
+            if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus))
+            {
+                insuranceStatus=secondaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
+            }
+            if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus))
+            {
+                insuranceStatus=tertiaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
+            }
+            if("eligible".equals(insuranceStatus)) {
+                episodeList.add(prauthlist.getEpisode());
+            }
             //preAuthDemographicsList.add(prauthlist.getPreAuthDemographics());
         }
         System.out.println(episodeList);
         System.out.println(preAuthDemographicsList);
+
         for(Episode episode:episodeList) {
-            PreAuthDetail preAuthDetail = new PreAuthDetail();
+
+                PreAuthDetail preAuthDetail = new PreAuthDetail();
                 String currentDate = java.time.LocalDate.now().toString();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 String admissionDate = formatter.format(episode.getAdmissionDate());

@@ -16,4 +16,7 @@ public interface TertiaryInsuranceDetailRepository extends JpaRepository<Tertiar
 
     @Query(value = "SELECT a.* FROM (SELECT * FROM tertiary_insurance_detail c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM tertiary_insurance_detail e WHERE e.mrn_number = ?1) ",nativeQuery = true)
     List<TertiaryInsuranceDetail> findByID(String mrnNumber);
+
+    @Query(value = "SELECT a.eligibility FROM (SELECT * FROM tertiary_insurance_detail c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM tertiary_insurance_detail e WHERE e.mrn_number = ?1) ",nativeQuery = true)
+    String findByIDEligibility(String mrnNumber);
 }
