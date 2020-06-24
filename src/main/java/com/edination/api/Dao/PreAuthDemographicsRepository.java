@@ -21,5 +21,8 @@ public interface PreAuthDemographicsRepository   extends JpaRepository<PreAuthDe
     @Query(value = "FROM PreAuthDemographics")
     List<PreAuthDemographics> uniqueDemographics();
 
+    @Query(value = "SELECT a.* FROM (SELECT * FROM pre_auth_demographics c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM pre_auth_demographics e WHERE e.mrn_number = ?1) ",nativeQuery = true)
+    PreAuthDemographics findByMrnNumber(String mrnNumber);
+
 
 }

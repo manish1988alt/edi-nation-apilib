@@ -461,10 +461,6 @@ public class PDGMRestApp implements Serializable {
 
 
 
-
-
-
-
              if(count>=4 && flagList.get(10))
             {
                 m1033=new M1033();
@@ -1237,6 +1233,11 @@ public class PDGMRestApp implements Serializable {
         int highCount=0;
         List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnoses = pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(diagnosisCode.getPrimaryDiagnosisCode());
         List<String> seconddiagoniscode = diagnosisCode.getSecondaryDiagnosisCode();
+        int secondDaignosisCount=0;
+        for(String s:seconddiagoniscode)
+        {
+            secondDaignosisCount=secondDaignosisCount+1;
+        }
         List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingSecondaryDiagnoses = new ArrayList<>();
         for (String daignosiscode2 : seconddiagoniscode) {
             clinicalGroupingSecondaryDiagnoses.addAll(pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(daignosiscode2));
@@ -1278,19 +1279,17 @@ public class PDGMRestApp implements Serializable {
             comorbitiyCondition="No-Comorbidity";
             hippsCode="1";
         }
-        else if(CodeCount>=1) {
+        else if(CodeCount>=1 && secondDaignosisCount>1) {
             List<HighComorbidityCondition> highComorbidityConditionList = highComorbidityConditionService.listAll();
-
+        List<String> compareList=new ArrayList<>();
             for (ClinicalGroupingPrimaryDiagnosis secondaryComorbiditySubGroup : clinicalGroupingSecondaryDiagnoses) {
 
                 for (HighComorbidityCondition highComorbidityubgroup : highComorbidityConditionList) {
                     HighComorbidityCondition highComorbidityCondition = new HighComorbidityCondition();
 
-
-
                     if (secondaryComorbiditySubGroup.getComorbiditySubGroup().equals(highComorbidityubgroup.getPrimaryComorbiditySubgroup())) {
                         primaryFlag = true;
-
+                        compareList.add(secondaryComorbiditySubGroup.getComorbiditySubGroup());
                         highComorbidityCondition.setId(highComorbidityubgroup.getId());
                         highComorbidityCondition.setPrimaryComorbiditySubgroup(highComorbidityubgroup.getPrimaryComorbiditySubgroup());
                         highComorbidityCondition.setValidPrimaryComorbidity("Yes");
@@ -1299,7 +1298,15 @@ public class PDGMRestApp implements Serializable {
                     else {
                         highComorbidityCondition.setId(highComorbidityubgroup.getId());
                         highComorbidityCondition.setPrimaryComorbiditySubgroup(highComorbidityubgroup.getPrimaryComorbiditySubgroup());
-                        highComorbidityCondition.setValidPrimaryComorbidity(highComorbidityubgroup.getValidPrimaryComorbidity());
+                        for(String subg:compareList) {
+                            if (highComorbidityubgroup.getPrimaryComorbiditySubgroup().equals(subg)) {
+                                highComorbidityCondition.setValidPrimaryComorbidity("Yes");
+                            }
+                            else
+                            {
+                                highComorbidityCondition.setValidPrimaryComorbidity("No");
+                            }
+                        }
                         highComorbidityConditionService.save(highComorbidityCondition);
                 }
                     if (secondaryComorbiditySubGroup.getComorbiditySubGroup().equals(highComorbidityubgroup.getSecondaryComorbiditySubgroup())) {
@@ -1312,7 +1319,16 @@ public class PDGMRestApp implements Serializable {
                     else {
                         highComorbidityCondition.setId(highComorbidityubgroup.getId());
                         highComorbidityCondition.setSecondaryComorbiditySubgroup(highComorbidityubgroup.getSecondaryComorbiditySubgroup());
-                        highComorbidityCondition.setValidSecondaryComorbidity(highComorbidityubgroup.getValidSecondaryComorbidity());
+                        for(String subg:compareList) {
+                            if (highComorbidityubgroup.getSecondaryComorbiditySubgroup().equals(subg)) {
+                                highComorbidityCondition.setValidSecondaryComorbidity("Yes");
+                            }
+                            else
+                            {
+                                highComorbidityCondition.setValidSecondaryComorbidity("No");
+                            }
+                        }
+
                         highComorbidityConditionService.save(highComorbidityCondition);
                   }
 
@@ -1380,35 +1396,65 @@ public class PDGMRestApp implements Serializable {
             }
 
             else {
+                List<String> compareList=new ArrayList<>();
                 List<LowComorbidityCondition> lowComorbidityConditionList=lowComorbidityConditionService.listAll();
                 LowComorbidityCondition lowComorbidityConditionObj = new LowComorbidityCondition();
                 for(ClinicalGroupingPrimaryDiagnosis secondaryComorbiditySubGroup:clinicalGroupingSecondaryDiagnoses) {
-                for (LowComorbidityCondition lowComorbidityCondition : lowComorbidityConditionList) {
-                    lowComorbidityConditionObj.setId(lowComorbidityCondition.getId());
-                    if (secondaryComorbiditySubGroup.getComorbiditySubGroup().equals(lowComorbidityCondition.getPrimaryComorbiditySubgroup())) {
-                        primaryLowFlag = true;
-                        lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
-                        lowComorbidityConditionObj.setValidPrimaryComorbidity("Yes");
-                    } else {
-                        lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
-                        lowComorbidityConditionObj.setValidPrimaryComorbidity("No");
-                    }
-                    if (primaryLowFlag) {
-                        lowComorbidityConditionObj.setInteraction("True");
-                        interactionLowFlag = true;
-                    } else {
-                        lowComorbidityConditionObj.setInteraction("False");
-                        interactionLowFlag = false;
-                    }
+                    for (LowComorbidityCondition lowComorbidityCondition : lowComorbidityConditionList) {
+                        if (secondaryComorbiditySubGroup.getComorbiditySubGroup().equals(lowComorbidityCondition.getPrimaryComorbiditySubgroup())) {
+                           //primaryLowFlag = true;
+                            compareList.add(secondaryComorbiditySubGroup.getComorbiditySubGroup());
+                            lowComorbidityConditionObj.setId(lowComorbidityCondition.getId());
+                            lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
+                            lowComorbidityConditionObj.setValidPrimaryComorbidity("Yes");
+                            lowComorbidityConditionObj.setInteraction("True");
+                            lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
+                            Lowcomorbiditylevel.add("Low");
+                            lowComorbidityConditionService.save(lowComorbidityConditionObj);
+                        } else {
 
-                    if (interactionLowFlag) {
-                        lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
-                        Lowcomorbiditylevel.add("Low");
-                    } else {
-                        lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Non-Low");
-                        Lowcomorbiditylevel.add("Non-Low");
+                            for(String subg:compareList) {
+                                if (lowComorbidityCondition.getPrimaryComorbiditySubgroup().equals(subg)) {
+                                    lowComorbidityConditionObj.setId(lowComorbidityCondition.getId());
+                                    lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
+                                    lowComorbidityConditionObj.setValidPrimaryComorbidity("Yes");
+                                    lowComorbidityConditionObj.setInteraction("True");
+                                    lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
+                                    Lowcomorbiditylevel.add("Low");
+                                    lowComorbidityConditionService.save(lowComorbidityConditionObj);
+                                }
+                                else
+                                {
+                                    lowComorbidityConditionObj.setId(lowComorbidityCondition.getId());
+                                    lowComorbidityConditionObj.setPrimaryComorbiditySubgroup(lowComorbidityCondition.getPrimaryComorbiditySubgroup());
+                                    lowComorbidityConditionObj.setValidPrimaryComorbidity("No");
+                                    lowComorbidityConditionObj.setInteraction("False");
+                                    lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Non-Low");
+                                    Lowcomorbiditylevel.add("Non-Low");
+                                    lowComorbidityConditionService.save(lowComorbidityConditionObj);
+                                }
+                            }
+
+
+                            //primaryLowFlag=false;
+                        }/*
+                        if (primaryLowFlag) {
+                            lowComorbidityConditionObj.setInteraction("True");
+                            interactionLowFlag = true;
+                        } else {
+                            lowComorbidityConditionObj.setInteraction("False");
+                            interactionLowFlag = false;
+                        }
+
+                        if (interactionLowFlag) {
+                            lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
+                            Lowcomorbiditylevel.add("Low");
+                        } else {
+                            lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Non-Low");
+                            Lowcomorbiditylevel.add("Non-Low");
+                        }*/
+
                     }
-                    lowComorbidityConditionService.save(lowComorbidityConditionObj);
                 }
                 int count1 = 0;
                 for (String lowcomor : Lowcomorbiditylevel) {
@@ -1426,7 +1472,7 @@ public class PDGMRestApp implements Serializable {
                     comorbitiyCondition = "No-Comorbidity";
                 }
 
-            }
+
         }
 
           secondDaignosisCodeRepository.deletedSecondDiagnosisCodeByMrn(diagnosisCode.getMrnNumber());

@@ -50,7 +50,7 @@ public class PreAuthRestApp implements Serializable {
     @GetMapping("/preAuthList")
     public List<PreAuthDetail> preAuthList()  throws Throwable
     {
-        PreAuthDetail preAuthDetail=new PreAuthDetail();
+
         List<PreAuthDetail> list=new ArrayList<>();
         List<PreAuthDemographics> authDemographicsList=preAuthDemographicService.listAll();
 
@@ -66,8 +66,45 @@ public class PreAuthRestApp implements Serializable {
 
         }
      Collections.sort(list,new preauthComparator());
+        List<PreAuthDetail> shortList=list;
+        List<PreAuthDetail> list1=new ArrayList<>();
+        List<Episode> episodeList=new ArrayList<>();
+        List<PreAuthDemographics> preAuthDemographicsList=new ArrayList<>();
+        for(PreAuthDetail prauthlist:shortList) {
+            //PreAuthDetail preAuthDetail = new PreAuthDetail();
 
-        return   list;
+            episodeList.add(prauthlist.getEpisode());
+            //preAuthDemographicsList.add(prauthlist.getPreAuthDemographics());
+        }
+        System.out.println(episodeList);
+        System.out.println(preAuthDemographicsList);
+        for(Episode episode:episodeList) {
+            PreAuthDetail preAuthDetail = new PreAuthDetail();
+                String currentDate = java.time.LocalDate.now().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String admissionDate = formatter.format(episode.getAdmissionDate());
+                LocalDate admissionDateBefore = LocalDate.parse(admissionDate);
+                LocalDate currentdateAfter = LocalDate.parse(currentDate);
+
+                //calculating number of days in between
+                long visitdays = ChronoUnit.DAYS.between(admissionDateBefore, currentdateAfter);
+                if (visitdays <= 365) {
+
+                   // preAuthDetail.setPreAuthId(preAuthDemographicsVal.getId());
+                    preAuthDetail.setMrnNumber(episode.getMrnNumber());
+                    preAuthDetail.setPreAuthDemographics(preAuthDemographicsRepository.findByMrnNumber(episode.getMrnNumber()));
+                    preAuthDetail.setEpisode(episode);
+                    list1.add(preAuthDetail);
+
+                }
+
+            }
+
+
+
+
+        System.out.println("Final list :"+list1);
+        return   list1;
     }
 
     @PostMapping("/preauthview")

@@ -22,6 +22,6 @@ public interface PreAuthRepository extends JpaRepository<PreAuthDetail,String> {
     PreAuthDemographics findByMrnNumberdemographics(String mrnNumber);
 
     @Query(value = "SELECT a.* FROM (SELECT * FROM episode c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM episode e WHERE e.mrn_number = ?1) AND a.admission_date<CURRENT_DATE+INTERVAL 365 DAY ORDER BY a.admission_date DESC",nativeQuery = true)
-    Episode findByMrnNumberEpisode(String mrnNumber);
+    List<Episode> findByMrnNumberEpisode(String mrnNumber);
 
 }
