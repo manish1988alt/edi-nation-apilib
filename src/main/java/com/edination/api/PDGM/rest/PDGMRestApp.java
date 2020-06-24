@@ -387,6 +387,83 @@ public class PDGMRestApp implements Serializable {
             m1033Service.save(m1033);
         }
 
+        if(count<4 && flagList.get(10))
+        {
+            m1033=new M1033();
+            m1033.setId(10);
+            m1033.setFlag(flagList.get(10));
+            m1033.setDiscription(discriptionList.get(10));
+            m1033.setFunctionalPoint(0);
+            m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+            m1033Service.save(m1033);
+            if(flagList.get(4))
+            {
+                m1033=new M1033();
+                m1033.setId(4);
+                m1033.setFlag(flagList.get(4));
+                m1033.setDiscription(discriptionList.get(4));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+            }
+
+            if(flagList.get(5)) {
+                m1033 = new M1033();
+                m1033.setId(5);
+                m1033.setFlag(flagList.get(5));
+                m1033.setDiscription(discriptionList.get(5));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+
+            }
+            if(flagList.get(6)) {
+                m1033 = new M1033();
+                m1033.setId(6);
+                m1033.setFlag(flagList.get(6));
+                m1033.setDiscription(discriptionList.get(6));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+
+            }
+            if(flagList.get(7)) {
+                m1033 = new M1033();
+                m1033.setId(7);
+                m1033.setFlag(flagList.get(7));
+                m1033.setDiscription(discriptionList.get(7));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+
+            }
+            if(flagList.get(8)) {
+                m1033 = new M1033();
+                m1033.setId(7);
+                m1033.setFlag(flagList.get(8));
+                m1033.setDiscription(discriptionList.get(8));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+
+            }
+            if(flagList.get(9)) {
+                m1033 = new M1033();
+                m1033.setId(9);
+                m1033.setFlag(flagList.get(9));
+                m1033.setDiscription(discriptionList.get(9));
+                m1033.setFunctionalPoint(0);
+                m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                m1033Service.save(m1033);
+
+            }
+        }
+
+
+
+
+
+
 
              if(count>=4 && flagList.get(10))
             {
