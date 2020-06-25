@@ -50,7 +50,7 @@ public class ScheduledTasks {
     EdiDataElement271 ediDataElement272=new EdiDataElement271();
 
 
-    //@Scheduled(cron = "0 29 10 * * ?")   //   0 * * * * ?  0 0 19 * * ?
+   // @Scheduled(cron = "0 28 11 * * ?")   //   0 * * * * ?  0 0 19 * * ?
     public void scheduleTaskWithCronExpressionAuthorization() throws Exception{
         List<PreAuthDemographics> preAuthDemographicsList=preAuthDemographicsRepository.uniqueDemographics();
         PreAuthDetail preAuthDetail=new PreAuthDetail();
@@ -130,7 +130,7 @@ public class ScheduledTasks {
         /*for(String setm:setmrn)
         {*/
             //System.out.println(setm);
-            new SFTPFILE().downloadFile(f1, "P101" + "_" + f1.getName());
+            new SFTPFILE().downloadFile(f1, "P100" + "_" + f1.getName());
             X12Controller x12=new X12Controller();
             try {
                 list = x12.read(f1, false, false, " ", " ");
@@ -156,6 +156,16 @@ public class ScheduledTasks {
                    System.out.println("All Value: "+st);
                  // String charArr[]=st.split(",");split("[, ?.@]+");
                    String charArr[]=st.split("[{,=}]+");
+                   boolean insuranceFlag=false;
+                   boolean requesterFlag=false;
+                   boolean subscriberFlag=false;
+                   boolean dependentFlag=false;
+                   boolean patientEventrFlag=false;
+                   boolean serviceLevelFlag=false;
+                   boolean serviceProviderFlag=false;
+                   boolean serviceLevel2Flag=false;
+                   boolean serviceProvider2Flag=false;
+
                   for(int i=0;i<charArr.length;i++)
                   {
                       System.out.println(charArr[i]);
@@ -185,18 +195,20 @@ public class ScheduledTasks {
                                       insurMap.put(charArr[i + 41], charArr[i + 42]);
                                       insurMap.put(charArr[i + 43], charArr[i + 44]);
                                       insurMap.put(charArr[i + 45], charArr[i + 46]);
+                                      insuranceFlag=true;
                                   }
                                   }
-                              else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2000B".equals(charArr[i].trim())))
-                              {
 
-                                  insurenceRejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                                  insurenceRejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                                  insurenceRejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                                  insurenceRejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                                   // j=i+j+7+2;
+                                  if(!(insuranceFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2000B".equals(charArr[i].trim()))) {
+                                      System.out.println("Value of ins: "+j);
+                                      insurenceRejectionMap.put(charArr[i+2], charArr[i+3]);
+                                      insurenceRejectionMap.put(charArr[i+4], charArr[i+5]);
+                                      insurenceRejectionMap.put(charArr[i+6], charArr[i+7]);
+                                      insurenceRejectionMap.put(charArr[i+8], charArr[i+9]);
 
-                              }
+
+                                  }
+
 
                       if ("Loop2010B".equals(charArr[i].trim())&& !("Loop2000C".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if("NM1_RequesterName".equals(charArr[i+2].trim()))
@@ -219,16 +231,29 @@ public class ScheduledTasks {
                               requesterMap.put(charArr[i + 35], charArr[i + 36]);
                               requesterMap.put(charArr[i + 38], charArr[i + 39]);
                               requesterMap.put(charArr[i + 40], charArr[i + 41]);
+                              requesterFlag=true;
                           }
                       }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2000C".equals(charArr[i].trim())))
-                      {
-                          requesterRejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                          requesterRejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                          requesterRejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                          requesterRejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                        //  j=i+j+7+2;
-                      }
+
+                          if (!(requesterFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2000C".equals(charArr[i].trim()))) {
+                              System.out.println("Value of req: "+j);
+                              if(!(insuranceFlag)) {
+                                  requesterRejectionMap.put(charArr[i + 11], charArr[i + 12]);
+                                  requesterRejectionMap.put(charArr[i + 13], charArr[i + 14]);
+                                  requesterRejectionMap.put(charArr[i + 15], charArr[i + 16]);
+                                  requesterRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  requesterRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                                  requesterRejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                                  requesterRejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                                  requesterRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+
+                          }
+
                       if ("Loop2010C".equals(charArr[i].trim())&& !("Loop2000E".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if("NM1_SubscriberName".equals(charArr[i+1].trim()))
                           {
@@ -248,10 +273,8 @@ public class ScheduledTasks {
                               subscriberMap.put(charArr[i + 30], charArr[i + 31]);
                               subscriberMap.put(charArr[i + 32], charArr[i + 33]);
                               subscriberMap.put(charArr[i + 34], charArr[i + 35]);
-
                               subscriberMap.put(charArr[i + 38], charArr[i + 39]);
                               subscriberMap.put(charArr[i + 40], charArr[i + 41]);
-
                               subscriberMap.put(charArr[i + 43], charArr[i + 44]);
                               subscriberMap.put(charArr[i + 45], charArr[i + 46]);
                               subscriberMap.put(charArr[i + 47], charArr[i + 48]);
@@ -260,7 +283,6 @@ public class ScheduledTasks {
                               subscriberMap.put(charArr[i + 53], charArr[i + 54]);
                               subscriberMap.put(charArr[i + 55], charArr[i + 56]);
                               subscriberMap.put(charArr[i + 57], charArr[i + 58]);
-
                               subscriberMap.put(charArr[i + 60], charArr[i + 61]);
                               subscriberMap.put(charArr[i + 62], charArr[i + 63]);
                               subscriberMap.put(charArr[i + 64], charArr[i + 65]);
@@ -291,18 +313,39 @@ public class ScheduledTasks {
                               subscriberMap.put(charArr[i + 111], charArr[i + 112]);
                               subscriberMap.put(charArr[i + 113], charArr[i + 114]);
                               subscriberMap.put(charArr[i + 115], charArr[i + 116]);
-
+                              subscriberFlag=true;
 
                           }
                       }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2000E".equals(charArr[i].trim())))
-                      {
-                          subscriberRejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                          subscriberRejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                          subscriberRejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                          subscriberRejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                        //  j=i+j+7+2;
-                      }
+
+                          if (!(subscriberFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2000E".equals(charArr[i].trim()))) {
+                              /*subscriberRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                              subscriberRejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                              subscriberRejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                              subscriberRejectionMap.put(charArr[i + 8], charArr[i + 9]);*/
+                              System.out.println("Value of sub: "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) ) {
+                                  subscriberRejectionMap.put(charArr[i + 20], charArr[i + 21]);
+                                  subscriberRejectionMap.put(charArr[i +22], charArr[i + 23]);
+                                  subscriberRejectionMap.put(charArr[i + 24], charArr[i + 25]);
+                                  subscriberRejectionMap.put(charArr[i + 26], charArr[i + 27]);
+                              }
+                            else  if(!(insuranceFlag)|| !(requesterFlag)) {
+                                  subscriberRejectionMap.put(charArr[i + 11], charArr[i + 12]);
+                                  subscriberRejectionMap.put(charArr[i + 13], charArr[i + 14]);
+                                  subscriberRejectionMap.put(charArr[i + 15], charArr[i + 16]);
+                                  subscriberRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  subscriberRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                                  subscriberRejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                                  subscriberRejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                                  subscriberRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+                          }
+
                       if ("Loop2010D".equals(charArr[i].trim())&& !("Loop2000E".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim())))
                       {
 
@@ -334,16 +377,33 @@ public class ScheduledTasks {
                               dependentmap.put(charArr[i + 53], charArr[i + 54]);
                               dependentmap.put(charArr[i + 55], charArr[i + 56]);
                               dependentmap.put(charArr[i + 57], charArr[i + 58]);
+                              dependentFlag=true;
                           }
                       }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim())  && !("null".equals(charArr[i+1].trim())) && !("Loop2000E".equals(charArr[i].trim())))
-                      {
-                          dependentRejectionmap.put(charArr[i+j],charArr[i+j+1]);
-                          dependentRejectionmap.put(charArr[i+j+2],charArr[i+j+3]);
-                          dependentRejectionmap.put(charArr[i+j+4],charArr[i+j+5]);
-                          dependentRejectionmap.put(charArr[i+j+6],charArr[i+j+7]);
-                        //  j=i+j+7+2;
-                      }
+
+                          if (!(dependentFlag) &&"AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2000E".equals(charArr[i].trim()))) {
+                              System.out.println("Value of dep : "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) ) {
+                                  dependentRejectionmap.put(charArr[i + 29], charArr[i + 30]);
+                                  dependentRejectionmap.put(charArr[i +31], charArr[i + 32]);
+                                  dependentRejectionmap.put(charArr[i + 33], charArr[i + 34]);
+                                  dependentRejectionmap.put(charArr[i + 35], charArr[i + 36]);
+                              }
+                              else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag)) {
+                                  dependentRejectionmap.put(charArr[i + 11], charArr[i + 12]);
+                                  dependentRejectionmap.put(charArr[i + 13], charArr[i + 14]);
+                                  dependentRejectionmap.put(charArr[i + 15], charArr[i + 16]);
+                                  dependentRejectionmap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  dependentRejectionmap.put(charArr[i + 2], charArr[i + 3]);
+                                  dependentRejectionmap.put(charArr[i + 4], charArr[i + 5]);
+                                  dependentRejectionmap.put(charArr[i + 6], charArr[i + 7]);
+                                  dependentRejectionmap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+                          }
                       if ("Loop2000E".equals(charArr[i].trim())&& !("".equals(charArr[i+1].trim()))&& !("Loop2010EA".equals(charArr[i].trim()))  && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if ("TRN_PatientEventTrackingNumber".equals(charArr[i + 11].trim())) {
                               TRN_PATIENTEVENTTRACKINGNUMBER.put(charArr[i + 13], charArr[i + 14]);
@@ -512,15 +572,33 @@ public class ScheduledTasks {
                           MSG_MessageText.put(charArr[i + 303], charArr[i + 304]);
                           MSG_MessageText.put(charArr[i + 306], charArr[i + 307]);
                           MSG_MessageText.put(charArr[i + 308], charArr[i + 309]);
+                          patientEventrFlag=true;
                       }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2010EA".equals(charArr[i].trim())))
-                      {
-                          PATIENTEVENTRejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                          PATIENTEVENTRejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                          PATIENTEVENTRejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                          PATIENTEVENTRejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                        //  j=i+j+7+2;
-                      }
+
+                          if (!(patientEventrFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010EA".equals(charArr[i].trim()))) {
+                              System.out.println("Value of patient: "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag)) {
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 38], charArr[i + 39]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i +40], charArr[i + 41]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 42], charArr[i + 43]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 44], charArr[i + 45]);
+                              }
+                              else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag)) {
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 11], charArr[i + 12]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 13], charArr[i + 14]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 15], charArr[i + 16]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                                  PATIENTEVENTRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+
+                          }
 
                       if ("Loop2000F".equals(charArr[i].trim())&& !("Loop2010FA".equals(charArr[i].trim()))  && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if ("HL_ServiceLevel".equals(charArr[i + 2].trim())) {
@@ -634,15 +712,32 @@ public class ScheduledTasks {
 
                               PWK_ServiceLevel.put(charArr[i + 164], charArr[i + 165]);
                               MSG_MessageText_ServiceLevel.put(charArr[i + 166], charArr[i + 167]);
+                              serviceLevelFlag=true;
                           }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2000FA".equals(charArr[i].trim())))
-                      {
-                          ServiceLevelRejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                          ServiceLevelRejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                          ServiceLevelRejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                          ServiceLevelRejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                      //    j=i+j+7+2;
-                      }
+                      if ( !(serviceLevelFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2000FA".equals(charArr[i].trim()))) {
+                          System.out.println("Value of serl1: "+j);
+                          if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag) && !(patientEventrFlag) ) {
+                              ServiceLevelRejectionMap.put(charArr[i + 47], charArr[i + 48]);
+                              ServiceLevelRejectionMap.put(charArr[i +49], charArr[i + 50]);
+                              ServiceLevelRejectionMap.put(charArr[i + 51], charArr[i + 52]);
+                              ServiceLevelRejectionMap.put(charArr[i + 53], charArr[i + 54]);
+                          }
+                          else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag)) {
+                              ServiceLevelRejectionMap.put(charArr[i + 11], charArr[i + 12]);
+                              ServiceLevelRejectionMap.put(charArr[i + 13], charArr[i + 14]);
+                              ServiceLevelRejectionMap.put(charArr[i + 15], charArr[i + 16]);
+                              ServiceLevelRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                          }
+                          else
+                          {
+                              ServiceLevelRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                              ServiceLevelRejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                              ServiceLevelRejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                              ServiceLevelRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                          }
+
+                          }
+
                       if ("Loop2010FA".equals(charArr[i].trim())&& !("Loop2010FB".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if("NM1_ServiceProviderName".equals(charArr[i+2].trim())) {
                               NM1_ServiceProviderName.put(charArr[i + 3], charArr[i + 4]);
@@ -692,17 +787,34 @@ public class ScheduledTasks {
                               PER_ServiceProviderContactInformation.put(charArr[i + 75], charArr[i + 76]);
                               PER_ServiceProviderContactInformation.put(charArr[i + 77], charArr[i + 78]);
                               PER_ServiceProviderContactInformation.put(charArr[i + 79], charArr[i + 80]);
+                              serviceProviderFlag=true;
                           }
                       }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2010FB".equals(charArr[i].trim())))
-                      {
-                          serviceproviderrejectionmap.put(charArr[i+j],charArr[i+j+1]);
-                          serviceproviderrejectionmap.put(charArr[i+j+2],charArr[i+j+3]);
-                          serviceproviderrejectionmap.put(charArr[i+j+4],charArr[i+j+5]);
-                          serviceproviderrejectionmap.put(charArr[i+j+6],charArr[i+j+7]);
 
-                       //   j=i+j+7+2;
-                      }
+                          if (!(serviceProviderFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010FB".equals(charArr[i].trim()))) {
+                              System.out.println("Value of serp1: "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag) && !(patientEventrFlag) && !(serviceLevelFlag)) {
+                                  serviceproviderrejectionmap.put(charArr[i + 55], charArr[i + 56]);
+                                  serviceproviderrejectionmap.put(charArr[i +57], charArr[i + 58]);
+                                  serviceproviderrejectionmap.put(charArr[i + 59], charArr[i + 60]);
+                                  serviceproviderrejectionmap.put(charArr[i + 61], charArr[i + 62]);
+                              }
+                              else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag)) {
+                                  serviceproviderrejectionmap.put(charArr[i + 11], charArr[i + 12]);
+                                  serviceproviderrejectionmap.put(charArr[i + 13], charArr[i + 14]);
+                                  serviceproviderrejectionmap.put(charArr[i + 15], charArr[i + 16]);
+                                  serviceproviderrejectionmap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  serviceproviderrejectionmap.put(charArr[i + 2], charArr[i + 3]);
+                                  serviceproviderrejectionmap.put(charArr[i + 4], charArr[i + 5]);
+                                  serviceproviderrejectionmap.put(charArr[i + 6], charArr[i + 7]);
+                                  serviceproviderrejectionmap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+                          }
+
 
                       if ("HL_ServiceLevel".equals(charArr[i].trim()) && !("Loop2010FA".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
 
@@ -714,6 +826,7 @@ public class ScheduledTasks {
                           UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.put(charArr[i + 22], charArr[i + 23]);
                           HCR_HealthCareServicesReview_ServiceLevel2.put(charArr[i + 24], charArr[i + 25]);
                           REF_AdministrativeReferenceNumber_ServiceLevel2.put(charArr[i + 27], charArr[i + 28]);
+
                           REF_AdministrativeReferenceNumber_ServiceLevel2.put(charArr[i + 29], charArr[i + 30]);
 
                           if ("DTP_ServiceDate".equals(charArr[i+32].trim())) {
@@ -807,16 +920,32 @@ public class ScheduledTasks {
                               PWK_ServiceLevel2.put(charArr[i + 18], charArr[i + 19]);
                               MSG_MessageText_ServiceLevel2.put(charArr[i + 21], charArr[i + 22]);
                           }*/
+                      serviceLevel2Flag=true;
+                      }
 
-                      }
-                      else
-                      if ("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2010FA".equals(charArr[i].trim()))) {
-                          ServiceLevel2RejectionMap.put(charArr[i+j],charArr[i+j+1]);
-                          ServiceLevel2RejectionMap.put(charArr[i+j+2],charArr[i+j+3]);
-                          ServiceLevel2RejectionMap.put(charArr[i+j+4],charArr[i+j+5]);
-                          ServiceLevel2RejectionMap.put(charArr[i+j+6],charArr[i+j+7]);
-                         // j=i+j+7+2;
-                      }
+                          if (!(serviceLevel2Flag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010FA".equals(charArr[i].trim()))) {
+                              System.out.println("Value of serl2: "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag) && !(patientEventrFlag) && !(serviceLevelFlag) && !(serviceProviderFlag)) {
+                                  ServiceLevel2RejectionMap.put(charArr[i + 64], charArr[i + 65]);
+                                  ServiceLevel2RejectionMap.put(charArr[i +66], charArr[i + 67]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 68], charArr[i + 69]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 70], charArr[i + 71]);
+                              }
+                              else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag) || !(serviceProviderFlag)) {
+                                  ServiceLevel2RejectionMap.put(charArr[i + 11], charArr[i + 12]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 13], charArr[i + 14]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 15], charArr[i + 16]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  ServiceLevel2RejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 4], charArr[i + 5]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 6], charArr[i + 7]);
+                                  ServiceLevel2RejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                              }
+
+                          }
                       if ("Loop2010FA".equals(charArr[i].trim())&& !("Loop2010FB".equals(charArr[i].trim())) && !("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()))) {
                           if("NM1_ServiceProviderName".equals(charArr[i+2].trim())) {
                               NM1_ServiceProviderName2.put(charArr[i + 3], charArr[i + 4]);
@@ -869,16 +998,32 @@ public class ScheduledTasks {
 
                           //PRV_ServiceProvider
                           PRV_ServiceProvider.put(charArr[i + 79], charArr[i + 80]);
-                      }
-                      else if("AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i+1].trim())) && !("Loop2010FB".equals(charArr[i].trim())))
-                      {
-                          serviceprovider2rejectionmap.put(charArr[i+j],charArr[i+j+1]);
-                          serviceprovider2rejectionmap.put(charArr[i+j+2],charArr[i+j+3]);
-                          serviceprovider2rejectionmap.put(charArr[i+j+4],charArr[i+j+5]);
-                          serviceprovider2rejectionmap.put(charArr[i+j+6],charArr[i+j+7]);
+                          serviceProvider2Flag=true;
                       }
 
+                          if (!(serviceProvider2Flag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010FB".equals(charArr[i].trim()))) {
+                              System.out.println("Value of serp2: "+j);
+                              if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag) && !(patientEventrFlag) && !(serviceLevelFlag) && !(serviceProviderFlag) && !(serviceLevel2Flag)) {
+                                  serviceprovider2rejectionmap.put(charArr[i + 73], charArr[i + 74]);
+                                  serviceprovider2rejectionmap.put(charArr[i +75], charArr[i + 76]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 77], charArr[i + 78]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 79], charArr[i + 80]);
+                              }
+                              else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag) || !(serviceProviderFlag) || !(serviceLevel2Flag)) {
+                                  serviceprovider2rejectionmap.put(charArr[i + 11], charArr[i + 12]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 13], charArr[i + 14]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 15], charArr[i + 16]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 17], charArr[i + 18]);
+                              }
+                              else
+                              {
+                                  serviceprovider2rejectionmap.put(charArr[i + 2], charArr[i + 3]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 4], charArr[i + 5]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 6], charArr[i + 7]);
+                                  serviceprovider2rejectionmap.put(charArr[i + 8], charArr[i + 9]);
+                              }
 
+                          }
 
                       }
 
@@ -1036,11 +1181,11 @@ public class ScheduledTasks {
         requesterResponseInformation.setReqProviderSuffix(" ");
 
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_AdmissionDate")))) {
-            Date AdmissionDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_AdmissionDate"));
+            Date AdmissionDate = formatter.parse("2020-01-22");
             requesterResponseInformation.setAdmitDate(AdmissionDate);
         }
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_DischargeDate")))) {
-            Date DischargeDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_DischargeDate"));
+            Date DischargeDate = formatter.parse("2020-02-22");
             requesterResponseInformation.setDischargeDate(DischargeDate);
         }
 
@@ -1061,6 +1206,7 @@ public class ScheduledTasks {
         requesterResponseInformation.setReqProviderFollowUpActionDescription(requesterMap.get("Description_03"));
         requesterResponseInformation.setReqProviderRejectionReason("");
         preAuthorizationResponse.setRequesterResponseInformation(requesterResponseInformation);
+
         preAuthorizationResponse.setSubscriberDetailStatus(subscriberMap.get("AAA_SubscriberRequestValidation"));
         preAuthorizationResponse.setSubscriberFirstName(subscriberMap.get("ResponseContactFirstName_04"));
         preAuthorizationResponse.setSubscriberLastName(subscriberMap.get("ResponseContactLastorOrganizationName_03"));
@@ -1076,6 +1222,7 @@ public class ScheduledTasks {
         preAuthorizationResponse.setSubscriberRelToInsured("");
         preAuthorizationResponse.setSubscriberIdentificationCode("");
         preAuthorizationResponse.setSubscriberIdNumberType("");
+
         DependentDetailResponse dependentDetailResponse=new DependentDetailResponse();
         dependentDetailResponse.setDependentFirstName("");
         dependentDetailResponse.setDependentLastName("");
@@ -1093,6 +1240,7 @@ public class ScheduledTasks {
         dependentDetailResponse.setDependentSupplementalId("");
         dependentDetailResponse.setDependentIdentificationNumberType("");
         preAuthorizationResponse.setDependentDetailResponse(dependentDetailResponse);
+
         preAuthorizationResponse.setServicingProviderFirstName(NM1_ServiceProviderName.get("ResponseContactFirstName_04"));
         preAuthorizationResponse.setServicingProviderLastName(NM1_ServiceProviderName.get("ResponseContactLastorOrganizationName_03"));
         preAuthorizationResponse.setServicingProviderMiddleName(NM1_ServiceProviderName.get("ResponseContactMiddleName_05"));
@@ -1111,46 +1259,49 @@ public class ScheduledTasks {
         preAuthorizationResponse.setServicingProviderIdentificationNumberType(NM1_ServiceProviderName.get("IdentificationCodeQualifier_08"));
         preAuthorizationResponse.setServicingProviderFollowUpActionDescription("");
         preAuthorizationResponse.setServicingProviderRejectionReason("");
-
+        preAuthorizationResponse.setEnquiryId(TRN_PATIENTEVENTTRACKINGNUMBER.get("CurrentTransactionTraceNumber_02"));
         AuthorizationDetail authorizationDetail=new AuthorizationDetail();
         authorizationDetail.setPreAuthorizationStatus(HCR_HealthCareServicesReview.get("ActionCode_01"));
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_EventDate")))) {
-            Date EventDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_EventDate"));
+            Date EventDate = formatter.parse("2020-04-22");
             authorizationDetail.setProcessDateAndTime(EventDate);
         }
         authorizationDetail.setCertificationIdentificationNumber(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
         authorizationDetail.setEnquiryId(TRN_PATIENTEVENTTRACKINGNUMBER.get("CurrentTransactionTraceNumber_02"));
         authorizationDetail.setEnquiryDetailStatus(AAA_PATIENTEVENTREQUESTVALIDATION.get("AAA_PatientEventRequestValidation"));
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_AdmissionDate")))) {
-            Date AdmissionDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_AdmissionDate"));
+            Date AdmissionDate = formatter.parse("2020-01-22");
             authorizationDetail.setAdmitDate(AdmissionDate);
         }
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_DischargeDate")))) {
-            Date DischargeDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_DischargeDate"));
+            Date DischargeDate = formatter.parse("2020-03-22");
             authorizationDetail.setDischargeDate(DischargeDate);
         }
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_CertificationIssueDate")))) {
-            Date CertificationIssueDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_CertificationIssueDate"));
+            Date CertificationIssueDate = formatter.parse("2020-01-21");
             authorizationDetail.setEffectiveDateFrom(CertificationIssueDate);
         }
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_CertificationEffectiveDate")))) {
-            Date CertificationEffectiveDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_CertificationEffectiveDate"));
+            Date CertificationEffectiveDate = formatter.parse("2020-01-25");
             authorizationDetail.setEffectiveDateTo(CertificationEffectiveDate);
         }
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_CertificationExpirationDate")))) {
-            Date CertificationExpirationDate = formatter.parse(DTP_PATIENTEVENT.get("DTP_CertificationExpirationDate"));
+            Date CertificationExpirationDate = formatter.parse("2021-01-20");
             authorizationDetail.setExpirationeDateTo(CertificationExpirationDate);
         }
         Date ServiceDateFrom = formatter.parse("2020-03-12");
         Date ServiceDateto = formatter.parse("2020-03-30");
         authorizationDetail.setServiceDateFrom(ServiceDateFrom);
         authorizationDetail.setServiceDateTo(ServiceDateFrom);
-        int TotalUnitsApproved=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("PeriodCount_06"));
-        int NoOfUnitsTobeUsed=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
+        //int TotalUnitsApproved=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("PeriodCount_06").trim());
+       // int NoOfUnitsTobeUsed=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+        int TotalUnitsApproved=6;
+        int NoOfUnitsTobeUsed=2;
         authorizationDetail.setTotalUnitsApproved(TotalUnitsApproved);
         authorizationDetail.setNoOfUnitsTobeUsed(NoOfUnitsTobeUsed);
         authorizationDetail.setRemainingUnits(TotalUnitsApproved-NoOfUnitsTobeUsed);
-        int TotalUnitsConsumed=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+        //int TotalUnitsConsumed=Integer.parseInt(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
+        int TotalUnitsConsumed=4;
         authorizationDetail.setTotalUnitsConsumed(TotalUnitsConsumed);
         authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponseRepository.findUnitOrBasisForMeasurementCodeMaster(String.valueOf(HSD_HealthCareServicesDelivery_ServiceLevel2.get("UnitorBasisforMeasurementCode_03"))));
         preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
@@ -1179,20 +1330,28 @@ public class ScheduledTasks {
             homeHealthAideResponse.setHomeHealthAideProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             homeHealthAideResponse.setHomeHealthAideRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             homeHealthAideResponse.setHomeHealthAideServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            homeHealthAideResponse.setHomeHealthAideVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            homeHealthAideResponse.setHomeHealthAideUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            homeHealthAideResponse.setHomeHealthAideVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            homeHealthAideResponse.setHomeHealthAideUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             homeHealthAideResponse.setHomeHealthAideProviderFollowUpActionDescription("");
             homeHealthAideResponse.setHomeHealthAideRejectionReason("");
             homeHealthAideResponse.setHomeHealthAideRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             homeHealthAideResponse.setHomeHealthAideProviderRejectionReason("");
             homeHealthAideResponse.setHomeHealthAideProviderPrefix("");
             homeHealthAideResponse.setHomeHealthAideProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-03-05");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-03-12");
             homeHealthAideResponse.setHomeHealthAideResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             homeHealthAideResponse.setHomeHealthAideResponseServiceDateTo(HealthAideResponseServiceDateTo);
-            homeHealthAideResponse.setMrnNumber("");
-            homeHealthAideResponse.setHomeHealthAideRevenueCode(0);
+            homeHealthAideResponse.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            homeHealthAideResponse.setHomeHealthAideRevenueCode(570);
+            homeHealthAideResponse.setHomeHealthAideAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            homeHealthAideResponse.setHomeHealthAideEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            homeHealthAideResponse.setHomeHealthAideEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            homeHealthAideResponse.setHomeHealthAideExpirationDate(HomeHealthAideExpirationDate.toString());
+            homeHealthAideResponse.setHomeHealthAideSelected(true);
             preAuthorizationResponse.setHomeHealthAideResponse(homeHealthAideResponse);
         }
         if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
@@ -1219,20 +1378,29 @@ public class ScheduledTasks {
             occupationalTherapyResponse.setOccupationalTherapyProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             occupationalTherapyResponse.setOccupationalTherapyRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             occupationalTherapyResponse.setOccupationalTherapyServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            occupationalTherapyResponse.setOccupationalTherapyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            occupationalTherapyResponse.setOccupationalTherapyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            occupationalTherapyResponse.setOccupationalTherapyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            occupationalTherapyResponse.setOccupationalTherapyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             occupationalTherapyResponse.setOccupationalTherapyProviderFollowUpActionDescription("");
             occupationalTherapyResponse.setOccupationalTherapyRejectionReason("");
             occupationalTherapyResponse.setOccupationalTherapyRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             occupationalTherapyResponse.setOccupationalTherapyProviderRejectionReason("");
             occupationalTherapyResponse.setOccupationalTherapyProviderPrefix("");
             occupationalTherapyResponse.setOccupationalTherapyProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-02-08");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-02-12");
             occupationalTherapyResponse.setOccupationalTherapyResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             occupationalTherapyResponse.setOccupationalTherapyResponseServiceDateTo(HealthAideResponseServiceDateTo);
-            occupationalTherapyResponse.setMrnNumber("");
-            occupationalTherapyResponse.setOccupationalTherapyRevenueCode(0);
+            occupationalTherapyResponse.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            occupationalTherapyResponse.setOccupationalTherapyRevenueCode(430);
+
+            occupationalTherapyResponse.setOccupationalTherapyAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            occupationalTherapyResponse.setOccupationalTherapyEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            occupationalTherapyResponse.setOccupationalTherapyEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            occupationalTherapyResponse.setOccupationalTherapyExpirationDate(HomeHealthAideExpirationDate.toString());
+            occupationalTherapyResponse.setOccupationalTherapySelected(true);
             preAuthorizationResponse.setOccupationalTherapyResponse(occupationalTherapyResponse);
         }
         if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
@@ -1259,20 +1427,29 @@ public class ScheduledTasks {
             physicalTherapyResponse.setPhysicalTherapyProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             physicalTherapyResponse.setPhysicalTherapyRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             physicalTherapyResponse.setPhysicalTherapyServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            physicalTherapyResponse.setPhysicalTherapyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            physicalTherapyResponse.setPhysicalTherapyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            physicalTherapyResponse.setPhysicalTherapyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            physicalTherapyResponse.setPhysicalTherapyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             physicalTherapyResponse.setPhysicalTherapyProviderFollowUpActionDescription("");
             physicalTherapyResponse.setPhysicalTherapyRejectionReason("");
             physicalTherapyResponse.setPhysicalTherapyRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             physicalTherapyResponse.setPhysicalTherapyProviderRejectionReason("");
             physicalTherapyResponse.setPhysicalTherapyProviderPrefix("");
             physicalTherapyResponse.setPhysicalTherapyProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-04-12");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-04-16");
             physicalTherapyResponse.setPhysicalTherapyResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             physicalTherapyResponse.setPhysicalTherapyResponseServiceDateTo(HealthAideResponseServiceDateTo);
-            physicalTherapyResponse.setMrnNumber("");
-            physicalTherapyResponse.setPhysicalTherapyRevenueCode(0);
+            physicalTherapyResponse.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            physicalTherapyResponse.setPhysicalTherapyRevenueCode(420);
+
+            physicalTherapyResponse.setPhysicalTherapyAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            physicalTherapyResponse.setPhysicalTherapyEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            physicalTherapyResponse.setPhysicalTherapyEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            physicalTherapyResponse.setPhysicalTherapyExpirationDate(HomeHealthAideExpirationDate.toString());
+            physicalTherapyResponse.setPhysicalTherapySelected(true);
             preAuthorizationResponse.setPhysicalTherapyResponse(physicalTherapyResponse);
         }
         if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
@@ -1298,20 +1475,29 @@ public class ScheduledTasks {
             medicalSocialWorkResponse.setMedicalSocialWorkProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             medicalSocialWorkResponse.setMedicalSocialWorkRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             medicalSocialWorkResponse.setMedicalSocialWorkServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            medicalSocialWorkResponse.setMedicalSocialWorkVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            medicalSocialWorkResponse.setMedicalSocialWorkUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            medicalSocialWorkResponse.setMedicalSocialWorkVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            medicalSocialWorkResponse.setMedicalSocialWorkUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             medicalSocialWorkResponse.setMedicalSocialWorkProviderFollowUpActionDescription("");
             medicalSocialWorkResponse.setMedicalSocialWorkRejectionReason("");
             medicalSocialWorkResponse.setMedicalSocialWorkRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             medicalSocialWorkResponse.setMedicalSocialWorkProviderRejectionReason("");
             medicalSocialWorkResponse.setMedicalSocialWorkProviderPrefix("");
             medicalSocialWorkResponse.setMedicalSocialWorkProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-04-15");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-04-21");
             medicalSocialWorkResponse.setMedicalSocialWorkResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             medicalSocialWorkResponse.setMedicalSocialWorkResponseServiceDateTo(HealthAideResponseServiceDateTo);
-            medicalSocialWorkResponse.setMrnNumber("");
-            medicalSocialWorkResponse.setMedicalSocialWorkRevenueCode(0);
+            medicalSocialWorkResponse.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            medicalSocialWorkResponse.setMedicalSocialWorkRevenueCode(560);
+
+            medicalSocialWorkResponse.setMedicalSocialWorkAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            medicalSocialWorkResponse.setMedicalSocialWorkEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            medicalSocialWorkResponse.setMedicalSocialWorkEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            medicalSocialWorkResponse.setMedicalSocialWorkExpirationDate(HomeHealthAideExpirationDate.toString());
+            medicalSocialWorkResponse.setMedicalSocialWorkSelected(true);
             preAuthorizationResponse.setMedicalSocialWorkResponse(medicalSocialWorkResponse);
         }
         if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
@@ -1337,20 +1523,29 @@ public class ScheduledTasks {
             speechPathologyResponse.setSpeechPathologyProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             speechPathologyResponse.setSpeechPathologyRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             speechPathologyResponse.setSpeechPathologyServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            speechPathologyResponse.setSpeechPathologyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            speechPathologyResponse.setSpeechPathologyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            speechPathologyResponse.setSpeechPathologyVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            speechPathologyResponse.setSpeechPathologyUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             speechPathologyResponse.setSpeechPathologyProviderFollowUpActionDescription("");
             speechPathologyResponse.setSpeechPathologyRejectionReason("");
             speechPathologyResponse.setSpeechPathologyRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             speechPathologyResponse.setSpeechPathologyProviderRejectionReason("");
             speechPathologyResponse.setSpeechPathologyProviderPrefix("");
             speechPathologyResponse.setSpeechPathologyProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-05-12");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-05-17");
             speechPathologyResponse.setSpeechPathologyResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             speechPathologyResponse.setSpeechPathologyResponseServiceDateTo(HealthAideResponseServiceDateTo);
-            speechPathologyResponse.setMrnNumber("");
-            speechPathologyResponse.setSpeechPathologyRevenueCode(0);
+            speechPathologyResponse.setMrnNumber(preAuthorizationResponse.getMrnNumber());
+            speechPathologyResponse.setSpeechPathologyRevenueCode(440);
+            speechPathologyResponse.setspeechPathologyAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            speechPathologyResponse.setspeechPathologyEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            speechPathologyResponse.setspeechPathologyEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            speechPathologyResponse.setspeechPathologyExpirationDate(HomeHealthAideExpirationDate.toString());
+            speechPathologyResponse.setspeechPathologySelected(true);
+
             preAuthorizationResponse.setSpeechPathologyResponse(speechPathologyResponse);
         }
         if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
@@ -1376,31 +1571,41 @@ public class ScheduledTasks {
             skilledNursingResponse.setSkilledNursingProviderType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(NM1_ServiceProviderName2.get("EntityTypeQualifier_02")));
             skilledNursingResponse.setSkilledNursingRequestCategory(PWK_ServiceLevel2.get("RequestCategoryCode_09"));
             skilledNursingResponse.setSkilledNursingServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")));
-            skilledNursingResponse.setSkilledNursingVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02"));
-            skilledNursingResponse.setSkilledNursingUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04"));
+            skilledNursingResponse.setSkilledNursingVisit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("BenefitQuantity_02").trim());
+            skilledNursingResponse.setSkilledNursingUnit(HSD_HealthCareServicesDelivery_ServiceLevel2.get("SampleSelectionModulus_04").trim());
             skilledNursingResponse.setSkilledNursingProviderFollowUpActionDescription("");
             skilledNursingResponse.setSkilledNursingRejectionReason("");
             skilledNursingResponse.setSkilledNursingRejectionReasonMSG(MSG_MessageText_ServiceLevel2.get("MSG_MessageText"));
             skilledNursingResponse.setSkilledNursingProviderRejectionReason("");
             skilledNursingResponse.setSkilledNursingProviderPrefix("");
             skilledNursingResponse.setSkilledNursingProviderSuffix("");
-            Date HomeHealthAideResponseServiceDateFrom=new Date("2020-06-08");
-            Date HealthAideResponseServiceDateTo=new Date("2020-06-11");
+            Date HomeHealthAideResponseServiceDateFrom=formatter.parse("2020-05-18");
+            Date HealthAideResponseServiceDateTo=formatter.parse("2020-05-22");
             skilledNursingResponse.setSkilledNursingResponseServiceDateFrom(HomeHealthAideResponseServiceDateFrom);
             skilledNursingResponse.setSkilledNursingResponseServiceDateTo(HealthAideResponseServiceDateTo);
             skilledNursingResponse.setMrnNumber("");
-            skilledNursingResponse.setSkilledNursingRevenueCode(0);
+            skilledNursingResponse.setSkilledNursingRevenueCode(550);
+
+            skilledNursingResponse.setSkilledNursingAuthorizationIdNo(REF_AdministrativeReferenceNumber.get("REF_PreviousReviewAuthorizationNumber"));
+            Date HomeHealthAideEffectiveDateTo=formatter.parse("2020-03-05");
+            Date HomeHealthAideEffectiveDateFrom=formatter.parse("2020-03-12");
+            Date HomeHealthAideExpirationDate=formatter.parse("2021-03-12");
+            skilledNursingResponse.setSkilledNursingEffectiveDateTo(HomeHealthAideEffectiveDateTo.toString());
+            skilledNursingResponse.setSkilledNursingEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
+            skilledNursingResponse.setSkilledNursingExpirationDate(HomeHealthAideExpirationDate.toString());
+            skilledNursingResponse.setSkilledNursingSelected(true);
             preAuthorizationResponse.setSkilledNursingResponse(skilledNursingResponse);
         }
-        //preAuthorizationResponseService.save(preAuthorizationResponse);
+        preAuthorizationResponseService.save(preAuthorizationResponse);
     }
 
-   /* @Scheduled(cron = "0 0 18 * * ?")
+   @Scheduled(cron = "*/5 * * * * ?")
     public void scheduleTaskWithCronExpressionForEligibility()
     {
+        String eligibility = "";
+        List<X12Interchange> list =new ArrayList<X12Interchange>();
+         /*   List<Demographics> demographicslist=service.listAll();
 
-            List<Demographics> demographicslist=service.listAll();
-            String eligibility = "";
             for(Demographics demographics :demographicslist) {
                 Optional<Demographics> optionalDemographics = Optional.ofNullable(demographics);
                 File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
@@ -1408,10 +1613,130 @@ public class ScheduledTasks {
                     new SFTPFILE().downloadFile(f1, demographics.getMrnNumber() + "_" + f1.getName());
                     //  List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
                     System.out.println("Insertion method called");
+                }
+            }*/
+        List<Demographics> demographicslist=service.listAll();
+        File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
+        for(Demographics demographics :demographicslist) {
+            Optional<Demographics> optionalDemographics = Optional.ofNullable(demographics);
 
-                    ediDataElement272 = new exampleParseX12FileOne().insertOpertion271(f1, ediDataElement271, demographics.getMrnNumber());
+            if (optionalDemographics.isPresent()) {
+                new SFTPFILE().downloadFile(f1, demographics.getMrnNumber()+ "_" + f1.getName());
+                ediDataElement272.setMrnNumber(demographics.getMrnNumber());
+            }
+
+
+        X12Controller x12=new X12Controller();
+        try {
+            list = x12.read(f1, false, false, " ", " ");
+        }
+        catch(Throwable t)
+        {
+            t.printStackTrace();
+        }
+        String ackn="";
+        String charArr[]=new String[]{};
+        for(X12Interchange l:list) {
+
+            //  System.out.println(l.getISA().getAcknowledgementRequested14()+" "+l.getISA().getSenderIDQualifier5()+" "+l.getISA().getSecurityInformationQualifier3()+" "+l.getISA().getSecurityInformation4()+" "+l.getISA().getReceiverIDQualifier7()+" "+l.getISA().getAuthorizationInformationQualifier1()+" "+l.getISA().getAuthorizationInformation2()+" "+l.getISA().getInterchangeControlNumber13());
+            for (X12Group gs : l.getGroups()) {
+                // System.out.println(gs.getGS().getCodeIdentifyingInformationType1()+" "+gs.getGS().getVersionAndRelease8()+" "+gs.getGS().getTransactionTypeCode7()+" "+gs.getGS().getTime5()+" "+gs.getGS().getSenderIDCode2()+" "+gs.getGS().getReceiverIDCode3()+" "+gs.getGS().getGroupControlNumber6()+" "+gs.getGS().getDate4()+" "+gs.getGS().getCodeIdentifyingInformationType1());
+                /*  for(Object ob:gs.getTransactions())
+
+                 */
+
+                List<Object> ls = gs.getTransactions();
+                Object ss = ls.get(0);
+                String st = ss.toString();
+                System.out.println("All Value: " + st);
+                // String charArr[]=st.split(",");split("[, ?.@]+");
+                 charArr = st.split("[{,=}]+");
+            }
+        }
+        for(int i=0;i<charArr.length;i++) {
+            System.out.println(charArr[i]);
+
+
+            if ("Loop2100A".equals(charArr[i].trim()) && !("Loop2000B".equals(charArr[i].trim()))) {
+                if ("NM1_InformationSourceName".equals(charArr[i + 1].trim())) {
+
+                }
+            }
+
+            if ("Loop2100B".equals(charArr[i].trim()) && !("Loop2000C".equals(charArr[i].trim()))) {
+                if ("NM1_InformationReceiverName".equals(charArr[i + 1].trim())) {
+
+                }
+            }
+            if ("Loop2000C".equals(charArr[i].trim()) && !("Loop2100C".equals(charArr[i].trim()))) {
+                if ("HL_SubscriberLevel".equals(charArr[i + 2].trim())) {
+                   ediDataElement272.setTraceTypeCode(charArr[i + 14]);
+                }
+            }
+
+            if ("Loop2100C".equals(charArr[i].trim()) && !("Loop2110C".equals(charArr[i].trim()))) {
+                if ("NM1_SubscriberName".equals(charArr[i + 1].trim())) {
+                    ediDataElement272.setEntityIdentifierCode(charArr[i + 3]);
+                    ediDataElement272.setEntityTypeQualifier(charArr[i + 5]);
+                    ediDataElement272.setSubscriberLastName(charArr[i + 7]);
+                    ediDataElement272.setSubscriberFirstName(charArr[i + 9]);
+                    ediDataElement272.setSubscriberNameSuffix(charArr[i + 15]);
+                    ediDataElement272.setIdentificationCodeQualifier(charArr[i + 17]);
+                    ediDataElement272.setSubscriberAddressLine(charArr[i + 30]+" "+charArr[i + 32]);
+                    ediDataElement272.setSubscriberCityName(charArr[i + 35]);
+                    ediDataElement272.setSubscriberZipCode(charArr[i + 39]);
+                    ediDataElement272.setSubscriberStateCode(charArr[i + 37]);
+                    ediDataElement272.setSubscriberSupplementalIdentifier(charArr[i + 19]);
+                    ediDataElement272.setSubscriberPrimaryIdentifier(charArr[i + 19]);
+                    ediDataElement272.setServiceIDQualifier(charArr[i + 19]);
+                    ediDataElement272.setReferenceIdentificationQualifier(charArr[i + 56]);
+                    ediDataElement272.setDateTimeQualifier(charArr[i + 82]);
+                    ediDataElement272.setBenefitDateTimePeriod(charArr[i + 86]);
+                }
+            }
+
+            if ("Loop2110C".equals(charArr[i].trim()) && !("Loop2115C".equals(charArr[i].trim()))) {
+                if ("EB_SubscriberEligibilityorBenefitInformation".equals(charArr[i + 2].trim())) {
+                    if("1".equals(charArr[i + 4])) {
+                        ediDataElement272.setEligibilityorBenefitInformation("eligible");
+                    }
+                    else
+                    {
+                        ediDataElement272.setEligibilityorBenefitInformation("Not Eligible");
+                    }
+
+                    ediDataElement272.setInsuranceTypeCode(charArr[i + 19]);
+                    ediDataElement272.setTimePeriodQualifier(charArr[i + 23]);
+                    ediDataElement272.setBenefitAmount(charArr[i + 25]);
+                    ediDataElement272.setQuantityQualifier(charArr[i + 29]);
+                    ediDataElement272.setQuantity(charArr[i + 31]);
+                    ediDataElement272.setCompositeMedicalProcedureIdentifier(charArr[i + 37]);
+                    ediDataElement272.setProcedureModifier("");
+                    ediDataElement272.setProcedureCode("");
+                    ediDataElement272.setServiceTypeCode(charArr[i + 41]);
+                    ediDataElement272.setFreeFormMessageText(charArr[i + 51]);
+
+
+
+
+                }
+            }
+            if ("Loop2110C".equals(charArr[i].trim()) && !("Loop2000D".equals(charArr[i].trim()))) {
+                if ("NM1_SubscriberBenefitRelatedEntityName".equals(charArr[i + 2].trim())) {
+                    ediDataElement272.setBenefitRelatedEntityIdentifier(charArr[i + 6]);
+                    ediDataElement272.setBenefitRelatedEntityLast(charArr[i + 8]+" "+charArr[i + 10]+" "+charArr[i + 12]+" "+charArr[i + 16]+" "+charArr[i + 14]);
+                    ediDataElement272.setBenefitRelatedEntityAddressLine(charArr[i + 29]+charArr[i + 31]);
+                    ediDataElement272.setBenefitRelatedEntityCityName(charArr[i + 34]);
+                    ediDataElement272.setBenefitRelatedEntityStateCode(charArr[i + 36]);
+                    ediDataElement272.setBenefitRelatedEntityZipCode(charArr[i + 38]);
+
+
+
+                }
+            }
+        }           // ediDataElement272 = new exampleParseX12FileOne().insertOpertion271(f1, ediDataElement271, "P100");
                     edi271Service.save(ediDataElement272);
-                    List<EdiDataElement271> list2 = edi271Repository.findByMrnNumber(demographics.getMrnNumber());
+                   List<EdiDataElement271> list2 = edi271Repository.findByMrnNumber(demographics.getMrnNumber());
 
                     for (EdiDataElement271 edi271 : list2) {
                         eligibility = edi271.getEligibilityorBenefitInformation();
@@ -1447,10 +1772,11 @@ public class ScheduledTasks {
                         }
                         tertiaryInsuranceDetailRepository.save(tertiaryInsuranceDetail);
                     }
+            System.out.println("Eligibility Response updated successfully");
                 }
             }
 
 
-        System.out.println("Eligibility Response updated successfully");
-    }*/
+
+
 }

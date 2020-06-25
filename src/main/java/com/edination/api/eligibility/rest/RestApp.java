@@ -93,7 +93,7 @@ public class RestApp implements Serializable {
         String contentType = "application/json";
         StringBuilder out = new StringBuilder();
         String ackn="";
-        String eligibility = "";
+        String eligibility = "Pending";
         if (optionalDemographics.isPresent()) {
             demographics1 = service.get(demographics.getMrnNumber());
             File file = new File("Hipaa-5010-270-GenericRequest.txt");
@@ -101,7 +101,7 @@ public class RestApp implements Serializable {
             //new SFTPFILE().uploadFile(file, demographics.getMrnNumber()+"_"+file.getName());
              ackn = new SFTPFILE().fileUpload(file, demographics.getMrnNumber() + "_" + file.getName());
 
-            File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
+           /* File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
             new SFTPFILE().downloadFile(f1, demographics.getMrnNumber() + "_" + f1.getName());
           //  List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
             System.out.println("Insertion method called");
@@ -112,7 +112,7 @@ public class RestApp implements Serializable {
 
             for (EdiDataElement271 edi271 : list2) {
                 eligibility = edi271.getEligibilityorBenefitInformation();
-            }
+            }*/
         }
         //List<MemberInsuranceEligibility> list =memberInsuranceRepository.findByMrnNumber(demographics.getMrnNumber());
         //MemberInsuranceEligibility memberinsurance2=new MemberInsuranceEligibility();
