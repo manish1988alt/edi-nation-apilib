@@ -88,7 +88,7 @@ public class PreAuthRestApp implements Serializable {
             {
                 insuranceStatus=tertiaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
             }
-            if("eligible".equals(insuranceStatus)) {
+            if("eligible".equals(insuranceStatus) || "Eligible".equals(insuranceStatus)) {
                 episodeList.add(prauthlist.getEpisode());
             }
             //preAuthDemographicsList.add(prauthlist.getPreAuthDemographics());
