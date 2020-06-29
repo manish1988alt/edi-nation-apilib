@@ -6,6 +6,7 @@ import com.edination.api.eligibility.model.*;
 import com.edination.api.preAuthorisation.EDI.EDIFileGeneration;
 import com.edination.api.preAuthorisation.MasterCode.preauthComparator;
 import com.edination.api.preAuthorisation.model.*;
+import javafx.scene.control.DatePicker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -187,7 +189,7 @@ public class PreAuthRestApp implements Serializable {
        String ackn= this.preAuthResponseSaveOperation(preAuthorizationResponse);
         if(ackn.equals("true")) {
             PreAuthorizationResponseHistory preAuthorizationResponseHistory=new PreAuthorizationResponseHistory();
-            preAuthorizationResponseHistory.setEnquiryId(preAuthorizationResponse.getEnquiryId());
+            preAuthorizationResponseHistory.setEnquiryId(preAuthorizationResponse.getAuthorizationDetail().getEnquiryId());
             preAuthorizationResponseHistory.setFirstName(preAuthorizationResponse.getMemberfirstName());
             preAuthorizationResponseHistory.setLastName(preAuthorizationResponse.getMemberlastName());
             preAuthorizationResponseHistory.setMiddleName(preAuthorizationResponse.getMembermiddleName());
@@ -196,13 +198,43 @@ public class PreAuthRestApp implements Serializable {
             String currentDate = java.time.LocalDate.now().toString();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date processDate = formatter.parse(currentDate);
-
-            String EffectiveDateTo = formatter.format(preAuthorizationResponse.getAuthorizationDetail().getEffectiveDateTo());
-            LocalDate EffectiveDateToBefore = LocalDate.parse(EffectiveDateTo);
             LocalDate currentdateAfter = LocalDate.parse(currentDate);
+            DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+            long visitdays=-1;
+            if(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideSelected() && visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+            if(preAuthorizationResponse.getOccupationalTherapyResponse().getOccupationalTherapySelected() && visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getOccupationalTherapyResponse().getOccupationalTherapyEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+            if(preAuthorizationResponse.getPhysicalTherapyResponse().getPhysicalTherapySelected()&& visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getPhysicalTherapyResponse().getPhysicalTherapyEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+            if(preAuthorizationResponse.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected()&& visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getMedicalSocialWorkResponse().getMedicalSocialWorkEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+            if(preAuthorizationResponse.getSkilledNursingResponse().getSkilledNursingSelected()&& visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSkilledNursingResponse().getSkilledNursingEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+            if(preAuthorizationResponse.getSpeechPathologyResponse().getspeechPathologySelected()&& visitdays<0)
+            {
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSpeechPathologyResponse().getspeechPathologyEffectiveDateTo().toString(),formatterLocal);
+                visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+            }
+
 
             //calculating number of days in between
-            long visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+
 
         if(visitdays>=0)
            {
@@ -222,6 +254,37 @@ public class PreAuthRestApp implements Serializable {
             preAuthorizationResponseHistory.setResponseType("Manual");
 
             preAuthorizationResponseHistoryService.save(preAuthorizationResponseHistory);
+
+            PreAuthDetail preAuthDetail=new PreAuthDetail();
+            List<PreAuthDetail> list1= preAuthRepository.findByID(preAuthorizationResponse.getMrnNumber());
+            PreAuthDemographics demographics1=new PreAuthDemographics();
+            Episode episode=new Episode();
+            for(PreAuthDetail pre:list1) {
+                demographics1.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
+                demographics1.setFirstName(pre.getPreAuthDemographics().getFirstName());
+                demographics1.setLastName(pre.getPreAuthDemographics().getLastName());
+                demographics1.setMiddleName(pre.getPreAuthDemographics().getMiddleName());
+                demographics1.setSuffix(pre.getPreAuthDemographics().getSuffix());
+                demographics1.setDob(pre.getPreAuthDemographics().getDob());
+                demographics1.setGender(pre.getPreAuthDemographics().getGender());
+                demographics1.setSsn(pre.getPreAuthDemographics().getSsn());
+                demographics1.setPrefix(pre.getPreAuthDemographics().getPrefix());
+                demographics1.setRelationshipToSubscriber(pre.getPreAuthDemographics().getRelationshipToSubscriber());
+                episode.setAdmissionDate(pre.getEpisode().getAdmissionDate());
+                episode.setAdmissionStatus(pre.getEpisode().getAdmissionStatus());
+                episode.setEpisodeType(pre.getEpisode().getEpisodeType());
+                episode.setMrnNumber(pre.getEpisode().getMrnNumber());
+                episode.setPreauthFormStatus("Saved As Draft");
+                episode.setPreAuthorisationStatus(preAuthorizationResponse.getAuthorizationDetail().getPreAuthorizationStatus());
+                episode.setPayorType(pre.getEpisode().getPayorType());
+                episode.setFormSentDate(preAuthorizationResponse.getAuthorizationDetail().getProcessDateAndTime());
+                episode.setFormReceivedDate(pre.getEpisode().getFormReceivedDate());
+                preAuthDetail.setPreAuthDemographics(demographics1);
+                preAuthDetail.setEpisode(episode);
+                preAuthDetail.setMrnNumber(pre.getMrnNumber());
+            }
+            preAuthService.save(preAuthDetail);
+
             return generateSuccessObject("true", " ");
         }
         else
@@ -234,7 +297,7 @@ public class PreAuthRestApp implements Serializable {
     {
        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         PreAuthorizationResponse preAuthorizationResponse=new PreAuthorizationResponse();
-        preAuthorizationResponse.setEnquiryId(preAuthorizationResponse1.getEnquiryId());
+        preAuthorizationResponse.setEnquiryId(preAuthorizationResponse1.getAuthorizationDetail().getEnquiryId());
         preAuthorizationResponse.setMemberDetailStatus(preAuthorizationResponse1.getMemberDetailStatus());
         preAuthorizationResponse.setMemberfirstName(preAuthorizationResponse1.getMemberfirstName());
         preAuthorizationResponse.setMemberlastName(preAuthorizationResponse1.getMemberlastName());
