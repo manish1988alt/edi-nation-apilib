@@ -474,7 +474,7 @@ public class EDIFileGeneration {
                 s = x12.addSegment();
                 s.addElement("HL");
                 s.addElement("6");
-                s.addElement("5");
+                s.addElement("6");
                 s.addElement("SS");
                 s.addElement("0");
 
@@ -597,7 +597,7 @@ public class EDIFileGeneration {
       s = x12.addSegment();
       s.addElement("HL");
       s.addElement("6");
-      s.addElement("6");
+      s.addElement("7");
       s.addElement("SS");
       s.addElement("0");
 
@@ -720,7 +720,7 @@ public class EDIFileGeneration {
       s = x12.addSegment();
       s.addElement("HL");
       s.addElement("6");
-      s.addElement("7");
+      s.addElement("8");
       s.addElement("SS");
       s.addElement("0");
 
@@ -843,7 +843,7 @@ public class EDIFileGeneration {
       s = x12.addSegment();
       s.addElement("HL");
       s.addElement("6");
-      s.addElement("8");
+      s.addElement("9");
       s.addElement("SS");
       s.addElement("0");
 
@@ -965,7 +965,7 @@ public class EDIFileGeneration {
       s = x12.addSegment();
       s.addElement("HL");
       s.addElement("6");
-      s.addElement("9");
+      s.addElement("10");
       s.addElement("SS");
       s.addElement("0");
 
@@ -1087,7 +1087,7 @@ public class EDIFileGeneration {
       s = x12.addSegment();
       s.addElement("HL");
       s.addElement("6");
-      s.addElement("10");
+      s.addElement("11");
       s.addElement("SS");
       s.addElement("0");
 

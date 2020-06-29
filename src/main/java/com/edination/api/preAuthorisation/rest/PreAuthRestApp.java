@@ -80,14 +80,15 @@ public class PreAuthRestApp implements Serializable {
         for(PreAuthDetail prauthlist:shortList) {
             //PreAuthDetail preAuthDetail = new PreAuthDetail();
             insuranceStatus=primaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
-            if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus))
+            if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus)|| "Pending".equals(insuranceStatus))
             {
                 insuranceStatus=secondaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
             }
-            if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus))
-            {
-                insuranceStatus=tertiaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
+            else  if("".equals(insuranceStatus)|| "Not Eligible".equals(insuranceStatus)|| "Pending".equals(insuranceStatus))
+                {
+                    insuranceStatus=tertiaryInsuranceDetailRepository.findByIDEligibility(prauthlist.getMrnNumber());
             }
+
             if("eligible".equals(insuranceStatus) || "Eligible".equals(insuranceStatus)) {
                 episodeList.add(prauthlist.getEpisode());
             }
@@ -281,6 +282,7 @@ public class PreAuthRestApp implements Serializable {
         requesterResponseInformation.setReqProviderType(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderType());
         requesterResponseInformation.setReqProviderFollowUpActionDescription(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderFollowUpActionDescription());
         requesterResponseInformation.setReqProviderRejectionReason(preAuthorizationResponse1.getRequesterResponseInformation().getReqProviderRejectionReason());
+        requesterResponseInformation.setLevelOfService(preAuthorizationResponse1.getRequesterResponseInformation().getLevelOfService());
         preAuthorizationResponse.setRequesterResponseInformation(requesterResponseInformation);
 
         preAuthorizationResponse.setSubscriberDetailStatus(preAuthorizationResponse1.getSubscriberDetailStatus());
@@ -353,6 +355,7 @@ public class PreAuthRestApp implements Serializable {
         authorizationDetail.setRemainingUnits(preAuthorizationResponse1.getAuthorizationDetail().getRemainingUnits());
         authorizationDetail.setTotalUnitsConsumed(preAuthorizationResponse1.getAuthorizationDetail().getTotalUnitsConsumed());
         authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponse1.getAuthorizationDetail().getUnitsForNoOfUnitsTobeUsed());
+        authorizationDetail.setPreAuthorizationStatus(preAuthorizationResponse1.getAuthorizationDetail().getPreAuthorizationStatus());
         preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
 
 

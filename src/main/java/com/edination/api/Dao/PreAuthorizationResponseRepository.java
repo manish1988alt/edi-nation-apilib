@@ -22,6 +22,8 @@ public interface PreAuthorizationResponseRepository extends JpaRepository<PreAut
 
     @Query(value ="SELECT c.discription FROM entity_identifier_code_master c WHERE code = ?1",nativeQuery = true)
     String findEntityIdentifierCode(String code);
+    @Query(value ="SELECT c.discription FROM gender_code_master c WHERE code = ?1",nativeQuery = true)
+    String findGenderCode(String code);
 
     @Query(value ="SELECT c.discription FROM identification_code_qualifier_master c  WHERE code = ?1",nativeQuery = true)
     String findIdentificationCodeQualifier(String code);
@@ -35,11 +37,28 @@ public interface PreAuthorizationResponseRepository extends JpaRepository<PreAut
     @Query(value ="SELECT c.discription FROM certification_type_code_master c WHERE code = ?1",nativeQuery = true)
     String findCertificationTypeCodeMaster(String code);
 
+    @Query(value ="SELECT c.discription FROM certification_action_code_master c WHERE code = ?1",nativeQuery = true)
+    String findCertificationActionTypeCodeMaster(String code);
+
     @Query(value ="SELECT c.discription FROM entity_type_qualifier_master c WHERE code = ?1",nativeQuery = true)
     String findEntityTypeQualifierMaster(String code);
 
     @Query(value ="SELECT c.discription FROM service_type_code_master c WHERE code = ?1",nativeQuery = true)
     String findServiceTypeCodeMaster(String code);
+
+    @Query(value ="SELECT c.discription FROM rejection_reason_code_master c WHERE code = ?1",nativeQuery = true)
+    String findServiceTypeRejectionResion(String code);
+
+    @Query(value ="SELECT c.discription FROM follow_up_action_code_master c WHERE code = ?1",nativeQuery = true)
+    String findServiceFollowUpAction(String code);
+
+    @Query(value ="SELECT c.discription FROM individual_relationship_code_master c WHERE code = ?1",nativeQuery = true)
+    String findReletionship(String code);
+
+    @Query(value ="SELECT c.discription FROM certification_type_code_master c WHERE code = ?1",nativeQuery = true)
+    String findCertificatioType(String code);
+    @Query(value ="SELECT c.discription FROM request_category_code_master c WHERE code = ?1",nativeQuery = true)
+    String findRequestCategory(String code);
 
 
 
