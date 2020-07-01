@@ -6,7 +6,6 @@ import com.edination.api.eligibility.model.*;
 import com.edination.api.preAuthorisation.EDI.EDIFileGeneration;
 import com.edination.api.preAuthorisation.MasterCode.preauthComparator;
 import com.edination.api.preAuthorisation.model.*;
-import javafx.scene.control.DatePicker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

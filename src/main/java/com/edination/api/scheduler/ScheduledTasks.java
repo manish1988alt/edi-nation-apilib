@@ -50,8 +50,8 @@ public class ScheduledTasks {
     EdiDataElement271 ediDataElement272=new EdiDataElement271();
 
 
-   // @Scheduled(cron = "0 28 11 * * ?")   //   0 * * * * ?  0 0 19 * * ?
-    public void scheduleTaskWithCronExpressionAuthorization() throws Exception{
+   // @Scheduled(cron = "0 16 16 * * ?")   //   0 * * * * ?  0 0 19 * * ?
+   /* public void scheduleTaskWithCronExpressionAuthorization() throws Exception{
         List<PreAuthDemographics> preAuthDemographicsList=preAuthDemographicsRepository.uniqueDemographics();
         PreAuthDetail preAuthDetail=new PreAuthDetail();
         PreAuthDemographics demographics=new PreAuthDemographics();
@@ -59,7 +59,18 @@ public class ScheduledTasks {
         List<X12Interchange> list =new ArrayList<X12Interchange>();
         File f1 = new File("Hipaa-5010-278-GenericResponse.txt");
         //List<PreAuthDemographics> preAuthDemographicsList=preAuthDemographicsRepository.uniqueDemographics();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        PreAuthorizationResponse preAuthorizationResponse=new PreAuthorizationResponse();
+        DependentDetailResponse dependentDetailResponse=new DependentDetailResponse();
+        RequesterResponseInformation requesterResponseInformation=new RequesterResponseInformation();
+        HomeHealthAideResponse homeHealthAideResponse=new HomeHealthAideResponse();
+        OccupationalTherapyResponse occupationalTherapyResponse=new OccupationalTherapyResponse();
+        PhysicalTherapyResponse physicalTherapyResponse=new PhysicalTherapyResponse();
+        MedicalSocialWorkResponse medicalSocialWorkResponse=new MedicalSocialWorkResponse();
+        SkilledNursingResponse skilledNursingResponse=new SkilledNursingResponse();
+        SpeechPathologyResponse speechPathologyResponse=new SpeechPathologyResponse();
 
+        AuthorizationDetail authorizationDetail=new AuthorizationDetail();
         Set<String> setmrn=new HashSet<>();
 
         for(PreAuthDemographics preAuthDemographics:preAuthDemographicsList)
@@ -127,13 +138,13 @@ public class ScheduledTasks {
         Map<String,String> dependentmap=new HashMap<>();
         Map<String,String> dependentRejectionmap=new HashMap<>();
         int j=2;
-        /*for(String setm:setmrn)
-        {*/
+        *//*for(String setm:setmrn)
+        {*//*
             //System.out.println(setm);
             new SFTPFILE().downloadFile(f1, "P100" + "_" + f1.getName());
             X12Controller x12=new X12Controller();
             try {
-                list = x12.read(f1, false, false, " ", " ");
+                //list = x12.read(f1, false, false, " ", " ");
             }
             catch(Throwable t)
             {
@@ -146,9 +157,9 @@ public class ScheduledTasks {
               //  System.out.println(l.getISA().getAcknowledgementRequested14()+" "+l.getISA().getSenderIDQualifier5()+" "+l.getISA().getSecurityInformationQualifier3()+" "+l.getISA().getSecurityInformation4()+" "+l.getISA().getReceiverIDQualifier7()+" "+l.getISA().getAuthorizationInformationQualifier1()+" "+l.getISA().getAuthorizationInformation2()+" "+l.getISA().getInterchangeControlNumber13());
                for(X12Group gs:l.getGroups()) {
                   // System.out.println(gs.getGS().getCodeIdentifyingInformationType1()+" "+gs.getGS().getVersionAndRelease8()+" "+gs.getGS().getTransactionTypeCode7()+" "+gs.getGS().getTime5()+" "+gs.getGS().getSenderIDCode2()+" "+gs.getGS().getReceiverIDCode3()+" "+gs.getGS().getGroupControlNumber6()+" "+gs.getGS().getDate4()+" "+gs.getGS().getCodeIdentifyingInformationType1());
-                /*  for(Object ob:gs.getTransactions())
+                *//*  for(Object ob:gs.getTransactions())
 
-                  */
+                  *//*
 
                 List<Object> ls=gs.getTransactions();
                 Object    ss=ls.get(0);
@@ -195,6 +206,20 @@ public class ScheduledTasks {
                                       insurMap.put(charArr[i + 41], charArr[i + 42]);
                                       insurMap.put(charArr[i + 43], charArr[i + 44]);
                                       insurMap.put(charArr[i + 45], charArr[i + 46]);
+
+                                      String orgName=charArr[i + 7]+" "+charArr[i + 9]+" "+charArr[i + 11]+" "+charArr[i + 13]+" "+charArr[i + 15];
+                                      preAuthorizationResponse.setOrganizationName(orgName);
+                                      preAuthorizationResponse.setOrgDetailStatus("Approved");
+                                      preAuthorizationResponse.setOrgFollowUpActionDescription("");
+                                      String OrgIdentificationCode=preAuthorizationResponseRepository.findEntityIdentifierCode((charArr[i + 3]));
+                                      String OrgIdentificationCodeType=preAuthorizationResponseRepository.findEntityTypeQualifierMaster(String.valueOf(charArr[i + 5]));
+                                      preAuthorizationResponse.setOrgIdentificationCode(OrgIdentificationCode);
+                                      preAuthorizationResponse.setOrgIdentificationCodeType(OrgIdentificationCodeType);
+                                      preAuthorizationResponse.setOrgRejectionReason(" ");
+                                      preAuthorizationResponse.setOrgCommunicationExt(charArr[i + 38]);
+                                      preAuthorizationResponse.setOrgCommunicationTypeTelephone(charArr[i + 34]);
+                                      preAuthorizationResponse.setOrgCommunicationTypeEMail("");
+                                      preAuthorizationResponse.setOrgCommunicationTypeFacsimile(charArr[i + 42]);
                                       insuranceFlag=true;
                                   }
                                   }
@@ -205,6 +230,10 @@ public class ScheduledTasks {
                                       insurenceRejectionMap.put(charArr[i+4], charArr[i+5]);
                                       insurenceRejectionMap.put(charArr[i+6], charArr[i+7]);
                                       insurenceRejectionMap.put(charArr[i+8], charArr[i+9]);
+                                      preAuthorizationResponse.setOrgDetailStatus("Rejected");
+                                      preAuthorizationResponse.setOrgFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                      preAuthorizationResponse.setOrgRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+
 
 
                                   }
@@ -231,6 +260,33 @@ public class ScheduledTasks {
                               requesterMap.put(charArr[i + 35], charArr[i + 36]);
                               requesterMap.put(charArr[i + 38], charArr[i + 39]);
                               requesterMap.put(charArr[i + 40], charArr[i + 41]);
+
+
+                              requesterResponseInformation.setReqProviderDetailStatus("Approved");
+                              requesterResponseInformation.setReqProviderFirstName(charArr[i + 10]);
+                              requesterResponseInformation.setReqProviderLastName(charArr[i + 8]);
+                              requesterResponseInformation.setReqProviderMiddleName(charArr[i + 12]);
+                              String reqproviderfullname=charArr[i + 8]+" "+charArr[i + 10]+" "+charArr[i + 12]+" "+charArr[i + 14]+" "+charArr[i + 16];
+                              requesterResponseInformation.setReqProviderFullName(reqproviderfullname);
+                              requesterResponseInformation.setReqProviderPrefix(charArr[i + 14]);
+                              requesterResponseInformation.setReqProviderSuffix(charArr[i + 16]);
+
+                              //if(!("".equals(DTP_PATIENTEVENT.get("DTP_AdmissionDate")))) {
+                                  Date AdmissionDate = formatter.parse("2020-01-22");
+                                  requesterResponseInformation.setAdmitDate(AdmissionDate);
+                              //}
+                              //if(!("".equals(DTP_PATIENTEVENT.get("DTP_DischargeDate")))) {
+                                  Date DischargeDate = formatter.parse("2020-02-22");
+                                  requesterResponseInformation.setDischargeDate(DischargeDate);
+                              //}
+
+                              requesterResponseInformation.setReqProviderSupplimentalId(charArr[i + 32]);
+                              requesterResponseInformation.setReqProviderIdentificationNumber(preAuthorizationResponseRepository.findEntityIdentifierCode(charArr[i + 4]));
+                              requesterResponseInformation.setReqProviderIdentificationNumberType(preAuthorizationResponseRepository.findIdentificationCodeQualifier(charArr[i + 18]));
+                              requesterResponseInformation.setReqProviderIdNumberType(preAuthorizationResponseRepository.findReferenceIdentificationQualifier(charArr[i + 30]));
+                              requesterResponseInformation.setReqProviderType(charArr[i + 36]);
+                              requesterResponseInformation.setReqProviderFollowUpActionDescription("");
+                              requesterResponseInformation.setReqProviderRejectionReason("");
                               requesterFlag=true;
                           }
                       }
@@ -242,6 +298,9 @@ public class ScheduledTasks {
                                   requesterRejectionMap.put(charArr[i + 13], charArr[i + 14]);
                                   requesterRejectionMap.put(charArr[i + 15], charArr[i + 16]);
                                   requesterRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                                  requesterResponseInformation.setReqProviderDetailStatus("Rejected");
+                                  requesterResponseInformation.setReqProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  requesterResponseInformation.setReqProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
                               }
                               else
                               {
@@ -249,6 +308,9 @@ public class ScheduledTasks {
                                   requesterRejectionMap.put(charArr[i + 4], charArr[i + 5]);
                                   requesterRejectionMap.put(charArr[i + 6], charArr[i + 7]);
                                   requesterRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                                  requesterResponseInformation.setReqProviderDetailStatus("Rejected");
+                                  requesterResponseInformation.setReqProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  requesterResponseInformation.setReqProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
                               }
 
 
@@ -315,26 +377,63 @@ public class ScheduledTasks {
                               subscriberMap.put(charArr[i + 115], charArr[i + 116]);
                               subscriberFlag=true;
 
+
+                               preAuthorizationResponse.setMemberDetailStatus("Approved");
+                              preAuthorizationResponse.setMemberfirstName(charArr[i + 9]);
+                              preAuthorizationResponse.setMemberlastName(charArr[i + 7]);
+                              preAuthorizationResponse.setMembermiddleName(charArr[i + 11]);
+                              preAuthorizationResponse.setMembersuffix(charArr[i + 15]);
+                              preAuthorizationResponse.setMemberPrefix(charArr[i + 13]);
+                              Date subDOB=new Date(charArr[i + 63]);
+                              preAuthorizationResponse.setMemberdob(subDOB);
+                              preAuthorizationResponse.setMembergender( preAuthorizationResponseRepository.findGenderCode(charArr[i + 65]));//subscriberMap.get(" ")
+
+                              preAuthorizationResponse.setMemberRelationshipToSubscriber(charArr[i + 84]);
+                              preAuthorizationResponse.setMrnNumber("P100");
+                              preAuthorizationResponse.setSubscriberDetailStatus("Approved");
+                              preAuthorizationResponse.setSubscriberFirstName(charArr[i + 9]);
+                              preAuthorizationResponse.setSubscriberLastName(charArr[i + 7]);
+                              preAuthorizationResponse.setSubscriberMiddleName(charArr[i + 11]);
+                              preAuthorizationResponse.setSubscriberSuffix(charArr[i + 15]);
+                              preAuthorizationResponse.setSubscriberPrefix(charArr[i + 13]);
+
+                              preAuthorizationResponse.setSubscriberDob(subDOB);
+                              preAuthorizationResponse.setSubscriberGender( preAuthorizationResponseRepository.findGenderCode(charArr[i + 65]));
+                              preAuthorizationResponse.setSubscriberIdentificationNumberType(preAuthorizationResponseRepository.findEntityIdentifierCode(String.valueOf(charArr[i + 3])));
+                              preAuthorizationResponse.setSubscriberSupplementalId(charArr[i + 19]);
+                              preAuthorizationResponse.setSubscriberFollowUpActionDescription(" ");
+                              preAuthorizationResponse.setSubscriberRejectionReason(" ");
+                              preAuthorizationResponse.setSubscriberRelToInsured(preAuthorizationResponseRepository.findReletionship(charArr[i + 86]));
+                              preAuthorizationResponse.setSubscriberIdentificationCode(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(charArr[i + 5]));
+                              preAuthorizationResponse.setSubscriberIdNumberType(preAuthorizationResponseRepository.findIdentificationCodeQualifier(String.valueOf(charArr[i + 17])));
+
                           }
                       }
 
                           if (!(subscriberFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2000E".equals(charArr[i].trim()))) {
-                              /*subscriberRejectionMap.put(charArr[i + 2], charArr[i + 3]);
+                              *//*subscriberRejectionMap.put(charArr[i + 2], charArr[i + 3]);
                               subscriberRejectionMap.put(charArr[i + 4], charArr[i + 5]);
                               subscriberRejectionMap.put(charArr[i + 6], charArr[i + 7]);
-                              subscriberRejectionMap.put(charArr[i + 8], charArr[i + 9]);*/
+                              subscriberRejectionMap.put(charArr[i + 8], charArr[i + 9]);*//*
                               System.out.println("Value of sub: "+j);
                               if(!(insuranceFlag) && !(requesterFlag) ) {
                                   subscriberRejectionMap.put(charArr[i + 20], charArr[i + 21]);
                                   subscriberRejectionMap.put(charArr[i +22], charArr[i + 23]);
                                   subscriberRejectionMap.put(charArr[i + 24], charArr[i + 25]);
                                   subscriberRejectionMap.put(charArr[i + 26], charArr[i + 27]);
+                                  preAuthorizationResponse.setSubscriberDetailStatus("Rejected");
+                                  preAuthorizationResponse.setSubscriberFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 27]));
+                                  preAuthorizationResponse.setSubscriberRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 25]));
+
                               }
                             else  if(!(insuranceFlag)|| !(requesterFlag)) {
                                   subscriberRejectionMap.put(charArr[i + 11], charArr[i + 12]);
                                   subscriberRejectionMap.put(charArr[i + 13], charArr[i + 14]);
                                   subscriberRejectionMap.put(charArr[i + 15], charArr[i + 16]);
                                   subscriberRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+                                  preAuthorizationResponse.setSubscriberDetailStatus("Rejected");
+                                  preAuthorizationResponse.setSubscriberFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  preAuthorizationResponse.setSubscriberRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
                               }
                               else
                               {
@@ -342,6 +441,9 @@ public class ScheduledTasks {
                                   subscriberRejectionMap.put(charArr[i + 4], charArr[i + 5]);
                                   subscriberRejectionMap.put(charArr[i + 6], charArr[i + 7]);
                                   subscriberRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                                  preAuthorizationResponse.setSubscriberDetailStatus("Rejected");
+                                  preAuthorizationResponse.setSubscriberFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  preAuthorizationResponse.setSubscriberRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
                               }
 
                           }
@@ -377,6 +479,24 @@ public class ScheduledTasks {
                               dependentmap.put(charArr[i + 53], charArr[i + 54]);
                               dependentmap.put(charArr[i + 55], charArr[i + 56]);
                               dependentmap.put(charArr[i + 57], charArr[i + 58]);
+
+
+                              dependentDetailResponse.setDependentDetailStatus("Approved");
+                              dependentDetailResponse.setDependentFirstName(charArr[i + 9]);
+                              dependentDetailResponse.setDependentLastName(charArr[i + 7]);
+                              dependentDetailResponse.setDependentMiddleName(charArr[i + 11]);
+                              Date d=new Date(charArr[i + 38]);
+                              dependentDetailResponse.setDependentSuffix(charArr[i + 15]);
+                              dependentDetailResponse.setDependentDob(d);
+                              dependentDetailResponse.setDependentGender(preAuthorizationResponseRepository.findGenderCode(charArr[i + 40]));
+                              dependentDetailResponse.setDependentReletionship(charArr[i + 58]);
+                              dependentDetailResponse.setDependentPrefix(charArr[i + 13]);
+                              dependentDetailResponse.setDependentSubscriberIdentificationCode(charArr[i + 17]);
+                              dependentDetailResponse.setDependentIdentificationNumberType(preAuthorizationResponseRepository.findEntityIdentifierCode(charArr[i + 3]));
+                              dependentDetailResponse.setDependentSubscriberIdNumberType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(charArr[i + 5]));
+                              dependentDetailResponse.setDependentSupplementalId(charArr[i + 17]);
+                              dependentDetailResponse.setDependentFollowUpActionDescription("");
+                              dependentDetailResponse.setDependentRejectionReaso("");
                               dependentFlag=true;
                           }
                       }
@@ -388,12 +508,18 @@ public class ScheduledTasks {
                                   dependentRejectionmap.put(charArr[i +31], charArr[i + 32]);
                                   dependentRejectionmap.put(charArr[i + 33], charArr[i + 34]);
                                   dependentRejectionmap.put(charArr[i + 35], charArr[i + 36]);
+                                  dependentDetailResponse.setDependentDetailStatus("Rejected");
+                                  dependentDetailResponse.setDependentFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 36]));
+                                  dependentDetailResponse.setDependentRejectionReaso(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 34]));
                               }
                               else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag)) {
                                   dependentRejectionmap.put(charArr[i + 11], charArr[i + 12]);
                                   dependentRejectionmap.put(charArr[i + 13], charArr[i + 14]);
                                   dependentRejectionmap.put(charArr[i + 15], charArr[i + 16]);
                                   dependentRejectionmap.put(charArr[i + 17], charArr[i + 18]);
+                                  dependentDetailResponse.setDependentDetailStatus("Rejected");
+                                  dependentDetailResponse.setDependentFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  dependentDetailResponse.setDependentRejectionReaso(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
                               }
                               else
                               {
@@ -401,6 +527,9 @@ public class ScheduledTasks {
                                   dependentRejectionmap.put(charArr[i + 4], charArr[i + 5]);
                                   dependentRejectionmap.put(charArr[i + 6], charArr[i + 7]);
                                   dependentRejectionmap.put(charArr[i + 8], charArr[i + 9]);
+                                  dependentDetailResponse.setDependentDetailStatus("Rejected");
+                                  dependentDetailResponse.setDependentFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  dependentDetailResponse.setDependentRejectionReaso(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
                               }
 
                           }
@@ -566,28 +695,90 @@ public class ScheduledTasks {
                           CR1.put(charArr[i + 296], charArr[i + 297]);
                           CR1.put(charArr[i + 298], charArr[i + 299]);
 
-
-
                           PWK_PATIENTEVENT.put(charArr[i + 300], charArr[i + 301]);
                           MSG_MessageText.put(charArr[i + 303], charArr[i + 304]);
                           MSG_MessageText.put(charArr[i + 306], charArr[i + 307]);
                           MSG_MessageText.put(charArr[i + 308], charArr[i + 309]);
+
+                          preAuthorizationResponse.setEnquiryId(charArr[i + 16]);
+                          authorizationDetail.setPreAuthorizationStatus(preAuthorizationResponseRepository.findCertificationActionTypeCodeMaster(charArr[i + 52]));
+                          if(!("".equals(DTP_PATIENTEVENT.get("DTP_EventDate")))) {
+                              Date EventDate = formatter.parse("2020-04-22");
+                              authorizationDetail.setProcessDateAndTime(EventDate);
+                          }
+                          authorizationDetail.setCertificationIdentificationNumber(charArr[i + 54]);
+                          authorizationDetail.setEnquiryId(charArr[i + 16]);
+                          authorizationDetail.setEnquiryDetailStatus("Approved");
+                          if(!("".equals(charArr[i + 117]))) {
+                              Date AdmissionDate = formatter.parse(charArr[i + 117]);
+                              authorizationDetail.setAdmitDate(AdmissionDate);
+                          }
+                          if(!("".equals(charArr[i + 124]))) {
+                              Date DischargeDate = formatter.parse(charArr[i + 124]);
+                              authorizationDetail.setDischargeDate(DischargeDate);
+                          }
+                          if(!("".equals(charArr[i + 131]))) {
+                              Date CertificationIssueDate = formatter.parse(charArr[i + 131]);
+                              authorizationDetail.setEffectiveDateFrom(CertificationIssueDate);
+                          }
+                          if(!("".equals(charArr[i + 145]))) {
+                              Date CertificationEffectiveDate = formatter.parse(charArr[i + 145]);
+                              authorizationDetail.setEffectiveDateTo(CertificationEffectiveDate);
+                          }
+                          if(!("".equals(charArr[i + 138]))) {
+                              Date CertificationExpirationDate = formatter.parse(charArr[i + 138]);
+                              authorizationDetail.setExpirationeDateTo(CertificationExpirationDate);
+                          }
+                          Date ServiceDateFrom = formatter.parse("2020-03-12");
+                          Date ServiceDateto = formatter.parse("2020-03-30");
+                          authorizationDetail.setServiceDateFrom(ServiceDateFrom);
+                          authorizationDetail.setServiceDateTo(ServiceDateto);
+                          //int TotalUnitsApproved=Integer.parseInt(charArr[i + 60]);
+                          // int NoOfUnitsTobeUsed=Integer.parseInt(charArr[i + 52]);
+                          int TotalUnitsApproved=6;
+                          int NoOfUnitsTobeUsed=2;
+                          authorizationDetail.setTotalUnitsApproved(TotalUnitsApproved);
+                          authorizationDetail.setNoOfUnitsTobeUsed(NoOfUnitsTobeUsed);
+                          authorizationDetail.setRemainingUnits(TotalUnitsApproved-NoOfUnitsTobeUsed);
+                          //int TotalUnitsConsumed=Integer.parseInt(charArr[i + 56]);
+                          int TotalUnitsConsumed=4;
+                          authorizationDetail.setTotalUnitsConsumed(TotalUnitsConsumed);
+                          authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponseRepository.findUnitOrBasisForMeasurementCodeMaster(String.valueOf(charArr[i + 54])));
+                          Date ServiceDateFrom1 = formatter.parse("2020-03-12");
+                          Date ServiceDateto1 = formatter.parse("2020-03-30");
+                          requesterResponseInformation.setCertificationType(preAuthorizationResponseRepository.findCertificatioType(charArr[i+ 28]));
+                          requesterResponseInformation.setServiceType(preAuthorizationResponseRepository.findServiceTypeCodeMaster(charArr[i+ 30]));
+                          requesterResponseInformation.setServiceDateFrom(ServiceDateFrom1);
+                          requesterResponseInformation.setServiceDateTo(ServiceDateto1);
+                          requesterResponseInformation.setRequestCategory(preAuthorizationResponseRepository.findRequestCategory(charArr[i+ 26]));
                           patientEventrFlag=true;
                       }
 
                           if (!(patientEventrFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010EA".equals(charArr[i].trim()))) {
                               System.out.println("Value of patient: "+j);
+
+
                               if(!(insuranceFlag) && !(requesterFlag) && !(subscriberFlag) && !(dependentFlag)) {
                                   PATIENTEVENTRejectionMap.put(charArr[i + 38], charArr[i + 39]);
                                   PATIENTEVENTRejectionMap.put(charArr[i +40], charArr[i + 41]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 42], charArr[i + 43]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 44], charArr[i + 45]);
+
+                                  authorizationDetail.setPreAuthorizationStatus("Rejected");
+                                  authorizationDetail.setEnquiryDetailStatus("Rejected");
+                                  //authorizationDetail.setEnquiryDetailStatus(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 45]));
+                                  //authorizationDetail.setPreAuthorizationStatus(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 43]));
                               }
                               else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag)) {
                                   PATIENTEVENTRejectionMap.put(charArr[i + 11], charArr[i + 12]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 13], charArr[i + 14]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 15], charArr[i + 16]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 17], charArr[i + 18]);
+
+                                  //authorizationDetail.setEnquiryDetailStatus(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  //authorizationDetail.setPreAuthorizationStatus(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                  authorizationDetail.setPreAuthorizationStatus("Rejected");
+                                  authorizationDetail.setEnquiryDetailStatus("Rejected");
                               }
                               else
                               {
@@ -595,6 +786,10 @@ public class ScheduledTasks {
                                   PATIENTEVENTRejectionMap.put(charArr[i + 4], charArr[i + 5]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 6], charArr[i + 7]);
                                   PATIENTEVENTRejectionMap.put(charArr[i + 8], charArr[i + 9]);
+                                  authorizationDetail.setPreAuthorizationStatus("Rejected");
+                                  authorizationDetail.setEnquiryDetailStatus("Rejected");
+                                  //authorizationDetail.setEnquiryDetailStatus(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  //authorizationDetail.setPreAuthorizationStatus(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
                               }
 
 
@@ -615,23 +810,23 @@ public class ScheduledTasks {
 
 
 
-                        /*  if ("HCR_HealthCareServicesReview_ServiceLevel".equals(charArr[i + 50].trim())) {
+                        *//*  if ("HCR_HealthCareServicesReview_ServiceLevel".equals(charArr[i + 50].trim())) {
                               HCR_HealthCareServicesReview.put(charArr[i + 51], charArr[i + 52]);
                               HCR_HealthCareServicesReview.put(charArr[i + 53], charArr[i + 54]);
                               HCR_HealthCareServicesReview.put(charArr[i + 55], charArr[i + 56]);
                               HCR_HealthCareServicesReview.put(charArr[i + 57], charArr[i + 58]);
                               HCR_HealthCareServicesReview.put(charArr[i + 59], charArr[i + 60]);
-                          }*/
+                          }*//*
 
                           REF_AdministrativeReferenceNumber_ServiceLevel.put(charArr[i + 29], charArr[i + 30]);
                           REF_AdministrativeReferenceNumber_ServiceLevel.put(charArr[i + 31], charArr[i + 32]);
-                      /*    if ("REF_AdministrativeReferenceNumber".equals(charArr[i + 62].trim())) {
+                      *//*    if ("REF_AdministrativeReferenceNumber".equals(charArr[i + 62].trim())) {
                               REF_AdministrativeReferenceNumber.put(charArr[i + 63], charArr[i + 64]);
                               REF_AdministrativeReferenceNumber.put(charArr[i + 65], charArr[i + 66]);
                               REF_AdministrativeReferenceNumber.put(charArr[i + 67], charArr[i + 68]);
                               REF_AdministrativeReferenceNumber.put(charArr[i + 69], charArr[i + 70]);
                               REF_AdministrativeReferenceNumber.put(charArr[i + 71], charArr[i + 72]);
-                          }*/
+                          }*//*
                           if ("DTP_ServiceDate".equals(charArr[i + 34].trim())) {
                               DTP_ServiceLevel.put(charArr[i + 35], charArr[i + 36]);
                               DTP_ServiceLevel.put(charArr[i + 37], charArr[i + 38]);
@@ -787,8 +982,28 @@ public class ScheduledTasks {
                               PER_ServiceProviderContactInformation.put(charArr[i + 75], charArr[i + 76]);
                               PER_ServiceProviderContactInformation.put(charArr[i + 77], charArr[i + 78]);
                               PER_ServiceProviderContactInformation.put(charArr[i + 79], charArr[i + 80]);
-                              serviceProviderFlag=true;
+
                           }
+
+                             preAuthorizationResponse.setServicingProviderFirstName(charArr[i + 10]);
+                              preAuthorizationResponse.setServicingProviderLastName(charArr[i + 8]);
+                              preAuthorizationResponse.setServicingProviderMiddleName(charArr[i + 12]);
+                              String ServiceProviderFullName=charArr[i + 8]+" "+charArr[i + 10]+" "+charArr[i + 12]+" "+charArr[i + 14]+" "+charArr[i + 16];
+                              preAuthorizationResponse.setServicingProviderFullName(ServiceProviderFullName);
+                              preAuthorizationResponse.setServicingProviderSupplimentId(charArr[i + 32]);
+                              preAuthorizationResponse.setServicingProviderDetailStatus("Approved");
+                              preAuthorizationResponse.setServicingProviderAddress(charArr[i + 40]);
+                              preAuthorizationResponse.setServicingProviderCity(charArr[i + 45]);
+                              preAuthorizationResponse.setServicingProviderState(charArr[i + 47]);
+                              preAuthorizationResponse.setServicingProviderCountryCode(charArr[i + 51]);
+                              preAuthorizationResponse.setServicingProviderPostalCode(charArr[i + 49]);
+                              preAuthorizationResponse.setServicingProviderType(preAuthorizationResponseRepository.findEntityIdentifierCode(charArr[i + 4]));
+                              preAuthorizationResponse.setServicingProviderIdNumberType(preAuthorizationResponseRepository.findEntityTypeQualifierMaster(charArr[i + 6]));
+                              preAuthorizationResponse.setServicingProviderIdentificationNumber(charArr[i + 32]);
+                              preAuthorizationResponse.setServicingProviderIdentificationNumberType(preAuthorizationResponseRepository.findIdentificationCodeQualifier(charArr[i + 18]));
+                              preAuthorizationResponse.setServicingProviderFollowUpActionDescription("");
+                              preAuthorizationResponse.setServicingProviderRejectionReason("");
+                              serviceProviderFlag=true;
                       }
 
                           if (!(serviceProviderFlag) && "AAA_UtilizationManagementOrganization_UMO_RequestValidation".equals(charArr[i].trim()) && !("null".equals(charArr[i + 1].trim())) && !("Loop2010FB".equals(charArr[i].trim()))) {
@@ -798,19 +1013,31 @@ public class ScheduledTasks {
                                   serviceproviderrejectionmap.put(charArr[i +57], charArr[i + 58]);
                                   serviceproviderrejectionmap.put(charArr[i + 59], charArr[i + 60]);
                                   serviceproviderrejectionmap.put(charArr[i + 61], charArr[i + 62]);
+                                  preAuthorizationResponse.setServicingProviderDetailStatus("Rejected");
+                                  preAuthorizationResponse.setServicingProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 62]));
+                                  preAuthorizationResponse.setServicingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 60]));
+
                               }
                               else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag)) {
                                   serviceproviderrejectionmap.put(charArr[i + 11], charArr[i + 12]);
                                   serviceproviderrejectionmap.put(charArr[i + 13], charArr[i + 14]);
                                   serviceproviderrejectionmap.put(charArr[i + 15], charArr[i + 16]);
                                   serviceproviderrejectionmap.put(charArr[i + 17], charArr[i + 18]);
+                                  preAuthorizationResponse.setServicingProviderDetailStatus("Rejected");
+                                  preAuthorizationResponse.setSubscriberFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  preAuthorizationResponse.setServicingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+
                               }
                               else
                               {
+                                  preAuthorizationResponse.setServicingProviderDetailStatus("Rejected");
                                   serviceproviderrejectionmap.put(charArr[i + 2], charArr[i + 3]);
                                   serviceproviderrejectionmap.put(charArr[i + 4], charArr[i + 5]);
                                   serviceproviderrejectionmap.put(charArr[i + 6], charArr[i + 7]);
                                   serviceproviderrejectionmap.put(charArr[i + 8], charArr[i + 9]);
+                                  preAuthorizationResponse.setServicingProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  preAuthorizationResponse.setServicingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+
                               }
 
                           }
@@ -908,7 +1135,7 @@ public class ScheduledTasks {
                               MSG_MessageText_ServiceLevel2.put(charArr[i + 164], charArr[i + 165]);
                           }
                           //CR1.put(charArr[i + 106], charArr[i + 107]);
-                       /*   if ("PWK_AdditionalServiceInformation".equals(charArr[i].trim())) {
+                       *//*   if ("PWK_AdditionalServiceInformation".equals(charArr[i].trim())) {
                               PWK_ServiceLevel2.put(charArr[i + 2], charArr[i + 3]);
                               PWK_ServiceLevel2.put(charArr[i + 4], charArr[i + 5]);
                               PWK_ServiceLevel2.put(charArr[i + 6], charArr[i + 7]);
@@ -919,7 +1146,7 @@ public class ScheduledTasks {
                               PWK_ServiceLevel2.put(charArr[i + 16], charArr[i + 17]);
                               PWK_ServiceLevel2.put(charArr[i + 18], charArr[i + 19]);
                               MSG_MessageText_ServiceLevel2.put(charArr[i + 21], charArr[i + 22]);
-                          }*/
+                          }*//*
                       serviceLevel2Flag=true;
                       }
 
@@ -930,12 +1157,97 @@ public class ScheduledTasks {
                                   ServiceLevel2RejectionMap.put(charArr[i +66], charArr[i + 67]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 68], charArr[i + 69]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 70], charArr[i + 71]);
+
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      homeHealthAideResponse.setHomeHealthAideDetailStatus("Rejected");
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus("Rejected");
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      physicalTherapyResponse.setPhysicalTherapyDetailStatus("Rejected");
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      occupationalTherapyResponse.setOccupationalTherapyDetailStatus("Rejected");
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      skilledNursingResponse.setSkilledNursingDetailStatus("Rejected");
+                                      skilledNursingResponse.setSkilledNursingRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      skilledNursingResponse.setSkilledNursingRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyDetailStatus("Rejected");
+                                      speechPathologyResponse.setSpeechPathologyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      speechPathologyResponse.setSpeechPathologyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
+                                 // preAuthorizationResponse.setServicingProviderDetailStatus("Rejected");
                               }
                               else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag) || !(serviceProviderFlag)) {
                                   ServiceLevel2RejectionMap.put(charArr[i + 11], charArr[i + 12]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 13], charArr[i + 14]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 15], charArr[i + 16]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 17], charArr[i + 18]);
+
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      homeHealthAideResponse.setHomeHealthAideDetailStatus("Rejected");
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus("Rejected");
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      physicalTherapyResponse.setPhysicalTherapyDetailStatus("Rejected");
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      occupationalTherapyResponse.setOccupationalTherapyDetailStatus("Rejected");
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      skilledNursingResponse.setSkilledNursingDetailStatus("Rejected");
+                                      skilledNursingResponse.setSkilledNursingRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      skilledNursingResponse.setSkilledNursingRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyDetailStatus("Rejected");
+                                      speechPathologyResponse.setSpeechPathologyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 69]));
+                                      speechPathologyResponse.setSpeechPathologyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 71]));
+
+                                  }
                               }
                               else
                               {
@@ -943,6 +1255,48 @@ public class ScheduledTasks {
                                   ServiceLevel2RejectionMap.put(charArr[i + 4], charArr[i + 5]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 6], charArr[i + 7]);
                                   ServiceLevel2RejectionMap.put(charArr[i + 8], charArr[i + 9]);
+
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      homeHealthAideResponse.setHomeHealthAideDetailStatus("Rejected");
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      homeHealthAideResponse.setHomeHealthAideRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus("Rejected");
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      physicalTherapyResponse.setPhysicalTherapyDetailStatus("Rejected");
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      physicalTherapyResponse.setPhysicalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      occupationalTherapyResponse.setOccupationalTherapyDetailStatus("Rejected");
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      occupationalTherapyResponse.setOccupationalTherapyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      skilledNursingResponse.setSkilledNursingDetailStatus("Rejected");
+                                      skilledNursingResponse.setSkilledNursingRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      skilledNursingResponse.setSkilledNursingRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyDetailStatus("Rejected");
+                                      speechPathologyResponse.setSpeechPathologyRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      speechPathologyResponse.setSpeechPathologyRejectionReasonMSG(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
                               }
 
                           }
@@ -1008,12 +1362,85 @@ public class ScheduledTasks {
                                   serviceprovider2rejectionmap.put(charArr[i +75], charArr[i + 76]);
                                   serviceprovider2rejectionmap.put(charArr[i + 77], charArr[i + 78]);
                                   serviceprovider2rejectionmap.put(charArr[i + 79], charArr[i + 80]);
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+
+                                      homeHealthAideResponse.setHomeHealthAideProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                      homeHealthAideResponse.setHomeHealthAideProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderFollowUpActionDescription (preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                     physicalTherapyResponse.setPhysicalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                      physicalTherapyResponse.setPhysicalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                     occupationalTherapyResponse.setOccupationalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                      occupationalTherapyResponse.setOccupationalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                    skilledNursingResponse.setSkilledNursingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                    skilledNursingResponse.setSkilledNursingProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 78]));
+                                      speechPathologyResponse.setSpeechPathologyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 80]));
+
+                                  }
                               }
                               else  if(!(insuranceFlag)|| !(requesterFlag) || !(subscriberFlag) || !(dependentFlag) || !(patientEventrFlag) || !(serviceLevelFlag) || !(serviceProviderFlag) || !(serviceLevel2Flag)) {
                                   serviceprovider2rejectionmap.put(charArr[i + 11], charArr[i + 12]);
                                   serviceprovider2rejectionmap.put(charArr[i + 13], charArr[i + 14]);
                                   serviceprovider2rejectionmap.put(charArr[i + 15], charArr[i + 16]);
                                   serviceprovider2rejectionmap.put(charArr[i + 17], charArr[i + 18]);
+
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+
+                                      homeHealthAideResponse.setHomeHealthAideProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      homeHealthAideResponse.setHomeHealthAideProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderFollowUpActionDescription (preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      physicalTherapyResponse.setPhysicalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      physicalTherapyResponse.setPhysicalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      occupationalTherapyResponse.setOccupationalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      occupationalTherapyResponse.setOccupationalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      skilledNursingResponse.setSkilledNursingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      skilledNursingResponse.setSkilledNursingProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 16]));
+                                      speechPathologyResponse.setSpeechPathologyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 18]));
+
+                                  }
                               }
                               else
                               {
@@ -1021,6 +1448,44 @@ public class ScheduledTasks {
                                   serviceprovider2rejectionmap.put(charArr[i + 4], charArr[i + 5]);
                                   serviceprovider2rejectionmap.put(charArr[i + 6], charArr[i + 7]);
                                   serviceprovider2rejectionmap.put(charArr[i + 8], charArr[i + 9]);
+
+
+                                  if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+
+                                      homeHealthAideResponse.setHomeHealthAideProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      homeHealthAideResponse.setHomeHealthAideProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+                                  }
+                                  if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      medicalSocialWorkResponse.setMedicalSocialWorkProviderFollowUpActionDescription (preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      physicalTherapyResponse.setPhysicalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      physicalTherapyResponse.setPhysicalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      occupationalTherapyResponse.setOccupationalTherapyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      occupationalTherapyResponse.setOccupationalTherapyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      skilledNursingResponse.setSkilledNursingProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      skilledNursingResponse.setSkilledNursingProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
+                                  if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
+                                  {
+                                      speechPathologyResponse.setSpeechPathologyProviderRejectionReason(preAuthorizationResponseRepository.findServiceTypeRejectionResion(charArr[i + 7]));
+                                      speechPathologyResponse.setSpeechPathologyProviderFollowUpActionDescription(preAuthorizationResponseRepository.findServiceFollowUpAction(charArr[i + 9]));
+
+                                  }
                               }
 
                           }
@@ -1035,7 +1500,7 @@ public class ScheduledTasks {
 
                   // System.out.println(gs.getGETrailers());
 
-          /*      System.out.println(l.getResult().getStatus());
+          *//*      System.out.println(l.getResult().getStatus());
               for(OperationDetail op:l.getResult().getDetails())
               {
                   System.out.println(op.getIndex()+" "+op.getTransactionIndex()+" "+op.getValue()+" "+op.getTransactionRef()+" "+op.getStatus()+" "+op.getMessage()+" "+op.getSegmentId());
@@ -1043,7 +1508,7 @@ public class ScheduledTasks {
 
                  System.out.println(l.getIEATrailers());
 
-                System.out.println(l.getTA1());*/
+                System.out.println(l.getTA1());*//*
 
         System.out.println("insurMap: "+insurMap);
         System.out.println("requesterMap: "+requesterMap);
@@ -1112,7 +1577,7 @@ public class ScheduledTasks {
             //List<PreAuthDetail> preauthlist= preAuthRepository.findByMrnNumber(preAuthDemographics.getMrnNumber());
 
 
-           /*for(PreAuthDetail pre:preauthlist) {
+           *//*for(PreAuthDetail pre:preauthlist) {
 
                demographics.setMrnNumber(pre.getPreAuthDemographics().getMrnNumber());
                demographics.setFirstName(pre.getPreAuthDemographics().getFirstName());
@@ -1140,9 +1605,9 @@ public class ScheduledTasks {
            preAuthDetail.setMrnNumber(preAuthDemographics.getMrnNumber());
            preAuthDetail.setPreAuthDemographics(demographics);
            preAuthDetail.setEpisode(episode);
-*/
+*//*
         //}
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+      *//*  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         PreAuthorizationResponse preAuthorizationResponse=new PreAuthorizationResponse();
         preAuthorizationResponse.setMemberDetailStatus(subscriberMap.get("AAA_SubscriberRequestValidation"));
         preAuthorizationResponse.setMemberfirstName(subscriberMap.get("ResponseContactFirstName_04"));
@@ -1259,8 +1724,8 @@ public class ScheduledTasks {
         preAuthorizationResponse.setServicingProviderIdentificationNumberType(NM1_ServiceProviderName.get("IdentificationCodeQualifier_08"));
         preAuthorizationResponse.setServicingProviderFollowUpActionDescription("");
         preAuthorizationResponse.setServicingProviderRejectionReason("");
-        preAuthorizationResponse.setEnquiryId(TRN_PATIENTEVENTTRACKINGNUMBER.get("CurrentTransactionTraceNumber_02"));
-        AuthorizationDetail authorizationDetail=new AuthorizationDetail();
+        preAuthorizationResponse.setEnquiryId(TRN_PATIENTEVENTTRACKINGNUMBER.get("CurrentTransactionTraceNumber_02"));*//*
+        *//*AuthorizationDetail authorizationDetail=new AuthorizationDetail();
         authorizationDetail.setPreAuthorizationStatus(HCR_HealthCareServicesReview.get("ActionCode_01"));
         if(!("".equals(DTP_PATIENTEVENT.get("DTP_EventDate")))) {
             Date EventDate = formatter.parse("2020-04-22");
@@ -1305,13 +1770,17 @@ public class ScheduledTasks {
         authorizationDetail.setTotalUnitsConsumed(TotalUnitsConsumed);
         authorizationDetail.setUnitsForNoOfUnitsTobeUsed(preAuthorizationResponseRepository.findUnitOrBasisForMeasurementCodeMaster(String.valueOf(HSD_HealthCareServicesDelivery_ServiceLevel2.get("UnitorBasisforMeasurementCode_03"))));
         preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
+*//*
 
+        preAuthorizationResponse.setDependentDetailResponse(dependentDetailResponse);
+        preAuthorizationResponse.setRequesterResponseInformation(requesterResponseInformation);
+        preAuthorizationResponse.setAuthorizationDetail(authorizationDetail);
         if("HHA".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
         {
-            HomeHealthAideResponse homeHealthAideResponse=new HomeHealthAideResponse();
+
             homeHealthAideResponse.setHomeHealthAideCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             homeHealthAideResponse.setHomeHealthAideCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            homeHealthAideResponse.setHomeHealthAideDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            homeHealthAideResponse.setHomeHealthAideDetailStatus("Approved");
             homeHealthAideResponse.setHomeHealthAideLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             homeHealthAideResponse.setHomeHealthAidePoviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             homeHealthAideResponse.setHomeHealthAideProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1352,14 +1821,14 @@ public class ScheduledTasks {
             homeHealthAideResponse.setHomeHealthAideEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
             homeHealthAideResponse.setHomeHealthAideExpirationDate(HomeHealthAideExpirationDate.toString());
             homeHealthAideResponse.setHomeHealthAideSelected(true);
-            preAuthorizationResponse.setHomeHealthAideResponse(homeHealthAideResponse);
+
         }
         if("AD".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
         {
-            OccupationalTherapyResponse occupationalTherapyResponse=new OccupationalTherapyResponse();
+
             occupationalTherapyResponse.setOccupationalTherapyCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             occupationalTherapyResponse.setOccupationalTherapyCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            occupationalTherapyResponse.setOccupationalTherapyDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            occupationalTherapyResponse.setOccupationalTherapyDetailStatus("Approved");
             occupationalTherapyResponse.setOccupationalTherapyLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             occupationalTherapyResponse.setOccupationalTherapyProviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             occupationalTherapyResponse.setOccupationalTherapyProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1401,14 +1870,14 @@ public class ScheduledTasks {
             occupationalTherapyResponse.setOccupationalTherapyEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
             occupationalTherapyResponse.setOccupationalTherapyExpirationDate(HomeHealthAideExpirationDate.toString());
             occupationalTherapyResponse.setOccupationalTherapySelected(true);
-            preAuthorizationResponse.setOccupationalTherapyResponse(occupationalTherapyResponse);
+
         }
         if("PT".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03")))
         {
-            PhysicalTherapyResponse physicalTherapyResponse=new PhysicalTherapyResponse();
+
             physicalTherapyResponse.setPhysicalTherapyCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             physicalTherapyResponse.setPhysicalTherapyCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            physicalTherapyResponse.setPhysicalTherapyDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            physicalTherapyResponse.setPhysicalTherapyDetailStatus("Approved");
             physicalTherapyResponse.setPhysicalTherapyLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             physicalTherapyResponse.setPhysicalTherapyPoviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             physicalTherapyResponse.setPhysicalTherapyProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1450,13 +1919,13 @@ public class ScheduledTasks {
             physicalTherapyResponse.setPhysicalTherapyEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
             physicalTherapyResponse.setPhysicalTherapyExpirationDate(HomeHealthAideExpirationDate.toString());
             physicalTherapyResponse.setPhysicalTherapySelected(true);
-            preAuthorizationResponse.setPhysicalTherapyResponse(physicalTherapyResponse);
+
         }
         if("MSW".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
-            MedicalSocialWorkResponse medicalSocialWorkResponse=new MedicalSocialWorkResponse();
+
             medicalSocialWorkResponse.setMedicalSocialWorkCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             medicalSocialWorkResponse.setMedicalSocialWorkCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            medicalSocialWorkResponse.setMedicalSocialWorkDetailStatus("Approved");
             medicalSocialWorkResponse.setMedicalSocialWorkLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             medicalSocialWorkResponse.setMedicalSocialWorkPoviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             medicalSocialWorkResponse.setMedicalSocialWorkProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1498,13 +1967,13 @@ public class ScheduledTasks {
             medicalSocialWorkResponse.setMedicalSocialWorkEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
             medicalSocialWorkResponse.setMedicalSocialWorkExpirationDate(HomeHealthAideExpirationDate.toString());
             medicalSocialWorkResponse.setMedicalSocialWorkSelected(true);
-            preAuthorizationResponse.setMedicalSocialWorkResponse(medicalSocialWorkResponse);
+
         }
         if("AF".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
-             SpeechPathologyResponse speechPathologyResponse=new SpeechPathologyResponse();
+
             speechPathologyResponse.setSpeechPathologyCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             speechPathologyResponse.setSpeechPathologyCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            speechPathologyResponse.setSpeechPathologyDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            speechPathologyResponse.setSpeechPathologyDetailStatus("Approved");
             speechPathologyResponse.setSpeechPathologyLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             speechPathologyResponse.setSpeechPathologyPoviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             speechPathologyResponse.setSpeechPathologyProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1546,13 +2015,12 @@ public class ScheduledTasks {
             speechPathologyResponse.setspeechPathologyExpirationDate(HomeHealthAideExpirationDate.toString());
             speechPathologyResponse.setspeechPathologySelected(true);
 
-            preAuthorizationResponse.setSpeechPathologyResponse(speechPathologyResponse);
         }
         if("AG".equals(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("ServiceTypeCode_03"))) {
-           SkilledNursingResponse skilledNursingResponse=new SkilledNursingResponse();
+
             skilledNursingResponse.setSkilledNursingCertificationAction(PWK_ServiceLevel2.get("ActionsIndicated_08"));
             skilledNursingResponse.setSkilledNursingCertificationType(preAuthorizationResponseRepository.findCertificationTypeCodeMaster(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("CertificationTypeCode_02")));
-            skilledNursingResponse.setSkilledNursingDetailStatus(AAA_ServiceProvider.get("AAA_ServiceProviderRequestValidation"));
+            skilledNursingResponse.setSkilledNursingDetailStatus("Approved");
             skilledNursingResponse.setSkilledNursingLevelOfService(UM_HEALTHCARESERVICESREVIEWINFORMATION_ServiceLevel2.get("LevelofServiceCode_06"));
             skilledNursingResponse.setSkilledNursingPoviderLastName(NM1_ServiceProviderName2.get("ResponseContactLastorOrganizationName_03"));
             skilledNursingResponse.setSkilledNursingProviderFirstName(NM1_ServiceProviderName2.get("ResponseContactFirstName_04"));
@@ -1594,17 +2062,23 @@ public class ScheduledTasks {
             skilledNursingResponse.setSkilledNursingEffectiveDateFrom(HomeHealthAideEffectiveDateFrom.toString());
             skilledNursingResponse.setSkilledNursingExpirationDate(HomeHealthAideExpirationDate.toString());
             skilledNursingResponse.setSkilledNursingSelected(true);
-            preAuthorizationResponse.setSkilledNursingResponse(skilledNursingResponse);
-        }
-        preAuthorizationResponseService.save(preAuthorizationResponse);
-    }
 
-   @Scheduled(cron = "*/5 * * * * ?")
-    public void scheduleTaskWithCronExpressionForEligibility()
+        }
+        preAuthorizationResponse.setHomeHealthAideResponse(homeHealthAideResponse);
+        preAuthorizationResponse.setOccupationalTherapyResponse(occupationalTherapyResponse);
+        preAuthorizationResponse.setPhysicalTherapyResponse(physicalTherapyResponse);
+        preAuthorizationResponse.setMedicalSocialWorkResponse(medicalSocialWorkResponse);
+        preAuthorizationResponse.setSpeechPathologyResponse(speechPathologyResponse);
+        preAuthorizationResponse.setSkilledNursingResponse(skilledNursingResponse);
+       // preAuthorizationResponseService.save(preAuthorizationResponse);
+    }*/
+
+   //@Scheduled(cron = "* */5 * * * ?")
+   /* public void scheduleTaskWithCronExpressionForEligibility()
     {
         String eligibility = "";
         List<X12Interchange> list =new ArrayList<X12Interchange>();
-         /*   List<Demographics> demographicslist=service.listAll();
+         *//*   List<Demographics> demographicslist=service.listAll();
 
             for(Demographics demographics :demographicslist) {
                 Optional<Demographics> optionalDemographics = Optional.ofNullable(demographics);
@@ -1614,7 +2088,7 @@ public class ScheduledTasks {
                     //  List<X12Interchange> list1 = x12.read(f1, false, false, " ", " ");
                     System.out.println("Insertion method called");
                 }
-            }*/
+            }*//*
         List<Demographics> demographicslist=service.listAll();
         File f1 = new File("Hipaa-5010-271-GenericResponse.txt");
         for(Demographics demographics :demographicslist) {
@@ -1628,7 +2102,7 @@ public class ScheduledTasks {
 
         X12Controller x12=new X12Controller();
         try {
-            list = x12.read(f1, false, false, " ", " ");
+           // list = x12.read(f1, false, false, " ", " ");
         }
         catch(Throwable t)
         {
@@ -1641,9 +2115,9 @@ public class ScheduledTasks {
             //  System.out.println(l.getISA().getAcknowledgementRequested14()+" "+l.getISA().getSenderIDQualifier5()+" "+l.getISA().getSecurityInformationQualifier3()+" "+l.getISA().getSecurityInformation4()+" "+l.getISA().getReceiverIDQualifier7()+" "+l.getISA().getAuthorizationInformationQualifier1()+" "+l.getISA().getAuthorizationInformation2()+" "+l.getISA().getInterchangeControlNumber13());
             for (X12Group gs : l.getGroups()) {
                 // System.out.println(gs.getGS().getCodeIdentifyingInformationType1()+" "+gs.getGS().getVersionAndRelease8()+" "+gs.getGS().getTransactionTypeCode7()+" "+gs.getGS().getTime5()+" "+gs.getGS().getSenderIDCode2()+" "+gs.getGS().getReceiverIDCode3()+" "+gs.getGS().getGroupControlNumber6()+" "+gs.getGS().getDate4()+" "+gs.getGS().getCodeIdentifyingInformationType1());
-                /*  for(Object ob:gs.getTransactions())
+                *//*  for(Object ob:gs.getTransactions())
 
-                 */
+                 *//*
 
                 List<Object> ls = gs.getTransactions();
                 Object ss = ls.get(0);
@@ -1699,29 +2173,40 @@ public class ScheduledTasks {
                 if ("EB_SubscriberEligibilityorBenefitInformation".equals(charArr[i + 2].trim())) {
                     if("1".equals(charArr[i + 4])) {
                         ediDataElement272.setEligibilityorBenefitInformation("eligible");
+                        ediDataElement272.setInsuranceTypeCode(charArr[i + 19]);
+                        ediDataElement272.setTimePeriodQualifier(charArr[i + 23]);
+                        ediDataElement272.setBenefitAmount(charArr[i + 25]);
+                        ediDataElement272.setQuantityQualifier(charArr[i + 29]);
+                        ediDataElement272.setQuantity(charArr[i + 31]);
+                        ediDataElement272.setCompositeMedicalProcedureIdentifier(charArr[i + 37]);
+                        ediDataElement272.setProcedureModifier("");
+                        ediDataElement272.setProcedureCode("");
+                        ediDataElement272.setServiceTypeCode(charArr[i + 41]);
+                        ediDataElement272.setFreeFormMessageText(charArr[i + 51]);
                     }
                     else
                     {
                         ediDataElement272.setEligibilityorBenefitInformation("Not Eligible");
+                        ediDataElement272.setInsuranceTypeCode("");
+                        ediDataElement272.setTimePeriodQualifier("");
+                        ediDataElement272.setBenefitAmount("");
+                        ediDataElement272.setQuantityQualifier("");
+                        ediDataElement272.setQuantity("");
+                        ediDataElement272.setCompositeMedicalProcedureIdentifier("");
+                        ediDataElement272.setProcedureModifier("");
+                        ediDataElement272.setProcedureCode("");
+                        ediDataElement272.setServiceTypeCode("");
+                        ediDataElement272.setFreeFormMessageText("");
                     }
 
-                    ediDataElement272.setInsuranceTypeCode(charArr[i + 19]);
-                    ediDataElement272.setTimePeriodQualifier(charArr[i + 23]);
-                    ediDataElement272.setBenefitAmount(charArr[i + 25]);
-                    ediDataElement272.setQuantityQualifier(charArr[i + 29]);
-                    ediDataElement272.setQuantity(charArr[i + 31]);
-                    ediDataElement272.setCompositeMedicalProcedureIdentifier(charArr[i + 37]);
-                    ediDataElement272.setProcedureModifier("");
-                    ediDataElement272.setProcedureCode("");
-                    ediDataElement272.setServiceTypeCode(charArr[i + 41]);
-                    ediDataElement272.setFreeFormMessageText(charArr[i + 51]);
+
 
 
 
 
                 }
             }
-            if ("Loop2110C".equals(charArr[i].trim()) && !("Loop2000D".equals(charArr[i].trim()))) {
+            if ("Loop2120C".equals(charArr[i].trim()) && !("Loop2000D".equals(charArr[i].trim()))) {
                 if ("NM1_SubscriberBenefitRelatedEntityName".equals(charArr[i + 2].trim())) {
                     ediDataElement272.setBenefitRelatedEntityIdentifier(charArr[i + 6]);
                     ediDataElement272.setBenefitRelatedEntityLast(charArr[i + 8]+" "+charArr[i + 10]+" "+charArr[i + 12]+" "+charArr[i + 16]+" "+charArr[i + 14]);
@@ -1777,6 +2262,6 @@ public class ScheduledTasks {
             }
 
 
-
+*/
 
 }
