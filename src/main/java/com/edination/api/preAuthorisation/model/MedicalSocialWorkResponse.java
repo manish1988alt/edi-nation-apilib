@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -25,8 +26,8 @@ public class MedicalSocialWorkResponse {
     private String MedicalSocialWorkProviderMiddleName;
     private String medicalSocialWorkProviderSuffix;
     private String medicalSocialWorkProviderPrefix;
-    private Date medicalSocialWorkResponseServiceDateFrom;
-    private Date medicalSocialWorkResponseServiceDateTo;
+    private LocalDate medicalSocialWorkResponseServiceDateFrom;
+    private LocalDate medicalSocialWorkResponseServiceDateTo;
     private int medicalSocialWorkRevenueCode;
     private String mrnNumber;
     private String MedicalSocialWorkProviderType;
@@ -45,15 +46,15 @@ public class MedicalSocialWorkResponse {
     private String MedicalSocialWorkDetailStatus;
 
     private String medicalSocialWorkAuthorizationIdNo;
-    private String  medicalSocialWorkEffectiveDateFrom;
-    private String medicalSocialWorkEffectiveDateTo;
-    private String medicalSocialWorkExpirationDate;
+    private LocalDate medicalSocialWorkEffectiveDateFrom;
+    private LocalDate medicalSocialWorkEffectiveDateTo;
+    private LocalDate medicalSocialWorkExpirationDate;
     private boolean medicalSocialWorkSelected;
 
     public MedicalSocialWorkResponse() {
     }
 
-    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, Date medicalSocialWorkResponseServiceDateFrom, Date medicalSocialWorkResponseServiceDateTo, int medicalSocialWorkRevenueCode, String mrnNumber, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus, String medicalSocialWorkAuthorizationIdNo, String medicalSocialWorkEffectiveDateFrom, String medicalSocialWorkEffectiveDateTo, String medicalSocialWorkExpirationDate, boolean medicalSocialWorkSelected) {
+    public MedicalSocialWorkResponse(String medicalSocialWorkRequestCategory, String medicalSocialWorkCertificationType, String medicalSocialWorkServiceType, String medicalSocialWorkLevelOfService, String medicalSocialWorkVisit, String medicalSocialWorkUnit, String medicalSocialWorkCertificationAction, String medicalSocialWorkRejectionReason, String medicalSocialWorkRejectionReasonMSG, String medicalSocialWorkProviderFirstName, String medicalSocialWorkPoviderLastName, String medicalSocialWorkProviderMiddleName, String medicalSocialWorkProviderSuffix, String medicalSocialWorkProviderPrefix, LocalDate medicalSocialWorkResponseServiceDateFrom, LocalDate medicalSocialWorkResponseServiceDateTo, int medicalSocialWorkRevenueCode, String mrnNumber, String medicalSocialWorkProviderType, String medicalSocialWorkProviderIdentificationNumber, String medicalSocialWorkProviderIdentificationNumberType, String medicalSocialWorkProviderSupplimentalId, String medicalSocialWorkProviderIdNumberType, String medicalSocialWorkProviderRejectionReason, String medicalSocialWorkProviderFollowUpActionDescription, String medicalSocialWorkProviderAddress, String medicalSocialWorkProviderCity, String medicalSocialWorkProviderState, String medicalSocialWorkProviderPostalCode, String medicalSocialWorkProviderCountryCode, String medicalSocialWorkProviderFullName, String medicalSocialWorkDetailStatus, String medicalSocialWorkAuthorizationIdNo, LocalDate medicalSocialWorkEffectiveDateFrom, LocalDate medicalSocialWorkEffectiveDateTo, LocalDate medicalSocialWorkExpirationDate, boolean medicalSocialWorkSelected) {
         MedicalSocialWorkRequestCategory = medicalSocialWorkRequestCategory;
         MedicalSocialWorkCertificationType = medicalSocialWorkCertificationType;
         MedicalSocialWorkServiceType = medicalSocialWorkServiceType;
@@ -101,27 +102,27 @@ public class MedicalSocialWorkResponse {
         this.medicalSocialWorkAuthorizationIdNo = medicalSocialWorkAuthorizationIdNo;
     }
 
-    public String getMedicalSocialWorkEffectiveDateFrom() {
+    public LocalDate getMedicalSocialWorkEffectiveDateFrom() {
         return medicalSocialWorkEffectiveDateFrom;
     }
 
-    public void setMedicalSocialWorkEffectiveDateFrom(String medicalSocialWorkEffectiveDateFrom) {
+    public void setMedicalSocialWorkEffectiveDateFrom(LocalDate medicalSocialWorkEffectiveDateFrom) {
         this.medicalSocialWorkEffectiveDateFrom = medicalSocialWorkEffectiveDateFrom;
     }
 
-    public String getMedicalSocialWorkEffectiveDateTo() {
+    public LocalDate getMedicalSocialWorkEffectiveDateTo() {
         return medicalSocialWorkEffectiveDateTo;
     }
 
-    public void setMedicalSocialWorkEffectiveDateTo(String medicalSocialWorkEffectiveDateTo) {
+    public void setMedicalSocialWorkEffectiveDateTo(LocalDate medicalSocialWorkEffectiveDateTo) {
         this.medicalSocialWorkEffectiveDateTo = medicalSocialWorkEffectiveDateTo;
     }
 
-    public String getMedicalSocialWorkExpirationDate() {
+    public LocalDate getMedicalSocialWorkExpirationDate() {
         return medicalSocialWorkExpirationDate;
     }
 
-    public void setMedicalSocialWorkExpirationDate(String medicalSocialWorkExpirationDate) {
+    public void setMedicalSocialWorkExpirationDate(LocalDate medicalSocialWorkExpirationDate) {
         this.medicalSocialWorkExpirationDate = medicalSocialWorkExpirationDate;
     }
 
@@ -149,19 +150,19 @@ public class MedicalSocialWorkResponse {
         this.medicalSocialWorkProviderPrefix = medicalSocialWorkProviderPrefix;
     }
 
-    public Date getMedicalSocialWorkResponseServiceDateFrom() {
+    public LocalDate getMedicalSocialWorkResponseServiceDateFrom() {
         return medicalSocialWorkResponseServiceDateFrom;
     }
 
-    public void setMedicalSocialWorkResponseServiceDateFrom(Date medicalSocialWorkResponseServiceDateFrom) {
+    public void setMedicalSocialWorkResponseServiceDateFrom(LocalDate medicalSocialWorkResponseServiceDateFrom) {
         this.medicalSocialWorkResponseServiceDateFrom = medicalSocialWorkResponseServiceDateFrom;
     }
 
-    public Date getMedicalSocialWorkResponseServiceDateTo() {
+    public LocalDate getMedicalSocialWorkResponseServiceDateTo() {
         return medicalSocialWorkResponseServiceDateTo;
     }
 
-    public void setMedicalSocialWorkResponseServiceDateTo(Date medicalSocialWorkResponseServiceDateTo) {
+    public void setMedicalSocialWorkResponseServiceDateTo(LocalDate medicalSocialWorkResponseServiceDateTo) {
         this.medicalSocialWorkResponseServiceDateTo = medicalSocialWorkResponseServiceDateTo;
     }
 

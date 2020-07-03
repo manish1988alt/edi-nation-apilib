@@ -183,9 +183,10 @@ public class PreAuthRestApp implements Serializable {
 
     }
     @PostMapping("/preAuthManualResponseSave")
-    public ResponseEntity<?>  preAuthManualResponseSave(@RequestBody  PreAuthorizationResponse preAuthorizationResponse)  throws Throwable
+    public ResponseEntity<?>  preAuthManualResponseSave(@RequestBody  PreAuthorizationResponse preAuthorizationResponse1)  throws Throwable
     {
-       String ackn= this.preAuthResponseSaveOperation(preAuthorizationResponse);
+        PreAuthorizationResponse preAuthorizationResponse=preAuthorizationResponse1;
+       String ackn= this.preAuthResponseSaveOperation(preAuthorizationResponse1);
         if(ackn.equals("true")) {
             PreAuthorizationResponseHistory preAuthorizationResponseHistory=new PreAuthorizationResponseHistory();
             preAuthorizationResponseHistory.setEnquiryId(preAuthorizationResponse.getAuthorizationDetail().getEnquiryId());
@@ -202,36 +203,49 @@ public class PreAuthRestApp implements Serializable {
             long visitdays=-1;
             if(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideSelected() && visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideEffectiveDateTo().toString(),formatterLocal);
+                // System.out.println("currentdateAfter "+currentdateAfter);
+                System.out.println("ExpirationDate "+preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideExpirationDate().toString());
+               // Date expiration = new Date(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideExpirationDate().toString());
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getHomeHealthAideResponse().getHomeHealthAideExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+                System.out.println("HHA");
+                System.out.println("currentdateAfter "+currentdateAfter);
+                System.out.println("EffectiveDateToBefore "+EffectiveDateToBefore);
+                System.out.println("visitdays "+visitdays);
             }
             if(preAuthorizationResponse.getOccupationalTherapyResponse().getOccupationalTherapySelected() && visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getOccupationalTherapyResponse().getOccupationalTherapyEffectiveDateTo().toString(),formatterLocal);
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getOccupationalTherapyResponse().getOccupationalTherapyExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+
             }
             if(preAuthorizationResponse.getPhysicalTherapyResponse().getPhysicalTherapySelected()&& visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getPhysicalTherapyResponse().getPhysicalTherapyEffectiveDateTo().toString(),formatterLocal);
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getPhysicalTherapyResponse().getPhysicalTherapyExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
             }
             if(preAuthorizationResponse.getMedicalSocialWorkResponse().getMedicalSocialWorkSelected()&& visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getMedicalSocialWorkResponse().getMedicalSocialWorkEffectiveDateTo().toString(),formatterLocal);
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getMedicalSocialWorkResponse().getMedicalSocialWorkExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
+
+                System.out.println("MSW");
+                System.out.println("currentdateAfter "+currentdateAfter);
+                System.out.println("EffectiveDateToBefore "+EffectiveDateToBefore);
+                System.out.println("visitdays "+visitdays);
             }
             if(preAuthorizationResponse.getSkilledNursingResponse().getSkilledNursingSelected()&& visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSkilledNursingResponse().getSkilledNursingEffectiveDateTo().toString(),formatterLocal);
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSkilledNursingResponse().getSkilledNursingExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
             }
             if(preAuthorizationResponse.getSpeechPathologyResponse().getspeechPathologySelected()&& visitdays<0)
             {
-                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSpeechPathologyResponse().getspeechPathologyEffectiveDateTo().toString(),formatterLocal);
+                LocalDate EffectiveDateToBefore = LocalDate.parse(preAuthorizationResponse.getSpeechPathologyResponse().getspeechPathologyExpirationDate().toString());
                 visitdays = ChronoUnit.DAYS.between(currentdateAfter,EffectiveDateToBefore);
             }
 
-
+          System.out.println("Visit days: "+visitdays);
             //calculating number of days in between
 
 

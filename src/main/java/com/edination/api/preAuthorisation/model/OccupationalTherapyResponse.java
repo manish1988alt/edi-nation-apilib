@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -26,8 +27,8 @@ public class OccupationalTherapyResponse {
     private String OccupationalTherapyProviderMiddleName;
     private String occupationalTherapyProviderSuffix;
     private String occupationalTherapyProviderPrefix;
-    private Date occupationalTherapyResponseServiceDateFrom;
-    private Date occupationalTherapyResponseServiceDateTo;
+    private LocalDate occupationalTherapyResponseServiceDateFrom;
+    private LocalDate occupationalTherapyResponseServiceDateTo;
     private int occupationalTherapyRevenueCode;
     private String mrnNumber;
     private String OccupationalTherapyProviderType;
@@ -46,14 +47,14 @@ public class OccupationalTherapyResponse {
     private String OccupationalTherapyDetailStatus;
 
     private String occupationalTherapyAuthorizationIdNo;
-    private String  occupationalTherapyEffectiveDateFrom;
-    private String occupationalTherapyEffectiveDateTo;
-    private String occupationalTherapyExpirationDate;
+    private LocalDate occupationalTherapyEffectiveDateFrom;
+    private LocalDate occupationalTherapyEffectiveDateTo;
+    private LocalDate occupationalTherapyExpirationDate;
     private boolean occupationalTherapySelected;
     public OccupationalTherapyResponse() {
     }
 
-    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderSuffix, String occupationalTherapyProviderPrefix, Date occupationalTherapyResponseServiceDateFrom, Date occupationalTherapyResponseServiceDateTo, int occupationalTherapyRevenueCode, String mrnNumber, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus, String occupationalTherapyAuthorizationIdNo, String occupationalTherapyEffectiveDateFrom, String occupationalTherapyEffectiveDateTo, String occupationalTherapyExpirationDate,boolean occupationalTherapySelected) {
+    public OccupationalTherapyResponse(String occupationalTherapyRequestCategory, String occupationalTherapyCertificationType, String occupationalTherapyServiceType, String occupationalTherapyLevelOfService, String occupationalTherapyVisit, String occupationalTherapyUnit, String occupationalTherapyCertificationAction, String occupationalTherapyRejectionReason, String occupationalTherapyRejectionReasonMSG, String occupationalTherapyProviderFirstName, String occupationalTherapyProviderLastName, String occupationalTherapyProviderMiddleName, String occupationalTherapyProviderSuffix, String occupationalTherapyProviderPrefix, LocalDate occupationalTherapyResponseServiceDateFrom, LocalDate occupationalTherapyResponseServiceDateTo, int occupationalTherapyRevenueCode, String mrnNumber, String occupationalTherapyProviderType, String occupationalTherapyProviderIdentificationNumber, String occupationalProviderIdentificationNumberType, String occupationalTherapyProviderSupplimentalId, String occupationalTherapyProviderIdNumberType, String occupationalTherapyProviderRejectionReason, String occupationalTherapyProviderFollowUpActionDescription, String occupationalTherapyAddress, String occupationalTherapyCity, String occupationalTherapyState, String occupationalTherapyPostalCode, String occupationalTherapyCountryCode, String occupationalTherapyProviderFullName, String occupationalTherapyDetailStatus, String occupationalTherapyAuthorizationIdNo, LocalDate occupationalTherapyEffectiveDateFrom, LocalDate occupationalTherapyEffectiveDateTo, LocalDate occupationalTherapyExpirationDate,boolean occupationalTherapySelected) {
         OccupationalTherapyRequestCategory = occupationalTherapyRequestCategory;
         OccupationalTherapyCertificationType = occupationalTherapyCertificationType;
         OccupationalTherapyServiceType = occupationalTherapyServiceType;
@@ -101,27 +102,27 @@ public class OccupationalTherapyResponse {
         this.occupationalTherapyAuthorizationIdNo = occupationalTherapyAuthorizationIdNo;
     }
 
-    public String getOccupationalTherapyEffectiveDateFrom() {
+    public LocalDate getOccupationalTherapyEffectiveDateFrom() {
         return occupationalTherapyEffectiveDateFrom;
     }
 
-    public void setOccupationalTherapyEffectiveDateFrom(String occupationalTherapyEffectiveDateFrom) {
+    public void setOccupationalTherapyEffectiveDateFrom(LocalDate occupationalTherapyEffectiveDateFrom) {
         this.occupationalTherapyEffectiveDateFrom = occupationalTherapyEffectiveDateFrom;
     }
 
-    public String getOccupationalTherapyEffectiveDateTo() {
+    public LocalDate getOccupationalTherapyEffectiveDateTo() {
         return occupationalTherapyEffectiveDateTo;
     }
 
-    public void setOccupationalTherapyEffectiveDateTo(String occupationalTherapyEffectiveDateTo) {
+    public void setOccupationalTherapyEffectiveDateTo(LocalDate occupationalTherapyEffectiveDateTo) {
         this.occupationalTherapyEffectiveDateTo = occupationalTherapyEffectiveDateTo;
     }
 
-    public String getOccupationalTherapyExpirationDate() {
+    public LocalDate getOccupationalTherapyExpirationDate() {
         return occupationalTherapyExpirationDate;
     }
 
-    public void setOccupationalTherapyExpirationDate(String occupationalTherapyExpirationDate) {
+    public void setOccupationalTherapyExpirationDate(LocalDate occupationalTherapyExpirationDate) {
         this.occupationalTherapyExpirationDate = occupationalTherapyExpirationDate;
     }
 
@@ -150,19 +151,19 @@ public class OccupationalTherapyResponse {
         this.occupationalTherapyProviderPrefix = occupationalTherapyProviderPrefix;
     }
 
-    public Date getOccupationalTherapyResponseServiceDateFrom() {
+    public LocalDate getOccupationalTherapyResponseServiceDateFrom() {
         return occupationalTherapyResponseServiceDateFrom;
     }
 
-    public void setOccupationalTherapyResponseServiceDateFrom(Date occupationalTherapyResponseServiceDateFrom) {
+    public void setOccupationalTherapyResponseServiceDateFrom(LocalDate occupationalTherapyResponseServiceDateFrom) {
         this.occupationalTherapyResponseServiceDateFrom = occupationalTherapyResponseServiceDateFrom;
     }
 
-    public Date getOccupationalTherapyResponseServiceDateTo() {
+    public LocalDate getOccupationalTherapyResponseServiceDateTo() {
         return occupationalTherapyResponseServiceDateTo;
     }
 
-    public void setOccupationalTherapyResponseServiceDateTo(Date occupationalTherapyResponseServiceDateTo) {
+    public void setOccupationalTherapyResponseServiceDateTo(LocalDate occupationalTherapyResponseServiceDateTo) {
         this.occupationalTherapyResponseServiceDateTo = occupationalTherapyResponseServiceDateTo;
     }
 

@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -26,8 +27,8 @@ public class PhysicalTherapyResponse {
     private String physicalTherapyProviderMiddleName;
     private String physicalTherapyProviderSuffix;
     private String physicalTherapyProviderPrefix;
-    private Date physicalTherapyResponseServiceDateFrom;
-    private Date physicalTherapyResponseServiceDateTo;
+    private LocalDate physicalTherapyResponseServiceDateFrom;
+    private LocalDate physicalTherapyResponseServiceDateTo;
     private int physicalTherapyRevenueCode;
     private String mrnNumber;
     private String physicalTherapyProviderType;
@@ -45,15 +46,15 @@ public class PhysicalTherapyResponse {
     private String physicalTherapyProviderFullName;
     private String physicalTherapyDetailStatus;
     private String physicalTherapyAuthorizationIdNo;
-    private String  physicalTherapyEffectiveDateFrom;
-    private String physicalTherapyEffectiveDateTo;
-    private String physicalTherapyExpirationDate;
+    private LocalDate physicalTherapyEffectiveDateFrom;
+    private LocalDate physicalTherapyEffectiveDateTo;
+    private LocalDate physicalTherapyExpirationDate;
     private boolean physicalTherapySelected;
     public PhysicalTherapyResponse() {
     }
 
 
-    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, Date physicalTherapyResponseServiceDateFrom, Date physicalTherapyResponseServiceDateTo, int physicalTherapyRevenueCode, String mrnNumber, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus, String physicalTherapyAuthorizationIdNo, String physicalTherapyEffectiveDateFrom, String physicalTherapyEffectiveDateTo, String physicalTherapyExpirationDate, boolean physicalTherapySelected) {
+    public PhysicalTherapyResponse(String physicalTherapyRequestCategory, String physicalTherapyCertificationType, String physicalTherapyServiceType, String physicalTherapyLevelOfService, String physicalTherapyVisit, String physicalTherapyUnit, String physicalTherapyCertificationAction, String physicalTherapyRejectionReason, String physicalTherapyRejectionReasonMSG, String physicalTherapyProviderFirstName, String physicalTherapyPoviderLastName, String physicalTherapyProviderMiddleName, String physicalTherapyProviderSuffix, String physicalTherapyProviderPrefix, LocalDate physicalTherapyResponseServiceDateFrom, LocalDate physicalTherapyResponseServiceDateTo, int physicalTherapyRevenueCode, String mrnNumber, String physicalTherapyProviderType, String physicalTherapyProviderIdentificationNumber, String physicalTherapyProviderIdentificationNumberType, String physicalTherapyProviderSupplimentalId, String physicalTherapyProviderIdNumberType, String physicalTherapyProviderRejectionReason, String physicalTherapyProviderFollowUpActionDescription, String physicalTherapyProviderAddress, String physicalTherapyProviderCity, String physicalTherapyProviderState, String physicalTherapyProviderPostalCode, String physicalTherapyProviderCountryCode, String physicalTherapyProviderFullName, String physicalTherapyDetailStatus, String physicalTherapyAuthorizationIdNo, LocalDate physicalTherapyEffectiveDateFrom, LocalDate physicalTherapyEffectiveDateTo, LocalDate physicalTherapyExpirationDate, boolean physicalTherapySelected) {
         this.physicalTherapyRequestCategory = physicalTherapyRequestCategory;
         this.physicalTherapyCertificationType = physicalTherapyCertificationType;
         this.physicalTherapyServiceType = physicalTherapyServiceType;
@@ -101,27 +102,27 @@ public class PhysicalTherapyResponse {
         this.physicalTherapyAuthorizationIdNo = physicalTherapyAuthorizationIdNo;
     }
 
-    public String getPhysicalTherapyEffectiveDateFrom() {
+    public LocalDate getPhysicalTherapyEffectiveDateFrom() {
         return physicalTherapyEffectiveDateFrom;
     }
 
-    public void setPhysicalTherapyEffectiveDateFrom(String physicalTherapyEffectiveDateFrom) {
+    public void setPhysicalTherapyEffectiveDateFrom(LocalDate physicalTherapyEffectiveDateFrom) {
         this.physicalTherapyEffectiveDateFrom = physicalTherapyEffectiveDateFrom;
     }
 
-    public String getPhysicalTherapyEffectiveDateTo() {
+    public LocalDate getPhysicalTherapyEffectiveDateTo() {
         return physicalTherapyEffectiveDateTo;
     }
 
-    public void setPhysicalTherapyEffectiveDateTo(String physicalTherapyEffectiveDateTo) {
+    public void setPhysicalTherapyEffectiveDateTo(LocalDate physicalTherapyEffectiveDateTo) {
         this.physicalTherapyEffectiveDateTo = physicalTherapyEffectiveDateTo;
     }
 
-    public String getPhysicalTherapyExpirationDate() {
+    public LocalDate getPhysicalTherapyExpirationDate() {
         return physicalTherapyExpirationDate;
     }
 
-    public void setPhysicalTherapyExpirationDate(String physicalTherapyExpirationDate) {
+    public void setPhysicalTherapyExpirationDate(LocalDate physicalTherapyExpirationDate) {
         this.physicalTherapyExpirationDate = physicalTherapyExpirationDate;
     }
 
@@ -149,19 +150,19 @@ public class PhysicalTherapyResponse {
         this.physicalTherapyProviderPrefix = physicalTherapyProviderPrefix;
     }
 
-    public Date getPhysicalTherapyResponseServiceDateFrom() {
+    public LocalDate getPhysicalTherapyResponseServiceDateFrom() {
         return physicalTherapyResponseServiceDateFrom;
     }
 
-    public void setPhysicalTherapyResponseServiceDateFrom(Date physicalTherapyResponseServiceDateFrom) {
+    public void setPhysicalTherapyResponseServiceDateFrom(LocalDate physicalTherapyResponseServiceDateFrom) {
         this.physicalTherapyResponseServiceDateFrom = physicalTherapyResponseServiceDateFrom;
     }
 
-    public Date getPhysicalTherapyResponseServiceDateTo() {
+    public LocalDate getPhysicalTherapyResponseServiceDateTo() {
         return physicalTherapyResponseServiceDateTo;
     }
 
-    public void setPhysicalTherapyResponseServiceDateTo(Date physicalTherapyResponseServiceDateTo) {
+    public void setPhysicalTherapyResponseServiceDateTo(LocalDate physicalTherapyResponseServiceDateTo) {
         this.physicalTherapyResponseServiceDateTo = physicalTherapyResponseServiceDateTo;
     }
 

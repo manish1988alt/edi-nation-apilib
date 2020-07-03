@@ -1,6 +1,9 @@
 package com.edination.api.preAuthorisation.model;
 
+
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -27,8 +30,8 @@ public class HomeHealthAideResponse {
     private String HomeHealthAideProviderMiddleName;
     private String homeHealthAideProviderSuffix;
     private String homeHealthAideProviderPrefix;
-    private Date homeHealthAideResponseServiceDateFrom;
-    private Date homeHealthAideResponseServiceDateTo;
+    private LocalDate homeHealthAideResponseServiceDateFrom;
+    private LocalDate homeHealthAideResponseServiceDateTo;
     private int homeHealthAideRevenueCode;
     private String mrnNumber;
     private String HomeHealthAideProviderType;
@@ -46,15 +49,15 @@ public class HomeHealthAideResponse {
     private String HomeHealthAideProviderFullName;
     private String HomeHealthAideDetailStatus;
     private String homeHealthAideAuthorizationIdNo;
-    private String  homeHealthAideEffectiveDateFrom;
-    private String homeHealthAideEffectiveDateTo;
-    private String homeHealthAideExpirationDate;
+    private LocalDate homeHealthAideEffectiveDateFrom;
+    private LocalDate homeHealthAideEffectiveDateTo;
+    private LocalDate homeHealthAideExpirationDate;
     private boolean homeHealthAideSelected;
 
     public HomeHealthAideResponse() {
     }
 
-    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, Date homeHealthAideResponseServiceDateFrom, Date homeHealthAideResponseServiceDateTo, int homeHealthAideRevenueCode, String mrnNumber, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus, String homeHealthAideAuthorizationIdNo, String homeHealthAideEffectiveDateFrom, String homeHealthAideEffectiveDateTo, String homeHealthAideExpirationDate, boolean homeHealthAideSelected) {
+    public HomeHealthAideResponse(String homeHealthAideRequestCategory, String homeHealthAideCertificationType, String homeHealthAideServiceType, String homeHealthAideLevelOfService, String homeHealthAideVisit, String homeHealthAideUnit, String homeHealthAideCertificationAction, String homeHealthAideRejectionReason, String homeHealthAideRejectionReasonMSG, String homeHealthAideProviderFirstName, String homeHealthAidePoviderLastName, String homeHealthAideProviderMiddleName, String homeHealthAideProviderSuffix, String homeHealthAideProviderPrefix, LocalDate homeHealthAideResponseServiceDateFrom, LocalDate homeHealthAideResponseServiceDateTo, int homeHealthAideRevenueCode, String mrnNumber, String homeHealthAideProviderType, String homeHealthAideProviderIdentificationNumber, String homeHealthAideProviderIdentificationNumberType, String homeHealthAideProviderSupplimentalId, String homeHealthAideProviderIdNumberType, String homeHealthAideProviderRejectionReason, String homeHealthAideProviderFollowUpActionDescription, String homeHealthAideProviderAddress, String homeHealthAideProviderCity, String homeHealthAideProviderState, String homeHealthAideProviderPostalCode, String homeHealthAideProviderCountryCode, String homeHealthAideProviderFullName, String homeHealthAideDetailStatus, String homeHealthAideAuthorizationIdNo, LocalDate homeHealthAideEffectiveDateFrom, LocalDate homeHealthAideEffectiveDateTo, LocalDate homeHealthAideExpirationDate, boolean homeHealthAideSelected) {
         HomeHealthAideRequestCategory = homeHealthAideRequestCategory;
         HomeHealthAideCertificationType = homeHealthAideCertificationType;
         HomeHealthAideServiceType = homeHealthAideServiceType;
@@ -102,27 +105,27 @@ public class HomeHealthAideResponse {
         this.homeHealthAideAuthorizationIdNo = homeHealthAideAuthorizationIdNo;
     }
 
-    public String getHomeHealthAideEffectiveDateFrom() {
+    public LocalDate getHomeHealthAideEffectiveDateFrom() {
         return homeHealthAideEffectiveDateFrom;
     }
 
-    public void setHomeHealthAideEffectiveDateFrom(String homeHealthAideEffectiveDateFrom) {
+    public void setHomeHealthAideEffectiveDateFrom(LocalDate homeHealthAideEffectiveDateFrom) {
         this.homeHealthAideEffectiveDateFrom = homeHealthAideEffectiveDateFrom;
     }
 
-    public String getHomeHealthAideEffectiveDateTo() {
+    public LocalDate getHomeHealthAideEffectiveDateTo() {
         return homeHealthAideEffectiveDateTo;
     }
 
-    public void setHomeHealthAideEffectiveDateTo(String homeHealthAideEffectiveDateTo) {
+    public void setHomeHealthAideEffectiveDateTo(LocalDate homeHealthAideEffectiveDateTo) {
         this.homeHealthAideEffectiveDateTo = homeHealthAideEffectiveDateTo;
     }
 
-    public String getHomeHealthAideExpirationDate() {
+    public LocalDate getHomeHealthAideExpirationDate() {
         return homeHealthAideExpirationDate;
     }
 
-    public void setHomeHealthAideExpirationDate(String homeHealthAideExpirationDate) {
+    public void setHomeHealthAideExpirationDate(LocalDate homeHealthAideExpirationDate) {
         this.homeHealthAideExpirationDate = homeHealthAideExpirationDate;
     }
 
@@ -151,19 +154,19 @@ public class HomeHealthAideResponse {
         this.homeHealthAideProviderPrefix = homeHealthAideProviderPrefix;
     }
 
-    public Date getHomeHealthAideResponseServiceDateFrom() {
+    public LocalDate getHomeHealthAideResponseServiceDateFrom() {
         return homeHealthAideResponseServiceDateFrom;
     }
 
-    public void setHomeHealthAideResponseServiceDateFrom(Date homeHealthAideResponseServiceDateFrom) {
+    public void setHomeHealthAideResponseServiceDateFrom(LocalDate homeHealthAideResponseServiceDateFrom) {
         this.homeHealthAideResponseServiceDateFrom = homeHealthAideResponseServiceDateFrom;
     }
 
-    public Date getHomeHealthAideResponseServiceDateTo() {
+    public LocalDate getHomeHealthAideResponseServiceDateTo() {
         return homeHealthAideResponseServiceDateTo;
     }
 
-    public void setHomeHealthAideResponseServiceDateTo(Date homeHealthAideResponseServiceDateTo) {
+    public void setHomeHealthAideResponseServiceDateTo(LocalDate homeHealthAideResponseServiceDateTo) {
         this.homeHealthAideResponseServiceDateTo = homeHealthAideResponseServiceDateTo;
     }
 

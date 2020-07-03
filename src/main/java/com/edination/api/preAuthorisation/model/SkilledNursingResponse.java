@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -25,8 +26,8 @@ public class SkilledNursingResponse {
     private String SkilledNursingProviderMiddleName;
     private String skilledNursingProviderSuffix;
     private String skilledNursingProviderPrefix;
-    private Date skilledNursingResponseServiceDateFrom;
-    private Date skilledNursingResponseServiceDateTo;
+    private LocalDate skilledNursingResponseServiceDateFrom;
+    private LocalDate skilledNursingResponseServiceDateTo;
     private int skilledNursingRevenueCode;
     private String mrnNumber;
     private String SkilledNursingProviderType;
@@ -44,14 +45,14 @@ public class SkilledNursingResponse {
     private String SkilledNursingProviderFullName;
     private String SkilledNursingDetailStatus;
     private String skilledNursingAuthorizationIdNo;
-    private String  skilledNursingEffectiveDateFrom;
-    private String skilledNursingEffectiveDateTo;
-    private String skilledNursingExpirationDate;
+    private LocalDate  skilledNursingEffectiveDateFrom;
+    private LocalDate skilledNursingEffectiveDateTo;
+    private LocalDate skilledNursingExpirationDate;
     private boolean skilledNursingSelected;
     public SkilledNursingResponse() {
     }
 
-    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, Date skilledNursingResponseServiceDateFrom, Date skilledNursingResponseServiceDateTo, int skilledNursingRevenueCode, String mrnNumber, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus, String skilledNursingAuthorizationIdNo, String skilledNursingEffectiveDateFrom, String skilledNursingEffectiveDateTo, String skilledNursingExpirationDate, boolean skilledNursingSelected) {
+    public SkilledNursingResponse(String skilledNursingRequestCategory, String skilledNursingCertificationType, String skilledNursingServiceType, String skilledNursingLevelOfService, String skilledNursingVisit, String skilledNursingUnit, String skilledNursingCertificationAction, String skilledNursingRejectionReason, String skilledNursingRejectionReasonMSG, String skilledNursingProviderFirstName, String skilledNursingPoviderLastName, String skilledNursingProviderMiddleName, String skilledNursingProviderSuffix, String skilledNursingProviderPrefix, LocalDate skilledNursingResponseServiceDateFrom, LocalDate skilledNursingResponseServiceDateTo, int skilledNursingRevenueCode, String mrnNumber, String skilledNursingProviderType, String skilledNursingProviderIdentificationNumber, String skilledNursingProviderIdentificationNumberType, String skilledNursingProviderSupplimentalId, String skilledNursingProviderIdNumberType, String skilledNursingProviderRejectionReason, String skilledNursingProviderFollowUpActionDescription, String skilledNursingProviderAddress, String skilledNursingProviderCity, String skilledNursingProviderState, String skilledNursingProviderPostalCode, String skilledNursingProviderCountryCode, String skilledNursingProviderFullName, String skilledNursingDetailStatus, String skilledNursingAuthorizationIdNo, LocalDate skilledNursingEffectiveDateFrom, LocalDate skilledNursingEffectiveDateTo, LocalDate skilledNursingExpirationDate, boolean skilledNursingSelected) {
         SkilledNursingRequestCategory = skilledNursingRequestCategory;
         SkilledNursingCertificationType = skilledNursingCertificationType;
         SkilledNursingServiceType = skilledNursingServiceType;
@@ -99,27 +100,27 @@ public class SkilledNursingResponse {
         this.skilledNursingAuthorizationIdNo = skilledNursingAuthorizationIdNo;
     }
 
-    public String getSkilledNursingEffectiveDateFrom() {
+    public LocalDate getSkilledNursingEffectiveDateFrom() {
         return skilledNursingEffectiveDateFrom;
     }
 
-    public void setSkilledNursingEffectiveDateFrom(String skilledNursingEffectiveDateFrom) {
+    public void setSkilledNursingEffectiveDateFrom(LocalDate skilledNursingEffectiveDateFrom) {
         this.skilledNursingEffectiveDateFrom = skilledNursingEffectiveDateFrom;
     }
 
-    public String getSkilledNursingEffectiveDateTo() {
+    public LocalDate getSkilledNursingEffectiveDateTo() {
         return skilledNursingEffectiveDateTo;
     }
 
-    public void setSkilledNursingEffectiveDateTo(String skilledNursingEffectiveDateTo) {
+    public void setSkilledNursingEffectiveDateTo(LocalDate skilledNursingEffectiveDateTo) {
         this.skilledNursingEffectiveDateTo = skilledNursingEffectiveDateTo;
     }
 
-    public String getSkilledNursingExpirationDate() {
+    public LocalDate getSkilledNursingExpirationDate() {
         return skilledNursingExpirationDate;
     }
 
-    public void setSkilledNursingExpirationDate(String skilledNursingExpirationDate) {
+    public void setSkilledNursingExpirationDate(LocalDate skilledNursingExpirationDate) {
         this.skilledNursingExpirationDate = skilledNursingExpirationDate;
     }
 
@@ -147,19 +148,19 @@ public class SkilledNursingResponse {
         this.skilledNursingProviderPrefix = skilledNursingProviderPrefix;
     }
 
-    public Date getSkilledNursingResponseServiceDateFrom() {
+    public LocalDate getSkilledNursingResponseServiceDateFrom() {
         return skilledNursingResponseServiceDateFrom;
     }
 
-    public void setSkilledNursingResponseServiceDateFrom(Date skilledNursingResponseServiceDateFrom) {
+    public void setSkilledNursingResponseServiceDateFrom(LocalDate skilledNursingResponseServiceDateFrom) {
         this.skilledNursingResponseServiceDateFrom = skilledNursingResponseServiceDateFrom;
     }
 
-    public Date getSkilledNursingResponseServiceDateTo() {
+    public LocalDate getSkilledNursingResponseServiceDateTo() {
         return skilledNursingResponseServiceDateTo;
     }
 
-    public void setSkilledNursingResponseServiceDateTo(Date skilledNursingResponseServiceDateTo) {
+    public void setSkilledNursingResponseServiceDateTo(LocalDate skilledNursingResponseServiceDateTo) {
         this.skilledNursingResponseServiceDateTo = skilledNursingResponseServiceDateTo;
     }
 
