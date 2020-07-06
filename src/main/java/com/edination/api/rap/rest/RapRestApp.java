@@ -1,10 +1,7 @@
 package com.edination.api.rap.rest;
 
 import com.edination.api.rap.Dao.RapRequestFormRepository;
-import com.edination.api.rap.model.ConditionCodes;
-import com.edination.api.rap.model.RapRequestForm;
-import com.edination.api.rap.model.ServicingProviderFacility;
-import com.edination.api.rap.model.ServicingProviderPerson;
+import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,5 +43,13 @@ public class RapRestApp implements Serializable {
     @GetMapping("/condtionCodeList")
     public List<ConditionCodes> condtionCodeList() throws Throwable {
         return rapRequestFormRepository.conditionCodesList();
+    }
+    @GetMapping("/valueCodeList")
+    public List<ValueCode> valueCodeList() throws Throwable {
+        return rapRequestFormRepository.valueCodesList();
+    }
+    @GetMapping("/occuranceCodeList")
+    public List<OccuranceCode> occuranceCodeList() throws Throwable {
+        return rapRequestFormRepository.occuranceCodesList();
     }
 }

@@ -24,4 +24,10 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM ConditionCodes")
     List<ConditionCodes> conditionCodesList();
+
+    @Query("FROM ValueCode")
+    List<ValueCode> valueCodesList();
+
+    @Query("FROM OccuranceCode")
+    List<OccuranceCode> occuranceCodesList();
 }
