@@ -23,13 +23,19 @@ public class PDGMRapListing {
     private String aging;
     private String billableVisit;
     private String hippsCode;
+    private Date hippsCodeGeneratedDate;
     private String oasisKey;
     private String claimType;
+    private String action;
     private String primaryDiagnosisCode;
+    private String rapsType;
+    private String rapsFormStatus;
+    private Date rapsSentDate;
+
     public PDGMRapListing() {
     }
 
-    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, String oasisKey, String claimType, String primaryDiagnosisCode) {
+    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, Date hippsCodeGeneratedDate, String oasisKey, String claimType, String action, String primaryDiagnosisCode, String rapsType, String rapsFormStatus, Date rapsSentDate) {
         this.mrnNumber = mrnNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,9 +48,54 @@ public class PDGMRapListing {
         this.aging = aging;
         this.billableVisit = billableVisit;
         this.hippsCode = hippsCode;
+        this.hippsCodeGeneratedDate = hippsCodeGeneratedDate;
         this.oasisKey = oasisKey;
         this.claimType = claimType;
+        this.action = action;
         this.primaryDiagnosisCode = primaryDiagnosisCode;
+        this.rapsType = rapsType;
+        this.rapsFormStatus = rapsFormStatus;
+        this.rapsSentDate = rapsSentDate;
+    }
+
+    public Date getHippsCodeGeneratedDate() {
+        return hippsCodeGeneratedDate;
+    }
+
+    public void setHippsCodeGeneratedDate(Date hippsCodeGeneratedDate) {
+        this.hippsCodeGeneratedDate = hippsCodeGeneratedDate;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getRapsType() {
+        return rapsType;
+    }
+
+    public void setRapsType(String rapsType) {
+        this.rapsType = rapsType;
+    }
+
+    public String getRapsFormStatus() {
+        return rapsFormStatus;
+    }
+
+    public void setRapsFormStatus(String rapsFormStatus) {
+        this.rapsFormStatus = rapsFormStatus;
+    }
+
+    public Date getRapsSentDate() {
+        return rapsSentDate;
+    }
+
+    public void setRapsSentDate(Date rapsSentDate) {
+        this.rapsSentDate = rapsSentDate;
     }
 
     public String getMrnNumber() {
@@ -182,9 +233,14 @@ public class PDGMRapListing {
                 ", aging='" + aging + '\'' +
                 ", billableVisit='" + billableVisit + '\'' +
                 ", hippsCode='" + hippsCode + '\'' +
+                ", hippsCodeGeneratedDate=" + hippsCodeGeneratedDate +
                 ", oasisKey='" + oasisKey + '\'' +
                 ", claimType='" + claimType + '\'' +
+                ", action='" + action + '\'' +
                 ", primaryDiagnosisCode='" + primaryDiagnosisCode + '\'' +
+                ", rapsType='" + rapsType + '\'' +
+                ", rapsFormStatus='" + rapsFormStatus + '\'' +
+                ", rapsSentDate=" + rapsSentDate +
                 '}';
     }
 }
