@@ -31,6 +31,18 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM OccuranceCode")
     List<OccuranceCode> occuranceCodesList();
 
+    @Query("FROM DischargeStatusCode")
+    List<DischargeStatusCode> dischargeStatusCodeList();
+
+    @Query("FROM SourceOfReferral")
+    List<SourceOfReferral> sourceOfReferralList();
+
+    @Query("FROM TypeOfBillCode")
+    List<TypeOfBillCode> typeOfBillCodeList();
+
+    @Query("FROM TypeOfVisitCode")
+    List<TypeOfVisitCode> typeOfVisitCodeList();
+
     @Query("FROM RapRequestForm WHERE patient_mrn=?1")
     List<RapRequestForm> rapRequestFormView(String mrnNumber);
 }

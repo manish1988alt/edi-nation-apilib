@@ -54,6 +54,26 @@ public class RapRestApp implements Serializable {
         return rapRequestFormRepository.occuranceCodesList();
     }
 
+    @GetMapping("/dischargeStatusCodeList")
+    public List<DischargeStatusCode> dischargeStatusCodeList() throws Throwable {
+        return rapRequestFormRepository.dischargeStatusCodeList();
+    }
+
+    @GetMapping("/sourceOfReferralCodeList")
+    public List<SourceOfReferral> sourceOfReferralCodeList() throws Throwable {
+        return rapRequestFormRepository.sourceOfReferralList();
+    }
+
+    @GetMapping("/typeOfBillCodeList")
+    public List<TypeOfBillCode> typeOfBillCodeList() throws Throwable {
+        return rapRequestFormRepository.typeOfBillCodeList();
+    }
+
+    @GetMapping("/typeOfVisitCodeList")
+    public List<TypeOfVisitCode> typeOfVisitCodeList() throws Throwable {
+        return rapRequestFormRepository.typeOfVisitCodeList();
+    }
+
     @PostMapping("/rapRequestView")
     public List<RapRequestForm> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable
     {
