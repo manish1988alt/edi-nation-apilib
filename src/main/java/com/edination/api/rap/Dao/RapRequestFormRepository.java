@@ -30,4 +30,7 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM OccuranceCode")
     List<OccuranceCode> occuranceCodesList();
+
+    @Query("FROM RapRequestForm WHERE patient_mrn=?1")
+    List<RapRequestForm> rapRequestFormView(String mrnNumber);
 }

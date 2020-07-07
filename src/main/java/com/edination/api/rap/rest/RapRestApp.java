@@ -1,5 +1,6 @@
 package com.edination.api.rap.rest;
 
+import com.edination.api.PDGM.model.PDGMRapListing;
 import com.edination.api.rap.Dao.RapRequestFormRepository;
 import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,4 +53,11 @@ public class RapRestApp implements Serializable {
     public List<OccuranceCode> occuranceCodeList() throws Throwable {
         return rapRequestFormRepository.occuranceCodesList();
     }
+
+    @PostMapping("/rapRequestView")
+    public List<RapRequestForm> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable
+    {
+        return rapRequestFormRepository.rapRequestFormView(pdgmRapListing.getMrnNumber());
+    }
+
 }

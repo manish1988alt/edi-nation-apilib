@@ -18,10 +18,12 @@ public class RapRequestForm {
     private LocalDate statementCoveredPeriodDateTo;
     private LocalDate admissionDate;
     private String admissionHour;
+    private String admissionMinute;
     private String typeOfVisit;
     private String sourceOfReferral;
     private LocalDate dischargeDate;
     private String dischargeHour;
+    private String dischargeMinute;
     private String patientDischargeStatus;
     private String accidentState;
     private LocalDate accidentDate;
@@ -33,7 +35,68 @@ public class RapRequestForm {
     @JoinColumn(name = "patientdetailId")
     private Patientdetail patientdetail;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "occuranceAndDateId")
+    private OccuranceAndDate occuranceAndDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "valueCodeDetailId")
+    private ValueCodeDetail valueCodeDetail;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "treatmentAuthorizationId")
+    private TreatmentAuthorizationDetails treatmentAuthorizationDetails;
+
     public RapRequestForm() {
+    }
+
+    public RapRequestForm(String patientMrn, String servicingProviderType, String servicingProviderName, String billingProviderType, String billingProviderName, String typeOfBill, LocalDate statementCoveredPeriodDateFrom, LocalDate statementCoveredPeriodDateTo, LocalDate admissionDate, String admissionHour, String typeOfVisit, String sourceOfReferral, LocalDate dischargeDate, String dischargeHour, String patientDischargeStatus, String accidentState, LocalDate accidentDate, String conditionCode1, String conditionCode2, String conditionCode3,String admissionMinute,String dischargeMinute) {
+        PatientMrn = patientMrn;
+        this.servicingProviderType = servicingProviderType;
+        this.servicingProviderName = servicingProviderName;
+        this.billingProviderType = billingProviderType;
+        this.billingProviderName = billingProviderName;
+        this.typeOfBill = typeOfBill;
+        this.statementCoveredPeriodDateFrom = statementCoveredPeriodDateFrom;
+        this.statementCoveredPeriodDateTo = statementCoveredPeriodDateTo;
+        this.admissionDate = admissionDate;
+        this.admissionHour = admissionHour;
+        this.typeOfVisit = typeOfVisit;
+        this.sourceOfReferral = sourceOfReferral;
+        this.dischargeDate = dischargeDate;
+        this.dischargeHour = dischargeHour;
+        this.patientDischargeStatus = patientDischargeStatus;
+        this.accidentState = accidentState;
+        this.accidentDate = accidentDate;
+        this.conditionCode1 = conditionCode1;
+        this.conditionCode2 = conditionCode2;
+        this.conditionCode3 = conditionCode3;
+        this.admissionMinute=admissionMinute;
+        this.dischargeMinute=dischargeMinute;
+    }
+
+    public OccuranceAndDate getOccuranceAndDate() {
+        return occuranceAndDate;
+    }
+
+    public void setOccuranceAndDate(OccuranceAndDate occuranceAndDate) {
+        this.occuranceAndDate = occuranceAndDate;
+    }
+
+    public ValueCodeDetail getValueCodeDetail() {
+        return valueCodeDetail;
+    }
+
+    public void setValueCodeDetail(ValueCodeDetail valueCodeDetail) {
+        this.valueCodeDetail = valueCodeDetail;
+    }
+
+    public TreatmentAuthorizationDetails getTreatmentAuthorizationDetails() {
+        return treatmentAuthorizationDetails;
+    }
+
+    public void setTreatmentAuthorizationDetails(TreatmentAuthorizationDetails treatmentAuthorizationDetails) {
+        this.treatmentAuthorizationDetails = treatmentAuthorizationDetails;
     }
 
     public int getId() {
@@ -210,5 +273,54 @@ public class RapRequestForm {
 
     public void setPatientdetail(Patientdetail patientdetail) {
         this.patientdetail = patientdetail;
+    }
+
+    public String getAdmissionMinute() {
+        return admissionMinute;
+    }
+
+    public void setAdmissionMinute(String admissionMinute) {
+        this.admissionMinute = admissionMinute;
+    }
+
+    public String getDischargeMinute() {
+        return dischargeMinute;
+    }
+
+    public void setDischargeMinute(String dischargeMinute) {
+        this.dischargeMinute = dischargeMinute;
+    }
+
+    @Override
+    public String toString() {
+        return "RapRequestForm{" +
+                "id=" + id +
+                ", PatientMrn='" + PatientMrn + '\'' +
+                ", servicingProviderType='" + servicingProviderType + '\'' +
+                ", servicingProviderName='" + servicingProviderName + '\'' +
+                ", billingProviderType='" + billingProviderType + '\'' +
+                ", billingProviderName='" + billingProviderName + '\'' +
+                ", typeOfBill='" + typeOfBill + '\'' +
+                ", statementCoveredPeriodDateFrom=" + statementCoveredPeriodDateFrom +
+                ", statementCoveredPeriodDateTo=" + statementCoveredPeriodDateTo +
+                ", admissionDate=" + admissionDate +
+                ", admissionHour='" + admissionHour + '\'' +
+                ", admissionMinute='" + admissionMinute + '\'' +
+                ", typeOfVisit='" + typeOfVisit + '\'' +
+                ", sourceOfReferral='" + sourceOfReferral + '\'' +
+                ", dischargeDate=" + dischargeDate +
+                ", dischargeHour='" + dischargeHour + '\'' +
+                ", dischargeMinute='" + dischargeMinute + '\'' +
+                ", patientDischargeStatus='" + patientDischargeStatus + '\'' +
+                ", accidentState='" + accidentState + '\'' +
+                ", accidentDate=" + accidentDate +
+                ", conditionCode1='" + conditionCode1 + '\'' +
+                ", conditionCode2='" + conditionCode2 + '\'' +
+                ", conditionCode3='" + conditionCode3 + '\'' +
+                ", patientdetail=" + patientdetail +
+                ", occuranceAndDate=" + occuranceAndDate +
+                ", valueCodeDetail=" + valueCodeDetail +
+                ", treatmentAuthorizationDetails=" + treatmentAuthorizationDetails +
+                '}';
     }
 }
