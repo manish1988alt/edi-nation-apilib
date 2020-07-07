@@ -75,9 +75,21 @@ public class RapRestApp implements Serializable {
     }
 
     @PostMapping("/rapRequestView")
-    public List<RapRequestForm> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable
+    public List<RapRequestFormDetail> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable
     {
-        return rapRequestFormRepository.rapRequestFormView(pdgmRapListing.getMrnNumber());
+        List<RapRequestFormDetail> list=new ArrayList<>();
+        List<ConditionCodeDetail> conditionCodeDetailList=rapRequestFormRepository.findConditionCodeDetailByMrnNumber(pdgmRapListing.getMrnNumber());
+        List<OccuranceAndDate> occuranceAndDateList=rapRequestFormRepository.findOccuranceAndDateByMrnNumber(pdgmRapListing.getMrnNumber());
+        List<ValueCodeDetail> valueCodeDetailList=rapRequestFormRepository.findValueCodeDetailByMrnNumber(pdgmRapListing.getMrnNumber());
+        RapRequestFormDetail rapRequestFormDetail=new RapRequestFormDetail();
+
+        rapRequestFormDetail.setRapRequestForm(rapRequestFormRepository.rapRequestFormView(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setConditionCodeDetailList(conditionCodeDetailList);
+        rapRequestFormDetail.setOccuranceAndDateList(occuranceAndDateList);
+        rapRequestFormDetail.setValueCodeDetailList(valueCodeDetailList);
+        rapRequestFormDetail.setPatientMrn(pdgmRapListing.getMrnNumber());
+        list.add(rapRequestFormDetail);
+        return list;
     }
 
 }

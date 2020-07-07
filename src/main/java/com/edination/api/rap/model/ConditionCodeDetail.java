@@ -1,27 +1,20 @@
 package com.edination.api.rap.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "OccuranceAndDate")
-public class OccuranceAndDate {
+@Table(name = "ConditionCodeDetail")
+public class ConditionCodeDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String code;
-    private LocalDate dateFrom;
-    private LocalDate dateThrough;
     private String mrnNumber;
-
-
-    public OccuranceAndDate() {
+    public ConditionCodeDetail() {
     }
 
-    public OccuranceAndDate(String code, LocalDate dateFrom, LocalDate dateThrough,String mrnNumber) {
+    public ConditionCodeDetail(String code,String mrnNumber) {
         this.code = code;
-        this.dateFrom = dateFrom;
-        this.dateThrough = dateThrough;
         this.mrnNumber=mrnNumber;
     }
 
@@ -49,29 +42,11 @@ public class OccuranceAndDate {
         this.code = code;
     }
 
-    public LocalDate getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public LocalDate getDateThrough() {
-        return dateThrough;
-    }
-
-    public void setDateThrough(LocalDate dateThrough) {
-        this.dateThrough = dateThrough;
-    }
-
     @Override
     public String toString() {
-        return "OccuranceAndDate{" +
+        return "ConditionCodeDetail{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
-                ", dateFrom=" + dateFrom +
-                ", dateThrough=" + dateThrough +
                 ", mrnNumber='" + mrnNumber + '\'' +
                 '}';
     }

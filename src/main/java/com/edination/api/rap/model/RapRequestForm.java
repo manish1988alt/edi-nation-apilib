@@ -18,30 +18,18 @@ public class RapRequestForm {
     private LocalDate statementCoveredPeriodDateTo;
     private LocalDate admissionDate;
     private String admissionHour;
-    private String admissionMinute;
     private String typeOfVisit;
     private String sourceOfReferral;
     private LocalDate dischargeDate;
     private String dischargeHour;
-    private String dischargeMinute;
     private String patientDischargeStatus;
     private String accidentState;
     private LocalDate accidentDate;
-    private String conditionCode1;
-    private String conditionCode2;
-    private String conditionCode3;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patientdetailId")
     private Patientdetail patientdetail;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "occuranceAndDateId")
-    private OccuranceAndDate occuranceAndDate;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "valueCodeDetailId")
-    private ValueCodeDetail valueCodeDetail;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "treatmentAuthorizationId")
@@ -50,7 +38,7 @@ public class RapRequestForm {
     public RapRequestForm() {
     }
 
-    public RapRequestForm(String patientMrn, String servicingProviderType, String servicingProviderName, String billingProviderType, String billingProviderName, String typeOfBill, LocalDate statementCoveredPeriodDateFrom, LocalDate statementCoveredPeriodDateTo, LocalDate admissionDate, String admissionHour, String typeOfVisit, String sourceOfReferral, LocalDate dischargeDate, String dischargeHour, String patientDischargeStatus, String accidentState, LocalDate accidentDate, String conditionCode1, String conditionCode2, String conditionCode3,String admissionMinute,String dischargeMinute) {
+    public RapRequestForm(String patientMrn, String servicingProviderType, String servicingProviderName, String billingProviderType, String billingProviderName, String typeOfBill, LocalDate statementCoveredPeriodDateFrom, LocalDate statementCoveredPeriodDateTo, LocalDate admissionDate, String admissionHour, String typeOfVisit, String sourceOfReferral, LocalDate dischargeDate, String dischargeHour, String patientDischargeStatus, String accidentState, LocalDate accidentDate) {
         PatientMrn = patientMrn;
         this.servicingProviderType = servicingProviderType;
         this.servicingProviderName = servicingProviderName;
@@ -68,29 +56,8 @@ public class RapRequestForm {
         this.patientDischargeStatus = patientDischargeStatus;
         this.accidentState = accidentState;
         this.accidentDate = accidentDate;
-        this.conditionCode1 = conditionCode1;
-        this.conditionCode2 = conditionCode2;
-        this.conditionCode3 = conditionCode3;
-        this.admissionMinute=admissionMinute;
-        this.dischargeMinute=dischargeMinute;
-    }
 
-    public OccuranceAndDate getOccuranceAndDate() {
-        return occuranceAndDate;
     }
-
-    public void setOccuranceAndDate(OccuranceAndDate occuranceAndDate) {
-        this.occuranceAndDate = occuranceAndDate;
-    }
-
-    public ValueCodeDetail getValueCodeDetail() {
-        return valueCodeDetail;
-    }
-
-    public void setValueCodeDetail(ValueCodeDetail valueCodeDetail) {
-        this.valueCodeDetail = valueCodeDetail;
-    }
-
     public TreatmentAuthorizationDetails getTreatmentAuthorizationDetails() {
         return treatmentAuthorizationDetails;
     }
@@ -243,29 +210,7 @@ public class RapRequestForm {
         this.accidentDate = accidentDate;
     }
 
-    public String getConditionCode1() {
-        return conditionCode1;
-    }
 
-    public void setConditionCode1(String conditionCode1) {
-        this.conditionCode1 = conditionCode1;
-    }
-
-    public String getConditionCode2() {
-        return conditionCode2;
-    }
-
-    public void setConditionCode2(String conditionCode2) {
-        this.conditionCode2 = conditionCode2;
-    }
-
-    public String getConditionCode3() {
-        return conditionCode3;
-    }
-
-    public void setConditionCode3(String conditionCode3) {
-        this.conditionCode3 = conditionCode3;
-    }
 
     public Patientdetail getPatientdetail() {
         return patientdetail;
@@ -275,21 +220,7 @@ public class RapRequestForm {
         this.patientdetail = patientdetail;
     }
 
-    public String getAdmissionMinute() {
-        return admissionMinute;
-    }
 
-    public void setAdmissionMinute(String admissionMinute) {
-        this.admissionMinute = admissionMinute;
-    }
-
-    public String getDischargeMinute() {
-        return dischargeMinute;
-    }
-
-    public void setDischargeMinute(String dischargeMinute) {
-        this.dischargeMinute = dischargeMinute;
-    }
 
     @Override
     public String toString() {
@@ -305,21 +236,14 @@ public class RapRequestForm {
                 ", statementCoveredPeriodDateTo=" + statementCoveredPeriodDateTo +
                 ", admissionDate=" + admissionDate +
                 ", admissionHour='" + admissionHour + '\'' +
-                ", admissionMinute='" + admissionMinute + '\'' +
                 ", typeOfVisit='" + typeOfVisit + '\'' +
                 ", sourceOfReferral='" + sourceOfReferral + '\'' +
                 ", dischargeDate=" + dischargeDate +
                 ", dischargeHour='" + dischargeHour + '\'' +
-                ", dischargeMinute='" + dischargeMinute + '\'' +
                 ", patientDischargeStatus='" + patientDischargeStatus + '\'' +
                 ", accidentState='" + accidentState + '\'' +
                 ", accidentDate=" + accidentDate +
-                ", conditionCode1='" + conditionCode1 + '\'' +
-                ", conditionCode2='" + conditionCode2 + '\'' +
-                ", conditionCode3='" + conditionCode3 + '\'' +
                 ", patientdetail=" + patientdetail +
-                ", occuranceAndDate=" + occuranceAndDate +
-                ", valueCodeDetail=" + valueCodeDetail +
                 ", treatmentAuthorizationDetails=" + treatmentAuthorizationDetails +
                 '}';
     }

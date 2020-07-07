@@ -44,5 +44,14 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     List<TypeOfVisitCode> typeOfVisitCodeList();
 
     @Query("FROM RapRequestForm WHERE patient_mrn=?1")
-    List<RapRequestForm> rapRequestFormView(String mrnNumber);
+    RapRequestForm rapRequestFormView(String mrnNumber);
+
+    @Query("FROM ValueCodeDetail WHERE mrn_number =?1")
+    List<ValueCodeDetail> findValueCodeDetailByMrnNumber(String mrnNumber);
+
+    @Query("FROM  ConditionCodeDetail  WHERE mrn_number =?1 ")
+    List<ConditionCodeDetail> findConditionCodeDetailByMrnNumber(String mrnNumber);
+
+    @Query("FROM  OccuranceAndDate  WHERE mrn_number =?1 ")
+    List<OccuranceAndDate> findOccuranceAndDateByMrnNumber(String mrnNumber);
 }
