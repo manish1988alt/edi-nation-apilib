@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -19,8 +20,8 @@ public class PreAuthorizationResponseHistory {
     private String suffix;
     private String mrnNumber;
     private String enquiryId;
-    private Date requestSentDate;
-    private Date responseReceiveDate;
+    private LocalDate requestSentDate;
+    private LocalDate responseReceiveDate;
     private String responseType;
     private String authorizationStatus;
     private String  authorizationEffectiveNess;
@@ -28,7 +29,7 @@ public class PreAuthorizationResponseHistory {
     public PreAuthorizationResponseHistory() {
     }
 
-    public PreAuthorizationResponseHistory(String firstName, String lastName, String middleName, String prefix, String suffix, String mrnNumber, String enquiryId, Date requestSentDate, Date responseReceiveDate, String responseType, String authorizationStatus, String authorizationEffectiveNess) {
+    public PreAuthorizationResponseHistory(String firstName, String lastName, String middleName, String prefix, String suffix, String mrnNumber, String enquiryId, LocalDate requestSentDate, LocalDate responseReceiveDate, String responseType, String authorizationStatus, String authorizationEffectiveNess) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -107,19 +108,19 @@ public class PreAuthorizationResponseHistory {
         this.enquiryId = enquiryId;
     }
 
-    public Date getRequestSentDate() {
+    public LocalDate getRequestSentDate() {
         return requestSentDate;
     }
 
-    public void setRequestSentDate(Date requestSentDate) {
+    public void setRequestSentDate(LocalDate requestSentDate) {
         this.requestSentDate = requestSentDate;
     }
 
-    public Date getResponseReceiveDate() {
+    public LocalDate getResponseReceiveDate() {
         return responseReceiveDate;
     }
 
-    public void setResponseReceiveDate(Date responseReceiveDate) {
+    public void setResponseReceiveDate(LocalDate responseReceiveDate) {
         this.responseReceiveDate = responseReceiveDate;
     }
 

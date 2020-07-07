@@ -8,7 +8,8 @@ import java.time.LocalDate;
 public class ServicingProviderFacility {
 
     @Id
-    private String facilityId;
+    private String id;
+    private String providerName;
     private String facilityFirstName;
     private String facilityLastName;
     private String facilityMiddleName;
@@ -24,8 +25,9 @@ public class ServicingProviderFacility {
     public ServicingProviderFacility() {
     }
 
-    public ServicingProviderFacility(String facilityId, String facilityFirstName, String facilityLastName, String facilityMiddleName, String facilityAddressLine, String facilityCity, String facilityState, String facilityZipCode, String facilityCommunicationTypeTelephone, int facilityCommunicationTypeFacsimile, String facilityCommunicationTypeEMail, int facilityCommunicationExt) {
-        this.facilityId = facilityId;
+    public ServicingProviderFacility(String id, String facilityFirstName, String facilityLastName, String facilityMiddleName, String facilityAddressLine, String facilityCity, String facilityState, String facilityZipCode, String facilityCommunicationTypeTelephone, int facilityCommunicationTypeFacsimile, String facilityCommunicationTypeEMail, int facilityCommunicationExt,String providerName) {
+        this.id = id;
+        this.providerName=providerName;
         this.facilityFirstName = facilityFirstName;
         this.facilityLastName = facilityLastName;
         this.facilityMiddleName = facilityMiddleName;
@@ -39,12 +41,20 @@ public class ServicingProviderFacility {
         this.facilityCommunicationExt = facilityCommunicationExt;
     }
 
-    public String getFacilityId() {
-        return facilityId;
+    public String getid() {
+        return id;
     }
 
-    public void setFacilityId(String facilityId) {
-        this.facilityId = facilityId;
+    public void setid(String id) {
+        this.id = id;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public String getFacilityFirstName() {
@@ -122,7 +132,6 @@ public class ServicingProviderFacility {
     public String getFacilityCommunicationTypeEMail() {
         return facilityCommunicationTypeEMail;
     }
-
     public void setFacilityCommunicationTypeEMail(String facilityCommunicationTypeEMail) {
         this.facilityCommunicationTypeEMail = facilityCommunicationTypeEMail;
     }
@@ -134,11 +143,11 @@ public class ServicingProviderFacility {
     public void setFacilityCommunicationExt(int facilityCommunicationExt) {
         this.facilityCommunicationExt = facilityCommunicationExt;
     }
-
     @Override
     public String toString() {
-        return "ProviderFacility{" +
-                "facilityId='" + facilityId + '\'' +
+        return "ServicingProviderFacility{" +
+                "id='" + id + '\'' +
+                ", providerName='" + providerName + '\'' +
                 ", facilityFirstName='" + facilityFirstName + '\'' +
                 ", facilityLastName='" + facilityLastName + '\'' +
                 ", facilityMiddleName='" + facilityMiddleName + '\'' +
@@ -152,4 +161,5 @@ public class ServicingProviderFacility {
                 ", facilityCommunicationExt=" + facilityCommunicationExt +
                 '}';
     }
+    
 }

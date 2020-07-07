@@ -1,5 +1,6 @@
 package com.edination.api.preAuthorisation.model;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Episode {
     private String	episodeType;
     private String payorType;
     private String	preauthFormStatus;
-    private Date formSentDate;
+    private LocalDate formSentDate;
     private String	preAuthorisationStatus;
     private String admissionStatus;
     private Date admissionDate;
@@ -22,7 +23,7 @@ public class Episode {
     public Episode() {
     }
 
-    public Episode(String mrnNumber, String episodeType, String payorType, String preauthFormStatus, Date formSentDate, String preAuthorisationStatus, String admissionStatus, Date admissionDate, Date formReceivedDate) {
+    public Episode(String mrnNumber, String episodeType, String payorType, String preauthFormStatus, LocalDate formSentDate, String preAuthorisationStatus, String admissionStatus, Date admissionDate, Date formReceivedDate) {
         this.mrnNumber = mrnNumber;
         this.episodeType = episodeType;
         this.payorType = payorType;
@@ -66,11 +67,11 @@ public class Episode {
         this.preauthFormStatus = preauthFormStatus;
     }
 
-    public Date getFormSentDate() {
+    public LocalDate getFormSentDate() {
         return formSentDate;
     }
 
-    public void setFormSentDate(Date formSentDate) {
+    public void setFormSentDate(LocalDate formSentDate) {
         this.formSentDate = formSentDate;
     }
 

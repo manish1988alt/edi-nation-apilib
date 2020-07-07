@@ -9,7 +9,8 @@ import javax.persistence.Table;
 @Table(name = "BillingProviderFacility")
 public class BillingProviderFacility {
     @Id
-    private String facilityId;
+    private String id;
+    private String providerName;
     private String facilityFirstName;
     private String facilityLastName;
     private String facilityMiddleName;
@@ -25,8 +26,8 @@ public class BillingProviderFacility {
     public BillingProviderFacility() {
     }
 
-    public BillingProviderFacility(String facilityId, String facilityFirstName, String facilityLastName, String facilityMiddleName, String facilityAddressLine, String facilityCity, String facilityState, String facilityZipCode, String facilityCommunicationTypeTelephone, int facilityCommunicationTypeFacsimile, String facilityCommunicationTypeEMail, int facilityCommunicationExt) {
-        this.facilityId = facilityId;
+    public BillingProviderFacility(String id, String facilityFirstName, String facilityLastName, String facilityMiddleName, String facilityAddressLine, String facilityCity, String facilityState, String facilityZipCode, String facilityCommunicationTypeTelephone, int facilityCommunicationTypeFacsimile, String facilityCommunicationTypeEMail, int facilityCommunicationExt,String providerName) {
+        this.id = id;
         this.facilityFirstName = facilityFirstName;
         this.facilityLastName = facilityLastName;
         this.facilityMiddleName = facilityMiddleName;
@@ -38,14 +39,23 @@ public class BillingProviderFacility {
         this.facilityCommunicationTypeFacsimile = facilityCommunicationTypeFacsimile;
         this.facilityCommunicationTypeEMail = facilityCommunicationTypeEMail;
         this.facilityCommunicationExt = facilityCommunicationExt;
+        this.providerName=providerName;
     }
 
-    public String getFacilityId() {
-        return facilityId;
+    public String getid() {
+        return id;
     }
 
-    public void setFacilityId(String facilityId) {
-        this.facilityId = facilityId;
+    public void setid(String id) {
+        this.id = id;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public String getFacilityFirstName() {
@@ -139,7 +149,8 @@ public class BillingProviderFacility {
     @Override
     public String toString() {
         return "BillingProviderFacility{" +
-                "facilityId='" + facilityId + '\'' +
+                "id='" + id + '\'' +
+                ", providerName='" + providerName + '\'' +
                 ", facilityFirstName='" + facilityFirstName + '\'' +
                 ", facilityLastName='" + facilityLastName + '\'' +
                 ", facilityMiddleName='" + facilityMiddleName + '\'' +

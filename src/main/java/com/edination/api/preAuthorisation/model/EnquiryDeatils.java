@@ -1,6 +1,7 @@
 package com.edination.api.preAuthorisation.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,12 +13,12 @@ public class EnquiryDeatils {
     private int id;
     private String mrnNumber;
     private int enquiryId;
-    private Date preauthReqSentDate;
+    private LocalDate preauthReqSentDate;
 
     public EnquiryDeatils() {
     }
 
-    public EnquiryDeatils(String mrnNumber, int enquiryId, Date preauthReqSentDate) {
+    public EnquiryDeatils(String mrnNumber, int enquiryId, LocalDate preauthReqSentDate) {
         this.mrnNumber = mrnNumber;
         this.enquiryId = enquiryId;
         this.preauthReqSentDate = preauthReqSentDate;
@@ -47,13 +48,13 @@ public class EnquiryDeatils {
         this.enquiryId = enquiryId;
     }
 
-    public Date getPreauthReqSentDate() {
+    public LocalDate getPreauthReqSentDate() {
         return preauthReqSentDate;
     }
-
-    public void setPreauthReqSentDate(Date preauthReqSentDate) {
+    public void setPreauthReqSentDate(LocalDate preauthReqSentDate) {
         this.preauthReqSentDate = preauthReqSentDate;
     }
+
     @Override
     public String toString() {
         return "EnquiryDeatils{" +

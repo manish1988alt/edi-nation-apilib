@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -12,8 +14,9 @@ public interface PreAuthorizationResponseRepository extends JpaRepository<PreAut
     @Query("FROM PreAuthorizationResponse c WHERE mrn_number = ?1 ORDER BY c.id DESC")
     List<PreAuthorizationResponse> findByMrnNumber(String mrnNumber);
 
-    @Query(value = "SELECT  c.* FROM pre_authorization_response c WHERE c.mrn_number = ?1 AND c.enquiry_id=?2",nativeQuery = true)
-    List<PreAuthorizationResponse> findByMrnNumberHistoryView(String mrnNumber,String enquiryId);
+    //@Query(value = "SELECT  c.* FROM pre_authorization_response c WHERE c.mrn_number = ?1 AND c.enquiry_id=?2",nativeQuery = true)
+    @Query(value = "SELECT a.* FROM (SELECT  c.* FROM pre_authorization_response c WHERE c.mrn_number = ?1 AND c.enquiry_id=?2 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM pre_authorization_response e WHERE e.mrn_number = ?1 AND e.enquiry_id=?2) ",nativeQuery = true)
+    List<PreAuthorizationResponse> findByMrnNumberHistoryView(String mrnNumber, String enquiryId, LocalDate responseDate);
 
 
     @Query(value = "SELECT a.* FROM (SELECT * FROM pre_authorization_response c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM pre_authorization_response e WHERE e.mrn_number = ?1) ",nativeQuery = true)

@@ -9,7 +9,8 @@ import java.time.LocalDate;
 @Table(name = "BillingProviderPerson")
 public class BillingProviderPerson {
     @Id
-    private String personId;
+    private String id;
+    private String providerName;
     private String personFirstName;
     private String personLastName;
     private String personMiddleName;
@@ -25,8 +26,8 @@ public class BillingProviderPerson {
     public BillingProviderPerson() {
     }
 
-    public BillingProviderPerson(String personId, String personFirstName, String personLastName, String personMiddleName, String personPrefix, String personSuffix, String personGender, LocalDate personDob, String personAddressLine, String personCity, String personState, String personZipCode) {
-        this.personId = personId;
+    public BillingProviderPerson(String id, String personFirstName, String personLastName, String personMiddleName, String personPrefix, String personSuffix, String personGender, LocalDate personDob, String personAddressLine, String personCity, String personState, String personZipCode,String providerName) {
+        this.id = id;
         this.personFirstName = personFirstName;
         this.personLastName = personLastName;
         this.personMiddleName = personMiddleName;
@@ -38,14 +39,23 @@ public class BillingProviderPerson {
         this.personCity = personCity;
         this.personState = personState;
         this.personZipCode = personZipCode;
+        this.providerName=providerName;
     }
 
-    public String getPersonId() {
-        return personId;
+    public String getid() {
+        return id;
     }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
+    public void setid(String id) {
+        this.id = id;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public String getPersonFirstName() {
@@ -139,7 +149,8 @@ public class BillingProviderPerson {
     @Override
     public String toString() {
         return "BillingProviderPerson{" +
-                "personId='" + personId + '\'' +
+                "id='" + id + '\'' +
+                ", providerName='" + providerName + '\'' +
                 ", personFirstName='" + personFirstName + '\'' +
                 ", personLastName='" + personLastName + '\'' +
                 ", personMiddleName='" + personMiddleName + '\'' +

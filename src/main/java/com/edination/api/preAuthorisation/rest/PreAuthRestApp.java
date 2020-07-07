@@ -263,7 +263,7 @@ public class PreAuthRestApp implements Serializable {
             for(PreAuthDetail pre:list) {
                 preAuthorizationResponseHistory.setRequestSentDate(pre.getEpisode().getFormSentDate());
             }
-            preAuthorizationResponseHistory.setResponseReceiveDate(processDate);
+            preAuthorizationResponseHistory.setResponseReceiveDate(currentdateAfter);
             preAuthorizationResponseHistory.setResponseType("Manual");
 
             preAuthorizationResponseHistoryService.save(preAuthorizationResponseHistory);
@@ -290,8 +290,8 @@ public class PreAuthRestApp implements Serializable {
                 episode.setPreauthFormStatus("Saved As Draft");
                 episode.setPreAuthorisationStatus(preAuthorizationResponse.getAuthorizationDetail().getPreAuthorizationStatus());
                 episode.setPayorType(pre.getEpisode().getPayorType());
-                episode.setFormSentDate(preAuthorizationResponse.getAuthorizationDetail().getProcessDateAndTime());
-                episode.setFormReceivedDate(pre.getEpisode().getFormReceivedDate());
+                episode.setFormSentDate(pre.getEpisode().getFormSentDate());
+                episode.setFormReceivedDate(preAuthorizationResponse.getAuthorizationDetail().getProcessDateAndTime());
                 preAuthDetail.setPreAuthDemographics(demographics1);
                 preAuthDetail.setEpisode(episode);
                 preAuthDetail.setMrnNumber(pre.getMrnNumber());
@@ -753,7 +753,7 @@ public class PreAuthRestApp implements Serializable {
     @PostMapping("/preAuthResponseHistoryView")
     public List<PreAuthorizationResponse> preAuthResponseHistoryView(@RequestBody  PreAuthorizationResponseHistory preAuthorizationResponseHistory)  throws Throwable
     {
-        return preAuthorizationResponseRepository.findByMrnNumberHistoryView(preAuthorizationResponseHistory.getMrnNumber(),preAuthorizationResponseHistory.getEnquiryId());
+        return preAuthorizationResponseRepository.findByMrnNumberHistoryView(preAuthorizationResponseHistory.getMrnNumber(),preAuthorizationResponseHistory.getEnquiryId(),preAuthorizationResponseHistory.getResponseReceiveDate());
     }
 
     @PostMapping("/preAuthRequestEdit")
@@ -783,8 +783,9 @@ public class PreAuthRestApp implements Serializable {
                 int enquiryId=homeHealthPreAuthorizationForm2.getEnquiryDeatils().getEnquiryId();
                 enquiryDeatils.setEnquiryId(enquiryId+1);
                 String currentDate = java.time.LocalDate.now().toString();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date currentDateF = formatter.parse(currentDate);
+              /*  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date currentDateF = formatter.parse(currentDate);*/
+                LocalDate currentDateF=LocalDate.parse(currentDate);
                 enquiryDeatils.setPreauthReqSentDate(currentDateF);
             }
             else
