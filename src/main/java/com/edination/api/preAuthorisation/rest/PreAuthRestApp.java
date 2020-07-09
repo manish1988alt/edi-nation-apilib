@@ -780,8 +780,10 @@ public class PreAuthRestApp implements Serializable {
             homeHealthPreAuthorizationForm1.setMrnNumber(homeHealthPreAuthorizationForm2.getMrnNumber());
             if("Sent For Approval".equals(preauthformStatus))
             {
-                int enquiryId=homeHealthPreAuthorizationForm2.getEnquiryDeatils().getEnquiryId();
-                enquiryDeatils.setEnquiryId(enquiryId+1);
+                Random rand = new Random();
+                int enquiryId = rand.nextInt(1000);
+               // int enquiryId=homeHealthPreAuthorizationForm2.getEnquiryDeatils().getEnquiryId();
+                enquiryDeatils.setEnquiryId(enquiryId);
                 String currentDate = java.time.LocalDate.now().toString();
               /*  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date currentDateF = formatter.parse(currentDate);*/

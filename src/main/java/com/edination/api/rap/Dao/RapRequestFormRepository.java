@@ -79,4 +79,7 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM  OtherProviderDetail  WHERE mrn_number =?1 ")
     List<OtherProviderDetail> findOtherProviderDetailByMrnNumber(String mrnNumber);
+
+    @Query("FROM  RapRequestEnquiryDetails  WHERE mrn_number =?1 ")
+    RapRequestEnquiryDetails findRapRequestEnquiryDetailsByMrnNumber(String mrnNumber);
 }

@@ -17,7 +17,7 @@ public class RapRequestFormDetail {
     PrimaryDiagnosisCode primaryDiagnosisCode;
     List<SecondDiagnosisCode> secondDiagnosisCodeList;
     List<OtherProviderDetail> otherProviderDetails;
-
+    RapRequestEnquiryDetails rapRequestEnquiryDetails;
     public RapRequestFormDetail() {
     }
 
@@ -27,6 +27,14 @@ public class RapRequestFormDetail {
         this.conditionCodeDetailList = conditionCodeDetailList;
         this.occuranceAndDateList = occuranceAndDateList;
         this.valueCodeDetailList = valueCodeDetailList;
+    }
+
+    public RapRequestEnquiryDetails getRapRequestEnquiryDetails() {
+        return rapRequestEnquiryDetails;
+    }
+
+    public void setRapRequestEnquiryDetails(RapRequestEnquiryDetails rapRequestEnquiryDetails) {
+        this.rapRequestEnquiryDetails = rapRequestEnquiryDetails;
     }
 
     public String getPatientMrn() {
@@ -131,6 +139,7 @@ public class RapRequestFormDetail {
                 ", primaryDiagnosisCode=" + primaryDiagnosisCode +
                 ", secondDiagnosisCodeList=" + secondDiagnosisCodeList +
                 ", otherProviderDetails=" + otherProviderDetails +
+                ", rapRequestEnquiryDetails=" + rapRequestEnquiryDetails +
                 '}';
     }
 }
