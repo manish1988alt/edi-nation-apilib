@@ -1,6 +1,8 @@
 package com.edination.api.rap.rest;
 
+import com.edination.api.PDGM.dao.SecondDaignosisCodeRepository;
 import com.edination.api.PDGM.model.PDGMRapListing;
+import com.edination.api.preAuthorisation.MasterCode.ProviderCodeMaster;
 import com.edination.api.rap.Dao.RapRequestFormRepository;
 import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,8 @@ public class RapRestApp implements Serializable {
 
     @Autowired
     RapRequestFormRepository rapRequestFormRepository;
-
+@Autowired
+    SecondDaignosisCodeRepository secondDaignosisCodeRepository;
     @PostMapping("/serviceProviderTypeList")
     public List<Object> serviceProviderTypeList(@RequestBody RapRequestForm rapRequestForm) throws Throwable {
         List<Object> list = new ArrayList<>();
@@ -40,7 +43,12 @@ public class RapRestApp implements Serializable {
         }
         return list;
     }
+    @PostMapping("/otherProviderTypeList")
+    public List<OtherProviderList> otherProviderTypeList(@RequestBody RapRequestForm rapRequestForm) throws Throwable {
 
+        return  rapRequestFormRepository.OtherProviderList(rapRequestForm.getServicingProviderType());
+
+    }
     @GetMapping("/condtionCodeList")
     public List<ConditionCodes> condtionCodeList() throws Throwable {
         return rapRequestFormRepository.conditionCodesList();
@@ -73,7 +81,14 @@ public class RapRestApp implements Serializable {
     public List<TypeOfVisitCode> typeOfVisitCodeList() throws Throwable {
         return rapRequestFormRepository.typeOfVisitCodeList();
     }
-
+    @GetMapping("/providerCodeList")
+    public List<ProviderCodeMaster> providerCodeList() throws Throwable {
+        return rapRequestFormRepository.otherProviderList();
+    }
+    @GetMapping("/attendingProviderList")
+    public List<AttendingProviderDetail> attendingProviderList() throws Throwable {
+        return rapRequestFormRepository.attendingProviderDetailList();
+    }
     @PostMapping("/rapRequestView")
     public List<RapRequestFormDetail> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable
     {
@@ -88,6 +103,12 @@ public class RapRestApp implements Serializable {
         rapRequestFormDetail.setOccuranceAndDateList(occuranceAndDateList);
         rapRequestFormDetail.setValueCodeDetailList(valueCodeDetailList);
         rapRequestFormDetail.setPatientMrn(pdgmRapListing.getMrnNumber());
+        rapRequestFormDetail.setBillingDetailsList(rapRequestFormRepository.findBillingDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setPayerDetails(rapRequestFormRepository.findPayerDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setInsuredDetails(rapRequestFormRepository.findInsuredDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setPrimaryDiagnosisCode(rapRequestFormRepository.findPrimaryDiagnosisCodeByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setSecondDiagnosisCodeList(secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setOtherProviderDetails(rapRequestFormRepository.findOtherProviderDetailByMrnNumber(pdgmRapListing.getMrnNumber()));
         list.add(rapRequestFormDetail);
         return list;
     }

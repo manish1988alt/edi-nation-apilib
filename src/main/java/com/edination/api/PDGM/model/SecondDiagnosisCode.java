@@ -10,6 +10,7 @@ public class SecondDiagnosisCode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    private String iCDQualifier;
     private String secondDiagnosisCode;
     private String discription;
     private String clinicalGroup;
@@ -19,12 +20,13 @@ public class SecondDiagnosisCode {
     public SecondDiagnosisCode() {
     }
 
-    public SecondDiagnosisCode(String secondDiagnosisCode, String discription, String clinicalGroup, String comorbiditySubGroup, String mrnNumber) {
+    public SecondDiagnosisCode(String secondDiagnosisCode, String discription, String clinicalGroup, String comorbiditySubGroup, String mrnNumber,String iCDQualifier) {
         this.secondDiagnosisCode = secondDiagnosisCode;
         this.discription = discription;
         this.clinicalGroup = clinicalGroup;
         this.comorbiditySubGroup = comorbiditySubGroup;
         this.mrnNumber = mrnNumber;
+        this.iCDQualifier=iCDQualifier;
     }
 
     public int getId() {
@@ -33,6 +35,14 @@ public class SecondDiagnosisCode {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getiCDQualifier() {
+        return iCDQualifier;
+    }
+
+    public void setiCDQualifier(String iCDQualifier) {
+        this.iCDQualifier = iCDQualifier;
     }
 
     public String getSecondDiagnosisCode() {
@@ -79,6 +89,7 @@ public class SecondDiagnosisCode {
     public String toString() {
         return "SecondDiagnosisCode{" +
                 "id=" + id +
+                ", iCDQualifier='" + iCDQualifier + '\'' +
                 ", secondDiagnosisCode='" + secondDiagnosisCode + '\'' +
                 ", discription='" + discription + '\'' +
                 ", clinicalGroup='" + clinicalGroup + '\'' +

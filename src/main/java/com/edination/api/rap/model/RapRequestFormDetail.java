@@ -1,5 +1,7 @@
 package com.edination.api.rap.model;
 
+import com.edination.api.PDGM.model.SecondDiagnosisCode;
+
 import java.util.List;
 
 public class RapRequestFormDetail {
@@ -9,6 +11,12 @@ public class RapRequestFormDetail {
     List<ConditionCodeDetail> conditionCodeDetailList;
     List<OccuranceAndDate> occuranceAndDateList;
     List<ValueCodeDetail> valueCodeDetailList;
+    List<BillingDetails> billingDetailsList;
+    PayerDetails payerDetails;
+    InsuredDetails insuredDetails;
+    PrimaryDiagnosisCode primaryDiagnosisCode;
+    List<SecondDiagnosisCode> secondDiagnosisCodeList;
+    List<OtherProviderDetail> otherProviderDetails;
 
     public RapRequestFormDetail() {
     }
@@ -61,6 +69,54 @@ public class RapRequestFormDetail {
         this.valueCodeDetailList = valueCodeDetailList;
     }
 
+    public List<BillingDetails> getBillingDetailsList() {
+        return billingDetailsList;
+    }
+
+    public void setBillingDetailsList(List<BillingDetails> billingDetailsList) {
+        this.billingDetailsList = billingDetailsList;
+    }
+
+    public PayerDetails getPayerDetails() {
+        return payerDetails;
+    }
+
+    public void setPayerDetails(PayerDetails payerDetails) {
+        this.payerDetails = payerDetails;
+    }
+
+    public InsuredDetails getInsuredDetails() {
+        return insuredDetails;
+    }
+
+    public void setInsuredDetails(InsuredDetails insuredDetails) {
+        this.insuredDetails = insuredDetails;
+    }
+
+    public PrimaryDiagnosisCode getPrimaryDiagnosisCode() {
+        return primaryDiagnosisCode;
+    }
+
+    public void setPrimaryDiagnosisCode(PrimaryDiagnosisCode primaryDiagnosisCode) {
+        this.primaryDiagnosisCode = primaryDiagnosisCode;
+    }
+
+    public List<SecondDiagnosisCode> getSecondDiagnosisCodeList() {
+        return secondDiagnosisCodeList;
+    }
+
+    public void setSecondDiagnosisCodeList(List<SecondDiagnosisCode> secondDiagnosisCodeList) {
+        this.secondDiagnosisCodeList = secondDiagnosisCodeList;
+    }
+
+    public List<OtherProviderDetail> getOtherProviderDetails() {
+        return otherProviderDetails;
+    }
+
+    public void setOtherProviderDetails(List<OtherProviderDetail> otherProviderDetails) {
+        this.otherProviderDetails = otherProviderDetails;
+    }
+
     @Override
     public String toString() {
         return "RapRequestFormDetail{" +
@@ -69,6 +125,12 @@ public class RapRequestFormDetail {
                 ", conditionCodeDetailList=" + conditionCodeDetailList +
                 ", occuranceAndDateList=" + occuranceAndDateList +
                 ", valueCodeDetailList=" + valueCodeDetailList +
+                ", billingDetailsList=" + billingDetailsList +
+                ", payerDetails=" + payerDetails +
+                ", insuredDetails=" + insuredDetails +
+                ", primaryDiagnosisCode=" + primaryDiagnosisCode +
+                ", secondDiagnosisCodeList=" + secondDiagnosisCodeList +
+                ", otherProviderDetails=" + otherProviderDetails +
                 '}';
     }
 }

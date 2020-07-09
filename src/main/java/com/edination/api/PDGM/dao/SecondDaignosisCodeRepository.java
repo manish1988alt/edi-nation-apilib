@@ -16,6 +16,9 @@ public interface SecondDaignosisCodeRepository extends JpaRepository<SecondDiagn
     @Query(value="FROM SecondDiagnosisCode WHERE mrn_number = ?1")
     public Set<SecondDiagnosisCode> findSecondDiagnosisCodeByMrn(String mrnNumber);
 
+    @Query(value="FROM SecondDiagnosisCode WHERE mrn_number = ?1")
+    public List<SecondDiagnosisCode> findSecondDiagnosisListCodeByMrn(String mrnNumber);
+
     @Modifying
     @Query(value="DELETE FROM second_diagnosis_code s WHERE s.mrn_number = ?1",nativeQuery = true)
     public void deletedSecondDiagnosisCodeByMrn(String mrnNumber);

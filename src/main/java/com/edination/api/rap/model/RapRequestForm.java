@@ -25,8 +25,8 @@ public class RapRequestForm {
     private String patientDischargeStatus;
     private String accidentState;
     private LocalDate accidentDate;
-
-
+    private String attendingProviderName;
+    private String remarks;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patientdetailId")
     private Patientdetail patientdetail;
@@ -38,7 +38,7 @@ public class RapRequestForm {
     public RapRequestForm() {
     }
 
-    public RapRequestForm(String patientMrn, String servicingProviderType, String servicingProviderName, String billingProviderType, String billingProviderName, String typeOfBill, LocalDate statementCoveredPeriodDateFrom, LocalDate statementCoveredPeriodDateTo, LocalDate admissionDate, String admissionHour, String typeOfVisit, String sourceOfReferral, LocalDate dischargeDate, String dischargeHour, String patientDischargeStatus, String accidentState, LocalDate accidentDate) {
+    public RapRequestForm(String patientMrn, String servicingProviderType, String servicingProviderName, String billingProviderType, String billingProviderName, String typeOfBill, LocalDate statementCoveredPeriodDateFrom, LocalDate statementCoveredPeriodDateTo, LocalDate admissionDate, String admissionHour, String typeOfVisit, String sourceOfReferral, LocalDate dischargeDate, String dischargeHour, String patientDischargeStatus, String accidentState, LocalDate accidentDate,String attendingProviderName,String remarks) {
         PatientMrn = patientMrn;
         this.servicingProviderType = servicingProviderType;
         this.servicingProviderName = servicingProviderName;
@@ -56,7 +56,8 @@ public class RapRequestForm {
         this.patientDischargeStatus = patientDischargeStatus;
         this.accidentState = accidentState;
         this.accidentDate = accidentDate;
-
+        this.attendingProviderName=attendingProviderName;
+        this.remarks=remarks;
     }
     public TreatmentAuthorizationDetails getTreatmentAuthorizationDetails() {
         return treatmentAuthorizationDetails;
@@ -210,7 +211,21 @@ public class RapRequestForm {
         this.accidentDate = accidentDate;
     }
 
+    public String getAttendingProviderName() {
+        return attendingProviderName;
+    }
 
+    public void setAttendingProviderName(String attendingProviderName) {
+        this.attendingProviderName = attendingProviderName;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public Patientdetail getPatientdetail() {
         return patientdetail;
@@ -219,8 +234,6 @@ public class RapRequestForm {
     public void setPatientdetail(Patientdetail patientdetail) {
         this.patientdetail = patientdetail;
     }
-
-
 
     @Override
     public String toString() {
@@ -243,6 +256,8 @@ public class RapRequestForm {
                 ", patientDischargeStatus='" + patientDischargeStatus + '\'' +
                 ", accidentState='" + accidentState + '\'' +
                 ", accidentDate=" + accidentDate +
+                ", attendingProviderName='" + attendingProviderName + '\'' +
+                ", remarks='" + remarks + '\'' +
                 ", patientdetail=" + patientdetail +
                 ", treatmentAuthorizationDetails=" + treatmentAuthorizationDetails +
                 '}';

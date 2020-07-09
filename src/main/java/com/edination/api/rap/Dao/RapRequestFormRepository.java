@@ -1,5 +1,6 @@
 package com.edination.api.rap.Dao;
 
+import com.edination.api.preAuthorisation.MasterCode.ProviderCodeMaster;
 import com.edination.api.rap.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,12 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM BillingProviderFacility")
     List<BillingProviderFacility> billingProviderFacilityList();
 
+    @Query("FROM ProviderCodeMaster")
+    List<ProviderCodeMaster> otherProviderList();
+
+    @Query("FROM OtherProviderList WHERE provider_type=?1")
+    List<OtherProviderList> OtherProviderList(String providerType);
+
     @Query("FROM ConditionCodes")
     List<ConditionCodes> conditionCodesList();
 
@@ -43,6 +50,9 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM TypeOfVisitCode")
     List<TypeOfVisitCode> typeOfVisitCodeList();
 
+    @Query("FROM AttendingProviderDetail")
+    List<AttendingProviderDetail> attendingProviderDetailList();
+
     @Query("FROM RapRequestForm WHERE patient_mrn=?1")
     RapRequestForm rapRequestFormView(String mrnNumber);
 
@@ -54,4 +64,19 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM  OccuranceAndDate  WHERE mrn_number =?1 ")
     List<OccuranceAndDate> findOccuranceAndDateByMrnNumber(String mrnNumber);
+
+    @Query("FROM  BillingDetails  WHERE mrn_number =?1 ")
+    List<BillingDetails> findBillingDetailsByMrnNumber(String mrnNumber);
+
+    @Query("FROM  PayerDetails  WHERE mrn_number =?1 ")
+    PayerDetails findPayerDetailsByMrnNumber(String mrnNumber);
+
+    @Query("FROM  InsuredDetails  WHERE mrn_number =?1 ")
+    InsuredDetails findInsuredDetailsByMrnNumber(String mrnNumber);
+
+    @Query("FROM  PrimaryDiagnosisCode  WHERE mrn_number =?1 ")
+    PrimaryDiagnosisCode findPrimaryDiagnosisCodeByMrnNumber(String mrnNumber);
+
+    @Query("FROM  OtherProviderDetail  WHERE mrn_number =?1 ")
+    List<OtherProviderDetail> findOtherProviderDetailByMrnNumber(String mrnNumber);
 }

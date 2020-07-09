@@ -3,6 +3,7 @@ package com.edination.api.PDGM.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -23,7 +24,7 @@ public class PDGMRapListing {
     private String aging;
     private String billableVisit;
     private String hippsCode;
-    private Date hippsCodeGeneratedDate;
+    private LocalDate hippsCodeGeneratedDate;
     private String oasisKey;
     private String claimType;
     private String action;
@@ -35,7 +36,7 @@ public class PDGMRapListing {
     public PDGMRapListing() {
     }
 
-    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, Date hippsCodeGeneratedDate, String oasisKey, String claimType, String action, String primaryDiagnosisCode, String rapsType, String rapsFormStatus, Date rapsSentDate) {
+    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, LocalDate hippsCodeGeneratedDate, String oasisKey, String claimType, String action, String primaryDiagnosisCode, String rapsType, String rapsFormStatus, Date rapsSentDate) {
         this.mrnNumber = mrnNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,11 +59,11 @@ public class PDGMRapListing {
         this.rapsSentDate = rapsSentDate;
     }
 
-    public Date getHippsCodeGeneratedDate() {
+    public LocalDate getHippsCodeGeneratedDate() {
         return hippsCodeGeneratedDate;
     }
 
-    public void setHippsCodeGeneratedDate(Date hippsCodeGeneratedDate) {
+    public void setHippsCodeGeneratedDate(LocalDate hippsCodeGeneratedDate) {
         this.hippsCodeGeneratedDate = hippsCodeGeneratedDate;
     }
 

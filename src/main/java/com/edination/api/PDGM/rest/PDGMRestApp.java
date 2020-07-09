@@ -224,6 +224,8 @@ public class PDGMRestApp implements Serializable {
     public  ResponseEntity<?> pdgmInsertCode(@RequestBody  PDGMRapListing pdgmRapList ) throws Throwable
     {
         List<HippsCodeAndCaseMixWeight> hippsCodeAndCaseMixWeightList =hippsCodeAndCaseMixWeightRepository.findHippsCodeAndCaseMixWeighByMrn(pdgmRapList.getMrnNumber());
+        String currentDate = java.time.LocalDate.now().toString();
+        LocalDate hippsCodeGenerationDate=LocalDate.parse(currentDate);
         PDGMRapListing rapListing=new PDGMRapListing();
         rapListing.setMrnNumber(pdgmRapList.getMrnNumber());
         for(HippsCodeAndCaseMixWeight hippsCodeAndCaseMixWeight:hippsCodeAndCaseMixWeightList)
@@ -243,6 +245,7 @@ public class PDGMRestApp implements Serializable {
         rapListing.setOasisType(pdgmRapList.getOasisType());
         rapListing.setPrimaryDiagnosisCode(pdgmRapList.getPrimaryDiagnosisCode());
         rapListing.setEpisodeStartDates(pdgmRapList.getEpisodeStartDates());
+        rapListing.setHippsCodeGeneratedDate(hippsCodeGenerationDate);
         pdgmRapListService.save(rapListing);
 
         String ackn="Success";
@@ -1366,30 +1369,7 @@ public class PDGMRestApp implements Serializable {
                 }
             }
         }
-      /*      if (primaryFlag && secondFlag) {
-                highComorbidityCondition.setInteraction("True");
-                interactionFlag = true;
-            } else if (!(primaryFlag) || !(secondFlag)) {
-                highComorbidityCondition.setInteraction("False");
-                interactionFlag = false;
-            } else if (!(primaryFlag) && !(secondFlag)) {
-                highComorbidityCondition.setInteraction("False");
-                interactionFlag = false;
-            }
-            if (interactionFlag) {
-                highComorbidityCondition.setComorbidityAdjustmentLevel("High");
-                comorbiditylevel.add("High");
-            } else {
-                highComorbidityCondition.setComorbidityAdjustmentLevel("Non-High");
-                comorbiditylevel.add("Non-High");
-            }*/
 
-         /*   int count = 0;
-            for (String highcomor : comorbiditylevel) {
-                if ("High".equals(highcomor)) {
-                    count = count + 1;
-                }
-            }*/
             if (highCount >= 1) {
                 hippsCode = "3";
                 comorbitiyCondition = "High-Comorbidity";
@@ -1437,22 +1417,7 @@ public class PDGMRestApp implements Serializable {
 
 
                             //primaryLowFlag=false;
-                        }/*
-                        if (primaryLowFlag) {
-                            lowComorbidityConditionObj.setInteraction("True");
-                            interactionLowFlag = true;
-                        } else {
-                            lowComorbidityConditionObj.setInteraction("False");
-                            interactionLowFlag = false;
                         }
-
-                        if (interactionLowFlag) {
-                            lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Low");
-                            Lowcomorbiditylevel.add("Low");
-                        } else {
-                            lowComorbidityConditionObj.setComorbidityAdjustmentLevel("Non-Low");
-                            Lowcomorbiditylevel.add("Non-Low");
-                        }*/
 
                     }
                 }
