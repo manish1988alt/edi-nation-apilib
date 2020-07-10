@@ -139,6 +139,7 @@ public class RapRestApp implements Serializable {
         rapRequestFormDetail.setSecondDiagnosisCodeList(secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(pdgmRapListing.getMrnNumber()));
         rapRequestFormDetail.setOtherProviderDetails(rapRequestFormRepository.findOtherProviderDetailByMrnNumber(pdgmRapListing.getMrnNumber()));
         rapRequestFormDetail.setRapRequestEnquiryDetails(rapRequestFormRepository.findRapRequestEnquiryDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setTreatmentAuthorizationDetails(rapRequestFormRepository.findTreatmentAuthorizationDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
         list.add(rapRequestFormDetail);
         return list;
     }
@@ -180,6 +181,7 @@ public class RapRestApp implements Serializable {
 
         }
         rapRequestFormDetail1.setBillingDetailsList(billingDetailsListUpdate);
+        rapRequestFormDetail.setTreatmentAuthorizationDetails(rapRequestFormRepository.findTreatmentAuthorizationDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setPayerDetails(rapRequestFormRepository.findPayerDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setInsuredDetails(rapRequestFormRepository.findInsuredDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setPrimaryDiagnosisCode(rapRequestFormRepository.findPrimaryDiagnosisCodeByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
@@ -208,5 +210,86 @@ public class RapRestApp implements Serializable {
         list.add(rapRequestFormDetail1);
         return list;
     }
+   /* @PostMapping("/preAuthRequestSave")
+    public List<RapRequestFormDetail>   preAuthRequestEdit(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+    {
+     RapRequestForm rapRequestForm=new RapRequestForm();
+        rapRequestForm.setPatientMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+        rapRequestForm.setAccidentDate(rapRequestFormDetail.getRapRequestForm().getAccidentDate());
+        rapRequestForm.setAccidentState(rapRequestFormDetail.getRapRequestForm().getAccidentState());
+        rapRequestForm.setAdmissionDate(rapRequestFormDetail.getRapRequestForm().getAdmissionDate());
+        rapRequestForm.setAdmissionHour(rapRequestFormDetail.getRapRequestForm().getAdmissionHour());
+        rapRequestForm.setAttendingProviderName(rapRequestFormDetail.getRapRequestForm().getAttendingProviderName());
+        rapRequestForm.setBillingProviderName(rapRequestFormDetail.getRapRequestForm().getBillingProviderName());
+        rapRequestForm.setBillingProviderType(rapRequestFormDetail.getRapRequestForm().getBillingProviderType());
+        rapRequestForm.setDischargeDate(rapRequestFormDetail.getRapRequestForm().getDischargeDate());
+        rapRequestForm.setDischargeHour(rapRequestFormDetail.getRapRequestForm().getDischargeHour());
+        rapRequestForm.setPatientDischargeStatus(rapRequestFormDetail.getRapRequestForm().getPatientDischargeStatus());
+        rapRequestForm.setServicingProviderName(rapRequestFormDetail.getRapRequestForm().getServicingProviderName());
+        rapRequestForm.setServicingProviderType(rapRequestFormDetail.getRapRequestForm().getServicingProviderType());
+        rapRequestForm.setSourceOfReferral(rapRequestFormDetail.getRapRequestForm().getSourceOfReferral());
+        rapRequestForm.setStatementCoveredPeriodDateFrom(rapRequestFormDetail.getRapRequestForm().getStatementCoveredPeriodDateFrom());
+        rapRequestForm.setStatementCoveredPeriodDateTo(rapRequestFormDetail.getRapRequestForm().getStatementCoveredPeriodDateTo());
+        rapRequestForm.setTypeOfBill(rapRequestFormDetail.getRapRequestForm().getTypeOfBill());
+        rapRequestForm.setTypeOfVisit(rapRequestFormDetail.getRapRequestForm().getTypeOfVisit());
+        rapRequestForm.setRemarks(rapRequestFormDetail.getRapRequestForm().getRemarks());
+        TreatmentAuthorizationDetails treatmentAuthorizationDetails=new TreatmentAuthorizationDetails();
+        treatmentAuthorizationDetails.setDocumentControlNumber(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getDocumentControlNumber());
+        treatmentAuthorizationDetails.setTreatmentAuthorizationCode(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getTreatmentAuthorizationCode());
+        treatmentAuthorizationDetails.setEmployeeName(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getEmployeeName());
+        rapRequestForm.setTreatmentAuthorizationDetails(treatmentAuthorizationDetails);
+        Patientdetail patientdetail=new Patientdetail();
+        patientdetail.setName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getName());
+        patientdetail.setFirstName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getFirstName());
+        patientdetail.setLastName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getLastName());
+        patientdetail.setMiddleName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getMiddleName());
+        patientdetail.setPrefix(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getPrefix());
+        patientdetail.setSuffix(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getSuffix());
+        patientdetail.setGender(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getGender());
+        patientdetail.setDob(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getDob());
+        patientdetail.setPatientNameIdentifier(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getPatientNameIdentifier());
+        patientdetail.setAddressLine(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getAddressLine());
+        patientdetail.setCity(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getCity());
+        patientdetail.setState(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getState());
+        patientdetail.setZipCode(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getZipCode());
+        rapRequestForm.setPatientdetail(patientdetail);
+        BillingDetails billingDetails=new BillingDetails();
+        for(BillingDetails bl:rapRequestFormDetail.getBillingDetailsList())
+        {
+            billingDetails.setMrnNumber(bl.getMrnNumber());
+            billingDetails.sethCPCS_Rate_HCPCS_Code(bl.gethCPCS_Rate_HCPCS_Code());
+            billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
+            billingDetails.setTotalCostForNonCoverageCharge(bl.getTotalCostForNonCoverageCharge());
+            billingDetails.setTotalCharge(bl.getTotalCharge());
+            billingDetails.setServiceUnit(bl.getServiceUnit());
+            billingDetails.setServiceDate(bl.getServiceDate());
+            billingDetails.setRevenueCodeDescription(bl.getRevenueCodeDescription());
+            billingDetails.setNonCoverageCharge(bl.getNonCoverageCharge());
+            billingDetails.setCreationDate(bl.getCreationDate());
+            billingDetails.setCount(bl.getCount());
+        }
+        ConditionCodeDetail conditionCodeDetail=new ConditionCodeDetail();
+        for(ConditionCodeDetail cnd:rapRequestFormDetail.getConditionCodeDetailList())
+        {
+            conditionCodeDetail.setMrnNumber(cnd.getMrnNumber());
+            conditionCodeDetail.setCode(cnd.getCode());
+        }
+        OccuranceAndDate occuranceAndDate=new OccuranceAndDate();
+        for(OccuranceAndDate cnd:rapRequestFormDetail.getOccuranceAndDateList())
+        {
+            occuranceAndDate.setMrnNumber(cnd.getMrnNumber());
+            occuranceAndDate.setCode(cnd.getCode());
+        }
 
+        rapRequestFormDetail.getConditionCodeDetailList();
+        rapRequestFormDetail.getInsuredDetails();
+        rapRequestFormDetail.getOccuranceAndDateList();
+        rapRequestFormDetail.getOtherProviderDetails();
+        rapRequestFormDetail.getPayerDetails();
+        rapRequestFormDetail.getValueCodeDetailList();
+        rapRequestFormDetail.getRapRequestEnquiryDetails();
+
+
+
+    }*/
 }

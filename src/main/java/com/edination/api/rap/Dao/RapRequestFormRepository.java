@@ -69,16 +69,19 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     List<BillingDetails> findBillingDetailsByMrnNumber(String mrnNumber);
 
     @Query("FROM  PayerDetails  WHERE mrn_number =?1 ")
-    PayerDetails findPayerDetailsByMrnNumber(String mrnNumber);
+    List<PayerDetails> findPayerDetailsByMrnNumber(String mrnNumber);
 
     @Query("FROM  InsuredDetails  WHERE mrn_number =?1 ")
-    InsuredDetails findInsuredDetailsByMrnNumber(String mrnNumber);
+    List<InsuredDetails> findInsuredDetailsByMrnNumber(String mrnNumber);
 
     @Query("FROM  PrimaryDiagnosisCode  WHERE mrn_number =?1 ")
     PrimaryDiagnosisCode findPrimaryDiagnosisCodeByMrnNumber(String mrnNumber);
 
     @Query("FROM  OtherProviderDetail  WHERE mrn_number =?1 ")
     List<OtherProviderDetail> findOtherProviderDetailByMrnNumber(String mrnNumber);
+
+    @Query("FROM  TreatmentAuthorizationDetails  WHERE mrn_number =?1 ")
+    List<TreatmentAuthorizationDetails> findTreatmentAuthorizationDetailsByMrnNumber(String mrnNumber);
 
     @Query("FROM  RapRequestEnquiryDetails  WHERE mrn_number =?1 ")
     RapRequestEnquiryDetails findRapRequestEnquiryDetailsByMrnNumber(String mrnNumber);

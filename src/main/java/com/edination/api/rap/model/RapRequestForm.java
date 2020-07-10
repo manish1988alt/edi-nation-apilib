@@ -31,9 +31,9 @@ public class RapRequestForm {
     @JoinColumn(name = "patientdetailId")
     private Patientdetail patientdetail;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "treatmentAuthorizationId")
-    private TreatmentAuthorizationDetails treatmentAuthorizationDetails;
+    private TreatmentAuthorizationDetails treatmentAuthorizationDetails;*/
 
     public RapRequestForm() {
     }
@@ -59,13 +59,13 @@ public class RapRequestForm {
         this.attendingProviderName=attendingProviderName;
         this.remarks=remarks;
     }
-    public TreatmentAuthorizationDetails getTreatmentAuthorizationDetails() {
+  /*  public TreatmentAuthorizationDetails getTreatmentAuthorizationDetails() {
         return treatmentAuthorizationDetails;
     }
 
     public void setTreatmentAuthorizationDetails(TreatmentAuthorizationDetails treatmentAuthorizationDetails) {
         this.treatmentAuthorizationDetails = treatmentAuthorizationDetails;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -259,7 +259,6 @@ public class RapRequestForm {
                 ", attendingProviderName='" + attendingProviderName + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", patientdetail=" + patientdetail +
-                ", treatmentAuthorizationDetails=" + treatmentAuthorizationDetails +
                 '}';
     }
 }

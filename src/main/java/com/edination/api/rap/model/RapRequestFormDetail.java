@@ -9,11 +9,12 @@ public class RapRequestFormDetail {
     private String patientMrn;
     private RapRequestForm rapRequestForm;
     List<ConditionCodeDetail> conditionCodeDetailList;
+    List<TreatmentAuthorizationDetails> treatmentAuthorizationDetails;
     List<OccuranceAndDate> occuranceAndDateList;
     List<ValueCodeDetail> valueCodeDetailList;
     List<BillingDetails> billingDetailsList;
-    PayerDetails payerDetails;
-    InsuredDetails insuredDetails;
+    List<PayerDetails> payerDetails;
+    List<InsuredDetails> insuredDetails;
     PrimaryDiagnosisCode primaryDiagnosisCode;
     List<SecondDiagnosisCode> secondDiagnosisCodeList;
     List<OtherProviderDetail> otherProviderDetails;
@@ -53,6 +54,14 @@ public class RapRequestFormDetail {
         this.rapRequestForm = rapRequestForm;
     }
 
+    public List<TreatmentAuthorizationDetails> getTreatmentAuthorizationDetails() {
+        return treatmentAuthorizationDetails;
+    }
+
+    public void setTreatmentAuthorizationDetails(List<TreatmentAuthorizationDetails> treatmentAuthorizationDetails) {
+        this.treatmentAuthorizationDetails = treatmentAuthorizationDetails;
+    }
+
     public List<ConditionCodeDetail> getConditionCodeDetailList() {
         return conditionCodeDetailList;
     }
@@ -85,19 +94,19 @@ public class RapRequestFormDetail {
         this.billingDetailsList = billingDetailsList;
     }
 
-    public PayerDetails getPayerDetails() {
+    public List<PayerDetails> getPayerDetails() {
         return payerDetails;
     }
 
-    public void setPayerDetails(PayerDetails payerDetails) {
+    public void setPayerDetails(List<PayerDetails> payerDetails) {
         this.payerDetails = payerDetails;
     }
 
-    public InsuredDetails getInsuredDetails() {
+    public List<InsuredDetails> getInsuredDetails() {
         return insuredDetails;
     }
 
-    public void setInsuredDetails(InsuredDetails insuredDetails) {
+    public void setInsuredDetails(List<InsuredDetails> insuredDetails) {
         this.insuredDetails = insuredDetails;
     }
 
@@ -131,6 +140,7 @@ public class RapRequestFormDetail {
                 "patientMrn='" + patientMrn + '\'' +
                 ", rapRequestForm=" + rapRequestForm +
                 ", conditionCodeDetailList=" + conditionCodeDetailList +
+                ", treatmentAuthorizationDetails=" + treatmentAuthorizationDetails +
                 ", occuranceAndDateList=" + occuranceAndDateList +
                 ", valueCodeDetailList=" + valueCodeDetailList +
                 ", billingDetailsList=" + billingDetailsList +

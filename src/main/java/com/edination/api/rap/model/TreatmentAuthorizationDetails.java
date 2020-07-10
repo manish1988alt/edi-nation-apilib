@@ -12,14 +12,15 @@ public class TreatmentAuthorizationDetails {
     private String TreatmentAuthorizationCode;
     private String documentControlNumber;
     private String employeeName;
-
+    private String mrnNumber;
     public TreatmentAuthorizationDetails() {
     }
 
-    public TreatmentAuthorizationDetails(String treatmentAuthorizationCode, String documentControlNumber, String employeeName) {
+    public TreatmentAuthorizationDetails(String mrnNumber,String treatmentAuthorizationCode, String documentControlNumber, String employeeName) {
         TreatmentAuthorizationCode = treatmentAuthorizationCode;
         this.documentControlNumber = documentControlNumber;
         this.employeeName = employeeName;
+        this.mrnNumber=mrnNumber;
     }
 
     public int getId() {
@@ -28,6 +29,14 @@ public class TreatmentAuthorizationDetails {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMrnNumber() {
+        return mrnNumber;
+    }
+
+    public void setMrnNumber(String mrnNumber) {
+        this.mrnNumber = mrnNumber;
     }
 
     public String getTreatmentAuthorizationCode() {
@@ -61,6 +70,7 @@ public class TreatmentAuthorizationDetails {
                 ", TreatmentAuthorizationCode='" + TreatmentAuthorizationCode + '\'' +
                 ", documentControlNumber='" + documentControlNumber + '\'' +
                 ", employeeName='" + employeeName + '\'' +
+                ", mrnNumber='" + mrnNumber + '\'' +
                 '}';
     }
 }
