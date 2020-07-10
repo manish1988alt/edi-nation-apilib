@@ -3,18 +3,20 @@ package com.edination.api.rap.rest;
 import com.edination.api.PDGM.dao.PDGMRapListRepository;
 import com.edination.api.PDGM.dao.PDGMRapListService;
 import com.edination.api.PDGM.dao.SecondDaignosisCodeRepository;
+import com.edination.api.PDGM.model.ClinicalGroupingPrimaryDiagnosis;
 import com.edination.api.PDGM.model.PDGMRapListing;
 import com.edination.api.preAuthorisation.MasterCode.ProviderCodeMaster;
-import com.edination.api.rap.Dao.RapRequestFormRepository;
+import com.edination.api.rap.Dao.*;
 import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @RequestMapping("rap")
@@ -25,7 +27,31 @@ public class RapRestApp implements Serializable {
     @Autowired
     SecondDaignosisCodeRepository secondDaignosisCodeRepository;
     @Autowired
+    RapRequestFormService rapRequestFormService;
+    @Autowired
     PDGMRapListService pdgmRapListService;
+    @Autowired
+    PDGMRapListRepository pdgmRapListRepository;
+    @Autowired
+    PrimaryDiagnosisCodeService primaryDiagnosisCodeService;
+    @Autowired
+    BillingDetailsService billingDetailsService;
+    @Autowired
+    ConditionCodeDetailService conditionCodeDetailService;
+    @Autowired
+    OccuranceAndDateService occuranceAndDateService;
+    @Autowired
+    ValueCodeDetailService valueCodeDetailService;
+    @Autowired
+    InsuredDetailsService insuredDetailsService;
+    @Autowired
+    PayerDetailsService payerDetailsService;
+    @Autowired
+    OtherProviderDetailService otherProviderDetailService;
+    @Autowired
+    RapRequestEnquiryDetailsService rapRequestEnquiryDetailsService;
+    @Autowired
+    TreatmentAuthorizationDetailsService treatmentAuthorizationDetailsService;
     @PostMapping("/serviceProviderTypeList")
     public List<Object> serviceProviderTypeList(@RequestBody RapRequestForm rapRequestForm) throws Throwable {
         List<Object> list = new ArrayList<>();
@@ -131,6 +157,7 @@ public class RapRestApp implements Serializable {
             billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
             billingDetailsListUpdate.add(billingDetails);
 
+
         }
         rapRequestFormDetail.setBillingDetailsList(billingDetailsListUpdate);
         rapRequestFormDetail.setPayerDetails(rapRequestFormRepository.findPayerDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
@@ -210,10 +237,48 @@ public class RapRestApp implements Serializable {
         list.add(rapRequestFormDetail1);
         return list;
     }
-   /* @PostMapping("/preAuthRequestSave")
-    public List<RapRequestFormDetail>   preAuthRequestEdit(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+   @PostMapping("/preAuthRequestSave")
+    public ResponseEntity<?>  preAuthRequestSave(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
-     RapRequestForm rapRequestForm=new RapRequestForm();
+        String ackn="";
+
+        ackn= this.saveOperation(rapRequestFormDetail,"Save As Draft");
+
+
+        if(ackn.equals("true")) {
+            return generateSuccessObject("Success",
+                    " ");
+        }
+        else
+        {
+            return generateSuccessObject("Error",
+                    "Sent failed ");
+        }
+    }
+
+    @PostMapping("/preAuthRequestSent")
+    public ResponseEntity<?>  preAuthRequestSent(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+    {
+        String ackn="";
+
+        ackn= this.saveOperation(rapRequestFormDetail,"Sent For Approval");
+
+
+        if(ackn.equals("true")) {
+            return generateSuccessObject("Success",
+                    " ");
+        }
+        else
+        {
+            return generateSuccessObject("Error",
+                    "Sent failed ");
+        }
+    }
+
+    public String saveOperation(RapRequestFormDetail rapRequestFormDetail,String rapFormStatus)
+    {
+        String ackn="false";
+        RapRequestForm rapRequestForm=new RapRequestForm();
         rapRequestForm.setPatientMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
         rapRequestForm.setAccidentDate(rapRequestFormDetail.getRapRequestForm().getAccidentDate());
         rapRequestForm.setAccidentState(rapRequestFormDetail.getRapRequestForm().getAccidentState());
@@ -233,11 +298,7 @@ public class RapRestApp implements Serializable {
         rapRequestForm.setTypeOfBill(rapRequestFormDetail.getRapRequestForm().getTypeOfBill());
         rapRequestForm.setTypeOfVisit(rapRequestFormDetail.getRapRequestForm().getTypeOfVisit());
         rapRequestForm.setRemarks(rapRequestFormDetail.getRapRequestForm().getRemarks());
-        TreatmentAuthorizationDetails treatmentAuthorizationDetails=new TreatmentAuthorizationDetails();
-        treatmentAuthorizationDetails.setDocumentControlNumber(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getDocumentControlNumber());
-        treatmentAuthorizationDetails.setTreatmentAuthorizationCode(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getTreatmentAuthorizationCode());
-        treatmentAuthorizationDetails.setEmployeeName(rapRequestFormDetail.getRapRequestForm().getTreatmentAuthorizationDetails().getEmployeeName());
-        rapRequestForm.setTreatmentAuthorizationDetails(treatmentAuthorizationDetails);
+
         Patientdetail patientdetail=new Patientdetail();
         patientdetail.setName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getName());
         patientdetail.setFirstName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getFirstName());
@@ -253,9 +314,11 @@ public class RapRestApp implements Serializable {
         patientdetail.setState(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getState());
         patientdetail.setZipCode(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getZipCode());
         rapRequestForm.setPatientdetail(patientdetail);
-        BillingDetails billingDetails=new BillingDetails();
+        rapRequestFormService.save(rapRequestForm);
+
         for(BillingDetails bl:rapRequestFormDetail.getBillingDetailsList())
         {
+            BillingDetails billingDetails=new BillingDetails();
             billingDetails.setMrnNumber(bl.getMrnNumber());
             billingDetails.sethCPCS_Rate_HCPCS_Code(bl.gethCPCS_Rate_HCPCS_Code());
             billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
@@ -267,29 +330,149 @@ public class RapRestApp implements Serializable {
             billingDetails.setNonCoverageCharge(bl.getNonCoverageCharge());
             billingDetails.setCreationDate(bl.getCreationDate());
             billingDetails.setCount(bl.getCount());
+            billingDetailsService.save(billingDetails);
         }
-        ConditionCodeDetail conditionCodeDetail=new ConditionCodeDetail();
+
         for(ConditionCodeDetail cnd:rapRequestFormDetail.getConditionCodeDetailList())
         {
+            ConditionCodeDetail conditionCodeDetail=new ConditionCodeDetail();
             conditionCodeDetail.setMrnNumber(cnd.getMrnNumber());
             conditionCodeDetail.setCode(cnd.getCode());
+            conditionCodeDetailService.save(conditionCodeDetail);
         }
-        OccuranceAndDate occuranceAndDate=new OccuranceAndDate();
-        for(OccuranceAndDate cnd:rapRequestFormDetail.getOccuranceAndDateList())
+
+        for(OccuranceAndDate occurance:rapRequestFormDetail.getOccuranceAndDateList())
         {
-            occuranceAndDate.setMrnNumber(cnd.getMrnNumber());
-            occuranceAndDate.setCode(cnd.getCode());
+            OccuranceAndDate occuranceAndDate=new OccuranceAndDate();
+            occuranceAndDate.setMrnNumber(occurance.getMrnNumber());
+            occuranceAndDate.setCode(occurance.getCode());
+            occuranceAndDateService.save(occuranceAndDate);
         }
 
-        rapRequestFormDetail.getConditionCodeDetailList();
-        rapRequestFormDetail.getInsuredDetails();
-        rapRequestFormDetail.getOccuranceAndDateList();
-        rapRequestFormDetail.getOtherProviderDetails();
-        rapRequestFormDetail.getPayerDetails();
-        rapRequestFormDetail.getValueCodeDetailList();
-        rapRequestFormDetail.getRapRequestEnquiryDetails();
+        for(ValueCodeDetail valueCode:rapRequestFormDetail.getValueCodeDetailList())
+        {
+            ValueCodeDetail valueCodeDetail=new ValueCodeDetail();
+            valueCodeDetail.setMrnNumber(valueCode.getMrnNumber());
+            valueCodeDetail.setCode(valueCode.getCode());
+            valueCodeDetailService.save(valueCodeDetail);
+        }
 
 
+        for(InsuredDetails insuredDetails1:rapRequestFormDetail.getInsuredDetails())
+        {
+            InsuredDetails insuredDetails=new InsuredDetails();
+            insuredDetails.setCount(insuredDetails1.getCount());
+            insuredDetails.setInsuredGroupName(insuredDetails1.getInsuredGroupName());
+            insuredDetails.setInsuredGroupNumber(insuredDetails1.getInsuredGroupNumber());
+            insuredDetails.setInsuredName(insuredDetails1.getInsuredName());
+            insuredDetails.setInsuredUniqueIdentifiers(insuredDetails1.getInsuredUniqueIdentifiers());
+            insuredDetails.setMrnNumber(insuredDetails1.getMrnNumber());
+            insuredDetails.setRelationshipToInsured(insuredDetails1.getRelationshipToInsured());
+            insuredDetailsService.save(insuredDetails);
+        }
 
-    }*/
+        for(PayerDetails payerDetails1: rapRequestFormDetail.getPayerDetails())
+        {
+            PayerDetails payerDetails=new PayerDetails();
+            payerDetails.setAssignmentOfBenefit(payerDetails1.getAssignmentOfBenefit());
+            payerDetails.setCount(payerDetails1.getCount());
+            payerDetails.setEstimateAmount(payerDetails1.getEstimateAmount());
+            payerDetails.setHealthPlanID(payerDetails1.getHealthPlanID());
+            payerDetails.setMrnNumber(payerDetails1.getMrnNumber());
+            payerDetails.setPayerCarrierNumber(payerDetails1.getPayerCarrierNumber());
+            payerDetails.setPayerName(payerDetails1.getPayerName());
+            payerDetails.setPayerType(payerDetails1.getPayerType());
+            payerDetails.setPriorPayment(payerDetails1.getPriorPayment());
+            payerDetailsService.save(payerDetails);
+        }
+        for(TreatmentAuthorizationDetails treatmentAuthorizationDetails1: rapRequestFormDetail.getTreatmentAuthorizationDetails())
+        {
+            TreatmentAuthorizationDetails treatmentAuthorizationDetails = new TreatmentAuthorizationDetails();
+            treatmentAuthorizationDetails.setEmployeeName(treatmentAuthorizationDetails1.getEmployeeName());
+            treatmentAuthorizationDetails.setTreatmentAuthorizationCode(treatmentAuthorizationDetails1.getTreatmentAuthorizationCode());
+            treatmentAuthorizationDetails.setDocumentControlNumber(treatmentAuthorizationDetails1.getDocumentControlNumber());
+            treatmentAuthorizationDetails.setMrnNumber(treatmentAuthorizationDetails1.getMrnNumber());
+            treatmentAuthorizationDetailsService.save(treatmentAuthorizationDetails);
+        }
+        for(OtherProviderDetail otherProviderDetail1: rapRequestFormDetail.getOtherProviderDetails())
+        {
+            OtherProviderDetail otherProviderDetail=new OtherProviderDetail();
+            otherProviderDetail.setFirstName(otherProviderDetail1.getFirstName());
+            otherProviderDetail.setLastName(otherProviderDetail1.getLastName());
+            otherProviderDetail.setMiddleName(otherProviderDetail1.getMiddleName());
+            otherProviderDetail.setPrefix(otherProviderDetail1.getPrefix());
+            otherProviderDetail.setSuffix(otherProviderDetail1.getSuffix());
+            otherProviderDetail.setDob(otherProviderDetail1.getDob());
+            otherProviderDetail.setGender(otherProviderDetail1.getGender());
+            otherProviderDetail.setProviderName(otherProviderDetail1.getProviderName());
+            otherProviderDetail.setProviderType(otherProviderDetail1.getProviderType());
+            otherProviderDetail.setAddressLine(otherProviderDetail1.getAddressLine());
+            otherProviderDetail.setCity(otherProviderDetail1.getCity());
+            otherProviderDetail.setState(otherProviderDetail1.getState());
+            otherProviderDetail.setZipCode(otherProviderDetail1.getZipCode());
+            otherProviderDetail.setMrnNumber(otherProviderDetail1.getMrnNumber());
+            otherProviderDetailService.save(otherProviderDetail);
+
+        }
+        RapRequestEnquiryDetails rapRequestEnquiryDetails=new RapRequestEnquiryDetails();
+        rapRequestEnquiryDetails.setMrnNumber( rapRequestFormDetail.getRapRequestEnquiryDetails().getMrnNumber());
+        rapRequestEnquiryDetails.setEnquiryId( rapRequestFormDetail.getRapRequestEnquiryDetails().getEnquiryId());
+        rapRequestEnquiryDetails.setPreauthReqSentDate( rapRequestFormDetail.getRapRequestEnquiryDetails().getPreauthReqSentDate());
+        rapRequestEnquiryDetailsService.save(rapRequestEnquiryDetails);
+
+        PDGMRapListing pdgmRapListing= pdgmRapListService.get(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+        List<ClinicalGroupingPrimaryDiagnosis> clinicalGroupingPrimaryDiagnosis1= pdgmRapListRepository.findClinicalGroupingPrimaryDiagnosis(pdgmRapListing.getPrimaryDiagnosisCode());
+        for(ClinicalGroupingPrimaryDiagnosis clinicalGroupingPrimaryDiagnosis:clinicalGroupingPrimaryDiagnosis1) {
+            PrimaryDiagnosisCode primaryDiagnosisCode = new PrimaryDiagnosisCode();
+            primaryDiagnosisCode.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+            primaryDiagnosisCode.setiCDQualifier("ICD-10");
+            primaryDiagnosisCode.setPrimaryDiagnosisCode(clinicalGroupingPrimaryDiagnosis.getPrimaryDiagnosisCode());
+            primaryDiagnosisCode.setDiscription(clinicalGroupingPrimaryDiagnosis.getDiscription());
+            primaryDiagnosisCodeService.save(primaryDiagnosisCode);
+        }
+        ackn="true";
+        if("true".equals(ackn)) {
+            PDGMRapListing pdgmRapListing1 = new PDGMRapListing();
+            pdgmRapListing1.setFirstName(pdgmRapListing.getFirstName());
+            pdgmRapListing1.setLastName(pdgmRapListing.getLastName());
+            pdgmRapListing1.setMiddleName(pdgmRapListing.getMiddleName());
+            pdgmRapListing1.setSuffix(pdgmRapListing.getSuffix());
+            pdgmRapListing1.setEpisodeStartDates(pdgmRapListing.getEpisodeStartDates());
+            pdgmRapListing1.setEpisodeEndDates(pdgmRapListing.getEpisodeEndDates());
+            pdgmRapListing1.setPrimaryDiagnosisCode(pdgmRapListing.getPrimaryDiagnosisCode());
+            pdgmRapListing1.setEpisodeId(pdgmRapListing.getEpisodeId());
+            pdgmRapListing1.setOasisType(pdgmRapListing.getOasisType());
+            pdgmRapListing1.setOasisKey(pdgmRapListing.getOasisKey());
+            pdgmRapListing1.setClaimType(pdgmRapListing.getClaimType());
+            pdgmRapListing1.setBillableVisit(pdgmRapListing.getBillableVisit());
+            pdgmRapListing1.setAging(pdgmRapListing.getAging());
+            pdgmRapListing1.setHippsCode(pdgmRapListing.getHippsCode());
+            pdgmRapListing1.setHippsCodeGeneratedDate(pdgmRapListing.getHippsCodeGeneratedDate());
+            pdgmRapListing1.setMrnNumber(pdgmRapListing.getMrnNumber());
+            pdgmRapListing1.setAction(pdgmRapListing.getAction());
+            pdgmRapListing1.setRapsFormStatus(rapFormStatus);
+            String currentDate = java.time.LocalDate.now().toString();
+            LocalDate formSentDate = LocalDate.parse(currentDate);
+            pdgmRapListing1.setRapsSentDate(formSentDate);
+            pdgmRapListing1.setRapsType(pdgmRapListing.getRapsType());
+            pdgmRapListService.save(pdgmRapListing1);
+        }
+        return ackn;
+    }
+    protected ResponseEntity<?> generateSuccessObject(String key, String errorBuilder){
+        Response.ResponseBuilder builder = null;
+
+        ResponseEntity responseEntity;
+
+        try{
+            Map<String, Object> responseObj = new HashMap<String, Object>();
+            responseObj.put("ackn",key);
+            responseEntity= new ResponseEntity<>(responseObj, HttpStatus.ACCEPTED);
+        }catch (Exception e) {
+            Map<String, Object> responseObj1 = new HashMap<String, Object>();
+            responseObj1.put("Error",HttpStatus.BAD_REQUEST);
+            responseEntity= new ResponseEntity<>(responseObj1,HttpStatus.EXPECTATION_FAILED);
+        }
+        return  responseEntity;
+    }
 }
