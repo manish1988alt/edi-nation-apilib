@@ -27,9 +27,10 @@ public class RapRequestForm {
     private LocalDate accidentDate;
     private String attendingProviderName;
     private String remarks;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patientdetailId")
-    private Patientdetail patientdetail;
+    private Patientdetail patientDetail;
 
     /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "treatmentAuthorizationId")
@@ -227,12 +228,12 @@ public class RapRequestForm {
         this.remarks = remarks;
     }
 
-    public Patientdetail getPatientdetail() {
-        return patientdetail;
+    public Patientdetail getPatientDetail() {
+        return patientDetail;
     }
 
-    public void setPatientdetail(Patientdetail patientdetail) {
-        this.patientdetail = patientdetail;
+    public void setPatientDetail(Patientdetail patientDetail) {
+        this.patientDetail = patientDetail;
     }
 
     @Override
@@ -258,7 +259,7 @@ public class RapRequestForm {
                 ", accidentDate=" + accidentDate +
                 ", attendingProviderName='" + attendingProviderName + '\'' +
                 ", remarks='" + remarks + '\'' +
-                ", patientdetail=" + patientdetail +
+                ", patientDetail=" + patientDetail +
                 '}';
     }
 }

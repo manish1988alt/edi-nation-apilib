@@ -171,7 +171,7 @@ public class RapRestApp implements Serializable {
         return list;
     }
     @PostMapping("/rapRequestEdit")
-    public List<RapRequestFormDetail>   preAuthRequestEdit(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+    public List<RapRequestFormDetail>  rapRequestEdit(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         List<RapRequestFormDetail> list=new ArrayList<>();
         List<ConditionCodeDetail> conditionCodeDetailList=rapRequestFormRepository.findConditionCodeDetailByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
@@ -238,7 +238,7 @@ public class RapRestApp implements Serializable {
         return list;
     }
    @PostMapping("/rapRequestSave")
-    public ResponseEntity<?>  preAuthRequestSave(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+    public ResponseEntity<?>  rapRequestSave(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         String ackn="";
 
@@ -257,7 +257,7 @@ public class RapRestApp implements Serializable {
     }
 
     @PostMapping("/rapRequestSent")
-    public ResponseEntity<?>  preAuthRequestSent(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
+    public ResponseEntity<?>  rapRequestSent(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         String ackn="";
 
@@ -300,26 +300,26 @@ public class RapRestApp implements Serializable {
         rapRequestForm.setRemarks(rapRequestFormDetail.getRapRequestForm().getRemarks());
 
         Patientdetail patientdetail=new Patientdetail();
-        patientdetail.setName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getName());
-        patientdetail.setFirstName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getFirstName());
-        patientdetail.setLastName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getLastName());
-        patientdetail.setMiddleName(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getMiddleName());
-        patientdetail.setPrefix(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getPrefix());
-        patientdetail.setSuffix(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getSuffix());
-        patientdetail.setGender(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getGender());
-        patientdetail.setDob(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getDob());
-        patientdetail.setPatientNameIdentifier(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getPatientNameIdentifier());
-        patientdetail.setAddressLine(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getAddressLine());
-        patientdetail.setCity(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getCity());
-        patientdetail.setState(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getState());
-        patientdetail.setZipCode(rapRequestFormDetail.getRapRequestForm().getPatientdetail().getZipCode());
-        rapRequestForm.setPatientdetail(patientdetail);
+        patientdetail.setName(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getName());
+        patientdetail.setFirstName(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getFirstName());
+        patientdetail.setLastName(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getLastName());
+        patientdetail.setMiddleName(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getMiddleName());
+        patientdetail.setPrefix(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getPrefix());
+        patientdetail.setSuffix(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getSuffix());
+        patientdetail.setGender(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getGender());
+        patientdetail.setDob(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getDob());
+        patientdetail.setPatientNameIdentifier(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getPatientNameIdentifier());
+        patientdetail.setAddressLine(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getAddressLine());
+        patientdetail.setCity(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getCity());
+        patientdetail.setState(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getState());
+        patientdetail.setZipCode(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getZipCode());
+        rapRequestForm.setPatientDetail(patientdetail);
         rapRequestFormService.save(rapRequestForm);
 
         for(BillingDetails bl:rapRequestFormDetail.getBillingDetailsList())
         {
             BillingDetails billingDetails=new BillingDetails();
-            billingDetails.setMrnNumber(bl.getMrnNumber());
+            billingDetails.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             billingDetails.sethCPCS_Rate_HCPCS_Code(bl.gethCPCS_Rate_HCPCS_Code());
             billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
             billingDetails.setTotalCostForNonCoverageCharge(bl.getTotalCostForNonCoverageCharge());
@@ -336,7 +336,7 @@ public class RapRestApp implements Serializable {
         for(ConditionCodeDetail cnd:rapRequestFormDetail.getConditionCodeDetailList())
         {
             ConditionCodeDetail conditionCodeDetail=new ConditionCodeDetail();
-            conditionCodeDetail.setMrnNumber(cnd.getMrnNumber());
+            conditionCodeDetail.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             conditionCodeDetail.setCode(cnd.getCode());
             conditionCodeDetailService.save(conditionCodeDetail);
         }
@@ -344,7 +344,7 @@ public class RapRestApp implements Serializable {
         for(OccuranceAndDate occurance:rapRequestFormDetail.getOccuranceAndDateList())
         {
             OccuranceAndDate occuranceAndDate=new OccuranceAndDate();
-            occuranceAndDate.setMrnNumber(occurance.getMrnNumber());
+            occuranceAndDate.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             occuranceAndDate.setCode(occurance.getCode());
             occuranceAndDateService.save(occuranceAndDate);
         }
@@ -352,7 +352,7 @@ public class RapRestApp implements Serializable {
         for(ValueCodeDetail valueCode:rapRequestFormDetail.getValueCodeDetailList())
         {
             ValueCodeDetail valueCodeDetail=new ValueCodeDetail();
-            valueCodeDetail.setMrnNumber(valueCode.getMrnNumber());
+            valueCodeDetail.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             valueCodeDetail.setCode(valueCode.getCode());
             valueCodeDetailService.save(valueCodeDetail);
         }

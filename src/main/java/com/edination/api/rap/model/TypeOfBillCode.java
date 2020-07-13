@@ -10,15 +10,25 @@ public class TypeOfBillCode {
 
 
     @Id
+    private int id;
     private String code;
     private String codeDescription;
 
     public TypeOfBillCode() {
     }
 
-    public TypeOfBillCode(String code, String codeDescription) {
+    public TypeOfBillCode(String code, String codeDescription,int id) {
         this.code = code;
         this.codeDescription = codeDescription;
+        this.id=id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -40,7 +50,8 @@ public class TypeOfBillCode {
     @Override
     public String toString() {
         return "TypeOfBillCode{" +
-                "code='" + code + '\'' +
+                "id=" + id +
+                ", code='" + code + '\'' +
                 ", codeDescription='" + codeDescription + '\'' +
                 '}';
     }
