@@ -52,6 +52,15 @@ public class RapRestApp implements Serializable {
     RapRequestEnquiryDetailsService rapRequestEnquiryDetailsService;
     @Autowired
     TreatmentAuthorizationDetailsService treatmentAuthorizationDetailsService;
+    @Autowired
+    BillingDetailsRepository billingDetailsRepository;
+    @Autowired
+    PayerDetailsRepository payerDetailsRepository;
+    @Autowired
+    InsuredDetailsRepository insuredDetailsRepository;
+    @Autowired
+    RapRequestEnquiryDetailsRepository rapRequestEnquiryDetailsRepository;
+
     @PostMapping("/serviceProviderTypeList")
     public List<Object> serviceProviderTypeList(@RequestBody RapRequestForm rapRequestForm) throws Throwable {
         List<Object> list = new ArrayList<>();
@@ -135,7 +144,7 @@ public class RapRestApp implements Serializable {
         rapRequestFormDetail.setOccuranceAndDateList(occuranceAndDateList);
         rapRequestFormDetail.setValueCodeDetailList(valueCodeDetailList);
         rapRequestFormDetail.setPatientMrn(pdgmRapListing.getMrnNumber());
-       List<BillingDetails>  billingDetailsList =rapRequestFormRepository.findBillingDetailsByMrnNumber(pdgmRapListing.getMrnNumber());
+       List<BillingDetails>  billingDetailsList =billingDetailsRepository.findBillingDetailsByMrnNumber(pdgmRapListing.getMrnNumber());
        List<BillingDetails> billingDetailsListUpdate=new ArrayList<>();
         String currentDate = java.time.LocalDate.now().toString();
         LocalDate creationDate=LocalDate.parse(currentDate);
@@ -160,12 +169,24 @@ public class RapRestApp implements Serializable {
 
         }
         rapRequestFormDetail.setBillingDetailsList(billingDetailsListUpdate);
-        rapRequestFormDetail.setPayerDetails(rapRequestFormRepository.findPayerDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
-        rapRequestFormDetail.setInsuredDetails(rapRequestFormRepository.findInsuredDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        List<Integer> count=new ArrayList<Integer>();
+        count.add(1);
+        count.add(2);
+        count.add(3);
+
+        List<PayerDetails> payerDetailsList=new ArrayList<>();
+        List<InsuredDetails> insuredDetailsList=new ArrayList<>();
+        for(int value:count)
+        {
+            payerDetailsList.add(payerDetailsRepository.findPayerDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),value));
+            insuredDetailsList.add(insuredDetailsRepository.findInsuredDetailsByMrnNumber(pdgmRapListing.getMrnNumber(),value));
+        }
+        rapRequestFormDetail.setPayerDetails(payerDetailsList);
+        rapRequestFormDetail.setInsuredDetails(insuredDetailsList);
         rapRequestFormDetail.setPrimaryDiagnosisCode(rapRequestFormRepository.findPrimaryDiagnosisCodeByMrnNumber(pdgmRapListing.getMrnNumber()));
         rapRequestFormDetail.setSecondDiagnosisCodeList(secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(pdgmRapListing.getMrnNumber()));
         rapRequestFormDetail.setOtherProviderDetails(rapRequestFormRepository.findOtherProviderDetailByMrnNumber(pdgmRapListing.getMrnNumber()));
-        rapRequestFormDetail.setRapRequestEnquiryDetails(rapRequestFormRepository.findRapRequestEnquiryDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
+        rapRequestFormDetail.setRapRequestEnquiryDetails(rapRequestEnquiryDetailsRepository.findRapRequestEnquiryDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
         rapRequestFormDetail.setTreatmentAuthorizationDetails(rapRequestFormRepository.findTreatmentAuthorizationDetailsByMrnNumber(pdgmRapListing.getMrnNumber()));
         list.add(rapRequestFormDetail);
         return list;
@@ -184,7 +205,7 @@ public class RapRestApp implements Serializable {
         rapRequestFormDetail1.setOccuranceAndDateList(occuranceAndDateList);
         rapRequestFormDetail1.setValueCodeDetailList(valueCodeDetailList);
         rapRequestFormDetail1.setPatientMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
-        List<BillingDetails>  billingDetailsList =rapRequestFormRepository.findBillingDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+        List<BillingDetails>  billingDetailsList =billingDetailsRepository.findBillingDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
         List<BillingDetails> billingDetailsListUpdate=new ArrayList<>();
         String currentDate = java.time.LocalDate.now().toString();
         LocalDate creationDate=LocalDate.parse(currentDate);
@@ -208,13 +229,25 @@ public class RapRestApp implements Serializable {
 
         }
         rapRequestFormDetail1.setBillingDetailsList(billingDetailsListUpdate);
+        List<Integer> count=new ArrayList<Integer>();
+        count.add(1);
+        count.add(2);
+        count.add(3);
+
+         List<PayerDetails> payerDetailsList=new ArrayList<>();
+        List<InsuredDetails> insuredDetailsList=new ArrayList<>();
+        for(int value:count)
+        {
+            payerDetailsList.add(payerDetailsRepository.findPayerDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),value));
+            insuredDetailsList.add(insuredDetailsRepository.findInsuredDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),value));
+        }
+        rapRequestFormDetail1.setPayerDetails(payerDetailsList);
+        rapRequestFormDetail.setInsuredDetails(insuredDetailsList);
         rapRequestFormDetail.setTreatmentAuthorizationDetails(rapRequestFormRepository.findTreatmentAuthorizationDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
-        rapRequestFormDetail1.setPayerDetails(rapRequestFormRepository.findPayerDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
-        rapRequestFormDetail1.setInsuredDetails(rapRequestFormRepository.findInsuredDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setPrimaryDiagnosisCode(rapRequestFormRepository.findPrimaryDiagnosisCodeByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setSecondDiagnosisCodeList(secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setOtherProviderDetails(rapRequestFormRepository.findOtherProviderDetailByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
-       RapRequestEnquiryDetails rapRequestEnquiryDetailsObj= rapRequestFormRepository.findRapRequestEnquiryDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+        RapRequestEnquiryDetails rapRequestEnquiryDetailsObj= rapRequestEnquiryDetailsRepository.findRapRequestEnquiryDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
        PDGMRapListing pdgmRapListing=pdgmRapListService.get(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
         if("Sent For Approval".equals(pdgmRapListing.getRapsFormStatus()))
         {

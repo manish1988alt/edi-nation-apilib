@@ -53,7 +53,8 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM AttendingProviderDetail")
     List<AttendingProviderDetail> attendingProviderDetailList();
 
-    @Query("FROM RapRequestForm WHERE patient_mrn=?1")
+    //@Query("FROM RapRequestForm WHERE patient_mrn=?1")
+    @Query(value = "SELECT a.* FROM (SELECT * FROM rap_request_form c WHERE c.patient_mrn = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM rap_request_form e WHERE e.patient_mrn = ?1) ",nativeQuery = true)
     RapRequestForm rapRequestFormView(String mrnNumber);
 
     @Query("FROM ValueCodeDetail WHERE mrn_number =?1")
@@ -65,14 +66,15 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM  OccuranceAndDate  WHERE mrn_number =?1 ")
     List<OccuranceAndDate> findOccuranceAndDateByMrnNumber(String mrnNumber);
 
-    @Query("FROM  BillingDetails  WHERE mrn_number =?1 ")
-    List<BillingDetails> findBillingDetailsByMrnNumber(String mrnNumber);
+/*   // @Query("FROM  BillingDetails  WHERE mrn_number =?1 ")
+    @Query(value = "SELECT a.* FROM (SELECT * FROM billing_details c WHERE c.mrn_number = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM billing_details e WHERE e.mrn_number = ?1) ",nativeQuery = true)
+    List<BillingDetails> findBillingDetailsByMrnNumber(String mrnNumber);*/
 
-    @Query("FROM  PayerDetails  WHERE mrn_number =?1 ")
-    List<PayerDetails> findPayerDetailsByMrnNumber(String mrnNumber);
+    /*@Query("FROM  PayerDetails  WHERE mrn_number =?1 ")
+    List<PayerDetails> findPayerDetailsByMrnNumber(String mrnNumber);*/
 
-    @Query("FROM  InsuredDetails  WHERE mrn_number =?1 ")
-    List<InsuredDetails> findInsuredDetailsByMrnNumber(String mrnNumber);
+ /*   @Query("FROM  InsuredDetails  WHERE mrn_number =?1 ")
+    List<InsuredDetails> findInsuredDetailsByMrnNumber(String mrnNumber);*/
 
     @Query("FROM  PrimaryDiagnosisCode  WHERE mrn_number =?1 ")
     PrimaryDiagnosisCode findPrimaryDiagnosisCodeByMrnNumber(String mrnNumber);
@@ -83,6 +85,6 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM  TreatmentAuthorizationDetails  WHERE mrn_number =?1 ")
     List<TreatmentAuthorizationDetails> findTreatmentAuthorizationDetailsByMrnNumber(String mrnNumber);
 
-    @Query("FROM  RapRequestEnquiryDetails  WHERE mrn_number =?1 ")
-    RapRequestEnquiryDetails findRapRequestEnquiryDetailsByMrnNumber(String mrnNumber);
+    /*@Query("FROM  RapRequestEnquiryDetails  WHERE mrn_number =?1 ")
+    RapRequestEnquiryDetails findRapRequestEnquiryDetailsByMrnNumber(String mrnNumber);*/
 }
