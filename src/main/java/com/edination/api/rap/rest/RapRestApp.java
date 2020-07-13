@@ -170,7 +170,7 @@ public class RapRestApp implements Serializable {
         list.add(rapRequestFormDetail);
         return list;
     }
-    @PostMapping("/preAuthRequestEdit")
+    @PostMapping("/rapRequestEdit")
     public List<RapRequestFormDetail>   preAuthRequestEdit(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         List<RapRequestFormDetail> list=new ArrayList<>();
@@ -237,7 +237,7 @@ public class RapRestApp implements Serializable {
         list.add(rapRequestFormDetail1);
         return list;
     }
-   @PostMapping("/preAuthRequestSave")
+   @PostMapping("/rapRequestSave")
     public ResponseEntity<?>  preAuthRequestSave(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         String ackn="";
@@ -256,7 +256,7 @@ public class RapRestApp implements Serializable {
         }
     }
 
-    @PostMapping("/preAuthRequestSent")
+    @PostMapping("/rapRequestSent")
     public ResponseEntity<?>  preAuthRequestSent(@RequestBody  RapRequestFormDetail rapRequestFormDetail)  throws Throwable
     {
         String ackn="";
