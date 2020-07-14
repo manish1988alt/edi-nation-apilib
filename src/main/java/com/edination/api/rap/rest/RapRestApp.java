@@ -404,6 +404,8 @@ public class RapRestApp implements Serializable {
             OccuranceAndDate occuranceAndDate=new OccuranceAndDate();
             occuranceAndDate.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             occuranceAndDate.setCode(occurance.getCode());
+            occuranceAndDate.setDateFrom(occurance.getDateFrom());
+            occuranceAndDate.setDateThrough(occurance.getDateThrough());
             occuranceAndDateService.save(occuranceAndDate);
             occuranceCodeCount++;
         }
@@ -413,6 +415,7 @@ public class RapRestApp implements Serializable {
             ValueCodeDetail valueCodeDetail=new ValueCodeDetail();
             valueCodeDetail.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
             valueCodeDetail.setCode(valueCode.getCode());
+            valueCodeDetail.setAmount(valueCode.getAmount());
             valueCodeDetailService.save(valueCodeDetail);
             valueCodeCount++;
         }
