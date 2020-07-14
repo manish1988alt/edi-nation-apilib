@@ -259,8 +259,8 @@ public class RapRestApp implements Serializable {
             insuredDetailsList.add(insuredDetailsRepository.findInsuredDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),value));
         }
         rapRequestFormDetail1.setPayerDetails(payerDetailsList);
-        rapRequestFormDetail.setInsuredDetails(insuredDetailsList);
-        rapRequestFormDetail.setTreatmentAuthorizationDetails(treatmentAuthorizationDetailsRepository.findTreatmentAuthorizationDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),countOfAddedValueInRap.getTreatmentAuthorizationCount()));
+        rapRequestFormDetail1.setInsuredDetails(insuredDetailsList);
+        rapRequestFormDetail1.setTreatmentAuthorizationDetails(treatmentAuthorizationDetailsRepository.findTreatmentAuthorizationDetailsByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),countOfAddedValueInRap.getTreatmentAuthorizationCount()));
         rapRequestFormDetail1.setPrimaryDiagnosisCode(rapRequestFormRepository.findPrimaryDiagnosisCodeByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setSecondDiagnosisCodeList(secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn()));
         rapRequestFormDetail1.setOtherProviderDetails(otherProviderDetailRepository.findOtherProviderDetailByMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn(),countOfAddedValueInRap.getOtherProviderCount()));
