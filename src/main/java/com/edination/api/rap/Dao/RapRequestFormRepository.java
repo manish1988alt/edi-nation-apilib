@@ -60,8 +60,9 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM ValueCodeDetail WHERE mrn_number =?1")
     List<ValueCodeDetail> findValueCodeDetailByMrnNumber(String mrnNumber);
 
-    @Query("FROM  ConditionCodeDetail  WHERE mrn_number =?1 ")
-    List<ConditionCodeDetail> findConditionCodeDetailByMrnNumber(String mrnNumber);
+    //@Query("FROM  ConditionCodeDetail  WHERE mrn_number =?1 ")
+    @Query(value= "SELECT d.* FROM (SELECT a.* FROM (SELECT * FROM condition_code_detail c WHERE c.mrn_number =?1 ORDER BY c.id DESC ) a LIMIT ?2)  d WHERE d.mrn_number =?1 ORDER BY d.id ASC",nativeQuery = true)
+    List<ConditionCodeDetail> findConditionCodeDetailByMrnNumber(String mrnNumber,int count);
 
     @Query("FROM  OccuranceAndDate  WHERE mrn_number =?1 ")
     List<OccuranceAndDate> findOccuranceAndDateByMrnNumber(String mrnNumber);
