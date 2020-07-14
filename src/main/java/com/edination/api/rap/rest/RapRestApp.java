@@ -369,13 +369,14 @@ public class RapRestApp implements Serializable {
         for(BillingDetails bl:rapRequestFormDetail.getBillingDetailsList())
         {
             BillingDetails billingDetails=new BillingDetails();
-            billingDetails.setMrnNumber(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+            billingDetails.setMrnNumber(bl.getMrnNumber());
             billingDetails.sethCPCS_Rate_HCPCS_Code(bl.gethCPCS_Rate_HCPCS_Code());
             billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
             billingDetails.setTotalCostForNonCoverageCharge(bl.getTotalCostForNonCoverageCharge());
             billingDetails.setTotalCharge(bl.getTotalCharge());
             billingDetails.setServiceUnit(bl.getServiceUnit());
             billingDetails.setServiceDate(bl.getServiceDate());
+            billingDetails.setRevenueCode(bl.getRevenueCode());
             billingDetails.setRevenueCodeDescription(bl.getRevenueCodeDescription());
             billingDetails.setNonCoverageCharge(bl.getNonCoverageCharge());
             billingDetails.setCreationDate(bl.getCreationDate());
