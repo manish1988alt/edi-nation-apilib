@@ -514,6 +514,26 @@ public class PDGMRestApp implements Serializable {
                     m1033Service.save(m1033);
 
                 }
+                if(flagList.get(8)) {
+                    m1033 = new M1033();
+                    m1033.setId(8);
+                    m1033.setFlag(flagList.get(8));
+                    m1033.setDiscription(discriptionList.get(8));
+                    m1033.setFunctionalPoint(0);
+                    m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                    m1033Service.save(m1033);
+
+                }
+                if(flagList.get(9)) {
+                    m1033 = new M1033();
+                    m1033.setId(9);
+                    m1033.setFlag(flagList.get(9));
+                    m1033.setDiscription(discriptionList.get(9));
+                    m1033.setFunctionalPoint(0);
+                    m1033.setMrnNumber(oasisItemContributed.getMrnNumber());
+                    m1033Service.save(m1033);
+
+                }
             }
         if(count<4 && !(flagList.get(10)))
         {
