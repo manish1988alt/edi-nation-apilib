@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class AttendingProviderDetail {
 
     @Id
-    private int id;
+    private String id;
     private String providerName;
     private String firstName;
     private String lastName;
@@ -42,11 +42,11 @@ public class AttendingProviderDetail {
         this.zipCode = zipCode;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
