@@ -31,12 +31,12 @@ public class PDGMRapListing {
     private String primaryDiagnosisCode;
     private String rapsType;
     private String rapsFormStatus;
-    private LocalDate rapsSentDate;
+    private String rapsSentDate;
 
     public PDGMRapListing() {
     }
 
-    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, LocalDate hippsCodeGeneratedDate, String oasisKey, String claimType, String action, String primaryDiagnosisCode, String rapsType, String rapsFormStatus, LocalDate rapsSentDate) {
+    public PDGMRapListing(String mrnNumber, String firstName, String lastName, String middleName, String suffix, String episodeId, String oasisType, Date episodeStartDates, Date episodeEndDates, String aging, String billableVisit, String hippsCode, LocalDate hippsCodeGeneratedDate, String oasisKey, String claimType, String action, String primaryDiagnosisCode, String rapsType, String rapsFormStatus, String rapsSentDate) {
         this.mrnNumber = mrnNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -91,11 +91,11 @@ public class PDGMRapListing {
         this.rapsFormStatus = rapsFormStatus;
     }
 
-    public LocalDate getRapsSentDate() {
+    public String getRapsSentDate() {
         return rapsSentDate;
     }
 
-    public void setRapsSentDate(LocalDate rapsSentDate) {
+    public void setRapsSentDate(String rapsSentDate) {
         this.rapsSentDate = rapsSentDate;
     }
 

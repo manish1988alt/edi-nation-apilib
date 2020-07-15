@@ -376,7 +376,7 @@ public class RapRestApp implements Serializable {
             billingDetails.setTotalCharge(bl.getTotalCharge());
             billingDetails.setServiceUnit(bl.getServiceUnit());
             billingDetails.setServiceDate(bl.getServiceDate());
-            billingDetails.setRevenueCode(bl.getRevenueCode());
+            billingDetails.setRevenueCode("0023");
             billingDetails.setRevenueCodeDescription(bl.getRevenueCodeDescription());
             billingDetails.setNonCoverageCharge(bl.getNonCoverageCharge());
             billingDetails.setCreationDate(bl.getCreationDate());
@@ -520,8 +520,8 @@ public class RapRestApp implements Serializable {
             pdgmRapListing1.setAction(pdgmRapListing.getAction());
             pdgmRapListing1.setRapsFormStatus(rapFormStatus);
             String currentDate = java.time.LocalDate.now().toString();
-            LocalDate formSentDate = LocalDate.parse(currentDate);
-            pdgmRapListing1.setRapsSentDate(formSentDate);
+            //LocalDate formSentDate = LocalDate.parse(currentDate);
+            pdgmRapListing1.setRapsSentDate(currentDate);
             pdgmRapListing1.setRapsType(pdgmRapListing.getRapsType());
             pdgmRapListService.save(pdgmRapListing1);
         }

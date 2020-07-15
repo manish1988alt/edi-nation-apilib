@@ -246,6 +246,10 @@ public class PDGMRestApp implements Serializable {
         rapListing.setPrimaryDiagnosisCode(pdgmRapList.getPrimaryDiagnosisCode());
         rapListing.setEpisodeStartDates(pdgmRapList.getEpisodeStartDates());
         rapListing.setHippsCodeGeneratedDate(hippsCodeGenerationDate);
+        rapListing.setRapsSentDate(pdgmRapList.getRapsSentDate());
+        rapListing.setRapsType(pdgmRapList.getRapsType());
+        rapListing.setRapsFormStatus(pdgmRapList.getRapsFormStatus());
+        rapListing.setAction(pdgmRapList.getAction());
         pdgmRapListService.save(rapListing);
 
         String ackn="Success";
@@ -1468,6 +1472,7 @@ public class PDGMRestApp implements Serializable {
             secondDiagnosisCode.setClinicalGroup(clinicalGroupingSecond.getClinicalGroup());
             secondDiagnosisCode.setComorbiditySubGroup(clinicalGroupingSecond.getComorbiditySubGroup());
             secondDiagnosisCode.setMrnNumber(diagnosisCode.getMrnNumber());
+            secondDiagnosisCode.setiCDQualifier("ICD-10");
             secondDiagnosisCodeService.save(secondDiagnosisCode);
         }
 
