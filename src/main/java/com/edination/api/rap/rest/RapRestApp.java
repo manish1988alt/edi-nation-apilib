@@ -1,12 +1,17 @@
 package com.edination.api.rap.rest;
 
+import com.edination.api.Dao.PreAuthRepository;
 import com.edination.api.PDGM.dao.PDGMRapListRepository;
 import com.edination.api.PDGM.dao.PDGMRapListService;
 import com.edination.api.PDGM.dao.SecondDaignosisCodeRepository;
 import com.edination.api.PDGM.model.ClinicalGroupingPrimaryDiagnosis;
 import com.edination.api.PDGM.model.PDGMRapListing;
+import com.edination.api.eligibility.EDIFile.SFTPFILE;
 import com.edination.api.preAuthorisation.MasterCode.ProviderCodeMaster;
+import com.edination.api.preAuthorisation.model.Episode;
+import com.edination.api.preAuthorisation.model.PreAuthDetail;
 import com.edination.api.rap.Dao.*;
+import com.edination.api.rap.EDI.EDIFileGeneration;
 import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -74,6 +83,8 @@ public class RapRestApp implements Serializable {
     CountOfAddedValueInRapService countOfAddedValueInRapService;
     @Autowired
     CountOfAddedValueInRapRepository countOfAddedValueInRapRepository;
+    @Autowired
+    PreAuthRepository  preAuthRepository;
 
 
     @PostMapping("/serviceProviderTypeList")
@@ -311,6 +322,10 @@ public class RapRestApp implements Serializable {
     {
         String ackn="";
 
+        File file = new File("Hipaa-5010-837-GenericRequest.txt");
+
+        generateFile(rapRequestFormDetail, file);
+        new SFTPFILE().fileUpload(file, rapRequestFormDetail.getRapRequestForm().getPatientMrn() + "_" + file.getName());
         ackn= this.saveOperation(rapRequestFormDetail,"Sent For Approval");
 
 
@@ -328,11 +343,20 @@ public class RapRestApp implements Serializable {
     public String saveOperation(RapRequestFormDetail rapRequestFormDetail,String rapFormStatus)
     {
         String ackn="false";
-        RapRequestForm rapRequestForm=new RapRequestForm();
+        Episode episode=new Episode();
+       List<PreAuthDetail> preAuthDetail= preAuthRepository.findByID(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
+        for(PreAuthDetail preAuthDetail1:preAuthDetail)
+        {
+        episode= preAuthDetail1.getEpisode();
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String episodeStartDate = formatter.format(episode.getAdmissionDate());
+        LocalDate addmission_date = LocalDate.parse(episodeStartDate);
+       RapRequestForm rapRequestForm=new RapRequestForm();
         rapRequestForm.setPatientMrn(rapRequestFormDetail.getRapRequestForm().getPatientMrn());
         rapRequestForm.setAccidentDate(rapRequestFormDetail.getRapRequestForm().getAccidentDate());
         rapRequestForm.setAccidentState(rapRequestFormDetail.getRapRequestForm().getAccidentState());
-        rapRequestForm.setAdmissionDate(rapRequestFormDetail.getRapRequestForm().getAdmissionDate());
+        rapRequestForm.setAdmissionDate(addmission_date);
         rapRequestForm.setAdmissionHour(rapRequestFormDetail.getRapRequestForm().getAdmissionHour());
         rapRequestForm.setAttendingProviderName(rapRequestFormDetail.getRapRequestForm().getAttendingProviderName());
         rapRequestForm.setBillingProviderName(rapRequestFormDetail.getRapRequestForm().getBillingProviderName());
@@ -343,7 +367,8 @@ public class RapRestApp implements Serializable {
         rapRequestForm.setServicingProviderName(rapRequestFormDetail.getRapRequestForm().getServicingProviderName());
         rapRequestForm.setServicingProviderType(rapRequestFormDetail.getRapRequestForm().getServicingProviderType());
         rapRequestForm.setSourceOfReferral(rapRequestFormDetail.getRapRequestForm().getSourceOfReferral());
-        rapRequestForm.setStatementCoveredPeriodDateFrom(rapRequestFormDetail.getRapRequestForm().getStatementCoveredPeriodDateFrom());
+
+        rapRequestForm.setStatementCoveredPeriodDateFrom(addmission_date);
         rapRequestForm.setStatementCoveredPeriodDateTo(rapRequestFormDetail.getRapRequestForm().getStatementCoveredPeriodDateTo());
         rapRequestForm.setTypeOfBill(rapRequestFormDetail.getRapRequestForm().getTypeOfBill());
         rapRequestForm.setTypeOfVisit(rapRequestFormDetail.getRapRequestForm().getTypeOfVisit());
@@ -505,7 +530,7 @@ public class RapRestApp implements Serializable {
             pdgmRapListing1.setLastName(pdgmRapListing.getLastName());
             pdgmRapListing1.setMiddleName(pdgmRapListing.getMiddleName());
             pdgmRapListing1.setSuffix(pdgmRapListing.getSuffix());
-            pdgmRapListing1.setEpisodeStartDates(pdgmRapListing.getEpisodeStartDates());
+            pdgmRapListing1.setEpisodeStartDates(episode.getAdmissionDate());
             pdgmRapListing1.setEpisodeEndDates(pdgmRapListing.getEpisodeEndDates());
             pdgmRapListing1.setPrimaryDiagnosisCode(pdgmRapListing.getPrimaryDiagnosisCode());
             pdgmRapListing1.setEpisodeId(pdgmRapListing.getEpisodeId());
@@ -526,6 +551,26 @@ public class RapRestApp implements Serializable {
             pdgmRapListService.save(pdgmRapListing1);
         }
         return ackn;
+    }
+
+    public void generateFile(RapRequestFormDetail rapRequestFormDetail,File file) throws Exception
+    {
+        String data=new EDIFileGeneration().generateFile(rapRequestFormDetail);
+        FileWriter fr = null;
+        try {
+            fr = new FileWriter(file);
+            fr.write(data);
+            System.out.println("File generated successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            //close resources
+            try {
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     protected ResponseEntity<?> generateSuccessObject(String key, String errorBuilder){
         Response.ResponseBuilder builder = null;

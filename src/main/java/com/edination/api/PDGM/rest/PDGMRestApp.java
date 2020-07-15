@@ -141,11 +141,11 @@ public class PDGMRestApp implements Serializable {
         {
             community=true;
         }
-      else  if(sourcedays<=14&&("Transfer from Hospital (Different Facility)".equals(sourceOfAdmission)||"Transfer from Skilled Nursing Facility (SNF) or Intermediate Care Facility (ICF)".equals(sourceOfAdmission)||"Transfer from Another Healthcare Facility".equals(sourceOfAdmission)||"Clinic Or Physician’s Office".equals(sourceOfAdmission)))
+      else  if(sourcedays<=14&&("Transfer from Hospital (Different Facility)".equals(sourceOfAdmission)||"Transfer from Skilled Nursing Facility (SNF)".equals(sourceOfAdmission) || "Intermediate Care Facility (ICF)".equals(sourceOfAdmission)||"Transfer from Another Healthcare Facility".equals(sourceOfAdmission)||"Clinic Or Physician’s Office".equals(sourceOfAdmission)))
         {
             institutional=true;
         }
-        else  if(sourcedays>14&&("Transfer from Hospital (Different Facility)".equals(sourceOfAdmission)||"Transfer from Skilled Nursing Facility (SNF) or Intermediate Care Facility (ICF)".equals(sourceOfAdmission)||"Transfer from Another Healthcare Facility".equals(sourceOfAdmission)||"Clinic Or Physician’s Office".equals(sourceOfAdmission)))
+        else  if(sourcedays>14&&("Transfer from Hospital (Different Facility)".equals(sourceOfAdmission)||"Transfer from Skilled Nursing Facility (SNF)".equals(sourceOfAdmission) ||"Intermediate Care Facility (ICF)".equals(sourceOfAdmission)||"Transfer from Another Healthcare Facility".equals(sourceOfAdmission)||"Clinic Or Physician’s Office".equals(sourceOfAdmission)))
         {
             community=true;
         }

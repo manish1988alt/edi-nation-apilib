@@ -14,8 +14,14 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query(" FROM ServicingProviderPerson")
     List<ServicingProviderPerson> servicingProviderPersonList();
 
+    @Query(value="SELECT *  FROM servicing_provider_person where id=?1",nativeQuery = true)
+    ServicingProviderPerson findServicingProviderPerson(String id);
+
     @Query("FROM ServicingProviderFacility")
     List<ServicingProviderFacility> servicingProviderFacilityList();
+
+    @Query(value="SELECT *  FROM servicing_provider_facility where id=?1",nativeQuery = true)
+    ServicingProviderFacility findServicingProviderFacility(String id);
 
     @Query("FROM BillingProviderPerson")
     List<BillingProviderPerson> billingProviderPersonList();
