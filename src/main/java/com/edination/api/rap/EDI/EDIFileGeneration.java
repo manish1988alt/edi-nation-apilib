@@ -1,23 +1,35 @@
 package com.edination.api.rap.EDI;
 
+import com.edination.api.Dao.PrimaryInsuranceDetailRepository;
+import com.edination.api.Dao.SecondaryInsuranceDetailRepository;
+import com.edination.api.Dao.TertiaryInsuranceDetailRepository;
+import com.edination.api.PDGM.model.SecondDiagnosisCode;
 import com.edination.api.eligibility.EDIFile.Context;
 import com.edination.api.eligibility.EDIFile.Segment;
 import com.edination.api.eligibility.EDIFile.X12Simple;
+import com.edination.api.eligibility.model.PrimaryInsuranceDetail;
+import com.edination.api.eligibility.model.SecondaryInsuranceDetail;
+import com.edination.api.eligibility.model.TertiaryInsuranceDetail;
 import com.edination.api.preAuthorisation.model.HomeHealthPreAuthorizationForm;
 import com.edination.api.rap.Dao.RapRequestFormRepository;
-import com.edination.api.rap.model.RapRequestFormDetail;
-import com.edination.api.rap.model.ServicingProviderFacility;
-import com.edination.api.rap.model.ServicingProviderPerson;
+import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EDIFileGeneration {
  @Autowired
  RapRequestFormRepository rapRequestFormRepository;
+    @Autowired
+    PrimaryInsuranceDetailRepository primaryInsuranceDetailRepository;
+    @Autowired
+    SecondaryInsuranceDetailRepository secondaryInsuranceDetailRepository;
+    @Autowired
+    TertiaryInsuranceDetailRepository tertiaryInsuranceDetailRepository;
     public EDIFileGeneration(){}
     public String generateFile(RapRequestFormDetail rapRequestFormDetail) throws Exception
     {
@@ -95,7 +107,7 @@ public class EDIFileGeneration {
 
         s = x12.addSegment();
         s.addElement("GS");
-        s.addElement("HI");
+        s.addElement("HC");
         s.addElement("146111111");
         s.addElement("617591011LTCPP");
         s.addElement("20170406");
@@ -113,22 +125,16 @@ public class EDIFileGeneration {
 
         s = x12.addSegment();
         s.addElement("BHT");
-        s.addElement("0007");
-        s.addElement("13");
-        s.addElement("0001");
+        s.addElement("0019");
+        s.addElement("00");
+        s.addElement("0123");
         s.addElement("20100101");
-        s.addElement("000000");
-
-        s = x12.addSegment();
-        s.addElement("HL");
-        s.addElement("1");
-        s.addElement("2");
-        s.addElement("20");
-        s.addElement("1");
+        s.addElement("0923");
+        s.addElement("CH");
 
         s = x12.addSegment();
         s.addElement("NM1");
-        s.addElement("X3");
+        s.addElement("41");
         if("Person".equals(rapRequestFormDetail.getRapRequestForm().getServicingProviderType()))
         {
          s.addElement("1");
@@ -168,1068 +174,507 @@ public class EDIFileGeneration {
 
         }
 
+     s = x12.addSegment();
+     s.addElement("NM1");
+     s.addElement("40");
+     s.addElement("2");
+     List<PayerDetails> payerDetailsList=rapRequestFormDetail.getPayerDetails();
+     PayerDetails primaryPayer=new PayerDetails();
+     PayerDetails secondaryPayer=new PayerDetails();
+     PayerDetails tertiaryPayer=new PayerDetails();
+     for(PayerDetails payerDetails:payerDetailsList) {
+      if("primary".equals(payerDetails.getPayerType())) {
+       primaryPayer=payerDetails;
+      }
+      if("secondary".equals(payerDetails.getPayerType())) {
+       secondaryPayer=payerDetails;
+      }
+      if("tertiary".equals(payerDetails.getPayerType())) {
+       tertiaryPayer=payerDetails;
+      }
+     }
+      if(!("".equals(primaryPayer.toString()))) {
+       s.addElement(primaryPayer.getPayerName());
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("46");
+       s.addElement(String.valueOf(primaryPayer.getPayerCarrierNumber()));
+      }
+      else if(!("".equals(secondaryPayer.toString())))
+      {
+       s.addElement(secondaryPayer.getPayerName());
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("46");
+       s.addElement(String.valueOf(secondaryPayer.getPayerCarrierNumber()));
+     }
+     else if(!("".equals(tertiaryPayer.toString())))
+      {
+       s.addElement(tertiaryPayer.getPayerName());
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("");
+       s.addElement("46");
+       s.addElement(String.valueOf(tertiaryPayer.getPayerCarrierNumber()));
+      }
 
 
-       /* s = x12.addSegment();
+        s = x12.addSegment();
         s.addElement("HL");
+        s.addElement("1");
         s.addElement("2");
+        s.addElement("20");
         s.addElement("1");
-        s.addElement("21");
-        s.addElement("1");
-
-        s = x12.addSegment();
-        s.addElement("NM1");
-        s.addElement("1P");
-        s.addElement("1");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderLastName());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderFirstName());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderMiddleName());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderPrefix());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderSuffix());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderIdentificationNumberType());
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderIdentificationNumber());
-        s.addElement("");
-        s.addElement("");
-        s.addElement(" ");
-        s = x12.addSegment();
-        s.addElement("REF");
-        s.addElement("1G");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderSupplimentalId());
-        s.addElement("");
-        s.addElement("");
 
         s = x12.addSegment();
         s.addElement("PRV");
-        s.addElement("AD");
+        s.addElement("PC");
         s.addElement("ZZ");
-        s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getReqProviderSupplimentalId());
-        s.addElement(" ");
-        s.addElement(" ");
-        s.addElement(" ");
 
+     s = x12.addSegment();
+     s.addElement("NM1");
+     s.addElement("85");
+     if("Person".equals(rapRequestFormDetail.getRapRequestForm().getBillingProviderType()))
+     {
+      s.addElement("1");
+      BillingProviderPerson billingProviderPerson=rapRequestFormRepository.findBillingProviderPerson(rapRequestFormDetail.getRapRequestForm().getBillingProviderName());
+      s.addElement(billingProviderPerson.getPersonLastName());
+      s.addElement(billingProviderPerson.getPersonFirstName());
+      s.addElement(billingProviderPerson.getPersonMiddleName());
+      s.addElement(billingProviderPerson.getPersonPrefix());
+      s.addElement(billingProviderPerson.getPersonSuffix());
+      s.addElement("XX");
+      s.addElement(billingProviderPerson.getid());
+      s = x12.addSegment();
+      s.addElement("N3");
+      s.addElement(billingProviderPerson.getPersonAddressLine());
+      s = x12.addSegment();
+      s.addElement("N4");
+      s.addElement(billingProviderPerson.getPersonCity());
+      s.addElement(billingProviderPerson.getPersonState());
+      s.addElement(billingProviderPerson.getPersonZipCode());
+      s = x12.addSegment();
+      s.addElement("REF");
+      s.addElement("SY");
+      s.addElement(billingProviderPerson.getid());
+     }
+     else
+     {
+      s.addElement("2");
+      BillingProviderFacility billingProviderFacility=rapRequestFormRepository.findBillingProviderFacility(rapRequestFormDetail.getRapRequestForm().getBillingProviderName());
+      s.addElement(billingProviderFacility.getFacilityLastName());
+      s.addElement(billingProviderFacility.getFacilityFirstName());
+      s.addElement(billingProviderFacility.getFacilityMiddleName());
+      s.addElement("");
+      s.addElement("");
+      s.addElement("XX");
+      s.addElement(billingProviderFacility.getid());
+      s = x12.addSegment();
+      s.addElement("N3");
+      s.addElement(billingProviderFacility.getFacilityAddressLine());
+      s = x12.addSegment();
+      s.addElement("N4");
+      s.addElement(billingProviderFacility.getFacilityCity());
+      s.addElement(billingProviderFacility.getFacilityState());
+      s.addElement(billingProviderFacility.getFacilityZipCode());
+      s = x12.addSegment();
+      s.addElement("REF");
+      s.addElement("SY");
+      s.addElement(billingProviderFacility.getid());
 
-        *//*s = x12.addSegment();
-        s.addElement("N3");
-        s.addElement("200");
-     //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
-        s = x12.addSegment();
-        s.addElement("N4");
-        s.addElement("JEFFERSON");
-        s.addElement("NC");
-        s.addElement("28640");
+      s = x12.addSegment();
+      s.addElement("PER");
+      s.addElement("IC");
+      s.addElement("");
+      s.addElement("TE");
+      s.addElement(String.valueOf(billingProviderFacility.getFacilityCommunicationTypeTelephone()));
+      s.addElement("Ex");
+      s.addElement(String.valueOf(billingProviderFacility.getFacilityCommunicationExt()));
+      s.addElement("FX");
+      s.addElement(String.valueOf(billingProviderFacility.getFacilityCommunicationTypeFacsimile()));
+      s.addElement("EM");
+      s.addElement(String.valueOf(billingProviderFacility.getFacilityCommunicationTypeEMail()));
 
-        s = x12.addSegment();
-        s.addElement("PER");
-        s.addElement("IC");
-        s.addElement("TE");
-       // s.addElement("9194567890");
-        //String phone=String.valueOf(homeHealthPreAuthorizationForm.getProviderDetail().getPhoneNumber());
-        //s.addElement(phone);*//*
-        s = x12.addSegment();
-        s.addElement("HL");
-        s.addElement("3");
-        s.addElement("2");
-        s.addElement("22");
-        s.addElement("1");
+     }
+     s = x12.addSegment();
+     s.addElement("HL");
+     s.addElement("2");
+     s.addElement("1");
+     s.addElement("22");
+     s.addElement("0");
 
         s = x12.addSegment();
         s.addElement("NM1");
         s.addElement("1L");
         s.addElement("1");
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberLastName());
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberFirstName());
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberMiddleName());
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberPrefix());
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberSuffix());
-        s.addElement("MI");
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberSupplementalId());
-        s.addElement(" ");
-        s.addElement(" ");
-        s.addElement(" ");
+     List<InsuredDetails> insuredDetailsList=rapRequestFormDetail.getInsuredDetails();
+     InsuredDetails primaryInsurance=new InsuredDetails();
+     InsuredDetails secondaryInsurance=new InsuredDetails();
+     InsuredDetails tertiaryInsurance=new InsuredDetails();
+     for(InsuredDetails insuredDetails:insuredDetailsList) {
+      if(insuredDetails.getCount()==1) {
+       primaryInsurance=insuredDetails;
+      }
+      if(2==insuredDetails.getCount()) {
+       secondaryInsurance=insuredDetails;
+      }
+      if(3==insuredDetails.getCount()) {
+       tertiaryInsurance=insuredDetails;
+      }
+     }
 
-        s = x12.addSegment();
-        s.addElement("REF");
-        s.addElement("SY");
-        s.addElement(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberIdentificationCode());
-        s.addElement(" ");
-        s.addElement(" ");
 
-        s = x12.addSegment();
-        s.addElement("N3");
-        s.addElement("200");
-     //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
-        s = x12.addSegment();
-        s.addElement("N4");
-        s.addElement("JEFFERSON");
-        s.addElement("NC");
-        s.addElement("28640");
+     if(!("".equals(primaryInsurance.toString()))) {
+         for (PrimaryInsuranceDetail primary:primaryInsuranceDetailRepository.findByID(primaryInsurance.getMrnNumber())) {
+             s.addElement(primary.getInsuredlastName());
+             s.addElement(primary.getInsuredfirstName());
+             s.addElement(primary.getInsuredmiddleName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("MI");
+             s.addElement(primary.getSsn());
+             s.addElement(" ");
+             s.addElement(" ");
+             s.addElement(" ");
 
-        s = x12.addSegment();
-        s.addElement("DMG");
-        s.addElement("D8");
-        String dob=String.valueOf(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberDob());
-        s.addElement(dob);
-        String Gender=homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberGender();
-        if("Male".equals(Gender))
-        {
-         s.addElement("M");
-        }
-       else if("Female".equals(Gender))
-        {
-         s.addElement("F");
-        }
-        else if("Unknown".equals(Gender))
-        {
-         s.addElement("U");
-        }
-        s = x12.addSegment();
-        s.addElement("INS");
-        s.addElement("Y");
-        s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getSubscriberDetails().getSubscriberRelToInsured()));
-*//*
+             s = x12.addSegment();
+             s.addElement("REF");
+             s.addElement("SY");
+             s.addElement(primary.getPolicyNumber());
+             s.addElement(" ");
+             s.addElement(" ");
+
+             s = x12.addSegment();
+             s.addElement("N3");
+             s.addElement(primary.getInsuranceAddress());
+             //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+             s = x12.addSegment();
+             s.addElement("N4");
+             s.addElement(primary.getCity());
+             s.addElement(primary.getState());
+             s.addElement(String.valueOf(primary.getZipcode()));
+
+             s = x12.addSegment();
+             s.addElement("DMG");
+             s.addElement("D8");
+             String dob = String.valueOf(primary.getInsureddob());
+             s.addElement(dob);
+             String Gender = primary.getInsuredsex();
+             if ("Male".equals(Gender)) {
+                 s.addElement("M");
+             } else if ("Female".equals(Gender)) {
+                 s.addElement("F");
+             } else if ("Unknown".equals(Gender)) {
+                 s.addElement("U");
+             }
+             s = x12.addSegment();
+             s.addElement("INS");
+             s.addElement("Y");
+             s.addElement(relationMap.get(primary.getPatientRelationInsured()));
+             s = x12.addSegment();
+             s.addElement("NM1");
+             s.addElement("PR");
+             s.addElement("2");
+             s.addElement(primaryInsurance.getInsuredGroupName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("PI");
+             s.addElement(String.valueOf(primaryInsurance.getInsuredGroupNumber()));
+         }
+
+     }
+    else if(!("".equals(secondaryInsurance.toString()))) {
+
+         for (SecondaryInsuranceDetail secondary:secondaryInsuranceDetailRepository.findByID(secondaryInsurance.getMrnNumber())) {
+             s.addElement(secondary.getInsuredlastName());
+             s.addElement(secondary.getInsuredfirstName());
+             s.addElement(secondary.getInsuredmiddleName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("MI");
+             s.addElement(secondary.getSsn());
+             s.addElement(" ");
+             s.addElement(" ");
+             s.addElement(" ");
+
+             s = x12.addSegment();
+             s.addElement("REF");
+             s.addElement("SY");
+             s.addElement(secondary.getPolicyNumber());
+             s.addElement(" ");
+             s.addElement(" ");
+
+             s = x12.addSegment();
+             s.addElement("N3");
+             s.addElement(secondary.getInsuranceAddress());
+             //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+             s = x12.addSegment();
+             s.addElement("N4");
+             s.addElement(secondary.getCity());
+             s.addElement(secondary.getState());
+             s.addElement(String.valueOf(secondary.getZipcode()));
+
+             s = x12.addSegment();
+             s.addElement("DMG");
+             s.addElement("D8");
+             String dob = String.valueOf(secondary.getInsureddob());
+             s.addElement(dob);
+             String Gender = secondary.getInsuredsex();
+             if ("Male".equals(Gender)) {
+                 s.addElement("M");
+             } else if ("Female".equals(Gender)) {
+                 s.addElement("F");
+             } else if ("Unknown".equals(Gender)) {
+                 s.addElement("U");
+             }
+             s = x12.addSegment();
+             s.addElement("INS");
+             s.addElement("Y");
+             s.addElement(relationMap.get(secondary.getPatientRelationInsured()));
+             s = x12.addSegment();
+             s.addElement("NM1");
+             s.addElement("PR");
+             s.addElement("2");
+             s.addElement(secondaryInsurance.getInsuredGroupName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("PI");
+             s.addElement(String.valueOf(secondaryInsurance.getInsuredGroupNumber()));
+         }
+     }
+     else  if(!("".equals(tertiaryInsurance.toString()))) {
+
+         for (TertiaryInsuranceDetail tertiary:tertiaryInsuranceDetailRepository.findByID(tertiaryInsurance.getMrnNumber())) {
+             s.addElement(tertiary.getInsuredlastName());
+             s.addElement(tertiary.getInsuredfirstName());
+             s.addElement(tertiary.getInsuredmiddleName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("MI");
+             s.addElement(tertiary.getSsn());
+             s.addElement(" ");
+             s.addElement(" ");
+             s.addElement(" ");
+
+             s = x12.addSegment();
+             s.addElement("REF");
+             s.addElement("SY");
+             s.addElement(tertiary.getPolicyNumber());
+             s.addElement(" ");
+             s.addElement(" ");
+
+             s = x12.addSegment();
+             s.addElement("N3");
+             s.addElement(tertiary.getInsuranceAddress());
+             //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+             s = x12.addSegment();
+             s.addElement("N4");
+             s.addElement(tertiary.getCity());
+             s.addElement(tertiary.getState());
+             s.addElement(String.valueOf(tertiary.getZipcode()));
+
+             s = x12.addSegment();
+             s.addElement("DMG");
+             s.addElement("D8");
+             String dob = String.valueOf(tertiary.getInsureddob());
+             s.addElement(dob);
+             String Gender = tertiary.getInsuredsex();
+             if ("Male".equals(Gender)) {
+                 s.addElement("M");
+             } else if ("Female".equals(Gender)) {
+                 s.addElement("F");
+             } else if ("Unknown".equals(Gender)) {
+                 s.addElement("U");
+             }
+             s = x12.addSegment();
+             s.addElement("INS");
+             s.addElement("Y");
+             s.addElement(relationMap.get(tertiary.getPatientRelationInsured()));
+             s = x12.addSegment();
+             s.addElement("NM1");
+             s.addElement("PR");
+             s.addElement("2");
+             s.addElement(tertiaryInsurance.getInsuredGroupName());
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("");
+             s.addElement("PI");
+             s.addElement(String.valueOf(tertiaryInsurance.getInsuredGroupNumber()));
+         }
+     }
         s = x12.addSegment();
         s.addElement("HL");
-        s.addElement("4");
         s.addElement("3");
+        s.addElement("2");
         s.addElement("23");
-        s.addElement("1");
+        s.addElement("0");
 
         s = x12.addSegment();
         s.addElement("NM1");
         s.addElement("QC");
         s.addElement("1");
-      *//**//*  s.addElement("RUBBLE");
-        s.addElement("BARNEY");*//**//*
-        s.addElement(homeHealthPreAuthorizationForm.getPreAuthDemographics().getFirstName());
-        s.addElement(homeHealthPreAuthorizationForm.getPreAuthDemographics().getLastName());
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getLastName());
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getFirstName());
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getMiddleName());
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getPrefix());
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getSuffix());
+
+     s = x12.addSegment();
+     s.addElement("N3");
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getAddressLine());
+     //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+     s = x12.addSegment();
+     s.addElement("N4");
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getCity());
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getState());
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getZipCode());
+
         s = x12.addSegment();
         s.addElement("DMG");
         s.addElement("D8");
        // s.addElement("19460401");
-        s.addElement(dob);
-        s.addElement("M");*//*
+        s.addElement(rapRequestFormDetail.getRapRequestForm().getPatientDetail().getDob().toString());
+     String Gender = rapRequestFormDetail.getRapRequestForm().getPatientDetail().getGender();
+     if ("Male".equals(Gender)) {
+      s.addElement("M");
+     } else if ("Female".equals(Gender)) {
+      s.addElement("F");
+     } else if ("Unknown".equals(Gender)) {
+      s.addElement("U");
+     }
 
         s = x12.addSegment();
         s.addElement("HL");
-        s.addElement("6");
-        s.addElement("5");
-        s.addElement("EV");
-        s.addElement("1");
-
-        s = x12.addSegment();
-        s.addElement("TRN");
+        s.addElement("4");
         s.addElement("2");
-        s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-        s.addElement("9012345678");
-        s.addElement("HOME HEALTH");
-
-        s = x12.addSegment();
-        s.addElement("UM");
-        s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getProviderDetail().getRequestCategory()));
-        s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getProviderDetail().getCertificationType()));
-         s.addElement("42");
-        s.addElement("13:B");
-        s.addElement("");
-        s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getProviderDetail().getLevelOfService()));
-        s.addElement("");
-        s.addElement("");
-        s.addElement("");
-        s.addElement("");
-
-        s = x12.addSegment();
-        s.addElement("REF");
-        s.addElement("NT");
-        s.addElement("");
-
-        s = x12.addSegment();
-        s.addElement("REF");
-        s.addElement("BB");
-        s.addElement("");
-
-        s = x12.addSegment();
-        s.addElement("DTP");
-        s.addElement("439");
-        s.addElement("D8");
-        s.addElement("");
-
+        s.addElement("24");
+        s.addElement("0");
+for(BillingDetails billingDetails:rapRequestFormDetail.getBillingDetailsList())
+{
      s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("484");
-     s.addElement("D8");
+     s.addElement("CLM");
+     s.addElement(billingDetails.getMrnNumber());
+     s.addElement(String.valueOf(billingDetails.getTotalCostForTotalCharge()));
      s.addElement("");
-
-     s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("ABC");
-     s.addElement("D8");
      s.addElement("");
+     s.addElement("11:B:1");
+     s.addElement("Y");
+     s.addElement("A");
+     s.addElement("Y");
+     s.addElement("I");
+
+     }
+
 
      s = x12.addSegment();
      s.addElement("DTP");
-     s.addElement("431");
+     s.addElement("434");
      s.addElement("D8");
-     s.addElement("");
-
-     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-   *//*  Date serviceDateFrom = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom());
-     Date serviceDateTo = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo().toString());*//*
-     s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("472");
-     s.addElement("RD8");
-     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateTo().toString());
-    // Date admitdate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate().toString());
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getStatementCoveredPeriodDateFrom().toString());
      s = x12.addSegment();
      s.addElement("DTP");
      s.addElement("435");
      s.addElement("D8");
-     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getAdmitDate().toString());
-    // Date dischargedate = formatter.parse(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate().toString());
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getAdmissionDate().toString());
      s = x12.addSegment();
      s.addElement("DTP");
      s.addElement("096");
      s.addElement("D8");
-     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getDischargeDate().toString());
+     s.addElement(rapRequestFormDetail.getRapRequestForm().getDischargeDate().toString());
 
      s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("102");
-     s.addElement("D8");
-     s.addElement("");
+     s.addElement("CL1");
+     s.addElement("3");
+     s.addElement("01");
 
      s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("036");
-     s.addElement("D8");
-     s.addElement("");
+     s.addElement("HI");
+     s.addElement("ABK:"+rapRequestFormDetail.getPrimaryDiagnosisCode().getPrimaryDiagnosisCode());
 
      s = x12.addSegment();
-     s.addElement("DTP");
-     s.addElement("007");
-     s.addElement("RD8");
-     s.addElement("");
+     s.addElement("HI");
 
+     String secondCode="";
+     for(SecondDiagnosisCode secondDiagnosisCode:rapRequestFormDetail.getSecondDiagnosisCodeList())
+     {
+      secondCode=secondCode+"BF:"+secondDiagnosisCode.getSecondDiagnosisCode();
+     }
+     s.addElement(secondCode);
+     AttendingProviderDetail attendingProviderDetail=rapRequestFormRepository.findAttendingProviderDetail(rapRequestFormDetail.getRapRequestForm().getAttendingProviderName());
      s = x12.addSegment();
-     s.addElement("HI01");
-     s.addElement("BO");
-     s.addElement("490000");
-     s.addElement("D8");
-     s.addElement("");
+     s.addElement("NM1");
+     s.addElement("71");
      s.addElement("1");
-
+     s.addElement(attendingProviderDetail.getLastName());
+     s.addElement(attendingProviderDetail.getFirstName());
+     s.addElement(attendingProviderDetail.getMiddleName());
+     s.addElement(attendingProviderDetail.getPrefix());
+     s.addElement(attendingProviderDetail.getSuffix());
      s = x12.addSegment();
-     s.addElement("HSD");
-     s.addElement("VS");
-     s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideVisit()));
-     s.addElement("DA");
+     s.addElement("REF");
+     s.addElement("1G");
+     s.addElement(attendingProviderDetail.getId());
+     s = x12.addSegment();
+     s.addElement("N3");
+     s.addElement(attendingProviderDetail.getAddressLine());
+     //   s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getRequestingAgency());
+     s = x12.addSegment();
+     s.addElement("N4");
+     s.addElement(attendingProviderDetail.getCity());
+     s.addElement(attendingProviderDetail.getState());
+     s.addElement(attendingProviderDetail.getZipCode());
+     s = x12.addSegment();
+     s.addElement("LX");
      s.addElement("1");
-     s.addElement("7");
-     s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideUnit()));
-     s.addElement("");
-
-
-        s = x12.addSegment();
-        s.addElement("CL1");
-        s.addElement("3");
-        s.addElement("");
-        s.addElement("1");
-
-     s = x12.addSegment();
-     s.addElement("CR1");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("T");
-     s.addElement("");
-     s.addElement("DH");
-     s.addElement("28");
-     s = x12.addSegment();
-     s.addElement("CR2");
-     s.addElement("1");
-     s.addElement("5");
-
-     s = x12.addSegment();
-     s.addElement("CR5");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("D");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("1");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("2");
-     s.addElement("A");
-     s = x12.addSegment();
-     s.addElement("CR6");
-     s.addElement("7");
-     s.addElement(homeHealthPreAuthorizationForm.getProviderDetail().getServiceDateFrom().toString());
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("");
-     s.addElement("N");
-     s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getProviderDetail().getCertificationType()));
-     if (homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideSelected()) {
-       s = x12.addSegment();
-        s.addElement("NM1");
-        s.addElement("SJ");
-        s.addElement("1");
-       s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAidePoviderLastName());
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderSupplimentalId());
-        s = x12.addSegment();
-        s.addElement("N3");
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderAddress());
-        s = x12.addSegment();
-        s.addElement("N4");
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCity());
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderState());
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderPostalCode());
-        s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideProviderCountryCode());
-                s = x12.addSegment();
-                s.addElement("HL");
-                s.addElement("6");
-                s.addElement("6");
-                s.addElement("SS");
-                s.addElement("0");
-
-                s = x12.addSegment();
-                s.addElement("TRN");
-                s.addElement("2");
-                s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-                s.addElement("9012345678");
-                s.addElement("HOME HEALTH");
-                s = x12.addSegment();
-
-             s = x12.addSegment();
-             s.addElement("UM");
-             s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestCategory()));
-             s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideCertificationType()));
-             s.addElement("HHA");
-             s.addElement("13:B");
-             s.addElement("");
-             s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideLevelOfService()));
-             s.addElement("");
-             s.addElement("");
-             s.addElement("");
-             s.addElement("");
-
-
-        //   Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom().toString());
-         //  Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo().toString());
-          s = x12.addSegment();
-          s.addElement("DTP");
-          s.addElement("472");
-          s.addElement("RD8");
-         s.addElement(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideRequestServiceDateTo().toString());
-
-        s = x12.addSegment();
-        s.addElement("DTP");
-        s.addElement("102");
-       s.addElement("D8");
-       s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
+     for(BillingDetails billingDetails:rapRequestFormDetail.getBillingDetailsList()) {
       s = x12.addSegment();
       s.addElement("SV1");
-      s.addElement("HC");
+      s.addElement(billingDetails.getRevenueCode());
+      s.addElement("HC:85025");
+      s.addElement(String.valueOf(billingDetails.getTotalCostForTotalCharge()));
       s.addElement("");
       s.addElement("");
       s.addElement("");
       s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
       s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getHomeHealthAide().getHomeHealthAideUnit()));
-      s.addElement("");
-//HHA
-            }
-     if (homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapySelected()) {
-      s = x12.addSegment();
-      s.addElement("NM1");
-      s.addElement("SJ");
-      s.addElement("1");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyPoviderLastName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderSupplimentalId());
-      s = x12.addSegment();
-      s.addElement("N3");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderAddress());
-      s = x12.addSegment();
-      s.addElement("N4");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCity());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderState());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderPostalCode());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyProviderCountryCode());
-      s = x12.addSegment();
-      s.addElement("HL");
-      s.addElement("6");
-      s.addElement("7");
-      s.addElement("SS");
-      s.addElement("0");
-
-      s = x12.addSegment();
-      s.addElement("TRN");
-      s.addElement("2");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-      s.addElement("9012345678");
-      s.addElement("HOME HEALTH");
-      s = x12.addSegment();
-      s = x12.addSegment();
-      s.addElement("UM");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestCategory()));
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyCertificationType()));
-      s.addElement("AD");
-      s.addElement("13:B");
-      s.addElement("");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyLevelOfService()));
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-
-
-      //Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom().toString());
-     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo().toString());
+      s.addElement(String.valueOf(billingDetails.getId()));
       s = x12.addSegment();
       s.addElement("DTP");
       s.addElement("472");
-      s.addElement("RD8");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyRequestServiceDateTo().toString());
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("102");
       s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
-      s = x12.addSegment();
-      s.addElement("SV1");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getOccupationTherapy().getOccupationTherapyUnit()));
-      s.addElement("");
-//HHA
+      s.addElement(billingDetails.getServiceDate().toString());
      }
 
-     if (homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapySelected()) {
-      s = x12.addSegment();
-      s.addElement("NM1");
-      s.addElement("SJ");
-      s.addElement("1");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyPoviderLastName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderSupplimentalId());
-      s = x12.addSegment();
-      s.addElement("N3");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderAddress());
-      s = x12.addSegment();
-      s.addElement("N4");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCity());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderState());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderPostalCode());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyProviderCountryCode());
-      s = x12.addSegment();
-      s.addElement("HL");
-      s.addElement("6");
-      s.addElement("8");
-      s.addElement("SS");
-      s.addElement("0");
 
-      s = x12.addSegment();
-      s.addElement("TRN");
-      s.addElement("2");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-      s.addElement("9012345678");
-      s.addElement("HOME HEALTH");
-      s = x12.addSegment();
-      s = x12.addSegment();
-      s.addElement("UM");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestCategory()));
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyCertificationType()));
-      s.addElement("PT");
-      s.addElement("13:B");
-      s.addElement("");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyLevelOfService()));
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-
-
-     // Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom().toString());
-     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo().toString());
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("472");
-      s.addElement("RD8");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyRequestServiceDateTo().toString());
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("102");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
-      s = x12.addSegment();
-      s.addElement("SV1");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getPhysicalTherapy().getPhysicalTherapyUnit()));
-      s.addElement("");
-//HHA
-     }
-
-     if (homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkSelected()) {
-      s = x12.addSegment();
-      s.addElement("NM1");
-      s.addElement("SJ");
-      s.addElement("1");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkPoviderLastName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderSupplimentalId());
-      s = x12.addSegment();
-      s.addElement("N3");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderAddress());
-      s = x12.addSegment();
-      s.addElement("N4");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCity());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderState());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderPostalCode());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkProviderCountryCode());
-      s = x12.addSegment();
-      s.addElement("HL");
-      s.addElement("6");
-      s.addElement("9");
-      s.addElement("SS");
-      s.addElement("0");
-
-      s = x12.addSegment();
-      s.addElement("TRN");
-      s.addElement("2");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-      s.addElement("9012345678");
-      s.addElement("HOME HEALTH");
-      s = x12.addSegment();
-      s = x12.addSegment();
-      s.addElement("UM");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestCategory()));
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkCertificationType()));
-      s.addElement("MSW");
-      s.addElement("13:B");
-      s.addElement("");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkLevelOfService()));
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-
-
-      //Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom().toString());
-      //Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateTo().toString());
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("472");
-      s.addElement("RD8");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkRequestServiceDateTo().toString());
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("102");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
-      s = x12.addSegment();
-      s.addElement("SV1");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getMedicalSocialWork().getMedicalSocialWorkUnit()));
-      s.addElement("");
-//HHA
-     }
-     if (homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingSelected()) {
-      s = x12.addSegment();
-      s.addElement("NM1");
-      s.addElement("SJ");
-      s.addElement("1");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingPoviderLastName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderSupplimentalId());
-      s = x12.addSegment();
-      s.addElement("N3");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderAddress());
-      s = x12.addSegment();
-      s.addElement("N4");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCity());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderState());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderPostalCode());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingProviderCountryCode());
-      s = x12.addSegment();
-      s.addElement("HL");
-      s.addElement("6");
-      s.addElement("10");
-      s.addElement("SS");
-      s.addElement("0");
-
-      s = x12.addSegment();
-      s.addElement("TRN");
-      s.addElement("2");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-      s.addElement("9012345678");
-      s.addElement("HOME HEALTH");
-      s = x12.addSegment();
-      s = x12.addSegment();
-      s.addElement("UM");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestCategory()));
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingCertificationType()));
-      s.addElement("AG");
-      s.addElement("13:B");
-      s.addElement("");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingLevelOfService()));
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-
-
-     // Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom().toString());
-     // Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo().toString());
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("472");
-      s.addElement("RD8");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingRequestServiceDateTo().toString());
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("102");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
-      s = x12.addSegment();
-      s.addElement("SV1");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSkilledNursing().getSkilledNursingUnit()));
-      s.addElement("");
-//HHA
-     }
-     if (homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologySelected()) {
-      s = x12.addSegment();
-      s.addElement("NM1");
-      s.addElement("SJ");
-      s.addElement("1");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyPoviderLastName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderFirstName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderMiddleName());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderPrefix());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderSuffix());
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumberType()));
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderIdentificationNumber());
-      s = x12.addSegment();
-      s.addElement("REF");
-      s.addElement("1G");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderSupplimentalId());
-      s = x12.addSegment();
-      s.addElement("N3");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderAddress());
-      s = x12.addSegment();
-      s.addElement("N4");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCity());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderState());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderPostalCode());
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyProviderCountryCode());
-      s = x12.addSegment();
-      s.addElement("HL");
-      s.addElement("6");
-      s.addElement("11");
-      s.addElement("SS");
-      s.addElement("0");
-
-      s = x12.addSegment();
-      s.addElement("TRN");
-      s.addElement("2");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getEnquiryDeatils().getEnquiryId()));
-      s.addElement("9012345678");
-      s.addElement("HOME HEALTH");
-      s = x12.addSegment();
-      s = x12.addSegment();
-      s.addElement("UM");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestCategory()));
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyCertificationType()));
-      s.addElement("AF");
-      s.addElement("13:B");
-      s.addElement("");
-      s.addElement(relationMap.get(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyLevelOfService()));
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-
-
-      Date serviceDateFromHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateFrom().toString());
-      Date serviceDateToHHA = formatter.parse(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo().toString());
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("472");
-      s.addElement("RD8");
-      s.addElement(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateFrom().toString()+homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyRequestServiceDateTo().toString());
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("102");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("036");
-      s.addElement("D8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("DTP");
-      s.addElement("007");
-      s.addElement("RD8");
-      s.addElement("");
-
-      s = x12.addSegment();
-      s.addElement("HI01");
-      s.addElement("BO");
-      s.addElement("490000");
-      s.addElement("D8");
-      s.addElement("");
-      s.addElement("1");
-
-      s = x12.addSegment();
-      s.addElement("SV1");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("SV2");
-      s.addElement("HC");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("");
-      s.addElement("23456");
-      s.addElement("UN");
-
-      s = x12.addSegment();
-      s.addElement("HSD");
-      s.addElement("VS");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyVisit()));
-      s.addElement("DA");
-      s.addElement("1");
-      s.addElement("7");
-      s.addElement(String.valueOf(homeHealthPreAuthorizationForm.getRequestService().getSpeechPathology().getSpeechPathologyUnit()));
-      s.addElement("");
-//HHA
-     }
         s = x12.addSegment();
         s.addElement("SE");
-        s.addElement("23");
-        s.addElement("1001");
+        s.addElement("42");
+        s.addElement("0021");
 
         s = x12.addSegment();
         s.addElement("GE");
         s.addElement("1");
-        s.addElement("10001");
+        s.addElement("101");
 
         s = x12.addSegment();
         s.addElement("IEA");
         s.addElement("1");
-        s.addElement("100000001");
+        s.addElement("000000101");
         String x12String = x12.toString();
        // System.out.print(x12String);
 
-*/
-        return "x12String";
+
+        return x12String;
 
     }
 

@@ -25,9 +25,15 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM BillingProviderPerson")
     List<BillingProviderPerson> billingProviderPersonList();
+    @Query(value="SELECT *  FROM billing_provider_person where id=?1",nativeQuery = true)
+    BillingProviderPerson findBillingProviderPerson(String id);
+
 
     @Query("FROM BillingProviderFacility")
     List<BillingProviderFacility> billingProviderFacilityList();
+
+    @Query(value="SELECT *  FROM billing_provider_facility where id=?1",nativeQuery = true)
+    BillingProviderFacility findBillingProviderFacility(String id);
 
     @Query("FROM ProviderCodeMaster")
     List<ProviderCodeMaster> otherProviderList();
@@ -58,6 +64,8 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM AttendingProviderDetail")
     List<AttendingProviderDetail> attendingProviderDetailList();
+    @Query(value="SELECT *  FROM attending_provider_detail where provider_name=?1",nativeQuery = true)
+    AttendingProviderDetail findAttendingProviderDetail(String name);
 
     //@Query("FROM RapRequestForm WHERE patient_mrn=?1")
     @Query(value = "SELECT a.* FROM (SELECT * FROM rap_request_form c WHERE c.patient_mrn = ?1 ORDER BY c.id DESC ) a WHERE a.id= (SELECT max(e.id) FROM rap_request_form e WHERE e.patient_mrn = ?1) ",nativeQuery = true)

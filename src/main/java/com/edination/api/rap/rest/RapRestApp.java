@@ -323,10 +323,15 @@ public class RapRestApp implements Serializable {
         String ackn="";
 
         File file = new File("Hipaa-5010-837-GenericRequest.txt");
-
-        generateFile(rapRequestFormDetail, file);
-        new SFTPFILE().fileUpload(file, rapRequestFormDetail.getRapRequestForm().getPatientMrn() + "_" + file.getName());
         ackn= this.saveOperation(rapRequestFormDetail,"Sent For Approval");
+        if(ackn.equals("true")) {
+            generateFile(rapRequestFormDetail, file);
+            new SFTPFILE().fileUpload(file, rapRequestFormDetail.getRapRequestForm().getPatientMrn() + "_" + file.getName());
+        }
+        else
+        {
+            ackn="false";
+        }
 
 
         if(ackn.equals("true")) {
@@ -445,11 +450,12 @@ public class RapRestApp implements Serializable {
             valueCodeCount++;
         }
         countOfAddedValueInRap.setValueCodeCount(valueCodeCount);
-
+        int i=1;
         for(InsuredDetails insuredDetails1:rapRequestFormDetail.getInsuredDetails())
         {
+
             InsuredDetails insuredDetails=new InsuredDetails();
-            insuredDetails.setCount(insuredDetails1.getCount());
+            insuredDetails.setCount(i);
             insuredDetails.setInsuredGroupName(insuredDetails1.getInsuredGroupName());
             insuredDetails.setInsuredGroupNumber(insuredDetails1.getInsuredGroupNumber());
             insuredDetails.setInsuredName(insuredDetails1.getInsuredName());
@@ -457,13 +463,14 @@ public class RapRestApp implements Serializable {
             insuredDetails.setMrnNumber(insuredDetails1.getMrnNumber());
             insuredDetails.setRelationshipToInsured(insuredDetails1.getRelationshipToInsured());
             insuredDetailsService.save(insuredDetails);
+            i++;
         }
-
+int j=1;
         for(PayerDetails payerDetails1: rapRequestFormDetail.getPayerDetails())
         {
             PayerDetails payerDetails=new PayerDetails();
             payerDetails.setAssignmentOfBenefit(payerDetails1.getAssignmentOfBenefit());
-            payerDetails.setCount(payerDetails1.getCount());
+            payerDetails.setCount(j);
             payerDetails.setEstimateAmount(payerDetails1.getEstimateAmount());
             payerDetails.setHealthPlanID(payerDetails1.getHealthPlanID());
             payerDetails.setMrnNumber(payerDetails1.getMrnNumber());
@@ -472,6 +479,7 @@ public class RapRestApp implements Serializable {
             payerDetails.setPayerType(payerDetails1.getPayerType());
             payerDetails.setPriorPayment(payerDetails1.getPriorPayment());
             payerDetailsService.save(payerDetails);
+            j++;
         }
         for(TreatmentAuthorizationDetails treatmentAuthorizationDetails1: rapRequestFormDetail.getTreatmentAuthorizationDetails())
         {
@@ -545,9 +553,14 @@ public class RapRestApp implements Serializable {
             pdgmRapListing1.setAction(pdgmRapListing.getAction());
             pdgmRapListing1.setRapsFormStatus(rapFormStatus);
             String currentDate = java.time.LocalDate.now().toString();
-            //LocalDate formSentDate = LocalDate.parse(currentDate);
             pdgmRapListing1.setRapsSentDate(currentDate);
-            pdgmRapListing1.setRapsType(pdgmRapListing.getRapsType());
+            if("Sent For Approval".equals(rapFormStatus)) {
+                pdgmRapListing1.setRapsType("Initial RAP");
+            }
+            else{
+                pdgmRapListing1.setRapsType(pdgmRapListing.getRapsType());
+            }
+
             pdgmRapListService.save(pdgmRapListing1);
         }
         return ackn;
