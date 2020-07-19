@@ -14,26 +14,22 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query(" FROM ServicingProviderPerson")
     List<ServicingProviderPerson> servicingProviderPersonList();
 
-    @Query(value="SELECT *  FROM servicing_provider_person where id=?1",nativeQuery = true)
-    ServicingProviderPerson findServicingProviderPerson(String id);
+
 
     @Query("FROM ServicingProviderFacility")
     List<ServicingProviderFacility> servicingProviderFacilityList();
 
-    @Query(value="SELECT *  FROM servicing_provider_facility where id=?1",nativeQuery = true)
-    ServicingProviderFacility findServicingProviderFacility(String id);
+
 
     @Query("FROM BillingProviderPerson")
     List<BillingProviderPerson> billingProviderPersonList();
-    @Query(value="SELECT *  FROM billing_provider_person where id=?1",nativeQuery = true)
-    BillingProviderPerson findBillingProviderPerson(String id);
+
 
 
     @Query("FROM BillingProviderFacility")
     List<BillingProviderFacility> billingProviderFacilityList();
 
-    @Query(value="SELECT *  FROM billing_provider_facility where id=?1",nativeQuery = true)
-    BillingProviderFacility findBillingProviderFacility(String id);
+
 
     @Query("FROM ProviderCodeMaster")
     List<ProviderCodeMaster> otherProviderList();
@@ -64,7 +60,7 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
 
     @Query("FROM AttendingProviderDetail")
     List<AttendingProviderDetail> attendingProviderDetailList();
-    @Query(value="SELECT *  FROM attending_provider_detail where provider_name=?1",nativeQuery = true)
+    @Query(" FROM AttendingProviderDetail where id=?1")
     AttendingProviderDetail findAttendingProviderDetail(String name);
 
     //@Query("FROM RapRequestForm WHERE patient_mrn=?1")
