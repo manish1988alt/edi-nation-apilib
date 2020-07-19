@@ -4,6 +4,9 @@ package com.edination.api.PDGM.rest;
 import com.edination.api.PDGM.model.DiagnosisCode;
 import com.edination.api.PDGM.dao.*;
 import com.edination.api.PDGM.model.*;
+import com.edination.api.rap.Dao.BillingDetailsRepository;
+import com.edination.api.rap.Dao.BillingDetailsService;
+import com.edination.api.rap.model.BillingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,11 +83,50 @@ public class PDGMRestApp implements Serializable {
     HippsCodeAndCaseMixWeightRepository hippsCodeAndCaseMixWeightRepository;
     @Autowired
     HippsCodeAndCaseMixWeightService hippsCodeAndCaseMixWeightService;
-
+    @Autowired
+    BillingDetailsRepository billingDetailsRepository;
+    @Autowired
+    BillingDetailsService billingDetailsService;
+    ;
     @GetMapping("/rapList")
     public List<PDGMRapListing> rapList()  throws Throwable{
+     List<PDGMRapListing> pdgmRapListings=new ArrayList<>();
 
-        return pdgmRapListService.listAll();
+       for(PDGMRapListing rapListing: pdgmRapListService.listAll())
+       {
+           PDGMRapListing pdgmObject=new PDGMRapListing();
+           pdgmObject.setAction(rapListing.getAction());
+           pdgmObject.setRapsFormStatus(rapListing.getRapsFormStatus());
+           if("No Action".equals(pdgmObject.getRapsFormStatus()) || "".equals(pdgmObject.getRapsFormStatus()))
+           {
+               pdgmObject.setRapsType("NA");
+               pdgmObject.setRapsSentDate("No Value");
+           }
+          else
+           {
+               pdgmObject.setRapsType(rapListing.getRapsType());
+               pdgmObject.setRapsSentDate(rapListing.getRapsSentDate());
+           }
+           pdgmObject.setMrnNumber(rapListing.getMrnNumber());
+           pdgmObject.setHippsCodeGeneratedDate(rapListing.getHippsCodeGeneratedDate());
+           pdgmObject.setHippsCode(rapListing.getHippsCode());
+           pdgmObject.setAging(rapListing.getAging());
+           pdgmObject.setBillableVisit(rapListing.getBillableVisit());
+           pdgmObject.setClaimType(rapListing.getClaimType());
+           pdgmObject.setOasisKey(rapListing.getOasisKey());
+           pdgmObject.setOasisType(rapListing.getOasisType());
+           pdgmObject.setEpisodeId(rapListing.getEpisodeId());
+           pdgmObject.setPrimaryDiagnosisCode(rapListing.getPrimaryDiagnosisCode());
+           pdgmObject.setEpisodeEndDates(rapListing.getEpisodeEndDates());
+           pdgmObject.setEpisodeStartDates(rapListing.getEpisodeStartDates());
+           pdgmObject.setSuffix(rapListing.getSuffix());
+           pdgmObject.setMiddleName(rapListing.getMiddleName());
+           pdgmObject.setLastName(rapListing.getLastName());
+           pdgmObject.setFirstName(rapListing.getFirstName());
+           pdgmRapListings.add(pdgmObject);
+
+       }
+       return pdgmRapListings;
     }
 
     @PostMapping("/pdgmTool")
@@ -251,6 +293,29 @@ public class PDGMRestApp implements Serializable {
         rapListing.setRapsFormStatus(pdgmRapList.getRapsFormStatus());
         rapListing.setAction(pdgmRapList.getAction());
         pdgmRapListService.save(rapListing);
+        List<BillingDetails> billingDetailsList = billingDetailsRepository.findBillingDetailsByMrnNumber(pdgmRapList.getMrnNumber());
+        for(BillingDetails bl:billingDetailsList)
+        {
+
+            BillingDetails billingDetails=new BillingDetails();
+            billingDetails.setMrnNumber(bl.getMrnNumber());
+            for(HippsCodeAndCaseMixWeight hippsCodeAndCaseMixWeight:hippsCodeAndCaseMixWeightList)
+            {
+                billingDetails.sethCPCS_Rate_HCPCS_Code(hippsCodeAndCaseMixWeight.getHippscode());
+            }
+
+            billingDetails.setTotalCostForTotalCharge(bl.getTotalCostForTotalCharge());
+            billingDetails.setTotalCostForNonCoverageCharge(bl.getTotalCostForNonCoverageCharge());
+            billingDetails.setTotalCharge(bl.getTotalCharge());
+            billingDetails.setServiceUnit(bl.getServiceUnit());
+            billingDetails.setServiceDate(hippsCodeGenerationDate);
+            billingDetails.setRevenueCode("0023");
+            billingDetails.setRevenueCodeDescription(bl.getRevenueCodeDescription());
+            billingDetails.setNonCoverageCharge(bl.getNonCoverageCharge());
+            billingDetails.setCreationDate(bl.getCreationDate());
+            billingDetails.setCount(bl.getCount());
+            billingDetailsService.save(billingDetails);
+        }
 
         String ackn="Success";
         if(ackn.equals("Success")) {
