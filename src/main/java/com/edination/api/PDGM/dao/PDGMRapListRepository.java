@@ -19,6 +19,9 @@ public interface PDGMRapListRepository extends JpaRepository<PDGMRapListing,Stri
     @Query(value="FROM AdmissionSource WHERE mrn_number = ?1")
     public AdmissionSource findAdmissionSourceByMrn(String mrnNumber);
 
+    @Query(value="FROM AdmissionSource")
+    public List<AdmissionSource> findAdmissionSourceList();
+
     @Query(value="FROM ClinicalGroupingPrimaryDiagnosis WHERE primary_diagnosis_code = ?1")
     public List<ClinicalGroupingPrimaryDiagnosis> findClinicalGroupingPrimaryDiagnosis(String primaryDiagnosisCode);
 
