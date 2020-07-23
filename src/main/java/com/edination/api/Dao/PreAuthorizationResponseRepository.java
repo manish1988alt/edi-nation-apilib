@@ -1,5 +1,6 @@
 package com.edination.api.Dao;
 
+import com.edination.api.preAuthorisation.MasterCode.IndividualRelationshipCodeMaster;
 import com.edination.api.preAuthorisation.model.PreAuthorizationResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -57,6 +58,9 @@ public interface PreAuthorizationResponseRepository extends JpaRepository<PreAut
 
     @Query(value ="SELECT c.discription FROM individual_relationship_code_master c WHERE code = ?1",nativeQuery = true)
     String findReletionship(String code);
+
+    @Query("FROM IndividualRelationshipCodeMaster")
+    List<IndividualRelationshipCodeMaster> findReletionshipList();
 
     @Query(value ="SELECT c.discription FROM certification_type_code_master c WHERE code = ?1",nativeQuery = true)
     String findCertificatioType(String code);

@@ -1,6 +1,7 @@
 package com.edination.api.eligibility.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Demographics {
     private String middleName;
     private String suffix;
     private String gender;
-    private Date dob;
+    private LocalDate dob;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "policyId")
@@ -40,7 +41,7 @@ public class Demographics {
 
     public Demographics(){}
 
-    public Demographics(String mrnNumber,String firstName, String lastName, String middleName, String suffix, String gender, Date dob) {
+    public Demographics(String mrnNumber,String firstName, String lastName, String middleName, String suffix, String gender, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -90,11 +91,11 @@ public class Demographics {
         this.gender = gender;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
