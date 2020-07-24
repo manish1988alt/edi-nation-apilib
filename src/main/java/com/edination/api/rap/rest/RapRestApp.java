@@ -1,9 +1,6 @@
 package com.edination.api.rap.rest;
 
-import com.edination.api.Dao.PreAuthRepository;
-import com.edination.api.Dao.PrimaryInsuranceDetailRepository;
-import com.edination.api.Dao.SecondaryInsuranceDetailRepository;
-import com.edination.api.Dao.TertiaryInsuranceDetailRepository;
+import com.edination.api.Dao.*;
 import com.edination.api.PDGM.dao.PDGMRapListRepository;
 import com.edination.api.PDGM.dao.PDGMRapListService;
 import com.edination.api.PDGM.dao.SecondDaignosisCodeRepository;
@@ -17,6 +14,7 @@ import com.edination.api.eligibility.EDIFile.X12Simple;
 import com.edination.api.eligibility.model.PrimaryInsuranceDetail;
 import com.edination.api.eligibility.model.SecondaryInsuranceDetail;
 import com.edination.api.eligibility.model.TertiaryInsuranceDetail;
+import com.edination.api.preAuthorisation.MasterCode.IndividualRelationshipCodeMaster;
 import com.edination.api.preAuthorisation.MasterCode.ProviderCodeMaster;
 import com.edination.api.preAuthorisation.model.Episode;
 import com.edination.api.preAuthorisation.model.PreAuthDetail;
@@ -94,6 +92,8 @@ public class RapRestApp implements Serializable {
     CountOfAddedValueInRapRepository countOfAddedValueInRapRepository;
     @Autowired
     PreAuthRepository  preAuthRepository;
+    @Autowired
+    PreAuthorizationResponseRepository preAuthorizationResponseRepository;
 
 
     @Autowired
@@ -173,6 +173,11 @@ public class RapRestApp implements Serializable {
     @GetMapping("/attendingProviderList")
     public List<AttendingProviderDetail> attendingProviderList() throws Throwable {
         return rapRequestFormRepository.attendingProviderDetailList();
+    }
+
+    @GetMapping("/reletionshipList")
+    public List<IndividualRelationshipCodeMaster> reletionshipList() throws Throwable {
+        return preAuthorizationResponseRepository.findReletionshipList();
     }
     @PostMapping("/rapRequestView")
     public List<RapRequestFormDetail> rapRequestView(@RequestBody PDGMRapListing pdgmRapListing) throws Throwable

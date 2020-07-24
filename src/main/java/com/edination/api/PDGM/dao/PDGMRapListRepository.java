@@ -16,7 +16,7 @@ public interface PDGMRapListRepository extends JpaRepository<PDGMRapListing,Stri
     @Query(value="FROM TimingAndSourceOfAdmission WHERE mrn_number = ?1")
     public List<TimingAndSourceOfAdmission> findTimingSourceByMrn(String mrnNumber);
 
-    @Query(value="FROM AdmissionSource WHERE mrn_number = ?1")
+    @Query("FROM AdmissionSource WHERE mrn_number = ?1")
     public AdmissionSource findAdmissionSourceByMrn(String mrnNumber);
 
     @Query(value="FROM AdmissionSource")

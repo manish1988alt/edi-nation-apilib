@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class LoginRestApp implements Serializable {
     @GetMapping("/intakeList")
     public List<IntakeList> intakeListing() throws Throwable {
         List<IntakeList> intakeListList=new ArrayList<>();
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         List<Demographics> demographicsList=demographicsService.listAll();
         for(Demographics demographics:demographicsList) {
             IntakeList  intakelist=new IntakeList();
@@ -85,7 +86,9 @@ public class LoginRestApp implements Serializable {
             List<Episode> episodeDetailList=episodeRepository.findByMrnNumberEpisode(demographics.getMrnNumber());
             for(Episode episodeDetail:episodeDetailList)
             {
-                LocalDate episodestartDate=LocalDate.parse(episodeDetail.getAdmissionDate().toString());
+
+                String episodeStartDate = formatter.format(episodeDetail.getAdmissionDate());
+                LocalDate episodestartDate=LocalDate.parse(episodeStartDate);
                 LocalDate episodeEndDate=LocalDate.parse("2020-08-27");
                 intakelist.setEpisodeStartDate(episodestartDate);
                 intakelist.setEpisodeType(episodeDetail.getEpisodeType());
@@ -93,9 +96,9 @@ public class LoginRestApp implements Serializable {
                 intakelist.setEpisodeEndDate(episodeEndDate);
             }
             intakelist.setOasisStatus("");
-            AdmissionSource admissionSourceList=pdgmRapListRepository.findAdmissionSourceByMrn(demographics.getMrnNumber());
-
-                LocalDate refferDate=LocalDate.parse(admissionSourceList.getReferralDate().toString());
+           AdmissionSource admissionSourceList=pdgmRapListRepository.findAdmissionSourceByMrn(demographics.getMrnNumber());
+            String refferalDate = formatter.format(admissionSourceList.getReferralDate());
+                LocalDate refferDate=LocalDate.parse(refferalDate);
                 intakelist.setRefferDate(refferDate);
             intakeListList.add(intakelist);
 
