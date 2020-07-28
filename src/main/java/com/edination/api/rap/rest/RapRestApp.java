@@ -578,12 +578,8 @@ int j=1;
             pdgmRapListing1.setRapsFormStatus(rapFormStatus);
             String currentDate = java.time.LocalDate.now().toString();
             pdgmRapListing1.setRapsSentDate(currentDate);
-            if("Sent For Approval".equals(rapFormStatus)) {
-                pdgmRapListing1.setRapsType("Initial RAP");
-            }
-            else{
-                pdgmRapListing1.setRapsType(pdgmRapListing.getRapsType());
-            }
+            pdgmRapListing1.setRapsType(rapRequestFormDetail.getRapRequestForm().getTypeOfBill());
+
 
             pdgmRapListService.save(pdgmRapListing1);
         }

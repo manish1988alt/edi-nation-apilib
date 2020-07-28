@@ -241,7 +241,7 @@ public class PDGMRestApp implements Serializable {
         secondDaignosisCodeList.setSecondDiagnosisCodeList(secondDiagnosisCodeVal);
         list.add(secondDaignosisCodeList);
 
-        String finalHippsCode=position1+position2+position3+position4+position5;
+        String finalHippsCode=position1.trim()+position2.trim()+position3.trim()+position4.trim()+position5.trim();
         HippsCodeWeight hippsCodeWeight=hippsCodeAndCaseMixWeightRepository.findHippsCodeByMrn(finalHippsCode);
 
 
