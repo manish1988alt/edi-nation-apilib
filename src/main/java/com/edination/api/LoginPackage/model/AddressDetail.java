@@ -3,17 +3,20 @@ package com.edination.api.LoginPackage.model;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "AdmissionDetail")
-public class AdmissionDetail {
+@Table(name = "AddressDetail")
+public class AddressDetail {
     @Id
     private String mrnNumber;
     private int zipCode;
     private String	state;
-	private Date startOfCare;
-    private Date	endOfCare;
+	private LocalDate serviceStartDate;
+    private LocalDate	serviceEndDate;
+    private LocalDate episodeStartDate;
+    private LocalDate	episodeEndDate;
     private String	city;
     private String	address1;
     private String	address2;
@@ -23,14 +26,16 @@ public class AdmissionDetail {
     private String preferableCommunicationMethod;
 
 
-    public AdmissionDetail(){}
+    public AddressDetail(){}
 
-    public AdmissionDetail(String mrnNumber, int zipCode, String state, Date startOfCare, Date endOfCare, String city, String address1, String address2, String mobile, String homePhone, String email, String preferableCommunicationMethod) {
+    public AddressDetail(String mrnNumber, int zipCode, String state, LocalDate serviceStartDate, LocalDate serviceEndDate, LocalDate episodeStartDate, LocalDate episodeEndDate, String city, String address1, String address2, String mobile, String homePhone, String email, String preferableCommunicationMethod) {
         this.mrnNumber = mrnNumber;
         this.zipCode = zipCode;
         this.state = state;
-        this.startOfCare = startOfCare;
-        this.endOfCare = endOfCare;
+        this.serviceStartDate = serviceStartDate;
+        this.serviceEndDate = serviceEndDate;
+        this.episodeStartDate = episodeStartDate;
+        this.episodeEndDate = episodeEndDate;
         this.city = city;
         this.address1 = address1;
         this.address2 = address2;
@@ -64,20 +69,36 @@ public class AdmissionDetail {
         this.state = state;
     }
 
-    public Date getStartOfCare() {
-        return startOfCare;
+    public LocalDate getServiceStartDate() {
+        return serviceStartDate;
     }
 
-    public void setStartOfCare(Date startOfCare) {
-        this.startOfCare = startOfCare;
+    public void setServiceStartDate(LocalDate serviceStartDate) {
+        this.serviceStartDate = serviceStartDate;
     }
 
-    public Date getEndOfCare() {
-        return endOfCare;
+    public LocalDate getServiceEndDate() {
+        return serviceEndDate;
     }
 
-    public void setEndOfCare(Date endOfCare) {
-        this.endOfCare = endOfCare;
+    public void setServiceEndDate(LocalDate serviceEndDate) {
+        this.serviceEndDate = serviceEndDate;
+    }
+
+    public LocalDate getEpisodeStartDate() {
+        return episodeStartDate;
+    }
+
+    public void setEpisodeStartDate(LocalDate episodeStartDate) {
+        this.episodeStartDate = episodeStartDate;
+    }
+
+    public LocalDate getEpisodeEndDate() {
+        return episodeEndDate;
+    }
+
+    public void setEpisodeEndDate(LocalDate episodeEndDate) {
+        this.episodeEndDate = episodeEndDate;
     }
 
     public String getCity() {
@@ -138,12 +159,14 @@ public class AdmissionDetail {
 
     @Override
     public String toString() {
-        return "AdmissionDetail{" +
+        return "AddressDetail{" +
                 "mrnNumber='" + mrnNumber + '\'' +
                 ", zipCode=" + zipCode +
                 ", state='" + state + '\'' +
-                ", startOfCare=" + startOfCare +
-                ", endOfCare=" + endOfCare +
+                ", serviceStartDate=" + serviceStartDate +
+                ", serviceEndDate=" + serviceEndDate +
+                ", episodeStartDate=" + episodeStartDate +
+                ", episodeEndDate=" + episodeEndDate +
                 ", city='" + city + '\'' +
                 ", address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +

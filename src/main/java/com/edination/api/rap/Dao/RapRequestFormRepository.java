@@ -37,6 +37,9 @@ public interface RapRequestFormRepository extends JpaRepository<RapRequestForm,I
     @Query("FROM OtherProviderList WHERE provider_type=?1")
     List<OtherProviderList> OtherProviderList(String providerType);
 
+    @Query("FROM OtherProviderList WHERE provider_type=?1 AND provider_name=?2")
+    OtherProviderList OtherProviderDetailList(String providerType,String providerName);
+
     @Query("FROM ConditionCodes")
     List<ConditionCodes> conditionCodesList();
 

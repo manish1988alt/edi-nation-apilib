@@ -15,6 +15,9 @@ public class Demographics {
     private String suffix;
     private String gender;
     private LocalDate dob;
+    private String race;
+    private boolean guarenter;
+    private String ethnicity;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "policyId")
@@ -115,6 +118,29 @@ public class Demographics {
         this.insuranceDetailByPolicy = insuranceDetailByPolicy;
     }
 
+    public String getRace() {
+        return race;
+    }
+
+    public void setRace(String race) {
+        this.race = race;
+    }
+
+    public boolean isGuarenter() {
+        return guarenter;
+    }
+
+    public void setGuarenter(boolean guarenter) {
+        this.guarenter = guarenter;
+    }
+
+    public String getEthnicity() {
+        return ethnicity;
+    }
+
+    public void setEthnicity(String ethnicity) {
+        this.ethnicity = ethnicity;
+    }
     /*  public InsuranceAndDiagnosis getInsuranceAndDiagnosis() {
             return insuranceAndDiagnosis;
         }
