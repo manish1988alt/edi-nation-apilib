@@ -1,18 +1,12 @@
 package com.edination.api.LoginPackage.rest;
 
-import com.edination.api.Dao.DemographicsService;
-import com.edination.api.Dao.EpisodeRepository;
-import com.edination.api.Dao.HomeHealthPreAuthFormService;
-import com.edination.api.Dao.PreAuthService;
+import com.edination.api.Dao.*;
 import com.edination.api.LoginPackage.dao.AddressDetailService;
 import com.edination.api.LoginPackage.dao.AdmissionSourceService;
 import com.edination.api.LoginPackage.dao.GuarenterDetailsService;
 import com.edination.api.LoginPackage.dao.LoginService;
 import com.edination.api.LoginPackage.model.*;
-import com.edination.api.PDGM.dao.EpisodeDetailService;
-import com.edination.api.PDGM.dao.PDGMRapListRepository;
-import com.edination.api.PDGM.dao.PDGMRapListService;
-import com.edination.api.PDGM.dao.SecondDiagnosisCodeService;
+import com.edination.api.PDGM.dao.*;
 import com.edination.api.PDGM.model.*;
 import com.edination.api.eligibility.model.Demographics;
 import com.edination.api.eligibility.model.InsuranceDetailByPolicy;
@@ -59,6 +53,9 @@ public class LoginRestApp implements Serializable {
     HomeHealthPreAuthFormService homeHealthPreAuthFormService;
     @Autowired
     PDGMRapListService pdgmRapListService;
+    @Autowired
+    RequestServiceRepository requestServiceRepository;
+
 
     @Autowired
     AddressDetailService addressDetailService;
@@ -66,6 +63,9 @@ public class LoginRestApp implements Serializable {
     AdmissionSourceService admissionSourceService;
     @Autowired
     GuarenterDetailsService guarenterDetailsService;
+
+    @Autowired
+    SecondDaignosisCodeRepository secondDaignosisCodeRepository;
 
 
 
@@ -241,25 +241,27 @@ public class LoginRestApp implements Serializable {
        guarenterDetails.setAddress(addPatientModel.getGuarenterDetails().getAddress());
        guarenterDetails.setRelationshipToPatient(addPatientModel.getGuarenterDetails().getRelationshipToPatient());
        guarenterDetailsService.save(guarenterDetails);
-
-       OtherProviderList otherProviderDetailList=rapRequestFormRepository.OtherProviderDetailList(addPatientModel.getOtherProviderDetail().getProviderType(),addPatientModel.getOtherProviderDetail().getProviderName());
-       OtherProviderDetail otherProviderDetail=new OtherProviderDetail();
-       otherProviderDetail.setFirstName(otherProviderDetailList.getFirstName());
-       otherProviderDetail.setLastName(otherProviderDetailList.getLastName());
-       otherProviderDetail.setMiddleName(otherProviderDetailList.getMiddleName());
-       otherProviderDetail.setPrefix(otherProviderDetailList.getPrefix());
-       otherProviderDetail.setSuffix(otherProviderDetailList.getSuffix());
-       otherProviderDetail.setDob(otherProviderDetailList.getDob());
-       otherProviderDetail.setGender(otherProviderDetailList.getGender());
-       otherProviderDetail.setAddressLine(otherProviderDetailList.getAddressLine());
-       otherProviderDetail.setCity(otherProviderDetailList.getCity());
-       otherProviderDetail.setState(otherProviderDetailList.getState());
-       otherProviderDetail.setZipCode(otherProviderDetailList.getZipCode());
-       otherProviderDetail.setProviderType(otherProviderDetailList.getProviderType());
-       otherProviderDetail.setProviderName(otherProviderDetailList.getProviderName());
-       otherProviderDetail.setMrnNumber(mrnNumber);
-       otherProviderDetailService.save(otherProviderDetail);
-
+       OtherProviderDetail otherProviderDetailforRequest=new OtherProviderDetail();
+for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDetail()) {
+    OtherProviderList otherProviderDetailList = rapRequestFormRepository.OtherProviderDetailList(otherProviderDetail1.getProviderType(),otherProviderDetail1.getProviderName());
+    OtherProviderDetail otherProviderDetail = new OtherProviderDetail();
+    otherProviderDetail.setFirstName(otherProviderDetailList.getFirstName());
+    otherProviderDetail.setLastName(otherProviderDetailList.getLastName());
+    otherProviderDetail.setMiddleName(otherProviderDetailList.getMiddleName());
+    otherProviderDetail.setPrefix(otherProviderDetailList.getPrefix());
+    otherProviderDetail.setSuffix(otherProviderDetailList.getSuffix());
+    otherProviderDetail.setDob(otherProviderDetailList.getDob());
+    otherProviderDetail.setGender(otherProviderDetailList.getGender());
+    otherProviderDetail.setAddressLine(otherProviderDetailList.getAddressLine());
+    otherProviderDetail.setCity(otherProviderDetailList.getCity());
+    otherProviderDetail.setState(otherProviderDetailList.getState());
+    otherProviderDetail.setZipCode(otherProviderDetailList.getZipCode());
+    otherProviderDetail.setProviderType(otherProviderDetailList.getProviderType());
+    otherProviderDetail.setProviderName(otherProviderDetailList.getProviderName());
+    otherProviderDetail.setMrnNumber(mrnNumber);
+    otherProviderDetailforRequest=otherProviderDetail;
+    otherProviderDetailService.save(otherProviderDetail);
+}
        String serviceStartDate = formatter.format(addPatientModel.getAddressDetail().getServiceStartDate());
        Date serviceStartDateParse=new Date(serviceStartDate);
 
@@ -370,19 +372,19 @@ public class LoginRestApp implements Serializable {
        preAuthService.save(preAuthDetail);
 
        RequesterDetails requesterDetails=new RequesterDetails();
-       requesterDetails.setReqProviderLastName(otherProviderDetailList.getLastName());
-       requesterDetails.setReqProviderFirstName(otherProviderDetailList.getFirstName());
-       requesterDetails.setReqProviderMiddleName(otherProviderDetailList.getMiddleName());
-       requesterDetails.setReqProviderPrefix(otherProviderDetailList.getPrefix());
-       requesterDetails.setReqProviderSuffix(otherProviderDetailList.getSuffix());
+       requesterDetails.setReqProviderLastName(otherProviderDetailforRequest.getLastName());
+       requesterDetails.setReqProviderFirstName(otherProviderDetailforRequest.getFirstName());
+       requesterDetails.setReqProviderMiddleName(otherProviderDetailforRequest.getMiddleName());
+       requesterDetails.setReqProviderPrefix(otherProviderDetailforRequest.getPrefix());
+       requesterDetails.setReqProviderSuffix(otherProviderDetailforRequest.getSuffix());
        requesterDetails.setServiceDateFrom(serviceStartDateParse);
        requesterDetails.setServiceDateTo(serviceEndDateParse);
        requesterDetails.setServiceType("");
-       requesterDetails.setReqProviderType(otherProviderDetailList.getProviderType());
+       requesterDetails.setReqProviderType(otherProviderDetailforRequest.getProviderType());
        requesterDetails.setRequestCategory("");
        requesterDetails.setReqProviderSupplimentalId("");
        requesterDetails.setDischargeDate(episodeEndDateParse);
-       requesterDetails.setReqProviderFullName(otherProviderDetailList.getProviderName());
+       requesterDetails.setReqProviderFullName(otherProviderDetailforRequest.getProviderName());
        requesterDetails.setMrnNumber(mrnNumber);
        requesterDetails.setReqProviderIdNumberType("");
        requesterDetails.setReqProviderIdentificationNumberType("");
@@ -434,7 +436,51 @@ public class LoginRestApp implements Serializable {
        }
 
    }
+    @PostMapping("/editPatient")
+    public AddPatientModel editPatient(@RequestBody AddPatientModel addPatientModel) throws Throwable {
+        AddPatientModel addPatientModel1=new AddPatientModel();
 
+         Demographics demographics=demographicsService.get(addPatientModel.getDemographics().getMrnNumber());
+         //AddressDetail addressDetail=addressDetailService.get(addPatientModel.getDemographics().getMrnNumber());
+         AdmissionSource admissionSource=admissionSourceService.get(addPatientModel.getDemographics().getMrnNumber());
+         List<OtherProviderDetail> otherProviderDetailList=rapRequestFormRepository.findOtherProviderDetailByMrnNumber(addPatientModel.getDemographics().getMrnNumber());
+         PrimaryInsuranceDetail primaryInsuranceDetail=demographics.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail();
+         PrimaryDiagnosisCode primaryDiagnosisCode=primaryDiagnosisCodeService.get(addPatientModel.getDemographics().getMrnNumber());
+         List<SecondDiagnosisCode> secondDiagnosisCodeList=secondDaignosisCodeRepository.findSecondDiagnosisListCodeByMrn(addPatientModel.getDemographics().getMrnNumber());
+         RequestService requestService=requestServiceRepository.findRequestServiceByMrn(addPatientModel.getDemographics().getMrnNumber());
+         /*
+        SkilledNursing skilledNursing=requestServiceRepository.findSkilledNursingByMrn(addPatientModel.getDemographics().getMrnNumber());
+        HomeHealthAide homeHealthAide=requestServiceRepository.findHomeHealthAideByMrn(addPatientModel.getDemographics().getMrnNumber());
+        MedicalSocialWork medicalSocialWork=requestServiceRepository.findMedicalSocialWorkByMrn(addPatientModel.getDemographics().getMrnNumber());
+        PhysicalTherapy physicalTherapy=requestServiceRepository.findPhysicalTherapyByMrn(addPatientModel.getDemographics().getMrnNumber());
+        SpeechPathology speechPathology=requestServiceRepository.findSpeechPathologyByMrn(addPatientModel.getDemographics().getMrnNumber());
+        OccupationTherapy occupationTherapy=requestServiceRepository.findOccupationTherapyByMrn(addPatientModel.getDemographics().getMrnNumber());*/
+       // GuarenterDetails guarenterDetails=guarenterDetailsService.get(addPatientModel.getDemographics().getMrnNumber());
+        addPatientModel1.setDemographics(demographics);
+        addPatientModel1.setPrimaryInsuranceDetail(primaryInsuranceDetail);
+     //   addPatientModel1.setAddressDetail(addressDetail);
+        addPatientModel1.setAdmissionSource(admissionSource);
+        //addPatientModel1.setGuarenterDetails(guarenterDetails);
+        addPatientModel1.setPrimaryDiagnosisCode(primaryDiagnosisCode);
+        addPatientModel1.setSecondDiagnosisCodeList(secondDiagnosisCodeList);
+      /*  for(OtherProviderDetail otherProviderDetail:otherProviderDetailList)
+        {
+            addPatientModel1.setOtherProviderDetail(otherProviderDetail);
+        }*/
+
+        addPatientModel1.setOtherProviderDetail(otherProviderDetailList);
+        addPatientModel1.setHomeHealthAide(requestService.getHomeHealthAide());
+        addPatientModel1.setOccupationTherapy(requestService.getOccupationTherapy());
+        addPatientModel1.setPhysicalTherapy(requestService.getPhysicalTherapy());
+        addPatientModel1.setMedicalSocialWork(requestService.getMedicalSocialWork());
+        addPatientModel1.setSkilledNursing(requestService.getSkilledNursing());
+        addPatientModel1.setSpeechPathology(requestService.getSpeechPathology());
+
+       return addPatientModel1;
+
+
+
+    }
     protected ResponseEntity<?> generateSuccessObject(String key, String errorBuilder){
         Response.ResponseBuilder builder = null;
 

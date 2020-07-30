@@ -16,7 +16,7 @@ public class AddPatientModel {
     private Demographics demographics;
     private AddressDetail addressDetail;
     private AdmissionSource admissionSource;
-    private OtherProviderDetail otherProviderDetail;
+    private List<OtherProviderDetail> otherProviderDetail;
     private PrimaryInsuranceDetail primaryInsuranceDetail;
     private PrimaryDiagnosisCode primaryDiagnosisCode;
     private List<SecondDiagnosisCode> secondDiagnosisCodeList;
@@ -31,7 +31,7 @@ public class AddPatientModel {
     public AddPatientModel() {
     }
 
-    public AddPatientModel(Demographics demographics, AddressDetail addressDetail, AdmissionSource admissionSource, OtherProviderDetail otherProviderDetail, PrimaryInsuranceDetail primaryInsuranceDetail, PrimaryDiagnosisCode primaryDiagnosisCode, List<SecondDiagnosisCode> secondDiagnosisCodeList, SkilledNursing skilledNursing, HomeHealthAide homeHealthAide, MedicalSocialWork medicalSocialWork, PhysicalTherapy physicalTherapy, SpeechPathology speechPathology, OccupationTherapy occupationTherapy, GuarenterDetails guarenterDetails) {
+    public AddPatientModel(Demographics demographics, AddressDetail addressDetail, AdmissionSource admissionSource, List<OtherProviderDetail> otherProviderDetail, PrimaryInsuranceDetail primaryInsuranceDetail, PrimaryDiagnosisCode primaryDiagnosisCode, List<SecondDiagnosisCode> secondDiagnosisCodeList, SkilledNursing skilledNursing, HomeHealthAide homeHealthAide, MedicalSocialWork medicalSocialWork, PhysicalTherapy physicalTherapy, SpeechPathology speechPathology, OccupationTherapy occupationTherapy, GuarenterDetails guarenterDetails) {
         this.demographics = demographics;
         this.addressDetail = addressDetail;
         this.admissionSource = admissionSource;
@@ -72,11 +72,11 @@ public class AddPatientModel {
         this.admissionSource = admissionSource;
     }
 
-    public OtherProviderDetail getOtherProviderDetail() {
+    public List<OtherProviderDetail> getOtherProviderDetail() {
         return otherProviderDetail;
     }
 
-    public void setOtherProviderDetail(OtherProviderDetail otherProviderDetail) {
+    public void setOtherProviderDetail(List<OtherProviderDetail> otherProviderDetail) {
         this.otherProviderDetail = otherProviderDetail;
     }
 
