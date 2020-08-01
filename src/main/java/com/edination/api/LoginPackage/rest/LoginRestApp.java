@@ -55,6 +55,11 @@ public class LoginRestApp implements Serializable {
     PDGMRapListService pdgmRapListService;
     @Autowired
     RequestServiceRepository requestServiceRepository;
+    @Autowired
+    EpisodeDetailService episodeDetailService;
+
+    @Autowired
+    InsuranceDetailByPolicyServiceRepository insuranceDetailByPolicyServiceRepository;
 
 
     @Autowired
@@ -176,7 +181,7 @@ OtherProviderDetailRepository otherProviderDetailRepository;
        primaryInsuranceDetail.setState(addPatientModel.getPrimaryInsuranceDetail().getState());
        primaryInsuranceDetail.setMop(addPatientModel.getPrimaryInsuranceDetail().getMop());
        primaryInsuranceDetail.setPolicyNumber(addPatientModel.getPrimaryInsuranceDetail().getPolicyNumber());
-       primaryInsuranceDetail.setEligibility(addPatientModel.getPrimaryInsuranceDetail().getEligibility());
+       primaryInsuranceDetail.setEligibility("eligible");
        primaryInsuranceDetail.setEligibilityCheckSelected(addPatientModel.getPrimaryInsuranceDetail().getEligibilityCheckSelected());
        primaryInsuranceDetail.setStatusVerifiedDate(addPatientModel.getPrimaryInsuranceDetail().getStatusVerifiedDate());
 
@@ -342,37 +347,38 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
        preAuthDemographics.setPrefix("");
        preAuthDemographics.setSuffix(addPatientModel.getDemographics().getSuffix());
        preAuthDemographics.setGender(addPatientModel.getDemographics().getGender());
-
-       String dob = formatter.format(addPatientModel.getDemographics().getDob());
-        Date dob_date=new Date(dob);
-       preAuthDemographics.setDob(dob_date);
+        Date dob = formatter.parse(addPatientModel.getDemographics().getDob().toString());
+       preAuthDemographics.setDob(dob);
        preAuthDemographics.setSsn(addPatientModel.getPrimaryInsuranceDetail().getSsn());
        preAuthDemographics.setRelationshipToSubscriber(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
 
-       Date defaultDate=new Date("1970-01-01");
+       Date defaultDate=formatter.parse("1970-01-01");
        String default_date = "1970-01-01";
        LocalDate default_date1=LocalDate.parse(default_date);
        Episode episode=new Episode();
        episode.setMrnNumber(mrnNumber);
-       String EpisodeStartDate = formatter.format(addPatientModel.getAddressDetail().getEpisodeStartDate());
-       Date episodeStartDateParse=new Date(EpisodeStartDate);
+        Date episodeStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getEpisodeStartDate().toString());
+      /* Date episodeStartDateParse=new Date(EpisodeStartDate);*/
 
-       String EpisodeEndDate = formatter.format(addPatientModel.getAddressDetail().getEpisodeEndDate());
-       Date episodeEndDateParse=new Date(EpisodeEndDate);
+        Date episodeEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getEpisodeEndDate().toString());
+       //Date episodeEndDateParse=new Date(EpisodeEndDate);
 
        episode.setAdmissionDate(episodeStartDateParse);
-       episode.setAdmissionStatus("");
-       episode.setEpisodeType("");
+       episode.setAdmissionStatus("Admitted");
+       episode.setEpisodeType("1");
        episode.setPayorType("");
        episode.setPreauthFormStatus("");
        episode.setPreAuthorisationStatus("");
        episode.setFormReceivedDate(defaultDate);
        episode.setFormSentDate(default_date1);
+
        PreAuthDetail preAuthDetail=new PreAuthDetail();
        preAuthDetail.setMrnNumber(mrnNumber);
        preAuthDetail.setPreAuthDemographics(preAuthDemographics);
        preAuthDetail.setEpisode(episode);
+
        preAuthService.save(preAuthDetail);
+
 
        RequesterDetails requesterDetails=new RequesterDetails();
        requesterDetails.setReqProviderLastName(otherProviderDetailforRequest.getLastName());
@@ -395,14 +401,39 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
        requesterDetails.setLevelOfService("");
        requesterDetails.setAdmitDate(episodeStartDateParse);
 
+        PreAuthDemographics preAuthDemographics1=new PreAuthDemographics();
+        preAuthDemographics1.setMrnNumber(mrnNumber);
+        preAuthDemographics1.setFirstName(addPatientModel.getDemographics().getFirstName());
+        preAuthDemographics1.setLastName(addPatientModel.getDemographics().getLastName());
+        preAuthDemographics1.setMiddleName(addPatientModel.getDemographics().getMiddleName());
+        preAuthDemographics1.setPrefix("");
+        preAuthDemographics1.setSuffix(addPatientModel.getDemographics().getSuffix());
+        preAuthDemographics1.setGender(addPatientModel.getDemographics().getGender());
+        Date dobs = formatter.parse(addPatientModel.getDemographics().getDob().toString());
+        preAuthDemographics1.setDob(dobs);
+        preAuthDemographics1.setSsn(addPatientModel.getPrimaryInsuranceDetail().getSsn());
+        preAuthDemographics1.setRelationshipToSubscriber(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
        HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm=new HomeHealthPreAuthorizationForm();
        homeHealthPreAuthorizationForm.setMrnNumber(mrnNumber);
        homeHealthPreAuthorizationForm.setRequestService(requestService);
-       homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics);
+       homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics1);
        homeHealthPreAuthorizationForm.setEnquiryDeatils(enquiryDeatils);
        homeHealthPreAuthorizationForm.setProviderDetail(requesterDetails);
        homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm);
-
+        EpisodeDetail episode1=new EpisodeDetail();
+        episode1.setFirstName(addPatientModel.getDemographics().getFirstName());
+        episode1.setLastName(addPatientModel.getDemographics().getLastName());
+        episode1.setMiddleName(addPatientModel.getDemographics().getFirstName());
+        episode1.setDob(dob);
+        episode1.setEpisodeStartDate(episodeStartDateParse);
+        episode1.setEpisodeEndDate(episodeEndDateParse);
+        episode1.setEpisodeId("1");
+        episode1.setEpisodeType("1");
+        episode1.setGender(addPatientModel.getDemographics().getGender());
+        episode1.setMrnNumber(mrnNumber);
+        episode1.setNumberOrVisits("");
+        episode1.setSuffix(addPatientModel.getDemographics().getSuffix());
+        episodeDetailService.save(episode1);
        PDGMRapListing pdgmRapListing=new PDGMRapListing();
        pdgmRapListing.setFirstName(addPatientModel.getDemographics().getFirstName());
        pdgmRapListing.setLastName(addPatientModel.getDemographics().getLastName());
@@ -481,8 +512,9 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         primaryInsuranceDetail.setEligibilityCheckSelected(addPatientModel.getPrimaryInsuranceDetail().getEligibilityCheckSelected());
         primaryInsuranceDetail.setStatusVerifiedDate(addPatientModel.getPrimaryInsuranceDetail().getStatusVerifiedDate());
 
+        Demographics demographicsdetail=demographicsService.get(addPatientModel.getDemographics().getMrnNumber());
         InsuranceDetailByPolicy insuranceDetailByPolicy=new InsuranceDetailByPolicy();
-        insuranceDetailByPolicy.setPolicyId(addPatientModel.getDemographics().getInsuranceDetailByPolicy().getPolicyId());
+       insuranceDetailByPolicy.setPolicyId(demographicsdetail.getInsuranceDetailByPolicy().getPolicyId());
         insuranceDetailByPolicy.setPrimaryInsuranceDetail(primaryInsuranceDetail);
         demographics.setInsuranceDetailByPolicy(insuranceDetailByPolicy);
         demographicsService.save(demographics);
@@ -564,12 +596,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
             otherProviderDetailforRequest=otherProviderDetail;
             otherProviderDetailService.save(otherProviderDetail);
         }
-        //String serviceStartDate = formatter.format(addPatientModel.getAddressDetail().getServiceStartDate());
-        //Date serviceStartDateParse=new Date(serviceStartDate);
 
-        //String serviceEndDate = formatter.format(addPatientModel.getAddressDetail().getServiceEndDate());
-        //Date serviceEndDateParse=new Date(serviceEndDate);
-        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
         Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
         HomeHealthAide homeHealthAide=new HomeHealthAide();
@@ -644,22 +671,22 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         preAuthDemographics.setSuffix(addPatientModel.getDemographics().getSuffix());
         preAuthDemographics.setGender(addPatientModel.getDemographics().getGender());
 
-        String dob = formatter.format(addPatientModel.getDemographics().getDob());
-        Date dob_date=new Date(dob);
+        Date dob_date = formatter.parse(addPatientModel.getDemographics().getDob().toString());
+      //  Date dob_date=new Date(dob);
         preAuthDemographics.setDob(dob_date);
         preAuthDemographics.setSsn(addPatientModel.getPrimaryInsuranceDetail().getSsn());
         preAuthDemographics.setRelationshipToSubscriber(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
 
-        Date defaultDate=new Date("1970-01-01");
+        Date defaultDate=formatter.parse("1970-01-01");
         String default_date = "1970-01-01";
         LocalDate default_date1=LocalDate.parse(default_date);
         Episode episode=new Episode();
         episode.setMrnNumber(addPatientModel.getDemographics().getMrnNumber());
-        String EpisodeStartDate = formatter.format(addPatientModel.getAddressDetail().getEpisodeStartDate());
-        Date episodeStartDateParse=new Date(EpisodeStartDate);
+        Date episodeStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getEpisodeStartDate().toString());
+        //Date episodeStartDateParse=new Date(EpisodeStartDate);
 
-        String EpisodeEndDate = formatter.format(addPatientModel.getAddressDetail().getEpisodeEndDate());
-        Date episodeEndDateParse=new Date(EpisodeEndDate);
+        Date episodeEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getEpisodeEndDate().toString());
+      //  Date episodeEndDateParse=new Date(EpisodeEndDate);
 
         episode.setAdmissionDate(episodeStartDateParse);
         episode.setAdmissionStatus("");
@@ -696,13 +723,37 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         requesterDetails.setLevelOfService("");
         requesterDetails.setAdmitDate(episodeStartDateParse);
 
+        PreAuthDemographics preAuthDemographics1=new PreAuthDemographics();
+        preAuthDemographics1.setMrnNumber(mrnNumber);
+        preAuthDemographics1.setFirstName(addPatientModel.getDemographics().getFirstName());
+        preAuthDemographics1.setLastName(addPatientModel.getDemographics().getLastName());
+        preAuthDemographics1.setMiddleName(addPatientModel.getDemographics().getMiddleName());
+        preAuthDemographics1.setPrefix("");
+        preAuthDemographics1.setSuffix(addPatientModel.getDemographics().getSuffix());
+        preAuthDemographics1.setGender(addPatientModel.getDemographics().getGender());
         HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm=new HomeHealthPreAuthorizationForm();
         homeHealthPreAuthorizationForm.setMrnNumber(addPatientModel.getDemographics().getMrnNumber());
         homeHealthPreAuthorizationForm.setRequestService(requestService);
-        homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics);
+        homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics1);
         homeHealthPreAuthorizationForm.setEnquiryDeatils(enquiryDeatils);
         homeHealthPreAuthorizationForm.setProviderDetail(requesterDetails);
         homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm);
+
+        EpisodeDetail episode1=new EpisodeDetail();
+        episode1.setFirstName(addPatientModel.getDemographics().getFirstName());
+        episode1.setLastName(addPatientModel.getDemographics().getLastName());
+        episode1.setMiddleName(addPatientModel.getDemographics().getFirstName());
+        episode1.setDob(dob_date);
+        episode1.setEpisodeStartDate(episodeStartDateParse);
+        episode1.setEpisodeEndDate(episodeEndDateParse);
+        episode1.setEpisodeId("1");
+        episode1.setEpisodeType("1");
+        episode1.setGender(addPatientModel.getDemographics().getGender());
+        episode1.setMrnNumber(mrnNumber);
+        episode1.setNumberOrVisits("");
+        episode1.setSuffix(addPatientModel.getDemographics().getSuffix());
+        episodeDetailService.save(episode1);
+
         PDGMRapListing pdgmRapListingList= pdgmRapListService.get(addPatientModel.getDemographics().getMrnNumber());
         PDGMRapListing pdgmRapListing=new PDGMRapListing();
         pdgmRapListing.setFirstName(pdgmRapListingList.getFirstName());
@@ -749,7 +800,18 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         AddPatientModel addPatientModel1=new AddPatientModel();
 
          Demographics demographics=demographicsService.get(intakeList.getPatientMRN());
-         //AddressDetail addressDetail=addressDetailService.get(addPatientModel.getDemographics().getMrnNumber());
+         Demographics demographics1=new Demographics();
+        demographics1.setEthnicity(demographics.getEthnicity());
+        demographics1.setGuarenter(demographics.isGuarenter());
+        demographics1.setRace(demographics.getRace());
+        demographics1.setGender(demographics.getGender());
+        demographics1.setDob(demographics.getDob());
+        demographics1.setSuffix(demographics.getSuffix());
+        demographics1.setLastName(demographics.getLastName());
+        demographics1.setFirstName(demographics.getFirstName());
+        demographics1.setMrnNumber(demographics.getMrnNumber());
+
+         AddressDetail addressDetail=addressDetailService.get(intakeList.getPatientMRN());
          AdmissionSource admissionSource=admissionSourceService.get(intakeList.getPatientMRN());
          List<OtherProviderDetail> otherProviderDetailList=otherProviderDetailRepository.findOtherProviderDetailByMrnNumber(intakeList.getPatientMRN(),1);
          PrimaryInsuranceDetail primaryInsuranceDetail=demographics.getInsuranceDetailByPolicy().getPrimaryInsuranceDetail();
@@ -763,12 +825,12 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         PhysicalTherapy physicalTherapy=requestServiceRepository.findPhysicalTherapyByMrn(addPatientModel.getDemographics().getMrnNumber());
         SpeechPathology speechPathology=requestServiceRepository.findSpeechPathologyByMrn(addPatientModel.getDemographics().getMrnNumber());
         OccupationTherapy occupationTherapy=requestServiceRepository.findOccupationTherapyByMrn(addPatientModel.getDemographics().getMrnNumber());*/
-       // GuarenterDetails guarenterDetails=guarenterDetailsService.get(addPatientModel.getDemographics().getMrnNumber());
-        addPatientModel1.setDemographics(demographics);
+        GuarenterDetails guarenterDetails=guarenterDetailsService.get(intakeList.getPatientMRN());
+        addPatientModel1.setDemographics(demographics1);
         addPatientModel1.setPrimaryInsuranceDetail(primaryInsuranceDetail);
-     //   addPatientModel1.setAddressDetail(addressDetail);
+       addPatientModel1.setAddressDetail(addressDetail);
         addPatientModel1.setAdmissionSource(admissionSource);
-        //addPatientModel1.setGuarenterDetails(guarenterDetails);
+        addPatientModel1.setGuarenterDetails(guarenterDetails);
         addPatientModel1.setPrimaryDiagnosisCode(primaryDiagnosisCode);
         addPatientModel1.setSecondDiagnosisCodeList(secondDiagnosisCodeList);
       /*  for(OtherProviderDetail otherProviderDetail:otherProviderDetailList)
