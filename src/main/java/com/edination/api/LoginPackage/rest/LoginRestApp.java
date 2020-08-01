@@ -155,6 +155,7 @@ OtherProviderDetailRepository otherProviderDetailRepository;
        demographics.setMrnNumber(mrnNumber);
        demographics.setFirstName(addPatientModel.getDemographics().getFirstName());
        demographics.setLastName(addPatientModel.getDemographics().getLastName());
+        demographics.setMiddleName(addPatientModel.getDemographics().getMiddleName());
        demographics.setSuffix(addPatientModel.getDemographics().getSuffix());
        demographics.setDob(addPatientModel.getDemographics().getDob());
        demographics.setGender(addPatientModel.getDemographics().getGender());
