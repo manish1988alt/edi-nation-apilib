@@ -151,6 +151,9 @@ CountOfAddedValueInRapService countOfAddedValueInRapService;
        Random rand = new Random();
        int Number = rand.nextInt(1000);
        String mrnNumber="P"+Number;
+
+        Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
+        Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
         Demographics demographics=new Demographics();
        demographics.setMrnNumber(mrnNumber);
        demographics.setFirstName(addPatientModel.getDemographics().getFirstName());
@@ -170,9 +173,9 @@ CountOfAddedValueInRapService countOfAddedValueInRapService;
        primaryInsuranceDetail.setInsuredsex(addPatientModel.getPrimaryInsuranceDetail().getInsuredsex());
        primaryInsuranceDetail.setInsureddob(addPatientModel.getPrimaryInsuranceDetail().getInsureddob());
        primaryInsuranceDetail.setPatientRelationInsured(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
-       primaryInsuranceDetail.setStartDate(addPatientModel.getPrimaryInsuranceDetail().getInsureddob());
+       primaryInsuranceDetail.setStartDate(serviceStartDateParse);
        primaryInsuranceDetail.setZipcode(addPatientModel.getPrimaryInsuranceDetail().getZipcode());
-       primaryInsuranceDetail.setEndDate(addPatientModel.getPrimaryInsuranceDetail().getEndDate());
+       primaryInsuranceDetail.setEndDate(serviceEndDateParse);
        primaryInsuranceDetail.setInsurancePlanType(addPatientModel.getPrimaryInsuranceDetail().getInsurancePlanType());
        primaryInsuranceDetail.setInsurancePlanName(addPatientModel.getPrimaryInsuranceDetail().getInsurancePlanName());
        primaryInsuranceDetail.setGroup_name(addPatientModel.getPrimaryInsuranceDetail().getGroup_name());
@@ -277,8 +280,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
        //String serviceEndDate = formatter.format(addPatientModel.getAddressDetail().getServiceEndDate());
        //Date serviceEndDateParse=new Date(serviceEndDate);
        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
-        Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
+
        HomeHealthAide homeHealthAide=new HomeHealthAide();
        homeHealthAide.setMrnNumber(mrnNumber);
        homeHealthAide.setHomeHealthAideVisit(addPatientModel.getHomeHealthAide().getHomeHealthAideVisit());
@@ -368,7 +370,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
 
        episode.setAdmissionDate(episodeStartDateParse);
        episode.setAdmissionStatus("Admitted");
-       episode.setEpisodeType("1");
+       episode.setEpisodeType("Start Of Care");
        episode.setPayorType("");
        episode.setPreauthFormStatus("No Action Taken");
        episode.setPreAuthorisationStatus("");
@@ -442,7 +444,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         episode1.setEpisodeStartDate(episodeStartDateParse);
         episode1.setEpisodeEndDate(episodeEndDateParse);
         episode1.setEpisodeId("1");
-        episode1.setEpisodeType("1");
+        episode1.setEpisodeType("Start Of Care");
         episode1.setGender(addPatientModel.getDemographics().getGender());
         episode1.setMrnNumber(mrnNumber);
         episode1.setNumberOrVisits("");
@@ -537,6 +539,8 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
     public ResponseEntity<?>  savePatient(@RequestBody AddPatientModel addPatientModel) throws Throwable {
         String ackn="false";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
+        Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
         Random rand = new Random();
         int Number = rand.nextInt(1000);
         String mrnNumber="P"+Number;
@@ -559,9 +563,9 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         primaryInsuranceDetail.setInsuredsex(addPatientModel.getPrimaryInsuranceDetail().getInsuredsex());
         primaryInsuranceDetail.setInsureddob(addPatientModel.getPrimaryInsuranceDetail().getInsureddob());
         primaryInsuranceDetail.setPatientRelationInsured(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
-        primaryInsuranceDetail.setStartDate(addPatientModel.getPrimaryInsuranceDetail().getInsureddob());
+        primaryInsuranceDetail.setStartDate(serviceStartDateParse);
         primaryInsuranceDetail.setZipcode(addPatientModel.getPrimaryInsuranceDetail().getZipcode());
-        primaryInsuranceDetail.setEndDate(addPatientModel.getPrimaryInsuranceDetail().getEndDate());
+        primaryInsuranceDetail.setEndDate(serviceEndDateParse);
         primaryInsuranceDetail.setInsurancePlanType(addPatientModel.getPrimaryInsuranceDetail().getInsurancePlanType());
         primaryInsuranceDetail.setInsurancePlanName(addPatientModel.getPrimaryInsuranceDetail().getInsurancePlanName());
         primaryInsuranceDetail.setGroup_name(addPatientModel.getPrimaryInsuranceDetail().getGroup_name());
@@ -668,8 +672,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         countOfAddedValueInRap.setOccuranceCodeCount(0);
         countOfAddedValueInRap.setConditionCodeCount(0);
         countOfAddedValueInRapService.save(countOfAddedValueInRap);
-        Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
-        Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
+
         HomeHealthAide homeHealthAide=new HomeHealthAide();
         homeHealthAide.setMrnNumber(addPatientModel.getDemographics().getMrnNumber());
         homeHealthAide.setHomeHealthAideVisit(addPatientModel.getHomeHealthAide().getHomeHealthAideVisit());
@@ -761,7 +764,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
 
         episode.setAdmissionDate(episodeStartDateParse);
         episode.setAdmissionStatus("");
-        episode.setEpisodeType("");
+        episode.setEpisodeType("Start Of Care");
         episode.setPayorType("");
         episode.setPreauthFormStatus("Save As Draft");
         episode.setPreAuthorisationStatus("");
@@ -827,7 +830,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         episode1.setEpisodeStartDate(episodeStartDateParse);
         episode1.setEpisodeEndDate(episodeEndDateParse);
         episode1.setEpisodeId("1");
-        episode1.setEpisodeType("1");
+        episode1.setEpisodeType("Start Of Care");
         episode1.setGender(addPatientModel.getDemographics().getGender());
         episode1.setMrnNumber(mrnNumber);
         episode1.setNumberOrVisits("");
