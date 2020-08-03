@@ -12,10 +12,7 @@ import com.edination.api.eligibility.model.Demographics;
 import com.edination.api.eligibility.model.InsuranceDetailByPolicy;
 import com.edination.api.eligibility.model.PrimaryInsuranceDetail;
 import com.edination.api.preAuthorisation.model.*;
-import com.edination.api.rap.Dao.OtherProviderDetailRepository;
-import com.edination.api.rap.Dao.OtherProviderDetailService;
-import com.edination.api.rap.Dao.PrimaryDiagnosisCodeService;
-import com.edination.api.rap.Dao.RapRequestFormRepository;
+import com.edination.api.rap.Dao.*;
 import com.edination.api.rap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +54,8 @@ public class LoginRestApp implements Serializable {
     RequestServiceRepository requestServiceRepository;
     @Autowired
     EpisodeDetailService episodeDetailService;
+    @Autowired
+    RapRequestFormService rapRequestFormService;
 
     @Autowired
     InsuranceDetailByPolicyServiceRepository insuranceDetailByPolicyServiceRepository;
@@ -74,7 +73,8 @@ public class LoginRestApp implements Serializable {
 
 @Autowired
 OtherProviderDetailRepository otherProviderDetailRepository;
-
+@Autowired
+CountOfAddedValueInRapService countOfAddedValueInRapService;
 
 
 
@@ -249,6 +249,7 @@ OtherProviderDetailRepository otherProviderDetailRepository;
        guarenterDetails.setRelationshipToPatient(addPatientModel.getGuarenterDetails().getRelationshipToPatient());
        guarenterDetailsService.save(guarenterDetails);
        OtherProviderDetail otherProviderDetailforRequest=new OtherProviderDetail();
+       int otherproviderCount=0;
 for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDetail()) {
     OtherProviderList otherProviderDetailList = rapRequestFormRepository.OtherProviderDetailList(otherProviderDetail1.getProviderType(),otherProviderDetail1.getProviderName());
     OtherProviderDetail otherProviderDetail = new OtherProviderDetail();
@@ -268,6 +269,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
     otherProviderDetail.setMrnNumber(mrnNumber);
     otherProviderDetailforRequest=otherProviderDetail;
     otherProviderDetailService.save(otherProviderDetail);
+    otherproviderCount++;
 }
        //String serviceStartDate = formatter.format(addPatientModel.getAddressDetail().getServiceStartDate());
        //Date serviceStartDateParse=new Date(serviceStartDate);
@@ -368,7 +370,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
        episode.setAdmissionStatus("Admitted");
        episode.setEpisodeType("1");
        episode.setPayorType("");
-       episode.setPreauthFormStatus("");
+       episode.setPreauthFormStatus("No Action Taken");
        episode.setPreAuthorisationStatus("");
        episode.setFormReceivedDate(defaultDate);
        episode.setFormSentDate(default_date1);
@@ -414,12 +416,23 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         preAuthDemographics1.setDob(dobs);
         preAuthDemographics1.setSsn(addPatientModel.getPrimaryInsuranceDetail().getSsn());
         preAuthDemographics1.setRelationshipToSubscriber(addPatientModel.getPrimaryInsuranceDetail().getPatientRelationInsured());
+
        HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm=new HomeHealthPreAuthorizationForm();
+       OrganizationInformation organizationInformation=new OrganizationInformation();
+        organizationInformation.setMrnNumber(mrnNumber);
+       DependentDetails dependentDetails=new DependentDetails();
+        dependentDetails.setMrnNumber(mrnNumber);
+       SubscriberDetails subscriberDetails =new SubscriberDetails();
+        subscriberDetails.setMrnNumber(mrnNumber);
        homeHealthPreAuthorizationForm.setMrnNumber(mrnNumber);
        homeHealthPreAuthorizationForm.setRequestService(requestService);
        homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics1);
        homeHealthPreAuthorizationForm.setEnquiryDeatils(enquiryDeatils);
        homeHealthPreAuthorizationForm.setProviderDetail(requesterDetails);
+        homeHealthPreAuthorizationForm.setOrganizationInformation(organizationInformation);
+        homeHealthPreAuthorizationForm.setSubscriberDetails(subscriberDetails);
+        homeHealthPreAuthorizationForm.setDependentDetails(dependentDetails);
+
        homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm);
         EpisodeDetail episode1=new EpisodeDetail();
         episode1.setFirstName(addPatientModel.getDemographics().getFirstName());
@@ -458,6 +471,54 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
        pdgmRapListing.setRapsFormStatus("NA");
        pdgmRapListing.setAction("");
        pdgmRapListService.save(pdgmRapListing);
+
+       RapRequestForm rapRequestForm=new RapRequestForm();
+        rapRequestForm.setStatementCoveredPeriodDateFrom(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setServicingProviderType("");
+        rapRequestForm.setTypeOfVisit("");
+        rapRequestForm.setTypeOfBill("");
+        rapRequestForm.setStatementCoveredPeriodDateTo(addPatientModel.getAddressDetail().getEpisodeEndDate());
+        rapRequestForm.setRemarks("");
+        rapRequestForm.setSourceOfReferral(addPatientModel.getAdmissionSource().getSouceOfAdmission());
+        rapRequestForm.setPatientDischargeStatus("");
+        rapRequestForm.setDischargeHour("");
+        rapRequestForm.setDischargeDate(addPatientModel.getAddressDetail().getEpisodeEndDate());
+        rapRequestForm.setBillingProviderType("");
+        rapRequestForm.setBillingProviderName("");
+        rapRequestForm.setAttendingProviderName("");
+        rapRequestForm.setAdmissionDate(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setAdmissionHour("");
+        rapRequestForm.setServicingProviderName("");
+        rapRequestForm.setAccidentState(addPatientModel.getAddressDetail().getEpisodeStartDate().toString());
+        rapRequestForm.setAccidentDate(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setRemarks("");
+        rapRequestForm.setPatientMrn(mrnNumber);
+        Patientdetail patientdetail=new Patientdetail();
+        patientdetail.setName(addPatientModel.getDemographics().getLastName()+" "+addPatientModel.getDemographics().getFirstName()+" "+addPatientModel.getDemographics().getMiddleName()+" "+addPatientModel.getDemographics().getSuffix());
+        patientdetail.setLastName(addPatientModel.getDemographics().getLastName());
+        patientdetail.setFirstName(addPatientModel.getDemographics().getFirstName());
+        patientdetail.setPrefix("");
+        patientdetail.setSuffix(addPatientModel.getDemographics().getSuffix());
+        patientdetail.setMiddleName(addPatientModel.getDemographics().getMiddleName());
+        patientdetail.setGender(addPatientModel.getDemographics().getGender());
+        patientdetail.setDob(addPatientModel.getDemographics().getDob());
+        patientdetail.setAddressLine(addPatientModel.getPrimaryInsuranceDetail().getInsuranceAddress());
+        patientdetail.setCity(addPatientModel.getPrimaryInsuranceDetail().getCity());
+        patientdetail.setState(addPatientModel.getPrimaryInsuranceDetail().getState());
+        patientdetail.setZipCode(String.valueOf(addPatientModel.getPrimaryInsuranceDetail().getZipcode()));
+        patientdetail.setPatientNameIdentifier(mrnNumber);
+        rapRequestForm.setPatientDetail(patientdetail);
+        rapRequestFormService.save(rapRequestForm);
+
+        CountOfAddedValueInRap countOfAddedValueInRap=new CountOfAddedValueInRap();
+        countOfAddedValueInRap.setMrnNumber(mrnNumber);
+        countOfAddedValueInRap.setOtherProviderCount(otherproviderCount);
+        countOfAddedValueInRap.setTreatmentAuthorizationCount(0);
+        countOfAddedValueInRap.setValueCodeCount(0);
+        countOfAddedValueInRap.setOccuranceCodeCount(0);
+        countOfAddedValueInRap.setConditionCodeCount(0);
+        countOfAddedValueInRapService.save(countOfAddedValueInRap);
+
        ackn="true";
 
        if(ackn.equals("true")) {
@@ -481,6 +542,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         String mrnNumber="P"+Number;
         Demographics demographics=new Demographics();
         demographics.setMrnNumber(addPatientModel.getDemographics().getMrnNumber());
+        demographics.setMiddleName(addPatientModel.getDemographics().getMiddleName());
         demographics.setFirstName(addPatientModel.getDemographics().getFirstName());
         demographics.setLastName(addPatientModel.getDemographics().getLastName());
         demographics.setSuffix(addPatientModel.getDemographics().getSuffix());
@@ -576,6 +638,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         guarenterDetails.setAddress(addPatientModel.getGuarenterDetails().getAddress());
         guarenterDetails.setRelationshipToPatient(addPatientModel.getGuarenterDetails().getRelationshipToPatient());
         guarenterDetailsService.save(guarenterDetails);
+        int otherproviderCount=0;
         OtherProviderDetail otherProviderDetailforRequest=new OtherProviderDetail();
         for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDetail()) {
             OtherProviderList otherProviderDetailList = rapRequestFormRepository.OtherProviderDetailList(otherProviderDetail1.getProviderType(),otherProviderDetail1.getProviderName());
@@ -597,7 +660,14 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
             otherProviderDetailforRequest=otherProviderDetail;
             otherProviderDetailService.save(otherProviderDetail);
         }
-
+        CountOfAddedValueInRap countOfAddedValueInRap=new CountOfAddedValueInRap();
+        countOfAddedValueInRap.setMrnNumber(mrnNumber);
+        countOfAddedValueInRap.setOtherProviderCount(otherproviderCount);
+        countOfAddedValueInRap.setTreatmentAuthorizationCount(0);
+        countOfAddedValueInRap.setValueCodeCount(0);
+        countOfAddedValueInRap.setOccuranceCodeCount(0);
+        countOfAddedValueInRap.setConditionCodeCount(0);
+        countOfAddedValueInRapService.save(countOfAddedValueInRap);
         Date serviceStartDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceStartDate().toString());
         Date serviceEndDateParse = formatter.parse(addPatientModel.getAddressDetail().getServiceEndDate().toString());
         HomeHealthAide homeHealthAide=new HomeHealthAide();
@@ -693,7 +763,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         episode.setAdmissionStatus("");
         episode.setEpisodeType("");
         episode.setPayorType("");
-        episode.setPreauthFormStatus("");
+        episode.setPreauthFormStatus("Save As Draft");
         episode.setPreAuthorisationStatus("");
         episode.setFormReceivedDate(defaultDate);
         episode.setFormSentDate(default_date1);
@@ -733,11 +803,20 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         preAuthDemographics1.setSuffix(addPatientModel.getDemographics().getSuffix());
         preAuthDemographics1.setGender(addPatientModel.getDemographics().getGender());
         HomeHealthPreAuthorizationForm homeHealthPreAuthorizationForm=new HomeHealthPreAuthorizationForm();
+        OrganizationInformation organizationInformation=new OrganizationInformation();
+        organizationInformation.setMrnNumber(mrnNumber);
+        DependentDetails dependentDetails=new DependentDetails();
+        dependentDetails.setMrnNumber(mrnNumber);
+        SubscriberDetails subscriberDetails =new SubscriberDetails();
+        subscriberDetails.setMrnNumber(mrnNumber);
         homeHealthPreAuthorizationForm.setMrnNumber(addPatientModel.getDemographics().getMrnNumber());
         homeHealthPreAuthorizationForm.setRequestService(requestService);
         homeHealthPreAuthorizationForm.setPreAuthDemographics(preAuthDemographics1);
         homeHealthPreAuthorizationForm.setEnquiryDeatils(enquiryDeatils);
         homeHealthPreAuthorizationForm.setProviderDetail(requesterDetails);
+        homeHealthPreAuthorizationForm.setDependentDetails(dependentDetails);
+        homeHealthPreAuthorizationForm.setSubscriberDetails(subscriberDetails);
+        homeHealthPreAuthorizationForm.setOrganizationInformation(organizationInformation);
         homeHealthPreAuthFormService.save(homeHealthPreAuthorizationForm);
 
         EpisodeDetail episode1=new EpisodeDetail();
@@ -780,7 +859,43 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         pdgmRapListing.setAction(pdgmRapListingList.getAction());
         pdgmRapListService.save(pdgmRapListing);
         ackn="true";
-
+        RapRequestForm rapRequestForm=new RapRequestForm();
+        rapRequestForm.setStatementCoveredPeriodDateFrom(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setServicingProviderType("");
+        rapRequestForm.setTypeOfVisit("");
+        rapRequestForm.setTypeOfBill("");
+        rapRequestForm.setStatementCoveredPeriodDateTo(addPatientModel.getAddressDetail().getEpisodeEndDate());
+        rapRequestForm.setRemarks("");
+        rapRequestForm.setSourceOfReferral(addPatientModel.getAdmissionSource().getSouceOfAdmission());
+        rapRequestForm.setPatientDischargeStatus("");
+        rapRequestForm.setDischargeHour("");
+        rapRequestForm.setDischargeDate(addPatientModel.getAddressDetail().getEpisodeEndDate());
+        rapRequestForm.setBillingProviderType("");
+        rapRequestForm.setBillingProviderName("");
+        rapRequestForm.setAttendingProviderName("");
+        rapRequestForm.setAdmissionDate(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setAdmissionHour("");
+        rapRequestForm.setServicingProviderName("");
+        rapRequestForm.setAccidentState(addPatientModel.getAddressDetail().getEpisodeStartDate().toString());
+        rapRequestForm.setAccidentDate(addPatientModel.getAddressDetail().getEpisodeStartDate());
+        rapRequestForm.setRemarks("");
+        rapRequestForm.setPatientMrn(mrnNumber);
+        Patientdetail patientdetail=new Patientdetail();
+        patientdetail.setName(addPatientModel.getDemographics().getLastName()+" "+addPatientModel.getDemographics().getFirstName()+" "+addPatientModel.getDemographics().getMiddleName()+" "+addPatientModel.getDemographics().getSuffix());
+        patientdetail.setLastName(addPatientModel.getDemographics().getLastName());
+        patientdetail.setFirstName(addPatientModel.getDemographics().getFirstName());
+        patientdetail.setPrefix("");
+        patientdetail.setSuffix(addPatientModel.getDemographics().getSuffix());
+        patientdetail.setMiddleName(addPatientModel.getDemographics().getMiddleName());
+        patientdetail.setGender(addPatientModel.getDemographics().getGender());
+        patientdetail.setDob(addPatientModel.getDemographics().getDob());
+        patientdetail.setAddressLine(addPatientModel.getPrimaryInsuranceDetail().getInsuranceAddress());
+        patientdetail.setCity(addPatientModel.getPrimaryInsuranceDetail().getCity());
+        patientdetail.setState(addPatientModel.getPrimaryInsuranceDetail().getState());
+        patientdetail.setZipCode(String.valueOf(addPatientModel.getPrimaryInsuranceDetail().getZipcode()));
+        patientdetail.setPatientNameIdentifier(mrnNumber);
+        rapRequestForm.setPatientDetail(patientdetail);
+        rapRequestFormService.save(rapRequestForm);
         if(ackn.equals("true")) {
             return generateSuccessObject("Success",
                     " ");
@@ -803,6 +918,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
          Demographics demographics=demographicsService.get(intakeList.getPatientMRN());
          Demographics demographics1=new Demographics();
         demographics1.setEthnicity(demographics.getEthnicity());
+        demographics.setMiddleName(demographics.getMiddleName());
         demographics1.setGuarenter(demographics.isGuarenter());
         demographics1.setRace(demographics.getRace());
         demographics1.setGender(demographics.getGender());
@@ -811,7 +927,7 @@ for(OtherProviderDetail otherProviderDetail1:addPatientModel.getOtherProviderDet
         demographics1.setLastName(demographics.getLastName());
         demographics1.setFirstName(demographics.getFirstName());
         demographics1.setMrnNumber(demographics.getMrnNumber());
-
+      //  CountOfAddedValueInRap countOfAddedValueInRap=countOfAddedValueInRapService.get(intakeList.getPatientMRN());
          AddressDetail addressDetail=addressDetailService.get(intakeList.getPatientMRN());
          AdmissionSource admissionSource=admissionSourceService.get(intakeList.getPatientMRN());
          List<OtherProviderDetail> otherProviderDetailList=otherProviderDetailRepository.findOtherProviderDetailByMrnNumber(intakeList.getPatientMRN(),1);
